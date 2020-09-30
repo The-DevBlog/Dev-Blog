@@ -1,5 +1,7 @@
 # The Dev Blog
 
+*Author* - Andrew Smith
+
 ### Why?
 Like many fellow developers out there, I have a lingering desire to create my own video game. 
 At the time of writing this, I haven't the slightest idea of what this game will encompass. I simply know
