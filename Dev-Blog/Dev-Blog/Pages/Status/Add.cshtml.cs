@@ -29,10 +29,10 @@ namespace Dev_Blog.Pages.Status
         {
         }
 
-        public async Task OnPost()
+        public async Task<IActionResult> OnPost()
         {
             string ext = Path.GetExtension(Image.FileName);
-            // Goal: send the uploaded image to blob
+
             // convert image to a stream
             if (Image != null)
             {
@@ -43,6 +43,8 @@ namespace Dev_Blog.Pages.Status
                     await _image.UploadFile("pictures", $"{Name}{ext}", bytes, Image.ContentType);
                 }
             }
+
+            return RedirectToPage("Index");
         }
     }
 }

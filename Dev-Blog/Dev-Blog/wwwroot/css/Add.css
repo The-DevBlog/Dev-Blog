@@ -13,3 +13,8 @@
     width: 100%;
     border: 1px solid #F2F2F2;
 }
+
+/*image upload*/
+#bootstrap-override #file[type="file"] {
+    display: none;
+}
