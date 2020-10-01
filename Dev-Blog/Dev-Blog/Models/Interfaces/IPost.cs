@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Interfaces
 {
-    public interface INewPost
+    public interface IPost
     {
         /// <summary>
         /// Adds a new post to the database
@@ -13,6 +13,6 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="post">The new post</param>
         /// <param name="imgName">Name of the image being uploaded</param>
         /// <returns>New post</returns>
-        Task<NewPost> Create(NewPost post, string imgName);
+        Task<Post> Create(Post post, string imgName);
     }
 }

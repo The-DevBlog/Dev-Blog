@@ -18,7 +18,7 @@
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <form method="post" enctype="multipart/form-data" class="form-inline">
-                                <textarea asp-for="@Model.NewPost.Description" placeholder="Add text here..." class="pb-cmnt-textarea"></textarea>
+                                <textarea asp-for="@Model.Post.Description" placeholder="Add text here..." class="pb-cmnt-textarea"></textarea>
                                 <div class="form-control" id="img-upload">
                                     <input id="file" class="form-control" asp-for="@Model.Image" type="file" accept="image/*" />
                                     <label onclick="greenCheck()" for="file" asp-for="@Model.Image">
@@ -29,7 +29,7 @@
                                     <span id="cross">&#10060;</span>
                                 </div>
                                 <input class="form-control" asp-for="@Model.Name" placeholder="img title" />
-                                <input class="form-control" asp-for="@Model.NewPost.UpdateNum" placeholder="update #" />
+                                <input class="form-control" asp-for="@Model.Post.UpdateNum" placeholder="update #" />
                                 <button class="btn btn-primary pull-right" type="submit">Post</button>
                             </form>
                         </div>

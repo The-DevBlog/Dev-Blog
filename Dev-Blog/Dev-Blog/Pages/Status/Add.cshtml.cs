@@ -15,10 +15,10 @@ namespace Dev_Blog.Pages.Status
     public class AddModel : PageModel
     {
         private readonly IImage _image;
-        private readonly INewPost _newPost;
+        private readonly IPost _post;
 
         [BindProperty]
-        public NewPost NewPost { get; set; }
+        public Post Post { get; set; }
 
         [BindProperty]
         public string Name { get; set; }
@@ -26,10 +26,10 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public IFormFile Image { get; set; }
 
-        public AddModel(IImage image, INewPost newPost)
+        public AddModel(IImage image, IPost post)
         {
             _image = image;
-            _newPost = newPost;
+            _post = post;
         }
 
         public void OnGet()
@@ -40,7 +40,7 @@ namespace Dev_Blog.Pages.Status
         {
             string ext = Path.GetExtension(Image.FileName);
             string imgName = $"{Name}{ext}";
-            await _newPost.Create(NewPost, imgName);
+            await _post.Create(Post, imgName);
 
             // convert image to a stream
             if (Image != null)
@@ -52,7 +52,6 @@ namespace Dev_Blog.Pages.Status
                     await _image.UploadFile("pictures", imgName, bytes, Image.ContentType);
                 }
             }
-            //https://<storage_account_name>.blob.core.windows.net/<container_name>/<blob_name>
             return RedirectToPage("Index");
         }
     }

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dev_Blog.Models.Services
 {
-    public class NewPostService : INewPost
+    public class PostService : IPost
     {
         private DevBlogDbContext _context;
 
-        public NewPostService(DevBlogDbContext context)
+        public PostService(DevBlogDbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace Dev_Blog.Models.Services
         /// <param name="post">The new post</param>
         /// <param name="imgName">Name of the image being uploaded</param>
         /// <returns>New post</returns>
-        public async Task<NewPost> Create(NewPost post, string imgName)
+        public async Task<Post> Create(Post post, string imgName)
         {
             string url = $"https://thedevblog.blob.core.windows.net/pictures/{imgName}";
 
@@ -34,5 +34,7 @@ namespace Dev_Blog.Models.Services
             await _context.SaveChangesAsync();
             return post;
         }
+
+        //public async Task<>
     }
 }

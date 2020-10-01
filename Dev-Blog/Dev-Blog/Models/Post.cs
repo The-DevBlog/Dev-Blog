@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Dev_Blog.Models
 {
-    public class NewPost
+    public class Post
     {
         public int Id { get; set; }
         public string UpdateNum { get; set; }

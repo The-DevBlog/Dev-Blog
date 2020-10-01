@@ -9,7 +9,7 @@ namespace Dev_Blog.Data
 {
     public class DevBlogDbContext : DbContext
     {
-        public DbSet<NewPost> NewPost { get; set; }
+        public DbSet<Post> Post { get; set; }
 
         public DevBlogDbContext(DbContextOptions<DevBlogDbContext> options) : base(options)
         {
