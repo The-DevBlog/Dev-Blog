@@ -1,0 +1,6 @@
+﻿body {
+}
+
+#bootstrap-override .col-sm {
+    border: 2px solid red;
+}
