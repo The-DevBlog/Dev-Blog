@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Dev_Blog</RootNamespace>
+    <UserSecretsId>0b3c0217-dc3b-40a9-a7a2-d81fa483bb86</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +11,7 @@
     <PackageReference Include="Azure.Storage.Common" Version="12.5.2" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.2" />
     <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
   </ItemGroup>
 
 </Project>

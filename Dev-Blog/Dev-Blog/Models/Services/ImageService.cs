@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Models.Services
 {
-    public class ImageRepository : IImage
+    public class ImageService : IImage
     {
         private readonly IConfiguration _config;
         public CloudStorageAccount CloudStorageAccount { get; set; }
         public CloudBlobClient CloudBlobClient { get; set; }
 
-        public ImageRepository(IConfiguration configuration)
+        public ImageService(IConfiguration configuration)
         {
             _config = configuration;
             var storageCredentials = new StorageCredentials(_config["BlobAccountName"], _config["BlobKey"]);
