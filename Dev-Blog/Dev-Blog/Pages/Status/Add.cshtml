@@ -6,6 +6,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="~/css/Add.css" />
+
     <title>Status</title>
 </head>
 <body id="bootstrap-override">
@@ -19,10 +20,12 @@
                             <form method="post" enctype="multipart/form-data" class="form-inline">
                                 <textarea placeholder="Add text here..." class="pb-cmnt-textarea"></textarea>
                                 <input id="file" class="form-control" asp-for="@Model.Image" type="file" accept="image/*" />
-                                <label for="file" asp-for="@Model.Image">
+                                <label onclick="greenCheck()" for="file" asp-for="@Model.Image">
                                     @{await Html.RenderPartialAsync("_ImgUploadIcon"); }
                                     Image
                                 </label>
+                                <span id="check">&#9989;</span>
+                                <span id="cross">&#10060;</span>
                                 <input class="form-control" asp-for="@Model.Name" placeholder="img title" />
                                 <button class="btn btn-primary pull-right" type="submit">Post</button>
                             </form>
@@ -32,4 +35,23 @@
             </div>
         </div>
     </main>
+    <!--Toggle green and red x -->
+    <script type="text/javascript">
+        var check = document.getElementById("check");
+        var cross = document.getElementById("cross");
+
+        document.addEventListener("DOMContentLoaded", function () {
+            check.style.display = "none";
+        });
+
+        function greenCheck() {
+            if (check.style.display === "none") {
+                check.style.display = "block";
+                cross.style.display = "none";
+            } else {
+                check.style.display = "none";
+                cross.style.display = "block";
+            }
+        }
+    </script>
 </body>
