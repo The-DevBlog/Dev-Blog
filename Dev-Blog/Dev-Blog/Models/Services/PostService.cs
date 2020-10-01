@@ -35,6 +35,15 @@ namespace Dev_Blog.Models.Services
             return post;
         }
 
-        //public async Task<>
+        /// <summary>
+        /// Get a list of all posts
+        /// </summary>
+        /// <returns>Successful result with list of posts</returns>
+        public async Task<List<Post>> GetAllPosts()
+        {
+            List<Post> posts = await _context.Post.ToListAsync();
+
+            return posts;
+        }
     }
 }

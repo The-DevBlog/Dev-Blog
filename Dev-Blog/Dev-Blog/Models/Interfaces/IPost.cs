@@ -14,5 +14,11 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="imgName">Name of the image being uploaded</param>
         /// <returns>New post</returns>
         Task<Post> Create(Post post, string imgName);
+
+        /// <summary>
+        /// Get a list of all posts
+        /// </summary>
+        /// <returns>Successful result with list of posts</returns>
+        Task<List<Post>> GetAllPosts();
     }
 }
