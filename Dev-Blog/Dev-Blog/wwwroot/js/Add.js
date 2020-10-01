@@ -1,7 +1,11 @@
-﻿//TODO: not working
+﻿var check = document.getElementById("check");
+var cross = document.getElementById("cross");
+
+document.addEventListener("DOMContentLoaded", function () {
+    check.style.display = "none";
+});
+
 function greenCheck() {
-    var check = document.getElementById("check");
-    var cross = document.getElementById("cross");
     if (check.style.display === "none") {
         check.style.display = "block";
         cross.style.display = "none";
