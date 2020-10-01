@@ -14,7 +14,21 @@
     border: 1px solid #F2F2F2;
 }
 
+#bootstrap-override textarea {
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
 /*image upload*/
 #bootstrap-override #file[type="file"] {
     display: none;
 }
+
+#bootstrap-override #img-upload {
+    display: flex;
+}
+
+    #bootstrap-override #img-upload:hover, #bootstrap-override #img-upload label:hover {
+        background-color: #CCCCCC;
+        cursor: pointer;
+    }

@@ -19,13 +19,15 @@
                         <div class="panel-body">
                             <form method="post" enctype="multipart/form-data" class="form-inline">
                                 <textarea placeholder="Add text here..." class="pb-cmnt-textarea"></textarea>
-                                <input id="file" class="form-control" asp-for="@Model.Image" type="file" accept="image/*" />
-                                <label onclick="greenCheck()" for="file" asp-for="@Model.Image">
-                                    @{await Html.RenderPartialAsync("_ImgUploadIcon"); }
-                                    Image
-                                </label>
-                                <span id="check">&#9989;</span>
-                                <span id="cross">&#10060;</span>
+                                <div class="form-control" id="img-upload">
+                                    <input id="file" class="form-control" asp-for="@Model.Image" type="file" accept="image/*" />
+                                    <label onclick="greenCheck()" for="file" asp-for="@Model.Image">
+                                        @{await Html.RenderPartialAsync("_ImgUploadIcon"); }
+                                        Image
+                                    </label>
+                                    <span id="check">&#9989;</span>
+                                    <span id="cross">&#10060;</span>
+                                </div>
                                 <input class="form-control" asp-for="@Model.Name" placeholder="img title" />
                                 <button class="btn btn-primary pull-right" type="submit">Post</button>
                             </form>
