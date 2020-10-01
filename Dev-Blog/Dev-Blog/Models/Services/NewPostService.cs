@@ -21,10 +21,15 @@ namespace Dev_Blog.Models.Services
         /// Adds a new post to the database
         /// </summary>
         /// <param name="post">The new post</param>
+        /// <param name="imgName">Name of the image being uploaded</param>
         /// <returns>New post</returns>
-        public async Task<NewPost> Create(NewPost post)
+        public async Task<NewPost> Create(NewPost post, string imgName)
         {
+            string url = $"https://thedevblog.blob.core.windows.net/pictures/{imgName}";
+
+            post.ImgURL = url;
             post.Date = DateTime.Now;
+
             _context.Entry(post).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return post;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dev_Blog.Data;
+using Dev_Blog.Models.Interfaces;
+using Dev_Blog.Models.Services;
 using ECommerce.Models.Interfaces;
 using ECommerce.Models.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +29,7 @@ namespace Dev_Blog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddRazorPages();
 
             services.AddDbContext<DevBlogDbContext>(options =>
@@ -35,6 +38,7 @@ namespace Dev_Blog
             });
 
             services.AddScoped<IImage, ImageService>();
+            services.AddTransient<INewPost, NewPostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
