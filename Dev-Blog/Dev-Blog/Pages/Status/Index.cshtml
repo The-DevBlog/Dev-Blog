@@ -9,16 +9,25 @@
     <title>Status</title>
 </head>
 <body>
-    <h1>Game Status</h1>
     <main>
         <a class="nav-link" asp-page="Add">Add Post</a>
-        @{
-            foreach (var post in Model.Posts)
-            {
-                <h3>@post.Date.ToShortDateString()</h3>
-                <p>@post.Description</p>
-                <img src=@post.ImgURL height="300" width="225" />
+        <div class="container">
+            @{
+                foreach (var post in Model.Posts)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            Update
+                            <strong>@post.UpdateNum</strong>
+                            <strong class="float-right">@post.Date.ToShortDateString()</strong>
+                        </div>
+                        <div class="card-body">
+                            <img src=@post.ImgURL height="432" width="768" />
+                            <p>@post.Description</p>
+                        </div>
+                    </div>
+                }
             }
-        }
+        </div>
     </main>
 </body>
