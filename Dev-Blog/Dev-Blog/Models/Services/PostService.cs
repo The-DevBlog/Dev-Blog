@@ -41,9 +41,20 @@ namespace Dev_Blog.Models.Services
         /// <returns>Successful result with list of posts</returns>
         public async Task<List<Post>> GetAllPosts()
         {
-            List<Post> posts = await _context.Post.ToListAsync();
+            List<Post> posts = await _context.Post.OrderByDescending(x => x.Date).ToListAsync();
 
             return posts;
+        }
+
+        /// <summary>
+        /// Gets the most recent post
+        /// </summary>
+        /// <returns>Most recent post</returns>
+        public async Task<Post> GetLatestPost()
+        {
+            Post post = await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+
+            return post;
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿#bootstrap-override .card {
+    text-align: left;
+}
+
+#bootstrap-override #update-img {
+    height: 432px;
+    width: 768px;
+}
+
+@media screen and (max-width: 975px) {
+    #bootstrap-override #update-img {
+        height: 360px;
+        width: 640px;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    #bootstrap-override #update-img {
+        height: 252px;
+        width: 448px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    #bootstrap-override #update-img {
+        height: 234px;
+        width: 416px;
+    }
+}

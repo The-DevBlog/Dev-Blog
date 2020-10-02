@@ -6,11 +6,27 @@
 }
 
 <head>
+    <link rel="stylesheet" type="text/css" href="~/css/All.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/Home.css" />
     <title>Home</title>
 </head>
-<h1>Home</h1>
-
 <body id="bootstrap-override">
     <main>
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        Update
+                        <strong>@Model.Post.UpdateNum</strong>
+                    </span>
+                    <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
+
+                    <div class="card-body">
+                        <img id="update-img" src=@Model.Post.ImgURL />
+                        <p>@Model.Post.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
