@@ -3,7 +3,6 @@
 }
 
     #bootstrap-override main {
-        /*        width: 1000px;*/
         border: 2px solid red;
         margin: auto;
     }
