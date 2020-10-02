@@ -6,9 +6,10 @@
 }
 
 <head>
+    <link rel="stylesheet" type="text/css" href="~/css/Posts.css" />
     <title>Status</title>
 </head>
-<body>
+<body id="bootstrap-override">
     <main>
         <a class="nav-link" asp-page="Add">Add Post</a>
         <div class="container">
@@ -17,12 +18,14 @@
                 {
                     <div class="card">
                         <div class="card-header">
-                            Update
-                            <strong>@post.UpdateNum</strong>
+                            <span>
+                                Update
+                                <strong>@post.UpdateNum</strong>
+                            </span>
                             <strong class="float-right">@post.Date.ToShortDateString()</strong>
                         </div>
                         <div class="card-body">
-                            <img src=@post.ImgURL height="432" width="768" />
+                            <img class="update-img" src=@post.ImgURL />
                             <p>@post.Description</p>
                         </div>
                     </div>
