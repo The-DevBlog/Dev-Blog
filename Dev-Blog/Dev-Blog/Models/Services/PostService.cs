@@ -45,5 +45,16 @@ namespace Dev_Blog.Models.Services
 
             return posts;
         }
+
+        /// <summary>
+        /// Gets the most recent post
+        /// </summary>
+        /// <returns>Most recent post</returns>
+        public async Task<Post> GetLatestPost()
+        {
+            Post post = await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+
+            return post;
+        }
     }
 }

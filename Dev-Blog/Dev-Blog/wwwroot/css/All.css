@@ -1,4 +1,10 @@
-﻿#bootstrap-override {
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override nav {
+    font-family: 'Press Start 2P', cursive;
+}
+
+#bootstrap-override {
     text-align: center;
 }
 

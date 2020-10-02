@@ -20,5 +20,11 @@ namespace Dev_Blog.Models.Interfaces
         /// </summary>
         /// <returns>Successful result with list of posts</returns>
         Task<List<Post>> GetAllPosts();
+
+        /// <summary>
+        /// Gets the most recent post
+        /// </summary>
+        /// <returns>Most recent post</returns>
+        Task<Post> GetLatestPost();
     }
 }
