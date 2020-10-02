@@ -1,6 +1,9 @@
-﻿body {
+﻿#bootstrap-override {
+    text-align: center;
 }
 
-#bootstrap-override .col-sm {
-    border: 2px solid red;
-}
+    #bootstrap-override main {
+        /*        width: 1000px;*/
+        border: 2px solid red;
+        margin: auto;
+    }

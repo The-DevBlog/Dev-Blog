@@ -1,7 +1,4 @@
-﻿body {
-}
-
-.pb-cmnt-container {
+﻿.pb-cmnt-container {
     font-family: Lato;
     margin-top: 100px;
 }
@@ -12,6 +9,11 @@
     height: 130px;
     width: 100%;
     border: 1px solid #F2F2F2;
+}
+
+#bootstrap-override .panel-box {
+    text-align: center;
+    margin: auto;
 }
 
 #bootstrap-override textarea {
