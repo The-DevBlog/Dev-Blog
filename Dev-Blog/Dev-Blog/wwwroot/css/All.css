@@ -1,0 +1,8 @@
+﻿#bootstrap-override {
+    text-align: center;
+}
+
+    #bootstrap-override main {
+        border: 2px solid red;
+        margin: auto;
+    }

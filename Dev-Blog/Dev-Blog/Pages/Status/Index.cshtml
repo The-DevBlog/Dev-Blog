@@ -1,6 +1,7 @@
 ﻿@page
 @model Dev_Blog.Pages.Status.IndexModel
 @{
+    ViewData["Title"] = "Updates";
     Layout = "_Layout";
 }
 
@@ -10,6 +11,14 @@
 <body>
     <h1>Game Status</h1>
     <main>
-        <a class="nav-link" asp-page="Add">Create Update</a>
+        <a class="nav-link" asp-page="Add">Add Post</a>
+        @{
+            foreach (var post in Model.Posts)
+            {
+                <h3>@post.Date.ToShortDateString()</h3>
+                <p>@post.Description</p>
+                <img src=@post.ImgURL height="300" width="225" />
+            }
+        }
     </main>
 </body>
