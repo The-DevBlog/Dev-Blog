@@ -41,7 +41,7 @@ namespace Dev_Blog.Models.Services
         /// <returns>Successful result with list of posts</returns>
         public async Task<List<Post>> GetAllPosts()
         {
-            List<Post> posts = await _context.Post.ToListAsync();
+            List<Post> posts = await _context.Post.OrderByDescending(x => x.Date).ToListAsync();
 
             return posts;
         }
