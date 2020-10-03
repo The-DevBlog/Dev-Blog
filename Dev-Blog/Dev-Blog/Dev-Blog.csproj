@@ -9,6 +9,8 @@
 	<ItemGroup>
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.6.0" />
 		<PackageReference Include="Azure.Storage.Common" Version="12.5.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
 		<PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.2" />
 		<PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.2.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
