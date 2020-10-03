@@ -4,7 +4,16 @@
 
 #bootstrap-override .card {
     text-align: left;
+    margin-bottom: 15px;
 }
+
+#bootstrap-override .comment-box {
+    margin: 0px 15px 15px 15px;
+}
+
+    #bootstrap-override .comment-box button {
+        margin-top: 10px;
+    }
 
 #bootstrap-override .update-img {
     height: 432px;
