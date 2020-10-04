@@ -4,6 +4,11 @@
     font-family: 'Press Start 2P', cursive;
 }
 
+#bootstrap-override #logout-button {
+    border: none;
+    background-color: inherit;
+}
+
 #bootstrap-override {
     text-align: center;
 }

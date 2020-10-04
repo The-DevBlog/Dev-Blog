@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dev_Blog.Data;
+using Dev_Blog.Models;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.Services;
 using ECommerce.Models.Interfaces;
@@ -10,6 +11,7 @@ using ECommerce.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,10 +34,19 @@ namespace Dev_Blog
             services.AddMvc();
             services.AddRazorPages();
 
+            services.AddDbContext<UserDevBlogDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("UserConnection"));
+            });
+
             services.AddDbContext<DevBlogDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddIdentity<User, IdentityRole>()
+                    .AddEntityFrameworkStores<UserDevBlogDbContext>()
+                    .AddDefaultTokenProviders();
 
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();
@@ -57,9 +68,8 @@ namespace Dev_Blog
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
