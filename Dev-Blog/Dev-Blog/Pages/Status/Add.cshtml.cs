@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Dev_Blog.Models;
 using Dev_Blog.Models.Interfaces;
 using ECommerce.Models.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dev_Blog.Pages.Status
 {
+    [Authorize(Policy = "Admin")]
     public class AddModel : PageModel
     {
         private readonly IImage _image;

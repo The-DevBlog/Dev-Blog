@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Dev_Blog.Models.User> SignInManager
 @model Dev_Blog.Pages.Status.IndexModel
 @{
     ViewData["Title"] = "Updates";
@@ -11,9 +13,15 @@
 </head>
 <body id="bootstrap-override">
     <main>
-        <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
         <div class="container">
             @{
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (User.Identity.Name == "DevMaster")
+                    {
+                        <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
+                    }
+                }
                 foreach (var post in Model.Posts)
                 {
                     <div class="card">

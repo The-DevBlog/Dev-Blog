@@ -13,16 +13,14 @@ namespace Dev_Blog.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
         [BindProperty]
         public LoginViewModel Input { get; set; }
 
-        public LoginModel(SignInManager<User> signInManager, UserManager<User> userManager)
+        public LoginModel(SignInManager<User> signInManager)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
         }
 
         public void OnGet()
@@ -33,11 +31,9 @@ namespace Dev_Blog.Pages.Account
         {
             var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);
             if (result.Succeeded)
-            {
-                var user = await _userManager.FindByNameAsync(Input.UserName);
                 return RedirectToPagePermanent("../Index");
-            }
-            ModelState.AddModelError("", "Invalid username or password");
+
+            ModelState.AddModelError("", "Invalid email or password");
 
             return Page();
         }
