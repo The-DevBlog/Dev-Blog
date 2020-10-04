@@ -1,5 +1,9 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+#bootstrap-override main > div:first-of-type {
+    margin: auto;
+}
+
 #bootstrap-override nav {
     font-family: 'Press Start 2P', cursive;
 }

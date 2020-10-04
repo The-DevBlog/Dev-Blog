@@ -10,27 +10,31 @@
     <title>Register</title>
 </head>
 <body id="bootstrap-override">
-    <form class="text-center border border-light p-5" method="post">
+    <main>
+        <div class="col-md-4 d-flex justify-content-center">
+            <form class="text-center border border-light p-5" method="post">
 
-        <p class="h4 mb-4">Sign in</p>
+                <p class="h4 mb-4">Sign Up</p>
 
-        <!-- Email -->
-        <div asp-validation-summary="All" class="error-message"></div>
-        <input type="text" class="form-control mb-4" placeholder="UserName" asp-for="@Model.Input.UserName">
+                <!-- Email -->
+                <div asp-validation-summary="All" class="error-message"></div>
+                <input type="text" class="form-control mb-4" placeholder="UserName" asp-for="@Model.Input.UserName">
 
-        <!-- UserName -->
-        <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Email" asp-for="@Model.Input.Email" />
+                <!-- UserName -->
+                <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Email" asp-for="@Model.Input.Email" />
 
-        <!-- Password -->
-        <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Input.Password">
-        <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Confirm Password" asp-for="@Model.Input.ConfirmPassword" />
+                <!-- Password -->
+                <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Input.Password">
+                <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Confirm Password" asp-for="@Model.Input.ConfirmPassword" />
 
-        <!-- Sign in button -->
-        <button class=" btn btn-info btn-block my-4" type="submit">Sign Up</button>
-        <!-- Register -->
-        <p>
-            Already a Member?
-            <a class="nav-link" asp-page="Login">Sign In</a>
-        </p>
-    </form>
+                <!-- Sign in button -->
+                <button class=" btn btn-info btn-block my-4" type="submit">Sign Up</button>
+                <!-- Register -->
+                <p>
+                    Already a Member?
+                    <a class="nav-link" asp-page="Login">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </main>
 </body>
