@@ -48,12 +48,17 @@ namespace Dev_Blog
                     .AddEntityFrameworkStores<UserDevBlogDbContext>()
                     .AddDefaultTokenProviders();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole(Role.Admin));
+            });
+
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -71,6 +76,9 @@ namespace Dev_Blog
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleInitializer.SeedData(serviceProvider, userManager, Configuration);
 
             app.UseEndpoints(endpoints =>
             {
