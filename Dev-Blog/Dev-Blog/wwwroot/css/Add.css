@@ -1,0 +1,40 @@
+﻿.pb-cmnt-container {
+    font-family: Lato;
+    margin-top: 100px;
+}
+
+.pb-cmnt-textarea {
+    resize: none;
+    padding: 20px;
+    height: 130px;
+    width: 100%;
+    border: 1px solid #F2F2F2;
+}
+
+#bootstrap-override .panel-box {
+    text-align: center;
+    margin: auto;
+}
+
+#bootstrap-override textarea {
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/*image upload*/
+#bootstrap-override #file[type="file"] {
+    display: none;
+}
+
+#bootstrap-override #img-upload {
+    display: flex;
+}
+
+    #bootstrap-override #img-upload:hover, #bootstrap-override #img-upload label:hover {
+        background-color: #CCCCCC;
+        cursor: pointer;
+    }
+
+#bootstrap-override input {
+    width: 115px;
+}

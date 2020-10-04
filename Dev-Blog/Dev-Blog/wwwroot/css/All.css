@@ -1,0 +1,23 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override main > div:first-of-type {
+    margin: auto;
+}
+
+#bootstrap-override nav {
+    font-family: 'Press Start 2P', cursive;
+}
+
+#bootstrap-override #logout-button {
+    border: none;
+    background-color: inherit;
+}
+
+#bootstrap-override {
+    text-align: center;
+}
+
+/*    #bootstrap-override main {
+        border: 2px solid red;
+        margin: auto;
+    }*/
