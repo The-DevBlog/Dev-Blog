@@ -10,13 +10,13 @@
     <title>Register</title>
 </head>
 <body id="bootstrap-override">
-    <form class="text-center border border-light p-5" action="#!">
+    <form class="text-center border border-light p-5" method="post">
 
         <p class="h4 mb-4">Sign in</p>
 
         <!-- Email -->
         <div asp-validation-summary="All" class="error-message"></div>
-        <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="UserName" asp-for="@Model.Input.UserName">
+        <input type="text" class="form-control mb-4" placeholder="UserName" asp-for="@Model.Input.UserName">
 
         <!-- UserName -->
         <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Email" asp-for="@Model.Input.Email" />

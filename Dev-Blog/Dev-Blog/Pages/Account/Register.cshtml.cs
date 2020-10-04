@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Dev_Blog.Models;
 using Microsoft.AspNetCore.Identity;
@@ -40,6 +41,9 @@ namespace Dev_Blog.Pages.Account
 
             if (result.Succeeded)
             {
+                Claim userName = new Claim("UserName", Input.UserName);
+                await _userManager.AddClaimAsync(user, userName);
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToPagePermanent("../Index");
             }
@@ -49,6 +53,9 @@ namespace Dev_Blog.Pages.Account
 
     public class RegisterViewModel
     {
+        [Required]
+        public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -61,8 +68,5 @@ namespace Dev_Blog.Pages.Account
         [DataType(DataType.Password)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
-
-        [Required]
-        public string UserName { get; set; }
     }
 }
