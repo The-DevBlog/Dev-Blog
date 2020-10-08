@@ -1,11 +1,15 @@
 ﻿@page
-@model Dev_Blog.Pages.IndexModel
+@model Dev_Blog.Models.ViewModels.LoginVM
+@*@model Dev_Blog.Pages.IndexModel*@
 @{
     ViewData["Title"] = "Index";
     Layout = "_Layout";
 }
 
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/css/All.css" />
     <link rel="stylesheet" type="text/css" href="~/css/Home.css" />
     <title>Home</title>
@@ -17,13 +21,13 @@
                 <div class="card-header">
                     <span>
                         Update
-                        <strong>@Model.Post.UpdateNum</strong>
+                        <strong>@Model.LatestPost.UpdateNum</strong>
                     </span>
-                    <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
+                    <strong class="float-right">@Model.LatestPost.Date.ToShortDateString()</strong>
 
                     <div class="card-body">
-                        <img id="update-img" src=@Model.Post.ImgURL />
-                        <p>@Model.Post.Description</p>
+                        <img id="update-img" src=@Model.LatestPost.ImgURL />
+                        <p>@Model.LatestPost.Description</p>
                     </div>
                 </div>
             </div>

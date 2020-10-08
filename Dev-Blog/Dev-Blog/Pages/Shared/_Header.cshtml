@@ -21,7 +21,7 @@
                     <a class="nav-link" asp-page="/Bio/Index">My Bio</a>
                 </li>
             </ul>
-            <div class="collapse navbar-collapse justify-content-end">
+            <div class="collapse navbar-collapse justify-content-end float-right">
                 <ul class="navbar-nav">
                     @{
                         if (User.Identity.IsAuthenticated)
@@ -39,16 +39,11 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link">
-                                    @{ await Html.RenderPartialAsync("_Login");}
-                                </a>
+                                @{ await Html.RenderPartialAsync("_Login");}
                             </li>
-                            @*<li class="nav-item">
-                                    <a class="nav-link" asp-page="/Account/Login">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Account/Register">Sign Up</a>
-                                </li>*@
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Account/Register">Sign Up</a>
+                            </li>
                         }
                     }
                 </ul>
