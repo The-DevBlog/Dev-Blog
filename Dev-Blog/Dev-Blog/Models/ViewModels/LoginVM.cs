@@ -15,8 +15,5 @@ namespace Dev_Blog.Models.ViewModels
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        public List<Post> Posts { get; set; }
-        public Post LatestPost { get; set; }
     }
 }

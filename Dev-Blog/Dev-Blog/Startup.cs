@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dev_Blog.Data;
 using Dev_Blog.Models;
+using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.Services;
 using Dev_Blog.Models.ViewModels;
@@ -56,7 +57,6 @@ namespace Dev_Blog
 
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();
-            services.AddTransient<IViewModel, VMservice>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,7 +12,6 @@ namespace Dev_Blog.Data
     public class DevBlogDbContext : DbContext
     {
         public DbSet<Post> Post { get; set; }
-        public DbSet<LoginVM> VM { get; set; }
 
         public DevBlogDbContext(DbContextOptions<DevBlogDbContext> options) : base(options)
         {
