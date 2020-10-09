@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dev_Blog.Pages.Bio
 {
-    public class IndexModel : BasePage
+    public class BioModel : BasePage
     {
-        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
+        public BioModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
         {
         }
 

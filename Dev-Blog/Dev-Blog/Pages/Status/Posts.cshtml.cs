@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dev_Blog.Pages.Status
 {
-    public class IndexModel : BasePage
+    public class PostsModel : BasePage
     {
         private readonly IPost _post;
 
         [BindProperty]
         public List<Post> Posts { get; set; }
 
-        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post) : base(signInManager, userManager)
+        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post) : base(signInManager, userManager)
         {
             _post = post;
         }
