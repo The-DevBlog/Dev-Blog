@@ -12,6 +12,7 @@
             <div class="modal-body">
                 <form class="text-center border border-light p-5" method="post">
                     <h5>UserName</h5>
+                    <div asp-validation-summary="All" class="error-message"></div>
                     <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="UserName" asp-for="@Model.UserName">
                     <h5>Password</h5>
                     <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Password">

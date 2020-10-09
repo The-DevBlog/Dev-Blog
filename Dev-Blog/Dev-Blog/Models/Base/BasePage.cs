@@ -52,7 +52,7 @@ namespace Dev_Blog.Models.Base
                 await _userManager.AddClaimAsync(user, userName);
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToPagePermanent("../Index");
+                Response.Redirect(Request.Path.ToString());
             }
             return Page();
         }
