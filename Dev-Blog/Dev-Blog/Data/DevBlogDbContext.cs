@@ -1,4 +1,6 @@
 ﻿using Dev_Blog.Models;
+using Dev_Blog.Models.Interfaces;
+using Dev_Blog.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

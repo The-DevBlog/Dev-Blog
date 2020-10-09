@@ -4,15 +4,20 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dev_Blog.Models;
+using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
+using Dev_Blog.Models.ViewModels;
 using ECommerce.Models.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dev_Blog.Pages.Status
 {
-    public class AddModel : PageModel
+    [Authorize(Policy = "Admin")]
+    public class AddModel : BasePage
     {
         private readonly IImage _image;
         private readonly IPost _post;
@@ -26,7 +31,7 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public IFormFile Image { get; set; }
 
-        public AddModel(IImage image, IPost post)
+        public AddModel(SignInManager<User> signInManager, UserManager<User> userManager, IImage image, IPost post) : base(signInManager, userManager)
         {
             _image = image;
             _post = post;
