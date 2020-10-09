@@ -38,10 +38,10 @@
                         else
                         {
                             <li class="nav-item">
-                                @{ await Html.RenderPartialAsync("_Login", Model.Input);}
+                                @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
                             </li>
                             <li class="nav-item">
-                                @{ await Html.RenderPartialAsync("_Register", Model.Input);}
+                                @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
                             </li>
                         }
                     }
