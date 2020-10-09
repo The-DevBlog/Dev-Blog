@@ -22,7 +22,7 @@ namespace Dev_Blog.Pages
         [BindProperty]
         public Post Post { get; set; }
 
-        public IndexModel(SignInManager<User> signInManager, IPost post) : base(signInManager)
+        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post) : base(signInManager, userManager)
         {
             _post = post;
         }

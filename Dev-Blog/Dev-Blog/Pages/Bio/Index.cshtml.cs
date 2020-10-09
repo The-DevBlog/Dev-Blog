@@ -15,7 +15,7 @@ namespace Dev_Blog.Pages.Bio
 {
     public class IndexModel : BasePage
     {
-        public IndexModel(SignInManager<User> signInManager) : base(signInManager)
+        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
         {
         }
 

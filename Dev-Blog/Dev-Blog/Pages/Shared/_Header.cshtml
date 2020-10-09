@@ -35,14 +35,13 @@
                                 </form>
                             </li>
                         }
-
                         else
                         {
                             <li class="nav-item">
-                                @{ await Html.RenderPartialAsync("_Login", Model.LoginModelTest);}
+                                @{ await Html.RenderPartialAsync("_Login", Model.Input);}
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-page="/Account/Register">Sign Up</a>
+                                @{ await Html.RenderPartialAsync("_Register", Model.Input);}
                             </li>
                         }
                     }

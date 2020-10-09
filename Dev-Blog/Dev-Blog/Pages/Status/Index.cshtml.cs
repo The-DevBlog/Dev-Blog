@@ -19,7 +19,7 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public List<Post> Posts { get; set; }
 
-        public IndexModel(SignInManager<User> signInManager, IPost post) : base(signInManager)
+        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post) : base(signInManager, userManager)
         {
             _post = post;
         }

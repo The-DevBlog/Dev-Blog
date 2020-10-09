@@ -31,7 +31,7 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public IFormFile Image { get; set; }
 
-        public AddModel(SignInManager<User> signInManager, IImage image, IPost post) : base(signInManager)
+        public AddModel(SignInManager<User> signInManager, UserManager<User> userManager, IImage image, IPost post) : base(signInManager, userManager)
         {
             _image = image;
             _post = post;
