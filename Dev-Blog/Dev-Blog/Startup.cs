@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySqlConnector;
 
 namespace Dev_Blog
 {
@@ -46,6 +47,11 @@ namespace Dev_Blog
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddDbContext<DevBlogDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("DevBlogDB"));
+            });
+
             services.AddIdentity<User, IdentityRole>()
                     .AddEntityFrameworkStores<UserDevBlogDbContext>()
                     .AddDefaultTokenProviders();
@@ -54,6 +60,10 @@ namespace Dev_Blog
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole(Role.Admin));
             });
+
+            //services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:DevBlogDB"]));
+
+            services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("DevBlogDB")));
 
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();

@@ -25,6 +25,9 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
+		<PackageReference Include="MySql.Data.Entity" Version="6.10.9" />
+		<PackageReference Include="MySqlConnector" Version="1.0.1" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.2" />
 	</ItemGroup>
 
 	<ItemGroup>
