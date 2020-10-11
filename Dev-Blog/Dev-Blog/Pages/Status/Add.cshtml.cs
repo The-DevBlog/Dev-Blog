@@ -57,7 +57,7 @@ namespace Dev_Blog.Pages.Status
                     await _image.UploadFile("pictures", imgName, bytes, Image.ContentType);
                 }
             }
-            return RedirectToPage("Index");
+            return RedirectToPage("Posts");
         }
     }
 }

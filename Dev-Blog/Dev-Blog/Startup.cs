@@ -42,14 +42,14 @@ namespace Dev_Blog
                 options.UseSqlServer(Configuration.GetConnectionString("UserConnection"));
             });
 
-            services.AddDbContext<DevBlogDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            services.AddDbContext<DevBlogDbContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("DevBlogDB"));
+            });
+
+            services.AddDbContext<UserDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("DevBlogUserDB"));
             });
 
             services.AddIdentity<User, IdentityRole>()
@@ -60,10 +60,6 @@ namespace Dev_Blog
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole(Role.Admin));
             });
-
-            //services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:DevBlogDB"]));
-
-            services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("DevBlogDB")));
 
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();
