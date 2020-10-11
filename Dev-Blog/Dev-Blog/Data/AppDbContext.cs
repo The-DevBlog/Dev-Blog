@@ -1,6 +1,7 @@
 ﻿using Dev_Blog.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -16,15 +17,6 @@ namespace Dev_Blog.Data
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-        }
-
-        public AppDbContext()
-        {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseMySql("server=localhost;database=DevBlogDB;user=root;password=Andrew149!!!");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

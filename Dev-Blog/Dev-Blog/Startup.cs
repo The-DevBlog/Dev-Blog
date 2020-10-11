@@ -37,11 +37,6 @@ namespace Dev_Blog
             services.AddMvc();
             services.AddRazorPages();
 
-            services.AddDbContext<UserDevBlogDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("UserConnection"));
-            });
-
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("DevBlogDB"));
@@ -53,8 +48,8 @@ namespace Dev_Blog
             });
 
             services.AddIdentity<User, IdentityRole>()
-                    .AddEntityFrameworkStores<UserDevBlogDbContext>()
-                    .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<UserDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
             {

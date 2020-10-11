@@ -20,7 +20,7 @@ namespace Dev_Blog.Models
 
         public static async Task SeedData(IServiceProvider serviceProvider, UserManager<User> userManager, IConfiguration _config)
         {
-            using (var dbContext = new UserDevBlogDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDevBlogDbContext>>()))
+            using (var dbContext = new UserDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDbContext>>()))
             {
                 dbContext.Database.EnsureCreated();
                 AddRoles(dbContext);
@@ -28,7 +28,7 @@ namespace Dev_Blog.Models
             }
         }
 
-        public static void AddRoles(UserDevBlogDbContext dbContext)
+        public static void AddRoles(UserDbContext dbContext)
         {
             if (dbContext.Roles.Any()) return;
             foreach (var role in Roles)
@@ -40,53 +40,6 @@ namespace Dev_Blog.Models
 
         public static void SeedUsers(UserManager<User> userManager, IConfiguration _config)
         {
-            using (var context = new AppDbContext())
-            {
-                context.Database.EnsureCreated();
-
-                //    Post post = new Post
-                //    {
-                //        UpdateNum = "1",
-                //        Date = DateTime.Now,
-                //        ImgURL = "thisIsATest.com",
-                //        Description = "this test is so totally going to work on the first attempt."
-                //    };
-                //    context.Post.Add(post);
-
-                //    User user = new User
-                //    {
-                //        Email = _config["AdminEmail"],
-                //        UserName = _config["AdminUserName"]
-                //    };
-                //    context.User.Add(user);
-                context.SaveChangesAsync();
-            }
-
-            //using (var context = new UserDbContext())
-            //{
-            //    context.Database.EnsureCreated();
-            //    if (userManager.FindByNameAsync(_config["AdminEmail"]).Result == null)
-            //    {
-            //        User user = new User()
-            //        {
-            //            Email = _config["AdminEmail"],
-            //            UserName = _config["AdminUserName"]
-            //        };
-
-            //        IdentityResult result = userManager.CreateAsync(user, _config["AdminPassword"]).Result;
-            //        if (result.Succeeded)
-            //        {
-            //            Claim userName = new Claim("UserName", user.UserName);
-            //            Claim email = new Claim("Email", user.Email);
-
-            //            var e = userManager.AddClaimAsync(user, email).Result;
-            //            var u = userManager.AddClaimAsync(user, userName).Result;
-            //            userManager.AddToRoleAsync(user, Role.Admin).Wait();
-            //        }
-            //    }
-            //    context.SaveChangesAsync();
-            //}
-
             if (userManager.FindByNameAsync(_config["AdminEmail"]).Result == null)
             {
                 User user = new User()
