@@ -2,7 +2,7 @@
 
 namespace Dev_Blog.Migrations
 {
-    public partial class newService : Migration
+    public partial class createDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

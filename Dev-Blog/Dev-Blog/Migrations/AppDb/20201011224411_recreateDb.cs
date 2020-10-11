@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Dev_Blog.Migrations.UserDevBlogDb
+namespace Dev_Blog.Migrations.AppDb
 {
-    public partial class newLogin : Migration
+    public partial class recreateDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

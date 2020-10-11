@@ -20,7 +20,7 @@ namespace Dev_Blog.Models
 
         public static async Task SeedData(IServiceProvider serviceProvider, UserManager<User> userManager, IConfiguration _config)
         {
-            using (var dbContext = new UserDevBlogDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDevBlogDbContext>>()))
+            using (var dbContext = new UserDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDbContext>>()))
             {
                 dbContext.Database.EnsureCreated();
                 AddRoles(dbContext);
@@ -28,7 +28,7 @@ namespace Dev_Blog.Models
             }
         }
 
-        public static void AddRoles(UserDevBlogDbContext dbContext)
+        public static void AddRoles(UserDbContext dbContext)
         {
             if (dbContext.Roles.Any()) return;
             foreach (var role in Roles)

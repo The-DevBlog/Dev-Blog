@@ -10,9 +10,10 @@ namespace Dev_Blog.Models.Services
 {
     public class PostService : IPost
     {
-        private DevBlogDbContext _context;
+        //private DevBlogDbContext _context;
+        private AppDbContext _context;
 
-        public PostService(DevBlogDbContext context)
+        public PostService(AppDbContext context)
         {
             _context = context;
         }
@@ -29,7 +30,6 @@ namespace Dev_Blog.Models.Services
 
             post.ImgURL = url;
             post.Date = DateTime.Now;
-
             _context.Entry(post).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return post;
