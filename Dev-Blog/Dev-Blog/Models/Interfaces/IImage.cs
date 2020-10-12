@@ -41,6 +41,6 @@ namespace ECommerce.Models.Interfaces
         /// <param name="image">The image to upload</param>
         /// <param name="imgName">The desired name of the image</param>
         /// <returns>Successful completion of task</returns>
-        public Task Upload(IFormFile image, string imgName);
+        public Task<string> Upload(IFormFile image, string imgName);
     }
 }

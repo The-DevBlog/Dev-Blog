@@ -51,20 +51,12 @@ namespace Dev_Blog.Pages.Status
         public async Task<IActionResult> OnPost()
         {
             string ext = Path.GetExtension(Image.FileName);
-            string imgName = $"{Name}{ext}";
-            await _post.Create(Post, imgName);
+            string imgName = $"{DateTime.Now.Ticks}{Name}{ext}";
 
-            // convert image to a stream
             if (Image != null)
             {
-                using (var stream = new MemoryStream())
-                {
-                    await Image.CopyToAsync(stream);
-                    var bytes = stream.ToArray();
-                    await _image.UploadFile("pictures", imgName, bytes, Image.ContentType);
-                }
-
-                await _image.Upload(Image, imgName);
+                var url = await _image.Upload(Image, imgName);
+                await _post.Create(Post, url);
             }
             return RedirectToPage("Posts");
         }

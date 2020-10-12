@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Dev_Blog.Migrations
+namespace Dev_Blog.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20201011221054_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201012204028_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
