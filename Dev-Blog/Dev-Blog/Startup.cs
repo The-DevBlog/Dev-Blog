@@ -18,6 +18,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySqlConnector;
+using Dropbox.Api;
 
 namespace Dev_Blog
 {
@@ -36,19 +38,19 @@ namespace Dev_Blog
             services.AddMvc();
             services.AddRazorPages();
 
-            services.AddDbContext<UserDevBlogDbContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("UserConnection"));
+                options.UseMySql(Configuration.GetConnectionString("DevBlogDB"));
             });
 
-            services.AddDbContext<DevBlogDbContext>(options =>
+            services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseMySql(Configuration.GetConnectionString("DevBlogUserDB"));
             });
 
             services.AddIdentity<User, IdentityRole>()
-                    .AddEntityFrameworkStores<UserDevBlogDbContext>()
-                    .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<UserDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
             {

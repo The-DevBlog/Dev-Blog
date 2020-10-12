@@ -15,21 +15,24 @@
 </head>
 <body id="bootstrap-override">
     <main>
-        <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    <span>
-                        Update
-                        <strong>@Model.Post.UpdateNum</strong>
-                    </span>
-                    <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
+        @if (Model.Post != null)
+        {
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <span>
+                            Update
+                            <strong>@Model.Post.UpdateNum</strong>
+                        </span>
+                        <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
 
-                    <div class="card-body">
-                        <img id="update-img" src=@Model.Post.ImgURL />
-                        <p>@Model.Post.Description</p>
+                        <div class="card-body">
+                            <img id="update-img" src=@Model.Post.ImgURL />
+                            <p>@Model.Post.Description</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </main>
 </body>

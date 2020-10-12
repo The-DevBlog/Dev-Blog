@@ -11,9 +11,9 @@ namespace Dev_Blog.Models.Interfaces
         /// Adds a new post to the database
         /// </summary>
         /// <param name="post">The new post</param>
-        /// <param name="imgName">Name of the image being uploaded</param>
+        /// <param name="url">The url of the image</param>
         /// <returns>New post</returns>
-        Task<Post> Create(Post post, string imgName);
+        Task<Post> Create(Post post, string url);
 
         /// <summary>
         /// Get a list of all posts

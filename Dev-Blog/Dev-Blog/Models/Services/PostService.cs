@@ -10,9 +10,10 @@ namespace Dev_Blog.Models.Services
 {
     public class PostService : IPost
     {
-        private DevBlogDbContext _context;
+        //private DevBlogDbContext _context;
+        private AppDbContext _context;
 
-        public PostService(DevBlogDbContext context)
+        public PostService(AppDbContext context)
         {
             _context = context;
         }
@@ -21,15 +22,14 @@ namespace Dev_Blog.Models.Services
         /// Adds a new post to the database
         /// </summary>
         /// <param name="post">The new post</param>
-        /// <param name="imgName">Name of the image being uploaded</param>
+        /// <param name="url">The url of the image</param>
         /// <returns>New post</returns>
-        public async Task<Post> Create(Post post, string imgName)
+        public async Task<Post> Create(Post post, string url)
         {
-            string url = $"https://thedevblog.blob.core.windows.net/pictures/{imgName}";
+            //string url = $"https://thedevblog.blob.core.windows.net/pictures/{imgName}";
 
             post.ImgURL = url;
             post.Date = DateTime.Now;
-
             _context.Entry(post).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return post;
