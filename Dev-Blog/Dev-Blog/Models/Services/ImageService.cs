@@ -78,7 +78,12 @@ namespace ECommerce.Models.Services
             await blobReference.UploadFromByteArrayAsync(image, 0, image.Length);
         }
 
-        // TODO: summary comment
+        /// <summary>
+        /// Uploads an image to a dropbox account
+        /// </summary>
+        /// <param name="image">The image to upload</param>
+        /// <param name="imgName">The desired name of the image</param>
+        /// <returns>Successful completion of task</returns>
         public async Task Upload(IFormFile image, string imgName)
         {
             using (var dbx = new DropboxClient(_config["DropboxToken"]))

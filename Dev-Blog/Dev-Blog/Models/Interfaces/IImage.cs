@@ -35,7 +35,12 @@ namespace ECommerce.Models.Interfaces
         /// <returns>Successful completion of task</returns>
         public Task UploadFile(string containerName, string fileName, byte[] image, string contentType);
 
-        // TODO: summary
+        /// <summary>
+        /// Uploads an image to a dropbox account
+        /// </summary>
+        /// <param name="image">The image to upload</param>
+        /// <param name="imgName">The desired name of the image</param>
+        /// <returns>Successful completion of task</returns>
         public Task Upload(IFormFile image, string imgName);
     }
 }
