@@ -34,5 +34,8 @@ namespace ECommerce.Models.Interfaces
         /// <param name="contentType">Type of content being uploaded</param>
         /// <returns>Successful completion of task</returns>
         public Task UploadFile(string containerName, string fileName, byte[] image, string contentType);
+
+        // TODO: summary
+        public Task Upload(IFormFile image, string imgName);
     }
 }
