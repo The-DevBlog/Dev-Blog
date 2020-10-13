@@ -10,7 +10,6 @@ namespace Dev_Blog.Models.Services
 {
     public class PostService : IPost
     {
-        //private DevBlogDbContext _context;
         private AppDbContext _context;
 
         public PostService(AppDbContext context)
