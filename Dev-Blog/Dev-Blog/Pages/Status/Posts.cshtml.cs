@@ -47,8 +47,8 @@ namespace Dev_Blog.Pages.Status
         public async Task<IActionResult> OnGet()
         {
             AdminUser = _config["AdminUserName"];
-            Comments = await _comment.GetAllComments();
             Posts = await _post.GetAllPosts();
+            Comments = await _comment.GetAllComments();
             return Page();
         }
 

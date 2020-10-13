@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dev_Blog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201013193142_initial")]
+    [Migration("20201013220942_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,21 +21,19 @@ namespace Dev_Blog.Migrations
 
             modelBuilder.Entity("Dev_Blog.Models.Comment", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Content")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("UserId", "PostId");
+                    b.Property<string>("Content")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasIndex("PostId");
+                    b.HasKey("PostId", "UserId", "Date");
 
                     b.ToTable("Comment");
                 });

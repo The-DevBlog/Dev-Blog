@@ -26,11 +26,8 @@ namespace Dev_Blog.Data
 
             modelBuilder.Entity<Comment>(entity =>
             {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.UserId);
-                entity.Property(e => e.PostId);
+                entity.HasKey(e => new { e.PostId, e.UserId, e.Date });
                 entity.Property(e => e.Content);
-                entity.Property(e => e.Date);
             });
 
             modelBuilder.Entity<Post>(entity =>

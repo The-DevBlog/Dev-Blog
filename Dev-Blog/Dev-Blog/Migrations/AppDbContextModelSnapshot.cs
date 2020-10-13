@@ -19,25 +19,19 @@ namespace Dev_Blog.Migrations
 
             modelBuilder.Entity("Dev_Blog.Models.Comment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Content")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
+                    b.HasKey("PostId", "UserId", "Date");
 
                     b.ToTable("Comment");
                 });

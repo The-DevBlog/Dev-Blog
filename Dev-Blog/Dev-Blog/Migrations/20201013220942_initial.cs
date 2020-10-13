@@ -30,12 +30,12 @@ namespace Dev_Blog.Migrations
                 {
                     PostId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
-                    Content = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
+                    Date = table.Column<DateTime>(nullable: false),
+                    Content = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comment", x => new { x.UserId, x.PostId });
+                    table.PrimaryKey("PK_Comment", x => new { x.PostId, x.UserId, x.Date });
                     table.ForeignKey(
                         name: "FK_Comment_Post_PostId",
                         column: x => x.PostId,
@@ -43,11 +43,6 @@ namespace Dev_Blog.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comment_PostId",
-                table: "Comment",
-                column: "PostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

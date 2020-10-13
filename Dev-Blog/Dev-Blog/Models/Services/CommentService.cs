@@ -43,25 +43,13 @@ namespace Dev_Blog.Models.Services
             return comment;
         }
 
-        // TODO: sumamry comment
+        /// <summary>
+        /// Retrieves all comments from database
+        /// </summary>
+        /// <returns>Returns all comments</returns>
         public async Task<List<Comment>> GetAllComments()
         {
-            return await _context.Comment.OrderByDescending(x => x.Date)
-                                            .ToListAsync();
-        }
-
-        /// <summary>
-        /// Retrieves the comments for a specified post
-        /// </summary>
-        /// <param name="postId">The id of the post</param>
-        /// <returns>All comments for post</returns>
-        public async Task<List<Comment>> CommentsForPost(int postId)
-        {
-            List<Comment> comments = await _context.Comment.
-                Where(x => x.Post.Id == postId)
-                .OrderByDescending(x => x.Date)
-                .ToListAsync();
-
+            List<Comment> comments = await _context.Comment.ToListAsync();
             return comments;
         }
     }
