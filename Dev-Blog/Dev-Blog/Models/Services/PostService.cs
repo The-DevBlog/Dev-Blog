@@ -26,8 +26,6 @@ namespace Dev_Blog.Models.Services
         /// <returns>New post</returns>
         public async Task<Post> Create(Post post, string url)
         {
-            //string url = $"https://thedevblog.blob.core.windows.net/pictures/{imgName}";
-
             post.ImgURL = url;
             post.Date = DateTime.Now;
             _context.Entry(post).State = EntityState.Added;
@@ -53,8 +51,12 @@ namespace Dev_Blog.Models.Services
             return await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
         }
 
-        // TODO: summary comments
-        public async Task<Post> GetCurrentPost(int postId)
+        /// <summary>
+        /// Retrieves a specified post
+        /// </summary>
+        /// <param name="postId">Id of specified post</param>
+        /// <returns>Specified post</returns>
+        public async Task<Post> GetPost(int postId)
         {
             return await _context.Post.FirstOrDefaultAsync(x => x.Id == postId);
         }

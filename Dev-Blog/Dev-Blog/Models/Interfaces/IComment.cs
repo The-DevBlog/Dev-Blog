@@ -14,7 +14,7 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="post">Post that is being commented on</param>
         /// <param name="content">The content of the comment</param>
         /// <returns>Successful completion of task</returns>
-        public Task Create(string userId, Post post, string content);
+        public Task<Comment> Create(string userId, Post post, string content);
 
         /// <summary>
         /// Retrieves the comments for a specified post
@@ -22,5 +22,8 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="postId">The id of the post</param>
         /// <returns>All comments for post</returns>
         public Task<List<Comment>> CommentsForPost(int postId);
+
+        // TODO: sumamry comment
+        public Task<List<Comment>> GetAllComments();
     }
 }

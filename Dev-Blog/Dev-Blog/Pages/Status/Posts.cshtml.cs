@@ -28,6 +28,9 @@ namespace Dev_Blog.Pages.Status
         public Post Post { get; set; }
 
         [BindProperty]
+        public List<Comment> Comments { get; set; }
+
+        [BindProperty]
         public string Comment { get; set; }
 
         [BindProperty]
@@ -44,16 +47,17 @@ namespace Dev_Blog.Pages.Status
         public async Task<IActionResult> OnGet()
         {
             AdminUser = _config["AdminUserName"];
+            Comments = await _comment.GetAllComments();
             Posts = await _post.GetAllPosts();
             return Page();
         }
 
         public async Task<IActionResult> OnPostComment()
         {
-            var post = await _post.GetCurrentPost(Post.Id);
-            var user = await _userManager.GetUserAsync(User.Identity.Name);
-            await _comment.Create(user.Id, Post.Id, Content);
-            return Page();
+            var post = await _post.GetPost(Post.Id);
+            string id = _userManager.GetUserId(User);
+            await _comment.Create(id, post, Comment);
+            return RedirectToPagePermanent("Posts");
         }
     }
 }
