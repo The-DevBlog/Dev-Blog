@@ -42,11 +42,12 @@
                         <img class="update-img" src=@post.ImgURL />
                         <p>@post.Description</p>
                     </div>
-                    <div class="comment-box form-group">
-
-                        <textarea class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                        <button class="btn btn-secondary" type="submit">Comment</button>
-                    </div>
+                    <form method="post">
+                        <div class="comment-box form-group">
+                            <textarea asp-for="@Model.Content" class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
+                            <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
+                        </div>
+                    </form>
                 </div>
                     }
                 }

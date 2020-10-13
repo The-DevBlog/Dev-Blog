@@ -17,15 +17,22 @@ namespace Dev_Blog.Pages.Status
     {
         private readonly IPost _post;
         private readonly IConfiguration _config;
+        private readonly IComment _comment;
+        private readonly UserManager<User> _userManager;
 
         [BindProperty]
         public List<Post> Posts { get; set; }
 
         [BindProperty]
+        public string Content { get; set; }
+
+        [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post, IConfiguration config) : base(signInManager, userManager)
+        public PostsModel(UserManager<User> userManager, IPost post, IConfiguration config, IComment comment) : base(userManager)
         {
+            _comment = comment;
+            _userManager = userManager;
             _config = config;
             _post = post;
         }
@@ -34,6 +41,13 @@ namespace Dev_Blog.Pages.Status
         {
             AdminUser = _config["AdminUserName"];
             Posts = await _post.GetAllPosts();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostComment()
+        {
+            var user = await _userManager.FindByIdAsync(User.Identity.Name);
+            //await _comment.Create(user.Id, Posts.Id, Content);
             return Page();
         }
     }

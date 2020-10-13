@@ -7,6 +7,6 @@ namespace Dev_Blog.Models.Interfaces
 {
     public interface IComment
     {
-        public Task Create();
+        public Task Create(string userId, int postId, string content);
     }
 }
