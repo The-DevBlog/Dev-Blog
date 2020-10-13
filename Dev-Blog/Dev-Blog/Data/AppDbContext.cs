@@ -14,6 +14,7 @@ namespace Dev_Blog.Data
     public class AppDbContext : DbContext
     {
         public DbSet<Post> Post { get; set; }
+        public DbSet<Comment> Comment { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -22,6 +23,12 @@ namespace Dev_Blog.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.PostId });
+                entity.Property(e => e.Content);
+            });
 
             modelBuilder.Entity<Post>(entity =>
             {
