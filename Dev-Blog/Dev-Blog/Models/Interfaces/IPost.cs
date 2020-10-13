@@ -26,5 +26,8 @@ namespace Dev_Blog.Models.Interfaces
         /// </summary>
         /// <returns>Most recent post</returns>
         Task<Post> GetLatestPost();
+
+        // TODO: summary comment
+        Task<Post> GetCurrentPost(int postId);
     }
 }

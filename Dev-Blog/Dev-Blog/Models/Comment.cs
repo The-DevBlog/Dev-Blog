@@ -14,6 +14,5 @@ namespace Dev_Blog.Models
         public DateTime Date { get; set; }
 
         public Post Post { get; set; }
-        public User User { get; set; }
     }
 }

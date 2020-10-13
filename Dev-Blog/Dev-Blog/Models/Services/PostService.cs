@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Dev_Blog.Models.Services
 {
@@ -40,9 +41,7 @@ namespace Dev_Blog.Models.Services
         /// <returns>Successful result with list of posts</returns>
         public async Task<List<Post>> GetAllPosts()
         {
-            List<Post> posts = await _context.Post.OrderByDescending(x => x.Date).ToListAsync();
-
-            return posts;
+            return await _context.Post.OrderByDescending(x => x.Date).ToListAsync();
         }
 
         /// <summary>
@@ -51,9 +50,13 @@ namespace Dev_Blog.Models.Services
         /// <returns>Most recent post</returns>
         public async Task<Post> GetLatestPost()
         {
-            Post post = await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+            return await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+        }
 
-            return post;
+        // TODO: summary comments
+        public async Task<Post> GetCurrentPost(int postId)
+        {
+            return await _context.Post.FirstOrDefaultAsync(x => x.Id == postId);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
@@ -24,7 +25,10 @@ namespace Dev_Blog.Pages.Status
         public List<Post> Posts { get; set; }
 
         [BindProperty]
-        public string Content { get; set; }
+        public Post Post { get; set; }
+
+        [BindProperty]
+        public string Comment { get; set; }
 
         [BindProperty]
         public string AdminUser { get; set; }
@@ -46,8 +50,9 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnPostComment()
         {
-            var user = await _userManager.FindByIdAsync(User.Identity.Name);
-            //await _comment.Create(user.Id, Posts.Id, Content);
+            var post = await _post.GetCurrentPost(Post.Id);
+            var user = await _userManager.GetUserAsync(User.Identity.Name);
+            await _comment.Create(user.Id, Post.Id, Content);
             return Page();
         }
     }

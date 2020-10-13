@@ -23,10 +23,38 @@ namespace Dev_Blog.Migrations
                 {
                     table.PrimaryKey("PK_Post", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    PostId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => new { x.UserId, x.PostId });
+                    table.ForeignKey(
+                        name: "FK_Comment_Post_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_PostId",
+                table: "Comment",
+                column: "PostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Comment");
+
             migrationBuilder.DropTable(
                 name: "Post");
         }
