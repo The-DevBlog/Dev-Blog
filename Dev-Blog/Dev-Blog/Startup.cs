@@ -59,6 +59,7 @@ namespace Dev_Blog
 
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();
+            services.AddTransient<IComment, CommentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

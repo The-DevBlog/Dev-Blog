@@ -20,9 +20,9 @@
             @{
                 if (User.Identity.IsAuthenticated)
                 {
-                    if (User.Identity.Name == "DevMaster")
+                    if (User.Identity.Name == Model.AdminUser)
                     {
-                        <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
+                <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
                     }
                 }
                 if (Model.Posts != null)
@@ -30,24 +30,24 @@
 
                     foreach (var post in Model.Posts)
                     {
-                        <div class="card">
-                            <div class="card-header">
-                                <span>
-                                    Update
-                                    <strong>@post.UpdateNum</strong>
-                                </span>
-                                <strong class="float-right">@post.Date.ToShortDateString()</strong>
-                            </div>
-                            <div class="card-body">
-                                <img class="update-img" src=@post.ImgURL />
-                                <p>@post.Description</p>
-                            </div>
-                            <div class="comment-box form-group">
+                <div class="card">
+                    <div class="card-header">
+                        <span>
+                            Update
+                            <strong>@post.UpdateNum</strong>
+                        </span>
+                        <strong class="float-right">@post.Date.ToShortDateString()</strong>
+                    </div>
+                    <div class="card-body">
+                        <img class="update-img" src=@post.ImgURL />
+                        <p>@post.Description</p>
+                    </div>
+                    <div class="comment-box form-group">
 
-                                <textarea class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                                <button class="btn btn-secondary" type="submit">Comment</button>
-                            </div>
-                        </div>
+                        <textarea class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
+                        <button class="btn btn-secondary" type="submit">Comment</button>
+                    </div>
+                </div>
                     }
                 }
             }
