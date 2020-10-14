@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Dev_Blog.Models.Services
 {
     public class PostService : IPost
     {
-        //private DevBlogDbContext _context;
         private AppDbContext _context;
 
         public PostService(AppDbContext context)
@@ -26,8 +26,6 @@ namespace Dev_Blog.Models.Services
         /// <returns>New post</returns>
         public async Task<Post> Create(Post post, string url)
         {
-            //string url = $"https://thedevblog.blob.core.windows.net/pictures/{imgName}";
-
             post.ImgURL = url;
             post.Date = DateTime.Now;
             _context.Entry(post).State = EntityState.Added;
@@ -41,9 +39,7 @@ namespace Dev_Blog.Models.Services
         /// <returns>Successful result with list of posts</returns>
         public async Task<List<Post>> GetAllPosts()
         {
-            List<Post> posts = await _context.Post.OrderByDescending(x => x.Date).ToListAsync();
-
-            return posts;
+            return await _context.Post.Include(x => x.Comments).OrderByDescending(x => x.Date).ToListAsync();
         }
 
         /// <summary>
@@ -52,9 +48,28 @@ namespace Dev_Blog.Models.Services
         /// <returns>Most recent post</returns>
         public async Task<Post> GetLatestPost()
         {
-            Post post = await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+            return await _context.Post.Include(x => x.Comments).OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+        }
 
-            return post;
+        /// <summary>
+        /// Retrieves a specified post
+        /// </summary>
+        /// <param name="postId">Id of specified post</param>
+        /// <returns>Specified post</returns>
+        public async Task<Post> GetPost(int postId)
+        {
+            return await _context.Post.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
+        }
+
+        /// <summary>
+        /// Removes a specified post from the database
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns>Successful completion of task</returns>
+        public async Task Delete(Post post)
+        {
+            _context.Entry(post).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }

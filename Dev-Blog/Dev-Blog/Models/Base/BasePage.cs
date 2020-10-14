@@ -25,6 +25,11 @@ namespace Dev_Blog.Models.Base
             _signInManager = signInManager;
         }
 
+        public BasePage(UserManager<User> userManager)
+        {
+            _userManager = userManager;
+        }
+
         public async Task<IActionResult> OnPostLogin()
         {
             var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);

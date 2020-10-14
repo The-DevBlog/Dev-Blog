@@ -7,6 +7,21 @@
     margin-bottom: 15px;
 }
 
+/*Delete button */
+#bootstrap-override .delete-form {
+    display: inline-flex;
+}
+
+    #bootstrap-override .delete-form button {
+        border: none;
+        background-color: inherit;
+    }
+
+        #bootstrap-override .delete-form button:hover {
+            color: red;
+        }
+
+/*Comment box*/
 #bootstrap-override .comment-box {
     margin: 0px 15px 15px 15px;
 }
@@ -18,6 +33,12 @@
 #bootstrap-override .update-img {
     height: 432px;
     width: 768px;
+}
+
+#bootstrap-override .posted-comments {
+    border: 1.5px solid #C6C6C6;
+    border-radius: 3.5px;
+    margin-bottom: 5px;
 }
 
 @media screen and (max-width: 975px) {

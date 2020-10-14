@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Dev_Blog.Migrations.UserDb
+namespace Dev_Blog.Migrations
 {
     public partial class initial : Migration
     {
@@ -153,29 +153,6 @@ namespace Dev_Blog.Migrations.UserDb
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Post",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UpdateNum = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    ImgURL = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Post", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Post_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -212,11 +189,6 @@ namespace Dev_Blog.Migrations.UserDb
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Post_UserId",
-                table: "Post",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -235,9 +207,6 @@ namespace Dev_Blog.Migrations.UserDb
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Post");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
