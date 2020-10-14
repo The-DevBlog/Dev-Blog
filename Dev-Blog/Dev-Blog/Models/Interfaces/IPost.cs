@@ -40,5 +40,13 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="post"></param>
         /// <returns>Successful completion of task</returns>
         public Task Delete(Post post);
+
+        /// <summary>
+        /// Modifies a specified post
+        /// </summary>
+        /// <param name="post">The post to modify</param>
+        /// <param name="description">The new description of the post</param>
+        /// <returns>The modified post</returns>
+        public Task<Post> Edit(Post post, string description);
     }
 }

@@ -43,7 +43,7 @@
                                             <button asp-page-handler="Delete" type="submit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
                                             </button>
-                                            <a class="nav-link" asp-page="Edit">
+                                            <a class="nav-link" asp-route-id=@post.Id asp-page="Edit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
                                             </a>
                                         </form>
