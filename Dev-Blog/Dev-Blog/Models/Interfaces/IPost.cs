@@ -26,5 +26,12 @@ namespace Dev_Blog.Models.Interfaces
         /// </summary>
         /// <returns>Most recent post</returns>
         Task<Post> GetLatestPost();
+
+        /// <summary>
+        /// Retrieves a specified post
+        /// </summary>
+        /// <param name="postId">Id of specified post</param>
+        /// <returns>Specified post</returns>
+        Task<Post> GetPost(int postId);
     }
 }

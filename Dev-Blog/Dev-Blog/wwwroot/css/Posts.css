@@ -20,6 +20,12 @@
     width: 768px;
 }
 
+#bootstrap-override .posted-comments {
+    border: 1.5px solid #C6C6C6;
+    border-radius: 3.5px;
+    margin-bottom: 5px;
+}
+
 @media screen and (max-width: 975px) {
     #bootstrap-override .update-img {
         height: 360px;
