@@ -35,13 +35,18 @@
                                     Update
                                     <strong>@post.UpdateNum</strong>
                                 </span>
-                                <strong class="float-right">@post.Date.ToShortDateString()</strong>
-                                <form method="post">
-                                    <input hidden asp-for=@post.Id>
-                                    <button asp-page-handler="Delete" type="submit">
-                                        @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
-                                    </button>
-                                </form>
+                                <div class="float-right">
+                                    <strong>@post.Date.ToShortDateString()</strong>
+                                    @if (User.Identity.Name == Model.AdminUser)
+                                    {
+                                        <form method="post" style="display: inline-flex">
+                                            <input hidden asp-for=@post.Id>
+                                            <button asp-page-handler="Delete" type="submit">
+                                                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
                             </div>
                             <div class="card-body">
                                 <img class="update-img" src=@post.ImgURL />
