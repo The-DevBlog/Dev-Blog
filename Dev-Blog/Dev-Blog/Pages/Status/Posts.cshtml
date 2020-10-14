@@ -26,7 +26,6 @@
                 }
                 if (Model.Posts != null)
                 {
-
                     foreach (var post in Model.Posts)
                     {
                         <div class="card">
@@ -39,7 +38,7 @@
                                     <strong>@post.Date.ToShortDateString()</strong>
                                     @if (User.Identity.Name == Model.AdminUser)
                                     {
-                                        <form method="post" style="display: inline-flex">
+                                        <form method="post" class="delete-form">
                                             <input hidden asp-for=@post.Id>
                                             <button asp-page-handler="Delete" type="submit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
