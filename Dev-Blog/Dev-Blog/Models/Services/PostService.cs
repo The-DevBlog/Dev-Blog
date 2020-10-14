@@ -39,7 +39,7 @@ namespace Dev_Blog.Models.Services
         /// <returns>Successful result with list of posts</returns>
         public async Task<List<Post>> GetAllPosts()
         {
-            return await _context.Post.OrderByDescending(x => x.Date).ToListAsync();
+            return await _context.Post.Include(x => x.Comments).OrderByDescending(x => x.Date).ToListAsync();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Dev_Blog.Models.Services
         /// <returns>Most recent post</returns>
         public async Task<Post> GetLatestPost()
         {
-            return await _context.Post.OrderByDescending(x => x.Date).FirstOrDefaultAsync();
+            return await _context.Post.Include(x => x.Comments).OrderByDescending(x => x.Date).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -58,7 +58,18 @@ namespace Dev_Blog.Models.Services
         /// <returns>Specified post</returns>
         public async Task<Post> GetPost(int postId)
         {
-            return await _context.Post.FirstOrDefaultAsync(x => x.Id == postId);
+            return await _context.Post.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
+        }
+
+        /// <summary>
+        /// Removes a specified post from the database
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns>Successful completion of task</returns>
+        public async Task Delete(Post post)
+        {
+            _context.Entry(post).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }

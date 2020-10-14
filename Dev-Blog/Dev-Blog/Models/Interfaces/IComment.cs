@@ -13,6 +13,7 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="userId">Id of the user associated with the comment</param>
         /// <param name="post">Post that is being commented on</param>
         /// <param name="content">The content of the comment</param>
+        /// <param name="userName">Username of current user</param>
         /// <returns>Successful completion of task</returns>
         public Task<Comment> Create(string userId, Post post, string content, string userName);
 

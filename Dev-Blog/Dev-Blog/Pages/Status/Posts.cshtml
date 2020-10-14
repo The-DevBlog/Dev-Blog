@@ -6,7 +6,6 @@
     ViewData["Title"] = "Updates";
     Layout = "_Layout";
 }
-
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,7 +26,6 @@
                 }
                 if (Model.Posts != null)
                 {
-
                     foreach (var post in Model.Posts)
                     {
                         <div class="card">
@@ -36,7 +34,18 @@
                                     Update
                                     <strong>@post.UpdateNum</strong>
                                 </span>
-                                <strong class="float-right">@post.Date.ToShortDateString()</strong>
+                                <div class="float-right">
+                                    <strong>@post.Date.ToShortDateString()</strong>
+                                    @if (User.Identity.Name == Model.AdminUser)
+                                    {
+                                        <form method="post" class="delete-form">
+                                            <input hidden asp-for=@post.Id>
+                                            <button asp-page-handler="Delete" type="submit">
+                                                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
                             </div>
                             <div class="card-body">
                                 <img class="update-img" src=@post.ImgURL />

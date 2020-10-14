@@ -33,5 +33,12 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="postId">Id of specified post</param>
         /// <returns>Specified post</returns>
         Task<Post> GetPost(int postId);
+
+        /// <summary>
+        /// Removes a specified post from the database
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns>Successful completion of task</returns>
+        public Task Delete(Post post);
     }
 }
