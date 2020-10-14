@@ -48,7 +48,7 @@
                                 foreach (var item in post.Comments)
                                 {
                                     <div class="posted-comments comment-box" style="padding: 7.5px">
-                                        <p>@item.UserName</p>
+                                        <p>@item.UserName - @item.Date.ToLocalTime()</p>
                                         <p>@item.Content</p>
                                     </div>
                                 }
