@@ -56,7 +56,9 @@ namespace Dev_Blog.Pages.Status
         {
             var post = await _post.GetPost(Post.Id);
             string id = _userManager.GetUserId(User);
-            await _comment.Create(id, post, Comment);
+
+            string userName = User.Claims.FirstOrDefault(x => x.Type == "UserName").Value;
+            await _comment.Create(id, post, Comment, userName);
             return RedirectToPagePermanent("Posts");
         }
     }

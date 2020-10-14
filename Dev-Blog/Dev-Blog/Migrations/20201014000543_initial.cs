@@ -31,7 +31,8 @@ namespace Dev_Blog.Migrations
                     PostId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    Content = table.Column<string>(nullable: true)
+                    Content = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

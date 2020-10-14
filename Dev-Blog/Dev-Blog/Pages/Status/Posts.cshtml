@@ -47,18 +47,25 @@
                             {
                                 foreach (var item in post.Comments)
                                 {
-                                    <div class="posted-comments comment-box">
+                                    <div class="posted-comments comment-box" style="padding: 7.5px">
+                                        <p>@item.UserName</p>
                                         <p>@item.Content</p>
                                     </div>
                                 }
                             }
-
                             <div class="comment-box form-group">
-                                <form method="post">
-                                    <textarea asp-for=@Model.Comment class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                                    <input hidden asp-for="@post.Id" />
-                                    <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
-                                </form>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <form method="post">
+                                        <textarea asp-for=@Model.Comment class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
+                                        <input hidden asp-for="@post.Id" />
+                                        <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <textarea class="form-control" placeholder="Login in to leave comments"></textarea>
+                                }
                             </div>
                         </div>
                     }

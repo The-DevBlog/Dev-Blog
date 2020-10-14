@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dev_Blog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201013220942_initial")]
+    [Migration("20201014000543_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace Dev_Blog.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Content")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("PostId", "UserId", "Date");

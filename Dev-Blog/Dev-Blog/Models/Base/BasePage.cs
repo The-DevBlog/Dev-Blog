@@ -32,11 +32,14 @@ namespace Dev_Blog.Models.Base
 
         public async Task<IActionResult> OnPostLogin()
         {
-            var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);
-            if (result.Succeeded)
-                Response.Redirect(Request.Path.ToString());
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);
+                if (result.Succeeded)
+                    Response.Redirect(Request.Path.ToString());
 
-            ModelState.AddModelError("", "Invalid email or password");
+                ModelState.AddModelError("", "Invalid email or password");
+            }
 
             return Page();
         }

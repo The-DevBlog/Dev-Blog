@@ -28,7 +28,7 @@ namespace Dev_Blog.Models.Services
         /// <param name="post">Post that is being commented on</param>
         /// <param name="content">The content of the comment</param>
         /// <returns>Successful completion of task</returns>
-        public async Task<Comment> Create(string userId, Post post, string content)
+        public async Task<Comment> Create(string userId, Post post, string content, string userName)
         {
             Comment comment = new Comment()
             {
@@ -36,8 +36,10 @@ namespace Dev_Blog.Models.Services
                 PostId = post.Id,
                 Content = content,
                 Date = DateTime.Now,
-                Post = post
+                Post = post,
+                UserName = userName
             };
+
             _context.Entry(comment).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return comment;

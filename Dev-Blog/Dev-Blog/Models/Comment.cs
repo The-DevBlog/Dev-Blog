@@ -12,6 +12,7 @@ namespace Dev_Blog.Models
         public string UserId { get; set; }
         public string Content { get; set; }
         public DateTime Date { get; set; }
+        public string UserName { get; set; }
 
         public Post Post { get; set; }
     }

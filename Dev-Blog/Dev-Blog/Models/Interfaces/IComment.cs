@@ -14,7 +14,7 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="post">Post that is being commented on</param>
         /// <param name="content">The content of the comment</param>
         /// <returns>Successful completion of task</returns>
-        public Task<Comment> Create(string userId, Post post, string content);
+        public Task<Comment> Create(string userId, Post post, string content, string userName);
 
         /// <summary>
         /// Retrieves all comments from database
