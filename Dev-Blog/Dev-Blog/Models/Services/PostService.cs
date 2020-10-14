@@ -34,6 +34,20 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
+        /// Modifies a specified post
+        /// </summary>
+        /// <param name="post">The post to modify</param>
+        /// <param name="description">The new description of the post</param>
+        /// <returns>The modified post</returns>
+        public async Task<Post> Edit(Post post, string description)
+        {
+            post.Description = description;
+            _context.Entry(post).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return post;
+        }
+
+        /// <summary>
         /// Get a list of all posts
         /// </summary>
         /// <returns>Successful result with list of posts</returns>

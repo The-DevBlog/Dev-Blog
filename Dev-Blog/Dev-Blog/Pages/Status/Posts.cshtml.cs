@@ -75,5 +75,10 @@ namespace Dev_Blog.Pages.Status
             await _post.Delete(post);
             return RedirectToPagePermanent("Posts");
         }
+
+        //public async Task<IActionResult> OnPostEdit()
+        //{
+        //    return RedirectToPagePermanent("Posts");
+        //}
     }
 }
