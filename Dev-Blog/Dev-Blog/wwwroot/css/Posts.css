@@ -21,6 +21,15 @@
             color: red;
         }
 
+    /*Edit button*/
+    #bootstrap-override .delete-form a {
+        color: black;
+    }
+
+        #bootstrap-override .delete-form a:hover {
+            color: #A5A5A5;
+        }
+
 /*Comment box*/
 #bootstrap-override .comment-box {
     margin: 0px 15px 15px 15px;

@@ -30,6 +30,10 @@ namespace Dev_Blog.Models.Base
             _userManager = userManager;
         }
 
+        public BasePage()
+        {
+        }
+
         public async Task<IActionResult> OnPostLogin()
         {
             var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);
