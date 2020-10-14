@@ -13,11 +13,9 @@ namespace Dev_Blog.Models.Services
     public class CommentService : IComment
     {
         private readonly AppDbContext _context;
-        private readonly IPost _post;
 
-        public CommentService(IPost post, AppDbContext context)
+        public CommentService(AppDbContext context)
         {
-            _post = post;
             _context = context;
         }
 
@@ -27,6 +25,7 @@ namespace Dev_Blog.Models.Services
         /// <param name="userId">Id of the user associated with the comment</param>
         /// <param name="post">Post that is being commented on</param>
         /// <param name="content">The content of the comment</param>
+        /// <param name="userName">Username of current user</param>
         /// <returns>Successful completion of task</returns>
         public async Task<Comment> Create(string userId, Post post, string content, string userName)
         {
@@ -51,7 +50,8 @@ namespace Dev_Blog.Models.Services
         /// <returns>Returns all comments</returns>
         public async Task<List<Comment>> GetAllComments()
         {
-            List<Comment> comments = await _context.Comment.OrderBy(x => x.Date).ToListAsync();
+            List<Comment> comments = await _context.Comment.Include(x => x.Post)
+                .OrderBy(x => x.Date).ToListAsync();
             return comments;
         }
     }

@@ -6,7 +6,6 @@
     ViewData["Title"] = "Updates";
     Layout = "_Layout";
 }
-
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -37,6 +36,12 @@
                                     <strong>@post.UpdateNum</strong>
                                 </span>
                                 <strong class="float-right">@post.Date.ToShortDateString()</strong>
+                                <form method="post">
+                                    <input hidden asp-for=@post.Id>
+                                    <button asp-page-handler="Delete" type="submit">
+                                        @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                                    </button>
+                                </form>
                             </div>
                             <div class="card-body">
                                 <img class="update-img" src=@post.ImgURL />

@@ -54,11 +54,25 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnPostComment()
         {
+            // get post being commented on
             var post = await _post.GetPost(Post.Id);
+
+            // get id of current user
             string id = _userManager.GetUserId(User);
 
-            string userName = User.Claims.FirstOrDefault(x => x.Type == "UserName").Value;
+            // grab username of current user
+            string userName = HttpContext.User.Identity.Name;
+
             await _comment.Create(id, post, Comment, userName);
+            return RedirectToPagePermanent("Posts");
+        }
+
+        public async Task<IActionResult> OnPostDelete()
+        {
+            // get post being deleted
+            var post = await _post.GetPost(Post.Id);
+
+            await _post.Delete(post);
             return RedirectToPagePermanent("Posts");
         }
     }

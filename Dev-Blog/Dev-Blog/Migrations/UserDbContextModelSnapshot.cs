@@ -3,16 +3,14 @@ using System;
 using Dev_Blog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Dev_Blog.Migrations.UserDb
+namespace Dev_Blog.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20201014000552_initial")]
-    partial class initial
+    partial class UserDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
