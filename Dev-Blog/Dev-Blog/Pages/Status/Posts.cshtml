@@ -1,6 +1,6 @@
 ﻿@page
-@using Microsoft.AspNetCore.Identity;
-@inject SignInManager<Dev_Blog.Models.User> SignInManager
+@*@using Microsoft.AspNetCore.Identity;
+    @inject SignInManager<Dev_Blog.Models.User> SignInManager*@
 @model Dev_Blog.Pages.Status.PostsModel
 @{
     ViewData["Title"] = "Updates";
@@ -57,19 +57,26 @@
 
                             @if (post.Comments != null)
                             {
-                                foreach (var item in post.Comments)
+                                <!--Delete Comment Button-->
+                                foreach (var comment in post.Comments)
                                 {
-                                    <div class="posted-comments comment-box" style="padding: 7.5px">
-                                        <p>@item.UserName - @item.Date.ToString("MM/dd/yyyy hh:mm tt")
-                                        <p>@item.Content</p>
-                                    </div>
+                                    <form method="post" class="delete-form">
+                                        <div class="posted-comments comment-box" style="padding: 7.5px">
+                                            <p>@comment.UserName - @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
+                                            <p>@comment.Content</p>
+                                            <input hidden asp-for=@comment.Id>
+                                            <button type="submit" class="float-right" asp-page-handler="DeleteComment">
+                                                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                                            </button>
+                                        </div>
+                                    </form>
                                 }
                             }
                             <div class="comment-box form-group">
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <form method="post">
-                                        <textarea asp-for=@Model.Comment class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
+                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
                                         <input hidden asp-for="@post.Id" />
                                         <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
                                     </form>

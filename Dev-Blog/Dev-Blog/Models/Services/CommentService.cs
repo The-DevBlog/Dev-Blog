@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Services
@@ -53,6 +54,27 @@ namespace Dev_Blog.Models.Services
             List<Comment> comments = await _context.Comment.Include(x => x.Post)
                 .OrderBy(x => x.Date).ToListAsync();
             return comments;
+        }
+
+        /// <summary>
+        /// Retrieves a specified comment from the database
+        /// </summary>
+        /// <param name="id">Specified id of comment</param>
+        /// <returns>Specified comment</returns>
+        public async Task<Comment> GetComment(int id)
+        {
+            return await _context.Comment.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        /// <summary>
+        /// Removes a specified comment from the database
+        /// </summary>
+        /// <param name="comment">Specified comment to delete</param>
+        /// <returns>Void</returns>
+        public async Task Delete(Comment comment)
+        {
+            _context.Entry(comment).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }
