@@ -7,6 +7,7 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,12 +32,12 @@ namespace Dev_Blog.Pages.Status
         public List<Comment> Comments { get; set; }
 
         [BindProperty]
-        public string Comment { get; set; }
+        public Comment Comment { get; set; }
 
         [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(UserManager<User> userManager, IPost post, IConfiguration config, IComment comment) : base(userManager)
+        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager)
         {
             _comment = comment;
             _userManager = userManager;
@@ -63,11 +64,19 @@ namespace Dev_Blog.Pages.Status
             // grab username of current user
             string userName = HttpContext.User.Identity.Name;
 
-            await _comment.Create(id, post, Comment, userName);
+            await _comment.Create(id, post, Comment.Content, userName);
+            //Comments = await _comment.GetAllComments();
             return RedirectToPagePermanent("Posts");
         }
 
-        public async Task<IActionResult> OnPostDelete()
+        public async Task<IActionResult> OnPostDeleteComment()
+        {
+            Comment comment = await _comment.GetComment(Comment.Id);
+            await _comment.Delete(comment);
+            return RedirectToPagePermanent("Posts");
+        }
+
+        public async Task<IActionResult> OnPostDeletePost()
         {
             // get post being deleted
             var post = await _post.GetPost(Post.Id);
@@ -75,10 +84,5 @@ namespace Dev_Blog.Pages.Status
             await _post.Delete(post);
             return RedirectToPagePermanent("Posts");
         }
-
-        //public async Task<IActionResult> OnPostEdit()
-        //{
-        //    return RedirectToPagePermanent("Posts");
-        //}
     }
 }
