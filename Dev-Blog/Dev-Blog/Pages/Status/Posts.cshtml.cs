@@ -7,6 +7,7 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -64,7 +65,7 @@ namespace Dev_Blog.Pages.Status
             string userName = HttpContext.User.Identity.Name;
 
             await _comment.Create(id, post, Comment.Content, userName);
-            Comments = await _comment.GetAllComments();
+            //Comments = await _comment.GetAllComments();
             return RedirectToPagePermanent("Posts");
         }
 

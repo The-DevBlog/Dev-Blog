@@ -51,8 +51,8 @@ namespace Dev_Blog.Models.Services
         /// <returns>Returns all comments</returns>
         public async Task<List<Comment>> GetAllComments()
         {
-            List<Comment> comments = await _context.Comment.Include(x => x.Post)
-                .OrderBy(x => x.Date).ToListAsync();
+            List<Comment> comments = await _context.Comment.OrderByDescending(x => x.Date).Include(x => x.Post)
+                .ToListAsync();
             return comments;
         }
 
