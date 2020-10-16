@@ -50,9 +50,20 @@
                             </div>
                             <div class="card-body">
                                 <img class="update-img" src=@post.ImgURL />
+                                @*<form action="@Url.Action("index")" method="post">
+                                        <a href="#" onclick="upvote();">
+                                            <span id="upVote"></span>
+                                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                        </a>
+                                        <a href="#" onclick="downvote();">
+                                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                                            <span id="downVote"></span>
+                                        </a>
+                                    </form>*@
                                 <p>@post.Description</p>
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+
+                                @*<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>*@
                             </div>
 
                             @if (post.Comments != null)
@@ -61,6 +72,7 @@
                                 foreach (var comment in post.Comments)
                                 {
                                     <div class="posted-comments comment-box" style="padding: 7.5px">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                         <span class="comment-username">@comment.UserName</span>
                                         <div class="float-right">
                                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
@@ -98,4 +110,19 @@
             }
         </div>
     </main>
+
+    <script>
+        var downVote = 0;
+        var upVote = 0;
+        function upvote() {
+            upVote++;
+            $("#hdnvalue").val(upVote);
+            $("#upVote").html(upVote);
+        }
+        function downvote() {
+            downVote++;
+            $("#hdnvalue").val(downVote);
+            $("#downVote").html(downVote);
+        }
+    </script>
 </body>
