@@ -65,7 +65,7 @@ namespace Dev_Blog.Pages.Status
             string userName = HttpContext.User.Identity.Name;
 
             await _comment.Create(id, post, Comment.Content, userName);
-            //Comments = await _comment.GetAllComments();
+
             return RedirectToPagePermanent("Posts");
         }
 

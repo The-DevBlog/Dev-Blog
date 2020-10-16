@@ -28,9 +28,36 @@ namespace Dev_Blog.Models.Services
         {
             post.ImgURL = url;
             post.Date = DateTime.Now;
+            post.UpVotes = 0;
+            post.DownVotes = 0;
+
             _context.Entry(post).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return post;
+        }
+
+        /// <summary>
+        /// Increments the upvotes by one of a specified post
+        /// </summary>
+        /// <param name="post">The post be voted on</param>
+        /// <returns>Successful completion of task</returns>
+        public async Task UpVote(Post post)
+        {
+            post.UpVotes++;
+            _context.Entry(post).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Increments the upvotes by one of a specified post
+        /// </summary>
+        /// <param name="post">The post be voted on</param>
+        /// <returns>Successful completion of task</returns>
+        public async Task DownVote(Post post)
+        {
+            post.DownVotes++;
+            _context.Entry(post).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>

@@ -8,6 +8,5 @@ namespace Dev_Blog.Models
 {
     public class User : IdentityUser
     {
-        public bool HasVoted { get; set; }
     }
 }
