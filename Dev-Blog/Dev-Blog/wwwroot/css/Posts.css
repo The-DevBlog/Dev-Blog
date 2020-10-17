@@ -45,7 +45,8 @@
         margin-top: 10px;
     }
 
-#bootstrap-override .comment-username {
+#bootstrap-override .comment-username,
+#bootstrap-override .user-icon {
     color: rgb(125, 125, 125);
 }
 
