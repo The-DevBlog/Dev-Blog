@@ -107,7 +107,7 @@
             $("#clickMe").click(function () {
                 $.ajax({
                     type: "GET",
-                    url: "@Url.Action("AjaxThing", "BasePage")",
+                    url: "@Url.Action("AjaxThing", "AjaxController")",
                     data: JSON.stringify("Andrew"),
                     @*dataType: "json",*@
                     cache: false,
