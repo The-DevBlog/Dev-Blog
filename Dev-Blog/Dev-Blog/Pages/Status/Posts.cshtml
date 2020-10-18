@@ -82,6 +82,7 @@
                                     <form method="post">
                                         <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
                                         <input hidden asp-for="@post.Id" />
+                                        @*<button id="clickMe" class="btn btn-secondary" type="submit">Comment</button>*@
                                         <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
                                     </form>
                                 }
@@ -95,5 +96,50 @@
                 }
             }
         </div>
+        <div id="test">
+        </div>
+        <div class="form-group">
+            <button id="clickMe" type="submit" class="btn">Click me</button>
+        </div>
     </main>
+    <script>
+        $(function () {
+            $("#clickMe").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("AjaxThing", "BasePage")",
+                    data: JSON.stringify("Andrew"),
+                    @*dataType: "json",*@
+                    cache: false,
+                    success: function (response) {
+                        alert("Worked");
+                        alert(response)
+                        $("#test").html("Courtney");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("Nope");
+                        alert(textStatus + "\n" + errorThrown.toString());
+                    }
+                });
+            });
+        });
+
+        @*function test() {
+            $.ajax({
+                type: "POST",
+                url: @Url.Action("AjaxThing", "Posts"),
+                data: "Andrew",
+                success: function () {
+                    alert("hello");
+                    $("#test").html("hello");
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }*@
+
+        @*$("#clickMe").on("click", test);*@
+    </script>
 </body>

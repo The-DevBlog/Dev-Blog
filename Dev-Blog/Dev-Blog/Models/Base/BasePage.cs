@@ -65,5 +65,11 @@ namespace Dev_Blog.Models.Base
             }
             return Page();
         }
+
+        public IActionResult OnGetAjaxThing()
+        {
+            var word = new JsonResult("test");
+            return word;
+        }
     }
 }

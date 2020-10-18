@@ -7,6 +7,7 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using Dropbox.Api.CloudDocs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +84,16 @@ namespace Dev_Blog.Pages.Status
 
             await _post.Delete(post);
             return RedirectToPagePermanent("Posts");
+        }
+
+        public JsonResult AjaxThing()
+        {
+            //var result = 100;
+            //return "ajax return";
+            //return RedirectToPagePermanent("Posts");
+            //var word = "test";
+            var word = new JsonResult("test");
+            return word;
         }
     }
 }
