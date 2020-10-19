@@ -15,84 +15,84 @@
     <main>
         <div class="container">
             @{
-                if (User.Identity.IsAuthenticated)
-                {
-                    if (User.Identity.Name == Model.AdminUser)
-                    {
-                        <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
-                    }
-                }
-                if (Model.Posts != null)
-                {
-                    foreach (var post in Model.Posts)
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <span>
-                                    Update
-                                    <strong>@post.UpdateNum</strong>
-                                </span>
-                                <div class="float-right">
-                                    <strong>@post.Date.ToShortDateString()</strong>
-                                    @if (User.Identity.Name == Model.AdminUser)
-                                    {
-                                        <form method="post" class="delete-form">
-                                            <input hidden asp-for=@post.Id>
-                                            <button asp-page-handler="Delete" type="submit">
-                                                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
-                                            </button>
-                                            <a class="nav-link" asp-route-id=@post.Id asp-page="Edit">
-                                                @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
-                                            </a>
-                                        </form>
-                                    }
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <img class="update-img" src=@post.ImgURL />
-                                <p>@post.Description</p>
-                            </div>
+            if (User.Identity.IsAuthenticated)
+            {
+            if (User.Identity.Name == Model.AdminUser)
+            {
+            <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
+            }
+            }
+            if (Model.Posts != null)
+            {
+            foreach (var post in Model.Posts)
+            {
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        Update
+                        <strong>@post.UpdateNum</strong>
+                    </span>
+                    <div class="float-right">
+                        <strong>@post.Date.ToShortDateString()</strong>
+                        @if (User.Identity.Name == Model.AdminUser)
+                        {
+                        <form method="post" class="delete-form">
+                            <input hidden asp-for=@post.Id>
+                            <button asp-page-handler="Delete" type="submit">
+                                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                            </button>
+                            <a class="nav-link" asp-route-id=@post.Id asp-page="Edit">
+                                @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
+                            </a>
+                        </form>
+                        }
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <img class="update-img" src=@post.ImgURL />
+                    <p>@post.Description</p>
+                </div>
 
-                            @if (post.Comments != null)
+                @if (post.Comments != null)
+                {
+                <!--Delete Comment Button-->
+                foreach (var comment in post.Comments)
+                {
+                <div class="posted-comments comment-box" style="padding: 7.5px">
+                    <span class="comment-username">@comment.UserName</span>
+                    <div class="float-right">
+                        <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+                        <form method="post" class="delete-form">
+                            @if (User.Identity.Name == Model.AdminUser)
                             {
-                                <!--Delete Comment Button-->
-                                foreach (var comment in post.Comments)
-                                {
-                                    <div class="posted-comments comment-box" style="padding: 7.5px">
-                                        <span class="comment-username">@comment.UserName</span>
-                                        <div class="float-right">
-                                            <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
-                                            <form method="post" class="delete-form">
-                                                @if (User.Identity.Name == Model.AdminUser)
-                                                {
-                                                    <input hidden asp-for=@comment.Id>
-                                                    <button type="submit" asp-page-handler="DeleteComment">
-                                                        @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
-                                                    </button>
-                                                }
-                                            </form>
-                                        </div>
-                                        <p>@comment.Content</p>
-                                    </div>
-                                }
+                            <input hidden asp-for=@comment.Id>
+                            <button type="submit" asp-page-handler="DeleteComment">
+                                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                            </button>
                             }
-                            <div class="comment-box form-group">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <form method="post">
-                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                                        <input hidden asp-for="@post.Id" />
-                                        <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <textarea class="form-control" placeholder="Login in to leave comments"></textarea>
-                                }
-                            </div>
-                        </div>
-                    }
+                        </form>
+                    </div>
+                    <p>@comment.Content</p>
+                </div>
                 }
+                }
+                <div class="comment-box form-group">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <form method="post">
+                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
+                        <input hidden asp-for="@post.Id" />
+                        <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
+                    </form>
+                    }
+                    else
+                    {
+                    <textarea class="form-control" placeholder="Login in to leave comments"></textarea>
+                    }
+                </div>
+            </div>
+            }
+            }
             }
         </div>
     </main>
