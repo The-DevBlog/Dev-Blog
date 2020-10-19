@@ -7,6 +7,13 @@
     width: 768px;
 }
 
+#bootstrap-override hr {
+    border-radius: 2.5px;
+    height: 5px;
+    border: none;
+    background: #dddddd;
+}
+
 @media screen and (max-width: 975px) {
     #bootstrap-override #update-img {
         height: 360px;
