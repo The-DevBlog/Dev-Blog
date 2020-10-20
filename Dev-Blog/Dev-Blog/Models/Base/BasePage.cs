@@ -15,6 +15,7 @@ namespace Dev_Blog.Models.Base
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly IEmail _email;
 
         [BindProperty]
         public AccountVM Input { get; set; }
@@ -30,10 +31,18 @@ namespace Dev_Blog.Models.Base
             _userManager = userManager;
         }
 
+        public BasePage(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email)
+        {
+            _email = email;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         public BasePage()
         {
         }
 
+        // LOGIN
         public async Task<IActionResult> OnPostLogin()
         {
             var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);
@@ -45,6 +54,7 @@ namespace Dev_Blog.Models.Base
             return Page();
         }
 
+        // REGISTER
         public async Task<IActionResult> OnPostRegister()
         {
             User user = new User()
@@ -57,10 +67,11 @@ namespace Dev_Blog.Models.Base
 
             if (result.Succeeded)
             {
+                await _email.Email(user.Email);
                 Claim userName = new Claim("UserName", Input.UserName);
                 await _userManager.AddClaimAsync(user, userName);
-
                 await _signInManager.SignInAsync(user, isPersistent: false);
+
                 Response.Redirect(Request.Path.ToString());
             }
             return Page();

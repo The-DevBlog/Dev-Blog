@@ -18,12 +18,14 @@ namespace Dev_Blog.Pages
     public class IndexModel : BasePage
     {
         private readonly IPost _post;
+        private readonly IEmail _email;
 
         [BindProperty]
         public Post Post { get; set; }
 
-        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post) : base(signInManager, userManager)
+        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post) : base(signInManager, userManager, email)
         {
+            _email = email;
             _post = post;
         }
 
