@@ -24,7 +24,7 @@ namespace Dev_Blog.Models.Services
         /// </summary>
         /// <param name="email">User's email</param>
         /// <returns>Successful completion of task</returns>
-        public async Task Email(string email)
+        public async Task Welcome(string email)
         {
             var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
             var client = new SendGridClient(apiKey);
@@ -37,6 +37,27 @@ namespace Dev_Blog.Models.Services
             };
 
             msg.AddTo(email);
+            await client.SendEmailAsync(msg);
+        }
+
+        /// <summary>
+        /// Sends a suggestion to the admin
+        /// </summary>
+        /// <param name="email">The admin's email</param>
+        /// <param name="context">Context of email</param>
+        /// <returns>Successful completion of task</returns>
+        public async Task Suggestion(string email, string context)
+        {
+            var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
+            var client = new SendGridClient(apiKey);
+
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress(email),
+                Subject = "Suggestion",
+                HtmlContent = $"<p>{context}</p>"
+            };
+            msg.AddTo(_config.GetSection("AdminEmail").Value);
             await client.SendEmailAsync(msg);
         }
     }

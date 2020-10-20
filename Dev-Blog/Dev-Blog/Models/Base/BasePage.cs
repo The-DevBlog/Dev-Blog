@@ -67,9 +67,11 @@ namespace Dev_Blog.Models.Base
 
             if (result.Succeeded)
             {
-                await _email.Email(user.Email);
+                await _email.Welcome(user.Email);
                 Claim userName = new Claim("UserName", Input.UserName);
+                Claim email = new Claim("Email", Input.Email);
                 await _userManager.AddClaimAsync(user, userName);
+                await _userManager.AddClaimAsync(user, email);
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
                 Response.Redirect(Request.Path.ToString());

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
@@ -23,6 +24,9 @@ namespace Dev_Blog.Pages
         [BindProperty]
         public Post Post { get; set; }
 
+        [BindProperty]
+        public string Context { get; set; }
+
         public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post) : base(signInManager, userManager, email)
         {
             _email = email;
@@ -32,6 +36,14 @@ namespace Dev_Blog.Pages
         public async Task<IActionResult> OnGet()
         {
             Post = await _post.GetLatestPost();
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostSuggestion()
+        {
+            var email = User.Claims.FirstOrDefault(x => x.Type == "Email").ToString();
+            await _email.Suggestion(email, Context);
 
             return Page();
         }
