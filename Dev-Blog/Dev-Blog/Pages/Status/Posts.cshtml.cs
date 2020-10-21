@@ -21,6 +21,7 @@ namespace Dev_Blog.Pages.Status
         private readonly IPost _post;
         private readonly IConfiguration _config;
         private readonly IComment _comment;
+        private readonly IEmail _email;
         private readonly UserManager<User> _userManager;
 
         [BindProperty]
@@ -38,8 +39,9 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager)
+        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager, email)
         {
+            _email = email;
             _comment = comment;
             _userManager = userManager;
             _config = config;
@@ -66,7 +68,7 @@ namespace Dev_Blog.Pages.Status
             string userName = HttpContext.User.Identity.Name;
 
             await _comment.Create(id, post, Comment.Content, userName);
-            //Comments = await _comment.GetAllComments();
+
             return RedirectToPagePermanent("Posts");
         }
 
