@@ -39,10 +39,17 @@
                     <div class="card-footer text-center">
                         <h4>Have a suggestion? Leave a comment!</h4>
                         <form method="post">
-                            <textarea asp-for=@Model.Context placeholder="Put suggestion here.." class="pb-cmnt-textarea d-block"></textarea>
-                            <button class="btn btn-primary" asp-page-handler="Suggestion" type="submit">
-                                Submit
-                            </button>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <textarea asp-for=@Model.Context placeholder="Put suggestion here.." class="pb-cmnt-textarea d-block"></textarea>
+                                <button class="btn btn-primary" asp-page-handler="Suggestion" type="submit">
+                                    Submit
+                                </button>
+                            }
+                            else
+                            {
+                                <textarea placeholder="Login in to leave a suggestion.." class="pb-cmnt-textarea d-block"></textarea>
+                            }
                         </form>
                     </div>
                 </div>
