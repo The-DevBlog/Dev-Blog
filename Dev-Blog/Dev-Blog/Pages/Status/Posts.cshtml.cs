@@ -85,15 +85,5 @@ namespace Dev_Blog.Pages.Status
             await _post.Delete(post);
             return RedirectToPagePermanent("Posts");
         }
-
-        public JsonResult AjaxThing()
-        {
-            //var result = 100;
-            //return "ajax return";
-            //return RedirectToPagePermanent("Posts");
-            //var word = "test";
-            var word = new JsonResult("test");
-            return word;
-        }
     }
 }
