@@ -24,6 +24,7 @@
                 }
                 if (Model.Posts != null)
                 {
+                    <!-- All Posts -->
                     foreach (var post in Model.Posts)
                     {
                         <div class="card">
@@ -34,6 +35,8 @@
                                 </span>
                                 <div class="float-right">
                                     <strong>@post.Date.ToShortDateString()</strong>
+
+                                    <!-- Delete post form -->
                                     @if (User.Identity.Name == Model.AdminUser)
                                     {
                                         <form method="post" class="delete-form">
@@ -76,6 +79,7 @@
                                     </div>
                                 }
                             }
+                            <!-- Comment Box -->
                             <div class="comment-box form-group">
                                 @if (User.Identity.IsAuthenticated)
                                 {

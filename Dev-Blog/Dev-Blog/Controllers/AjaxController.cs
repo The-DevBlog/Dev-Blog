@@ -32,7 +32,7 @@ namespace Dev_Blog.Controllers
         //    //return Json(new { success = true });
         //    return View();
         //}
-
+        [HttpPost]
         public void Post(Comment comment)
         {
         }
