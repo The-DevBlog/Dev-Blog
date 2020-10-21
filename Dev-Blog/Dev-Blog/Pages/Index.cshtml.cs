@@ -42,6 +42,8 @@ namespace Dev_Blog.Pages
 
         public async Task<IActionResult> OnPostSuggestion()
         {
+            Post = await _post.GetLatestPost();
+
             var email = User.Claims.FirstOrDefault(x => x.Type == "Email").ToString();
             await _email.Suggestion(email, Context);
 

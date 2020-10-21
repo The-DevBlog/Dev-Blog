@@ -41,7 +41,7 @@
                         <form method="post">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <textarea id="suggestion-box" asp-for=@Model.Context placeholder="Put suggestion here.." class="pb-cmnt-textarea d-block" maxlength="1000"></textarea>
+                                <textarea asp-for=@Model.Context placeholder="Put suggestion here.." class="pb-cmnt-textarea d-block" maxlength="1000"></textarea>
                                 <button class="btn btn-primary" asp-page-handler="Suggestion" type="submit">
                                     Submit
                                 </button>
@@ -56,6 +56,4 @@
             </div>
         }
     </main>
-    <script>
-    </script>
 </body>
