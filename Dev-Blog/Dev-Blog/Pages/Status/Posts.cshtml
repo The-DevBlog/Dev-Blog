@@ -51,6 +51,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <!-- Post Information -->
                             <div class="card-body text-center">
                                 <img class="update-img" src=@post.ImgURL />
                                 <p>@post.Description</p>
@@ -79,15 +81,15 @@
                                     </div>
                                 }
                             }
+
                             <!-- Comment Box -->
                             <div class="comment-box form-group">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <form method="post">
-                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                                        <input hidden asp-for="@post.Id" />
-                                        <button id="commentBtn" class="btn btn-secondary" type="submit">Comment</button>
-                                        @*<button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>*@
+                                    <form>
+                                        <textarea id="comment" asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2"></textarea>
+                                        <input id="postId" hidden asp-for="@post.Id" value=@post.Id />
+                                        <button id="commentBtn" class="btn btn-secondary">Comment</button>
                                     </form>
                                 }
                                 else
@@ -102,22 +104,29 @@
         </div>
     </main>
     <script>
+        // submit comment ajax call
         $(document).ready(function () {
-            $('#commentBtn').on("click", function () {
+            $('#commentBtn').on("click", function (e) {
+
                 var comment = {
-                    PostId: 10,
-                    Content: "This is a test"
+                    PostId: parseInt($("#postId").val()),
+                    Content: $("#comment").val()
                 }
 
                 $.ajax({
+                    contentType: "application/json; charset=utf-8",
                     type: "POST",
-                    url: "@Url.Action("Post", "Ajax")",
+                    url: "/Test",
                     data: JSON.stringify(comment),
                     dataType: "json",
-                    success: function (data) {
-                        alert("Success!");
+                    success: function (data, status) {
+                        console.log(status);
+                    },
+                    error: function (e) {
+                        console.log(e);
                     }
                 });
+                e.preventDefault();
             });
         });
     </script>

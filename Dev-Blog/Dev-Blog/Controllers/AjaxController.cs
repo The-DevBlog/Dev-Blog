@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Dev_Blog.Controllers
 {
-    public class AjaxController : Controller
+    [ApiController]
+    public class AjaxController : ControllerBase
     {
         private readonly IComment _comment;
         private readonly IPost _post;
@@ -22,19 +23,14 @@ namespace Dev_Blog.Controllers
             _comment = comment;
         }
 
-        //[HttpPost]
-        //public ActionResult PostComment(Comment comment)
-        //{
-        //    //string id = _userManager.GetUserId(User);
-        //    //string userName = HttpContext.User.Identity.Name;
-        //    //return await _post.GetPost(postId);
-        //    //await _comment.Create(id, userName);
-        //    //return Json(new { success = true });
-        //    return View();
-        //}
-        [HttpPost]
-        public void Post(Comment comment)
+        [HttpPost("/Test")]
+        public async Task<ActionResult> PostComment(Comment comment)
         {
+            Post post = await _post.GetPost(comment.PostId);
+            string id = _userManager.GetUserId(User);
+            string userName = HttpContext.User.Identity.Name;
+            await _comment.Create(id, post, comment.Content, userName);
+            return Ok();
         }
     }
 }
