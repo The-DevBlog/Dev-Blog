@@ -48,7 +48,7 @@
                                     }
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <img class="update-img" src=@post.ImgURL />
                                 <p>@post.Description</p>
                             </div>
@@ -81,7 +81,7 @@
                                 {
                                     <form method="post">
                                         <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                                        <input id="postId" hidden asp-for="@post.Id" value=@post.Id />
+                                        <input hidden asp-for="@post.Id" />
                                         <button id="commentBtn" class="btn btn-secondary" type="submit">Comment</button>
                                         @*<button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>*@
                                     </form>
@@ -98,38 +98,6 @@
         </div>
     </main>
     <script>
-        @*$(document).ready(function () {
-
-            $('#commentBtn').on("click", function () {
-
-            var comment = {
-                PostId: $('#postId').val(),
-                Content: $('#comment').val()
-            };
-
-                var comment = {
-                    PostId: 10,
-                    Content: "This is a test"
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("Index", "Ajax")",
-                    url: "/Ajax/Index",
-                    contentType: "application/json; charset=utf-8",
-                    data: comment
-                    async: true,
-                    cache: false,
-                    success: function (data) {
-                        alert("Success");
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert("Failure");
-                    }
-                });
-            });
-        });*@
-
         $(document).ready(function () {
             $('#commentBtn').on("click", function () {
                 var comment = {
