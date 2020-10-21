@@ -23,7 +23,7 @@ namespace Dev_Blog.Controllers
             _comment = comment;
         }
 
-        [HttpPost("/Test")]
+        [HttpPost("/PostComment")]
         public async Task<ActionResult> PostComment(Comment comment)
         {
             Post post = await _post.GetPost(comment.PostId);
