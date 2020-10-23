@@ -56,22 +56,6 @@ namespace Dev_Blog.Pages.Status
             return Page();
         }
 
-        public async Task<IActionResult> OnPostComment()
-        {
-            // get post being commented on
-            var post = await _post.GetPost(Post.Id);
-
-            // get id of current user
-            string id = _userManager.GetUserId(User);
-
-            // grab username of current user
-            string userName = HttpContext.User.Identity.Name;
-
-            await _comment.Create(id, post, Comment.Content, userName);
-
-            return RedirectToPagePermanent("Posts");
-        }
-
         public async Task<IActionResult> OnPostDeleteComment()
         {
             Comment comment = await _comment.GetComment(Comment.Id);

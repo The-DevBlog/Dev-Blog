@@ -60,10 +60,10 @@
 
                             @if (post.Comments != null)
                             {
-                                <!--Delete Comment Button-->
                                 foreach (var comment in post.Comments)
                                 {
-                                    <div class="posted-comments comment-box" style="padding: 7.5px">
+                                    <!--Delete Comment Button-->
+                                    <div id="comment" class="posted-comments comment-box" style="padding: 7.5px">
                                         <span class="comment-username">@comment.UserName</span>
                                         <div class="float-right">
                                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
@@ -86,10 +86,10 @@
                             <div class="comment-box form-group">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <form>
-                                        <textarea id="comment" asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2"></textarea>
+                                    <form id="commentForm">
+                                        <textarea id="commentText" asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2"></textarea>
                                         <input id="postId" hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id="commentBtn" class="btn btn-secondary">Comment</button>
+                                        <button class="btn btn-secondary">Comment</button>
                                     </form>
                                 }
                                 else
@@ -104,26 +104,35 @@
         </div>
     </main>
     <script>
-        // submit comment ajax call
+        // post comment ajax call
         $(document).ready(function () {
-            $('#commentBtn').on("click", function (e) {
+            $('#commentForm > button').on("click", function (e) {
 
-                var comment = {
+                var CommentVM = {
                     PostId: parseInt($("#postId").val()),
-                    Content: $("#comment").val()
+                    Content: $("#commentText").val()
                 }
 
                 $.ajax({
                     contentType: "application/json; charset=utf-8",
                     type: "POST",
                     url: "/PostComment",
-                    data: JSON.stringify(comment),
+                    data: JSON.stringify(CommentVM),
                     dataType: "json",
-                    success: function (data, status) {
+                    async: true,
+                    success: function (data) {
+                        console.log("Success");
                         console.log(status);
+                        console.log(data.UserName);
+                        console.log(data.Date);
+                        console.log(data.Content);
+                        console.log(data.PostId);
+                        $("#comment").after("IT SORT OF WORKED");
                     },
-                    error: function (e) {
-                        console.log(e);
+                    error: function (hxr, status, error) {
+                        console.log("ERROR");
+                        console.log(status.toString());
+                        console.log(error.toString());
                     }
                 });
                 e.preventDefault();

@@ -1,7 +1,10 @@
 ﻿using Dev_Blog.Models;
 using Dev_Blog.Models.Interfaces;
+using Dev_Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +27,25 @@ namespace Dev_Blog.Controllers
         }
 
         [HttpPost("/PostComment")]
-        public async Task<ActionResult> PostComment(Comment comment)
+        public async Task<string> PostComment(Comment comment)
         {
             Post post = await _post.GetPost(comment.PostId);
             string id = _userManager.GetUserId(User);
             string userName = HttpContext.User.Identity.Name;
-            await _comment.Create(id, post, comment.Content, userName);
-            return Ok();
+            Comment newComment = await _comment.Create(id, post, comment.Content, userName);
+
+            // convert newly created comment into JSON
+            CommentVM jsonComment = new CommentVM
+            {
+                PostId = newComment.PostId,
+                Content = newComment.Content,
+                UserName = newComment.UserName,
+                Date = newComment.Date
+            };
+
+            string json = JsonConvert.SerializeObject(jsonComment);
+
+            return json;
         }
     }
 }
