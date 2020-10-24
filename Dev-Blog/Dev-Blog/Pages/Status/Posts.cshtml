@@ -104,7 +104,7 @@
                                     <form>
                                         <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button class="btn btn-secondary" value=@post.Id>Comment</button>
+                                        <button class="commentBtn btn btn-secondary" value=@post.Id>Comment</button>
                                     </form>
                                 }
                                 else
@@ -125,7 +125,7 @@
             // grab the correct ID
             var postId;
 
-            $("button").on("click", function (e) {
+            $(".commentBtn").on("click", function (e) {
                 postId = $(this).attr('value');
 
                 var CommentVM = {
