@@ -27,11 +27,14 @@
                 if (Model.Posts != null)
                 {
                     <!-- All Posts -->
-                    int idx = 0;
                     string formId = "";
+                    string upVoteId = "";
+                    string downVoteId = "";
                     foreach (var post in Model.Posts)
                     {
-                        formId = "form" + idx;
+                        formId = "form" + post.Id;
+                        upVoteId = "upVote" + post.Id;
+                        downVoteId = "downVote" + post.Id;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -61,9 +64,13 @@
                             <div class="card-body text-center">
                                 <img class="update-img" src=@post.ImgURL />
                                 <p>@post.Description</p>
+
+                                <!-- Voting System -->
                                 <div class="text-left">
-                                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                    <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                                    <a id=@upVoteId asp-route-id=@post.Id type="text/asp" class="upVoteHandler glyphicon glyphicon-thumbs-up" aria-hidden="true"></a>
+                                    <span class="votes">@post.UpVotes</span>
+                                    <a name=@post.Id asp-route-id=@post.Id id=@downVoteId class="downVoteHandler glyphicon glyphicon-thumbs-down" aria-hidden="true"></a>
+                                    <span class="votes">@post.DownVotes</span>
                                 </div>
                             </div>
 
@@ -97,7 +104,7 @@
                                     <form>
                                         <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button class="btn btn-secondary" value=@idx>Comment</button>
+                                        <button class="btn btn-secondary" value=@post.Id>Comment</button>
                                     </form>
                                 }
                                 else
@@ -106,7 +113,6 @@
                                 }
                             </div>
                         </div>
-                        idx++;
                     }
                 }
             }
@@ -114,20 +120,20 @@
     </main>
     <script src="~/js/Posts.js" type="text/javascript"></script>
     <script>
-        // post comment ajax call
         $(document).ready(function () {
 
             // grab the correct ID
-            var idx;
+            var postId;
+
             $("button").on("click", function (e) {
-                idx = $(this).attr('value');
+                postId = $(this).attr('value');
 
                 var CommentVM = {
-                    PostId: parseInt($(`#form${idx} input`).val()),
-                    Content: $(`#form${idx} textarea`).val()
+                    PostId: parseInt($(`#form${postId} input`).val()),
+                    Content: $(`#form${postId} textarea`).val()
                 }
 
-                $(`#form${idx} textarea`).val("");
+                $(`#form${postId} textarea`).val("");
 
                 // ajax call to post comment to database
                 $.ajax({
@@ -140,7 +146,7 @@
                     success: function (data) {
                         console.log("Success");
                         console.log(status);
-                        renderComment(data, idx);
+                        renderComment(data, postId);
                     },
                     error: function (hxr, status, error) {
                         console.log("ERROR");
@@ -149,6 +155,48 @@
 
                 e.preventDefault();
             });
+
+            // ajax call to send upvote to database
+            $(".upVoteHandler").on("click", function () {
+                postId = $(this).attr('name');
+
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    url: '@Url.Action("UpVote", "Ajax")',
+                    data: JSON.stringify(postId),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        console.log("Success");
+                        console.log(data);
+                    },
+                    error: function () {
+                        console.log("ERROR");
+                    }
+                })
+            })
+
+            // ajax call to send downvote to database
+            $(".downVoteHandler").on("click", function () {
+                postId = $(this).attr('name');
+
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    url: '@Url.Action("DownVote", "Ajax")',
+                    data: JSON.stringify(postId),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        console.log("Success");
+                        console.log(data);
+                    },
+                    error: function () {
+                        console.log("ERROR");
+                    }
+                })
+            })
 
             // new comment to render to page
             var renderComment = function (comment, idx) {

@@ -17,10 +17,12 @@ namespace Dev_Blog.Controllers
     {
         private readonly IComment _comment;
         private readonly IPost _post;
+        private readonly IVote _vote;
         private readonly UserManager<User> _userManager;
 
-        public AjaxController(IPost post, IComment comment, UserManager<User> userManager)
+        public AjaxController(IVote vote, IPost post, IComment comment, UserManager<User> userManager)
         {
+            _vote = vote;
             _post = post;
             _userManager = userManager;
             _comment = comment;
@@ -70,6 +72,56 @@ namespace Dev_Blog.Controllers
 
             string json = JsonConvert.SerializeObject(jsonComments);
             return json;
+        }
+
+        [HttpPost("/UpVote")]
+        public async Task<string> UpVote(string postId)
+        {
+            string userId = _userManager.GetUserId(User);
+
+            UpVote vote = new UpVote
+            {
+                PostId = Int32.Parse(postId),
+                UserId = userId
+            };
+
+            bool hasUpVoted = await _vote.HasUpVoted(vote);
+
+            if (hasUpVoted == true)
+            {
+                await _vote.DeleteUpVote(vote);
+                return "-1";
+            }
+            else
+            {
+                await _vote.CreateUpVote(vote);
+                return "1";
+            }
+        }
+
+        [HttpPost("/DownVote")]
+        public async Task<string> DownVote(string postId)
+        {
+            string userId = _userManager.GetUserId(User);
+
+            DownVote vote = new DownVote
+            {
+                PostId = Int32.Parse(postId),
+                UserId = userId
+            };
+
+            bool hasDownVoted = await _vote.HasDownVoted(vote);
+
+            if (hasDownVoted == true)
+            {
+                await _vote.DeleteDownVote(vote);
+                return "-1";
+            }
+            else
+            {
+                await _vote.CreateDownVote(vote);
+                return "1";
+            }
         }
     }
 }
