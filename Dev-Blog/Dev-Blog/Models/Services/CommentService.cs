@@ -67,6 +67,15 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
+        /// Retrieves the latest comment in the database
+        /// </summary>
+        /// <returns>The latest comment</returns>
+        public async Task<Comment> GetLatestComment()
+        {
+            return await _context.Comment.LastOrDefaultAsync();
+        }
+
+        /// <summary>
         /// Removes a specified comment from the database
         /// </summary>
         /// <param name="comment">Specified comment to delete</param>
