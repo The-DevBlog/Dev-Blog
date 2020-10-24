@@ -44,7 +44,30 @@ namespace Dev_Blog.Controllers
             };
 
             string json = JsonConvert.SerializeObject(jsonComment);
+            return json;
+        }
 
+        [HttpGet("/GetComments")]
+        public async Task<string> GetComments()
+        {
+            List<CommentVM> jsonComments = new List<CommentVM>();
+
+            List<Comment> comments = await _comment.GetAllComments();
+
+            foreach (Comment item in comments)
+            {
+                CommentVM jsonComment = new CommentVM
+                {
+                    PostId = item.PostId,
+                    Content = item.Content,
+                    UserName = item.UserName,
+                    Date = item.Date
+                };
+
+                jsonComments.Add(jsonComment);
+            }
+
+            string json = JsonConvert.SerializeObject(jsonComments);
             return json;
         }
     }

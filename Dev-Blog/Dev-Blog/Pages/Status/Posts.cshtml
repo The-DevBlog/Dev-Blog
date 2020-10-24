@@ -12,7 +12,12 @@
     <title>Status</title>
 </head>
 <body id="bootstrap-override">
+    @{
+        string formId = "", postId = "", commentId = "";
+    }
     <main>
+        <div id="theTest">
+        </div>
         <div class="container">
             @{
                 if (User.Identity.IsAuthenticated)
@@ -25,8 +30,12 @@
                 if (Model.Posts != null)
                 {
                     <!-- All Posts -->
+                    int idx = 0;
                     foreach (var post in Model.Posts)
                     {
+                        formId = "form" + idx;
+                        postId = "post" + idx;
+                        commentId = "text" + idx;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -81,15 +90,14 @@
                                     </div>
                                 }
                             }
-
                             <!-- Comment Box -->
-                            <div class="comment-box form-group">
+                            <div id=@formId class="comment-box form-group">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <form id="commentForm">
-                                        <textarea id="commentText" asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2"></textarea>
-                                        <input id="postId" hidden asp-for="@post.Id" value=@post.Id />
-                                        <button class="btn btn-secondary">Comment</button>
+                                    <form>
+                                        <textarea id=@commentId asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2"></textarea>
+                                        <input id=@postId hidden asp-for="@post.Id" value=@post.Id />
+                                        <button class="btn btn-secondary" value=@idx>Comment</button>
                                     </form>
                                 }
                                 else
@@ -98,6 +106,7 @@
                                 }
                             </div>
                         </div>
+                        idx++;
                     }
                 }
             }
@@ -106,37 +115,43 @@
     <script>
         // post comment ajax call
         $(document).ready(function () {
-            $('#commentForm > button').on("click", function (e) {
 
+            // grab the correct ID
+            var idx;
+            $("button").on("click", function () {
+                idx = $(this).attr('value');
+            });
+
+            // call controller action on comment submit
+            $(`#form0 button`).on("click", function (e) {
                 var CommentVM = {
-                    PostId: parseInt($("#postId").val()),
-                    Content: $("#commentText").val()
+                    PostId: parseInt($('#post0').val()),
+                    Content: $('#text0').val()
                 }
 
                 $.ajax({
                     contentType: "application/json; charset=utf-8",
                     type: "POST",
-                    url: "/PostComment",
+                    url: '@Url.Action("PostComment", "Ajax")',
                     data: JSON.stringify(CommentVM),
                     dataType: "json",
                     async: true,
                     success: function (data) {
                         console.log("Success");
                         console.log(status);
-                        console.log(data.UserName);
-                        console.log(data.Date);
-                        console.log(data.Content);
-                        console.log(data.PostId);
-                        $("#comment").after("IT SORT OF WORKED");
+                        renderComment(data);
                     },
                     error: function (hxr, status, error) {
                         console.log("ERROR");
-                        console.log(status.toString());
-                        console.log(error.toString());
                     }
                 });
+
                 e.preventDefault();
             });
+
+            var renderComment = function (comment) {
+                $("#form0").before(`<h3>${comment.Content}</h3>`)
+            }
         });
     </script>
 </body>
