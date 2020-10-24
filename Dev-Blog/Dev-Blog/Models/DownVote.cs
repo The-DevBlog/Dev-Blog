@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Dev_Blog.Models
 {
-    public class Vote
+    public class DownVote
     {
         public int PostId { get; set; }
         public string UserId { get; set; }
-        public bool HasVoted { get; set; }
+        public Post Post { get; set; }
     }
 }
