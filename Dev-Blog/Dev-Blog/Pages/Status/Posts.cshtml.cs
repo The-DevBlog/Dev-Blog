@@ -7,6 +7,7 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using Dropbox.Api.CloudDocs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace Dev_Blog.Pages.Status
         private readonly IPost _post;
         private readonly IConfiguration _config;
         private readonly IComment _comment;
+        private readonly IEmail _email;
         private readonly UserManager<User> _userManager;
 
         [BindProperty]
@@ -37,8 +39,9 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager)
+        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager, email)
         {
+            _email = email;
             _comment = comment;
             _userManager = userManager;
             _config = config;
@@ -51,22 +54,6 @@ namespace Dev_Blog.Pages.Status
             Posts = await _post.GetAllPosts();
             Comments = await _comment.GetAllComments();
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostComment()
-        {
-            // get post being commented on
-            var post = await _post.GetPost(Post.Id);
-
-            // get id of current user
-            string id = _userManager.GetUserId(User);
-
-            // grab username of current user
-            string userName = HttpContext.User.Identity.Name;
-
-            await _comment.Create(id, post, Comment.Content, userName);
-
-            return RedirectToPagePermanent("Posts");
         }
 
         public async Task<IActionResult> OnPostDeleteComment()

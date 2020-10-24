@@ -15,8 +15,11 @@ namespace Dev_Blog.Pages.Bio
 {
     public class BioModel : BasePage
     {
-        public BioModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
+        private readonly IEmail _email;
+
+        public BioModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email) : base(signInManager, userManager, email)
         {
+            _email = email;
         }
 
         public void OnGet()

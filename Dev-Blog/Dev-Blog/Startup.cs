@@ -60,6 +60,7 @@ namespace Dev_Blog
             services.AddScoped<IImage, ImageService>();
             services.AddTransient<IPost, PostService>();
             services.AddTransient<IComment, CommentService>();
+            services.AddTransient<IEmail, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +89,7 @@ namespace Dev_Blog
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

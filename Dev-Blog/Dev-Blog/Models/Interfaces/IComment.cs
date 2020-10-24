@@ -36,5 +36,11 @@ namespace Dev_Blog.Models.Interfaces
         /// <param name="id">Specified id of comment</param>
         /// <returns>Specified comment</returns>
         public Task<Comment> GetComment(int id);
+
+        /// <summary>
+        /// Retrieves the latest comment in the database
+        /// </summary>
+        /// <returns>The latest comment</returns>
+        public Task<Comment> GetLatestComment();
     }
 }

@@ -13,6 +13,8 @@
 </head>
 <body id="bootstrap-override">
     <main>
+        <div id="theTest">
+        </div>
         <div class="container">
             @{
                 if (User.Identity.IsAuthenticated)
@@ -24,8 +26,12 @@
                 }
                 if (Model.Posts != null)
                 {
+                    <!-- All Posts -->
+                    int idx = 0;
+                    string formId = "";
                     foreach (var post in Model.Posts)
                     {
+                        formId = "form" + idx;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -34,6 +40,8 @@
                                 </span>
                                 <div class="float-right">
                                     <strong>@post.Date.ToShortDateString()</strong>
+
+                                    <!-- Delete post form -->
                                     @if (User.Identity.Name == Model.AdminUser)
                                     {
                                         <form method="post" class="delete-form">
@@ -48,31 +56,19 @@
                                     }
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <img class="update-img" src=@post.ImgURL />
-                                @*<form action="@Url.Action("index")" method="post">
-                                        <a href="#" onclick="upvote();">
-                                            <span id="upVote"></span>
-                                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                        </a>
-                                        <a href="#" onclick="downvote();">
-                                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-                                            <span id="downVote"></span>
-                                        </a>
-                                    </form>*@
-                                <p>@post.Description</p>
 
-                                @*<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                    <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>*@
+                            <!-- Post Information -->
+                            <div class="card-body text-center">
+                                <img class="update-img" src=@post.ImgURL />
+                                <p>@post.Description</p>
                             </div>
 
                             @if (post.Comments != null)
                             {
-                                <!--Delete Comment Button-->
                                 foreach (var comment in post.Comments)
                                 {
-                                    <div class="posted-comments comment-box" style="padding: 7.5px">
-                                        <span class="user-icon glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    <!--Delete Comment Button-->
+                                    <div class="posted-comments comment-box">
                                         <span class="comment-username">@comment.UserName</span>
                                         <div class="float-right">
                                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
@@ -90,39 +86,78 @@
                                     </div>
                                 }
                             }
-                            <div class="comment-box form-group">
+                            <!-- Comment Box -->
+                            <div id=@formId class="comment-box form-group">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <form method="post">
-                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2" id="comment"></textarea>
-                                        <input hidden asp-for="@post.Id" />
-                                        <button class="btn btn-secondary" type="submit" asp-page-handler="Comment">Comment</button>
+                                    <form>
+                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
+                                        <input hidden asp-for="@post.Id" value=@post.Id />
+                                        <button class="btn btn-secondary" value=@idx>Comment</button>
                                     </form>
                                 }
                                 else
                                 {
-                                    <textarea class="form-control" placeholder="Login in to leave comments"></textarea>
+                                    <textarea class="form-control" placeholder="Login in to leave a comment.."></textarea>
                                 }
                             </div>
                         </div>
+                        idx++;
                     }
                 }
             }
         </div>
     </main>
-
     <script>
-        var downVote = 0;
-        var upVote = 0;
-        function upvote() {
-            upVote++;
-            $("#hdnvalue").val(upVote);
-            $("#upVote").html(upVote);
-        }
-        function downvote() {
-            downVote++;
-            $("#hdnvalue").val(downVote);
-            $("#downVote").html(downVote);
-        }
+        // post comment ajax call
+        $(document).ready(function () {
+
+            // grab the correct ID
+            var idx;
+            $("button").on("click", function (e) {
+                idx = $(this).attr('value');
+
+                var CommentVM = {
+                    PostId: parseInt($(`#form${idx} input`).val()),
+                    Content: $(`#form${idx} textarea`).val()
+                }
+
+                $(`#form${idx} textarea`).val("");
+
+                // ajax call to post comment to database
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    url: '@Url.Action("PostComment", "Ajax")',
+                    data: JSON.stringify(CommentVM),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        console.log("Success");
+                        console.log(status);
+                        renderComment(data, idx);
+                    },
+                    error: function (hxr, status, error) {
+                        console.log("ERROR");
+                    }
+                });
+
+                e.preventDefault();
+            });
+
+            // new comment to render to page
+            var renderComment = function (comment, idx) {
+                $(`#form${idx}`).before(
+                    $(`<div class="posted-comments comment-box">` +
+                        `<span class="comment-username">${comment.UserName}</span>` +
+                        `<div class="float-right">` +
+                        `<span>${comment.Date}</span>` +
+                        `</div>` +
+                        `<p>${comment.Content}</p>` +
+                        `</div>`
+                    )
+                );
+            }
+        });
     </script>
 </body>
