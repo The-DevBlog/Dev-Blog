@@ -12,9 +12,6 @@
     <title>Status</title>
 </head>
 <body id="bootstrap-override">
-    @{
-        string formId = "", postId = "", commentId = "";
-    }
     <main>
         <div id="theTest">
         </div>
@@ -31,10 +28,9 @@
                 {
                     <!-- All Posts -->
                     int idx = 0;
+                    string formId = "";
                     foreach (var post in Model.Posts)
                     {
-                        postId = "post" + idx;
-                        commentId = "text" + idx;
                         formId = "form" + idx;
                         <div class="card">
                             <div class="card-header">
@@ -95,8 +91,8 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <form>
-                                        <textarea id=@commentId asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
-                                        <input id=@postId hidden asp-for="@post.Id" value=@post.Id />
+                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
+                                        <input hidden asp-for="@post.Id" value=@post.Id />
                                         <button class="btn btn-secondary" value=@idx>Comment</button>
                                     </form>
                                 }
@@ -122,9 +118,11 @@
                 idx = $(this).attr('value');
 
                 var CommentVM = {
-                    PostId: parseInt($(`#post${idx}`).val()),
-                    Content: $(`#text${idx}`).val()
+                    PostId: parseInt($(`#form${idx} input`).val()),
+                    Content: $(`#form${idx} textarea`).val()
                 }
+
+                $(`#form${idx} textarea`).val("");
 
                 // ajax call to post comment to database
                 $.ajax({
