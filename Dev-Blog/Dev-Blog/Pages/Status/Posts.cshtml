@@ -33,9 +33,9 @@
                     int idx = 0;
                     foreach (var post in Model.Posts)
                     {
-                        formId = "form" + idx;
                         postId = "post" + idx;
                         commentId = "text" + idx;
+                        formId = "form" + idx;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -72,7 +72,7 @@
                                 foreach (var comment in post.Comments)
                                 {
                                     <!--Delete Comment Button-->
-                                    <div id="comment" class="posted-comments comment-box" style="padding: 7.5px">
+                                    <div class="posted-comments comment-box">
                                         <span class="comment-username">@comment.UserName</span>
                                         <div class="float-right">
                                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
@@ -95,14 +95,14 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <form>
-                                        <textarea id=@commentId asp-for=@Model.Comment.Content class="form-control" placeholder="comment..." rows="2"></textarea>
+                                        <textarea id=@commentId asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
                                         <input id=@postId hidden asp-for="@post.Id" value=@post.Id />
                                         <button class="btn btn-secondary" value=@idx>Comment</button>
                                     </form>
                                 }
                                 else
                                 {
-                                    <textarea class="form-control" placeholder="Login in to leave comments"></textarea>
+                                    <textarea class="form-control" placeholder="Login in to leave a comment.."></textarea>
                                 }
                             </div>
                         </div>
@@ -118,17 +118,15 @@
 
             // grab the correct ID
             var idx;
-            $("button").on("click", function () {
+            $("button").on("click", function (e) {
                 idx = $(this).attr('value');
-            });
 
-            // call controller action on comment submit
-            $(`#form0 button`).on("click", function (e) {
                 var CommentVM = {
-                    PostId: parseInt($('#post0').val()),
-                    Content: $('#text0').val()
+                    PostId: parseInt($(`#post${idx}`).val()),
+                    Content: $(`#text${idx}`).val()
                 }
 
+                // ajax call to post comment to database
                 $.ajax({
                     contentType: "application/json; charset=utf-8",
                     type: "POST",
@@ -139,7 +137,7 @@
                     success: function (data) {
                         console.log("Success");
                         console.log(status);
-                        renderComment(data);
+                        renderComment(data, idx);
                     },
                     error: function (hxr, status, error) {
                         console.log("ERROR");
@@ -149,8 +147,18 @@
                 e.preventDefault();
             });
 
-            var renderComment = function (comment) {
-                $("#form0").before(`<h3>${comment.Content}</h3>`)
+            // new comment to render to page
+            var renderComment = function (comment, idx) {
+                $(`#form${idx}`).before(
+                    $(`<div class="posted-comments comment-box">` +
+                        `<span class="comment-username">${comment.UserName}</span>` +
+                        `<div class="float-right">` +
+                        `<span>${comment.Date}</span>` +
+                        `</div>` +
+                        `<p>${comment.Content}</p>` +
+                        `</div>`
+                    )
+                );
             }
         });
     </script>

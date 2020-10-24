@@ -34,13 +34,13 @@ namespace Dev_Blog.Controllers
             string userName = HttpContext.User.Identity.Name;
             Comment newComment = await _comment.Create(id, post, comment.Content, userName);
 
-            // convert newly created comment into JSON
+            // convert newly created comment into json string
             CommentVM jsonComment = new CommentVM
             {
                 PostId = newComment.PostId,
                 Content = newComment.Content,
                 UserName = newComment.UserName,
-                Date = newComment.Date
+                Date = newComment.Date.ToString("MM/dd/yyyy hh:mm tt")
             };
 
             string json = JsonConvert.SerializeObject(jsonComment);
@@ -54,6 +54,7 @@ namespace Dev_Blog.Controllers
 
             List<Comment> comments = await _comment.GetAllComments();
 
+            // convert all comments into json strings
             foreach (Comment item in comments)
             {
                 CommentVM jsonComment = new CommentVM
@@ -61,7 +62,7 @@ namespace Dev_Blog.Controllers
                     PostId = item.PostId,
                     Content = item.Content,
                     UserName = item.UserName,
-                    Date = item.Date
+                    Date = item.Date.ToString("MM/dd/yyyy hh:mm tt")
                 };
 
                 jsonComments.Add(jsonComment);

@@ -10,6 +10,6 @@ namespace Dev_Blog.Models.ViewModels
         public int PostId { get; set; }
         public string Content { get; set; }
         public string UserName { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
 }
