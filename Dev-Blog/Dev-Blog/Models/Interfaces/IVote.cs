@@ -18,5 +18,9 @@ namespace Dev_Blog.Models.Interfaces
         public Task<bool> HasUpVoted(UpVote vote);
 
         public Task<bool> HasDownVoted(DownVote vote);
+
+        public Task<UpVote> GetUpVote(UpVote vote);
+
+        public Task<DownVote> GetDownVote(DownVote vote);
     }
 }

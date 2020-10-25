@@ -75,17 +75,13 @@ namespace Dev_Blog.Controllers
         }
 
         [HttpPost("/UpVote")]
-        public async Task<string> UpVote(string postId)
+        public async Task<string> UpVote(UpVote vote)
         {
             string userId = _userManager.GetUserId(User);
 
-            UpVote vote = new UpVote
-            {
-                PostId = Int32.Parse(postId),
-                UserId = userId
-            };
+            vote.UserId = userId;
 
-            bool hasUpVoted = await _vote.HasUpVoted(vote);
+            var hasUpVoted = await _vote.HasUpVoted(vote);
 
             if (hasUpVoted == true)
             {
@@ -100,15 +96,11 @@ namespace Dev_Blog.Controllers
         }
 
         [HttpPost("/DownVote")]
-        public async Task<string> DownVote(string postId)
+        public async Task<string> DownVote(DownVote vote)
         {
             string userId = _userManager.GetUserId(User);
 
-            DownVote vote = new DownVote
-            {
-                PostId = Int32.Parse(postId),
-                UserId = userId
-            };
+            vote.UserId = userId;
 
             bool hasDownVoted = await _vote.HasDownVoted(vote);
 

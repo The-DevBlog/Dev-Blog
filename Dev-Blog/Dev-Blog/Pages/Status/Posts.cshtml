@@ -67,10 +67,16 @@
 
                                 <!-- Voting System -->
                                 <div class="text-left">
-                                    <a id=@upVoteId asp-route-id=@post.Id type="text/asp" class="upVoteHandler glyphicon glyphicon-thumbs-up" aria-hidden="true"></a>
-                                    <span class="votes">@post.UpVotes</span>
-                                    <a name=@post.Id asp-route-id=@post.Id id=@downVoteId class="downVoteHandler glyphicon glyphicon-thumbs-down" aria-hidden="true"></a>
-                                    <span class="votes">@post.DownVotes</span>
+                                    <form>
+                                        <input hidden asp-for="@post.Id" value=@post.Id />
+                                        <button id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
+                                        <span class="votes">@post.UpVotes</span>
+
+                                        <input hidden asp-for="@post.Id" value=@post.Id />
+                                        <button id=@downVoteId value=@post.Id class="downVoteHandler glyphicon glyphicon-thumbs-up"></button>
+
+                                        <span class="votes">@post.DownVotes</span>
+                                    </form>
                                 </div>
                             </div>
 
@@ -158,13 +164,17 @@
 
             // ajax call to send upvote to database
             $(".upVoteHandler").on("click", function () {
-                postId = $(this).attr('name');
+                postId = $(this).attr('value');
+
+                var VoteVM = {
+                    PostId: parseInt(postId)
+                }
 
                 $.ajax({
                     contentType: "application/json; charset=utf-8",
                     type: "POST",
                     url: '@Url.Action("UpVote", "Ajax")',
-                    data: JSON.stringify(postId),
+                    data: JSON.stringify(VoteVM),
                     dataType: "json",
                     async: true,
                     success: function (data) {
@@ -179,13 +189,17 @@
 
             // ajax call to send downvote to database
             $(".downVoteHandler").on("click", function () {
-                postId = $(this).attr('name');
+                postId = $(this).attr('value');
+
+                var VoteVM = {
+                    PostId: parseInt(postId)
+                }
 
                 $.ajax({
                     contentType: "application/json; charset=utf-8",
                     type: "POST",
                     url: '@Url.Action("DownVote", "Ajax")',
-                    data: JSON.stringify(postId),
+                    data: JSON.stringify(VoteVM),
                     dataType: "json",
                     async: true,
                     success: function (data) {
