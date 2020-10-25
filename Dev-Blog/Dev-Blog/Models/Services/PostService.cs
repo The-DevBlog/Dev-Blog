@@ -38,30 +38,6 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
-        /// Increments the upvotes by one of a specified post
-        /// </summary>
-        /// <param name="post">The post be voted on</param>
-        /// <returns>Successful completion of task</returns>
-        public async Task UpVote(Post post)
-        {
-            post.UpVotes++;
-            _context.Entry(post).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Increments the upvotes by one of a specified post
-        /// </summary>
-        /// <param name="post">The post be voted on</param>
-        /// <returns>Successful completion of task</returns>
-        public async Task DownVote(Post post)
-        {
-            post.DownVotes++;
-            _context.Entry(post).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        /// <summary>
         /// Modifies a specified post
         /// </summary>
         /// <param name="post">The post to modify</param>

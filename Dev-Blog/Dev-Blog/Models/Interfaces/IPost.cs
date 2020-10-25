@@ -16,20 +16,6 @@ namespace Dev_Blog.Models.Interfaces
         Task<Post> Create(Post post, string url);
 
         /// <summary>
-        /// Increments the up-votes by one of a specified post
-        /// </summary>
-        /// <param name="post">The post be voted on</param>
-        /// <returns>Successful completion of task</returns>
-        public Task DownVote(Post post);
-
-        /// <summary>
-        /// Increments the down-votes by one of a specified post
-        /// </summary>
-        /// <param name="post">The post be voted on</param>
-        /// <returns>Successful completion of task</returns>
-        public Task UpVote(Post post);
-
-        /// <summary>
         /// Get a list of all posts
         /// </summary>
         /// <returns>Successful result with list of posts</returns>
