@@ -17,10 +17,12 @@ namespace Dev_Blog.Controllers
     {
         private readonly IComment _comment;
         private readonly IPost _post;
+        private readonly IVote _vote;
         private readonly UserManager<User> _userManager;
 
-        public AjaxController(IPost post, IComment comment, UserManager<User> userManager)
+        public AjaxController(IVote vote, IPost post, IComment comment, UserManager<User> userManager)
         {
+            _vote = vote;
             _post = post;
             _userManager = userManager;
             _comment = comment;
@@ -69,6 +71,70 @@ namespace Dev_Blog.Controllers
             }
 
             string json = JsonConvert.SerializeObject(jsonComments);
+            return json;
+        }
+
+        [HttpPost("/UpVote")]
+        public async Task<string> UpVote(UpVote vote)
+        {
+            Post post = await _post.GetPost(vote.PostId);
+            string userId = _userManager.GetUserId(User);
+
+            vote.UserId = userId;
+
+            var hasUpVoted = await _vote.HasUpVoted(vote);
+
+            // check to see if use has previously downvoted
+            DownVote downVote = new DownVote
+            {
+                PostId = vote.PostId,
+                UserId = userId
+            };
+
+            var hasDownVoted = await _vote.HasDownVoted(downVote);
+
+            if (hasDownVoted)
+                await _vote.DeleteDownVote(downVote);
+
+            if (hasUpVoted)
+                await _vote.DeleteUpVote(vote);
+            else
+                await _vote.CreateUpVote(vote);
+
+            int[] voteCount = { post.UpVotes, post.DownVotes };
+            string json = JsonConvert.SerializeObject(voteCount);
+            return json;
+        }
+
+        [HttpPost("/DownVote")]
+        public async Task<string> DownVote(DownVote vote)
+        {
+            Post post = await _post.GetPost(vote.PostId);
+            string userId = _userManager.GetUserId(User);
+
+            vote.UserId = userId;
+
+            bool hasDownVoted = await _vote.HasDownVoted(vote);
+
+            // check to see if use has previously downvoted
+            UpVote upVote = new UpVote
+            {
+                PostId = vote.PostId,
+                UserId = userId
+            };
+
+            var hasUpVoted = await _vote.HasUpVoted(upVote);
+
+            if (hasUpVoted)
+                await _vote.DeleteUpVote(upVote);
+
+            if (hasDownVoted)
+                await _vote.DeleteDownVote(vote);
+            else
+                await _vote.CreateDownVote(vote);
+
+            int[] voteCount = { post.UpVotes, post.DownVotes };
+            string json = JsonConvert.SerializeObject(voteCount);
             return json;
         }
     }

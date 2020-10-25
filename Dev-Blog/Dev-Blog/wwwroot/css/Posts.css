@@ -1,10 +1,27 @@
-﻿#bootstrap-override #add-post {
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override #add-post {
     margin: 15px;
 }
 
 #bootstrap-override .card {
     text-align: left;
     margin-bottom: 15px;
+}
+
+/*Voting system*/
+#bootstrap-override .voting-system span {
+    font-family: 'Press Start 2P', cursive;
+}
+
+    #bootstrap-override .login-to-vote {
+        font-size: 0.75em;
+        color: #727272
+    }
+
+#bootstrap-override .voting-system button {
+    border: none;
+    background: inherit;
 }
 
 /*Delete button */
@@ -46,7 +63,8 @@
         margin-top: 10px;
     }
 
-#bootstrap-override .comment-username {
+#bootstrap-override .comment-username,
+#bootstrap-override .user-icon {
     color: rgb(125, 125, 125);
 }
 

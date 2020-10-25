@@ -29,6 +29,9 @@ namespace Dev_Blog.Models.Services
         {
             post.ImgURL = url;
             post.Date = DateTime.Now;
+            post.UpVotes = 0;
+            post.DownVotes = 0;
+
             _context.Entry(post).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return post;
