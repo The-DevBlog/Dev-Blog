@@ -7,6 +7,8 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using Dropbox.Api.CloudDocs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,6 +21,7 @@ namespace Dev_Blog.Pages.Status
         private readonly IPost _post;
         private readonly IConfiguration _config;
         private readonly IComment _comment;
+        private readonly IEmail _email;
         private readonly UserManager<User> _userManager;
 
         [BindProperty]
@@ -31,13 +34,14 @@ namespace Dev_Blog.Pages.Status
         public List<Comment> Comments { get; set; }
 
         [BindProperty]
-        public string Comment { get; set; }
+        public Comment Comment { get; set; }
 
         [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(UserManager<User> userManager, IPost post, IConfiguration config, IComment comment) : base(userManager)
+        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager, email)
         {
+            _email = email;
             _comment = comment;
             _userManager = userManager;
             _config = config;
@@ -52,22 +56,14 @@ namespace Dev_Blog.Pages.Status
             return Page();
         }
 
-        public async Task<IActionResult> OnPostComment()
+        public async Task<IActionResult> OnPostDeleteComment()
         {
-            // get post being commented on
-            var post = await _post.GetPost(Post.Id);
-
-            // get id of current user
-            string id = _userManager.GetUserId(User);
-
-            // grab username of current user
-            string userName = HttpContext.User.Identity.Name;
-
-            await _comment.Create(id, post, Comment, userName);
+            Comment comment = await _comment.GetComment(Comment.Id);
+            await _comment.Delete(comment);
             return RedirectToPagePermanent("Posts");
         }
 
-        public async Task<IActionResult> OnPostDelete()
+        public async Task<IActionResult> OnPostDeletePost()
         {
             // get post being deleted
             var post = await _post.GetPost(Post.Id);

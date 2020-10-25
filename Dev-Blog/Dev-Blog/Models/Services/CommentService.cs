@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Services
@@ -50,9 +51,39 @@ namespace Dev_Blog.Models.Services
         /// <returns>Returns all comments</returns>
         public async Task<List<Comment>> GetAllComments()
         {
-            List<Comment> comments = await _context.Comment.Include(x => x.Post)
-                .OrderBy(x => x.Date).ToListAsync();
+            List<Comment> comments = await _context.Comment.OrderByDescending(x => x.Date).Include(x => x.Post)
+                .ToListAsync();
             return comments;
+        }
+
+        /// <summary>
+        /// Retrieves a specified comment from the database
+        /// </summary>
+        /// <param name="id">Specified id of comment</param>
+        /// <returns>Specified comment</returns>
+        public async Task<Comment> GetComment(int id)
+        {
+            return await _context.Comment.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        /// <summary>
+        /// Retrieves the latest comment in the database
+        /// </summary>
+        /// <returns>The latest comment</returns>
+        public async Task<Comment> GetLatestComment()
+        {
+            return await _context.Comment.LastOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Removes a specified comment from the database
+        /// </summary>
+        /// <param name="comment">Specified comment to delete</param>
+        /// <returns>Void</returns>
+        public async Task Delete(Comment comment)
+        {
+            _context.Entry(comment).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }

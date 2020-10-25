@@ -3,14 +3,16 @@ using System;
 using Dev_Blog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dev_Blog.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201024195943_newColumn")]
+    partial class newColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,19 +47,6 @@ namespace Dev_Blog.Migrations.AppDb
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("Dev_Blog.Models.DownVote", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.HasKey("PostId", "UserId");
-
-                    b.ToTable("DownVote");
-                });
-
             modelBuilder.Entity("Dev_Blog.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -87,7 +76,7 @@ namespace Dev_Blog.Migrations.AppDb
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("Dev_Blog.Models.UpVote", b =>
+            modelBuilder.Entity("Dev_Blog.Models.Vote", b =>
                 {
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -95,9 +84,12 @@ namespace Dev_Blog.Migrations.AppDb
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
+                    b.Property<bool>("HasVoted")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("PostId", "UserId");
 
-                    b.ToTable("UpVote");
+                    b.ToTable("Vote");
                 });
 
             modelBuilder.Entity("Dev_Blog.Models.Comment", b =>
@@ -109,16 +101,7 @@ namespace Dev_Blog.Migrations.AppDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dev_Blog.Models.DownVote", b =>
-                {
-                    b.HasOne("Dev_Blog.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Dev_Blog.Models.UpVote", b =>
+            modelBuilder.Entity("Dev_Blog.Models.Vote", b =>
                 {
                     b.HasOne("Dev_Blog.Models.Post", "Post")
                         .WithMany()

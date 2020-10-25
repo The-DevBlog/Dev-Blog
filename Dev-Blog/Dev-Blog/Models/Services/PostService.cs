@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dev_Blog.Models.Services
 {
@@ -28,7 +29,24 @@ namespace Dev_Blog.Models.Services
         {
             post.ImgURL = url;
             post.Date = DateTime.Now;
+            post.UpVotes = 0;
+            post.DownVotes = 0;
+
             _context.Entry(post).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return post;
+        }
+
+        /// <summary>
+        /// Modifies a specified post
+        /// </summary>
+        /// <param name="post">The post to modify</param>
+        /// <param name="description">The new description of the post</param>
+        /// <returns>The modified post</returns>
+        public async Task<Post> Edit(Post post, string description)
+        {
+            post.Description = description;
+            _context.Entry(post).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return post;
         }

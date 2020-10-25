@@ -1,10 +1,27 @@
-﻿#bootstrap-override #add-post {
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override #add-post {
     margin: 15px;
 }
 
 #bootstrap-override .card {
     text-align: left;
     margin-bottom: 15px;
+}
+
+/*Voting system*/
+#bootstrap-override .voting-system span {
+    font-family: 'Press Start 2P', cursive;
+}
+
+    #bootstrap-override .login-to-vote {
+        font-size: 0.75em;
+        color: #727272
+    }
+
+#bootstrap-override .voting-system button {
+    border: none;
+    background: inherit;
 }
 
 /*Delete button */
@@ -21,14 +38,35 @@
             color: red;
         }
 
+    /*Edit button*/
+    #bootstrap-override .delete-form a {
+        color: black;
+    }
+
+        #bootstrap-override .delete-form a:hover {
+            color: #A5A5A5;
+        }
+
+/*Edit form*/
+#bootstrap-override #edit-form textarea {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 /*Comment box*/
 #bootstrap-override .comment-box {
     margin: 0px 15px 15px 15px;
+    padding: 7.5px;
 }
 
     #bootstrap-override .comment-box button {
         margin-top: 10px;
     }
+
+#bootstrap-override .comment-username,
+#bootstrap-override .user-icon {
+    color: rgb(125, 125, 125);
+}
 
 #bootstrap-override .update-img {
     height: 432px;

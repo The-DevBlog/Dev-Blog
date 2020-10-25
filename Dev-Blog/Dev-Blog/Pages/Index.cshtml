@@ -25,11 +25,32 @@
                             <strong>@Model.Post.UpdateNum</strong>
                         </span>
                         <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
+                    </div>
+                    <div class="card-body text-center">
+                        <img id="update-img" src=@Model.Post.ImgURL />
+                        <p>@Model.Post.Description</p>
 
-                        <div class="card-body">
-                            <img id="update-img" src=@Model.Post.ImgURL />
-                            <p>@Model.Post.Description</p>
+                        <hr />
+
+                        <div class="m-auto embed-responsive-16by9 embed-responsive">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9ou1pl0XNRs"></iframe>
                         </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <h4>Have a suggestion? Leave a comment!</h4>
+                        <form method="post">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <textarea asp-for=@Model.Context placeholder="Put suggestion here.." class="pb-cmnt-textarea d-block" maxlength="1000"></textarea>
+                                <button class="btn btn-primary" asp-page-handler="Suggestion" type="submit">
+                                    Submit
+                                </button>
+                            }
+                            else
+                            {
+                                <textarea placeholder="Login in to leave a suggestion.." class="pb-cmnt-textarea d-block"></textarea>
+                            }
+                        </form>
                     </div>
                 </div>
             </div>
