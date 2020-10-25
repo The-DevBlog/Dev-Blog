@@ -9,8 +9,14 @@
     margin-bottom: 15px;
 }
 
+/*Voting system*/
 #bootstrap-override .votes {
     font-family: 'Press Start 2P', cursive;
+}
+
+#bootstrap-override .voting-system button {
+    border: none;
+    background: inherit;
 }
 
 /*Delete button */

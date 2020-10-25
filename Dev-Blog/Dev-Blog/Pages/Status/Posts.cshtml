@@ -30,11 +30,13 @@
                     string formId = "";
                     string upVoteId = "";
                     string downVoteId = "";
+                    string voteSystem = "";
                     foreach (var post in Model.Posts)
                     {
                         formId = "form" + post.Id;
                         upVoteId = "upVote" + post.Id;
                         downVoteId = "downVote" + post.Id;
+                        voteSystem = "voteSystem" + post.Id;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -66,14 +68,14 @@
                                 <p>@post.Description</p>
 
                                 <!-- Voting System -->
-                                <div class="text-left">
+                                <div id=@voteSystem class="voting-system text-left">
                                     <form>
                                         <input hidden asp-for="@post.Id" value=@post.Id />
                                         <button id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
                                         <span class="votes">@post.UpVotes</span>
 
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id=@downVoteId value=@post.Id class="downVoteHandler glyphicon glyphicon-thumbs-up"></button>
+                                        <button id=@downVoteId value=@post.Id class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
 
                                         <span class="votes">@post.DownVotes</span>
                                     </form>
@@ -163,7 +165,7 @@
             });
 
             // ajax call to send upvote to database
-            $(".upVoteHandler").on("click", function () {
+            $(".upVoteHandler").on("click", function (e) {
                 postId = $(this).attr('value');
 
                 var VoteVM = {
@@ -180,15 +182,18 @@
                     success: function (data) {
                         console.log("Success");
                         console.log(data);
+                        updateVotes(data[0], data[1], postId);
                     },
                     error: function () {
                         console.log("ERROR");
+                        console.log(data);
                     }
                 })
+                e.preventDefault();
             })
 
             // ajax call to send downvote to database
-            $(".downVoteHandler").on("click", function () {
+            $(".downVoteHandler").on("click", function (e) {
                 postId = $(this).attr('value');
 
                 var VoteVM = {
@@ -205,12 +210,20 @@
                     success: function (data) {
                         console.log("Success");
                         console.log(data);
+                        updateVotes(data[0], data[1], postId);
                     },
                     error: function () {
                         console.log("ERROR");
                     }
                 })
+                e.preventDefault();
             })
+
+            // update the vote count
+            var updateVotes = function (upVotes, downVotes, id) {
+                $(`#voteSystem${id} span:first-of-type`).text(upVotes);
+                $(`#voteSystem${id} span:last-of-type`).text(downVotes);
+            }
 
             // new comment to render to page
             var renderComment = function (comment, idx) {
