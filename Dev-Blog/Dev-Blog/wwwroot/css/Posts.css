@@ -10,9 +10,14 @@
 }
 
 /*Voting system*/
-#bootstrap-override .votes {
+#bootstrap-override .voting-system span {
     font-family: 'Press Start 2P', cursive;
 }
+
+    #bootstrap-override .login-to-vote {
+        font-size: 0.75em;
+        color: #727272
+    }
 
 #bootstrap-override .voting-system button {
     border: none;
