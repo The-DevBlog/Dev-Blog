@@ -75,29 +75,28 @@ namespace Dev_Blog.Controllers
         }
 
         [HttpPost("/UpVote")]
-        public async Task<string> UpVote(UpVote vote)
+        public async Task<string> UpVote(Vote vote)
         {
             Post post = await _post.GetPost(vote.PostId);
             string userId = _userManager.GetUserId(User);
 
             vote.UserId = userId;
 
-            var hasUpVoted = await _vote.HasUpVoted(vote);
-
-            // check to see if use has previously downvoted
-            DownVote downVote = new DownVote
+            Vote downVote = new Vote
             {
                 PostId = vote.PostId,
-                UserId = userId
+                UserId = userId,
             };
 
+            // check to see if a user has previously voted
+            var hasUpVoted = await _vote.HasUpVoted(vote);
             var hasDownVoted = await _vote.HasDownVoted(downVote);
 
             if (hasDownVoted)
-                await _vote.DeleteDownVote(downVote);
+                await _vote.DeleteVote(downVote);
 
             if (hasUpVoted)
-                await _vote.DeleteUpVote(vote);
+                await _vote.DeleteVote(vote);
             else
                 await _vote.CreateUpVote(vote);
 
@@ -107,29 +106,28 @@ namespace Dev_Blog.Controllers
         }
 
         [HttpPost("/DownVote")]
-        public async Task<string> DownVote(DownVote vote)
+        public async Task<string> DownVote(Vote vote)
         {
             Post post = await _post.GetPost(vote.PostId);
             string userId = _userManager.GetUserId(User);
 
             vote.UserId = userId;
 
-            bool hasDownVoted = await _vote.HasDownVoted(vote);
-
-            // check to see if use has previously downvoted
-            UpVote upVote = new UpVote
+            Vote upVote = new Vote
             {
                 PostId = vote.PostId,
                 UserId = userId
             };
 
+            // check to see if a user has previously voted
+            bool hasDownVoted = await _vote.HasDownVoted(vote);
             var hasUpVoted = await _vote.HasUpVoted(upVote);
 
             if (hasUpVoted)
-                await _vote.DeleteUpVote(upVote);
+                await _vote.DeleteVote(upVote);
 
             if (hasDownVoted)
-                await _vote.DeleteDownVote(vote);
+                await _vote.DeleteVote(vote);
             else
                 await _vote.CreateDownVote(vote);
 

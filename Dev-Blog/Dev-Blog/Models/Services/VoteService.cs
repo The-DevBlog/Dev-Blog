@@ -20,15 +20,16 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
-        /// Adds an upvote to the database
+        /// Adds a vote to the database
         /// </summary>
         /// <param name="vote">The vote to add</param>
         /// <returns>Successful completion of task</returns>
-        public async Task CreateUpVote(UpVote vote)
+        public async Task CreateUpVote(Vote vote)
         {
             Post post = await _context.Post.Where(x => x.Id == vote.PostId).FirstOrDefaultAsync();
             post.UpVotes++;
             vote.Post = post;
+            vote.UpVote = true;
 
             _context.Entry(post).State = EntityState.Modified;
             _context.Entry(vote).State = EntityState.Added;
@@ -37,15 +38,16 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
-        /// Adds an downvote to the database
+        /// Adds aa vote to the database
         /// </summary>
         /// <param name="vote">The vote to add</param>
         /// <returns>Successful completion of task</returns>
-        public async Task CreateDownVote(DownVote vote)
+        public async Task CreateDownVote(Vote vote)
         {
             Post post = await _context.Post.Where(x => x.Id == vote.PostId).FirstOrDefaultAsync();
             post.DownVotes++;
             vote.Post = post;
+            vote.DownVote = true;
 
             _context.Entry(post).State = EntityState.Modified;
             _context.Entry(vote).State = EntityState.Added;
@@ -54,55 +56,30 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
-        /// Retrieves a specified upvote from the database
+        /// Retrieves a specified vote from the database
         /// </summary>
         /// <param name="vote">The specified vote</param>
         /// <returns>The specified vote</returns>
-        public async Task<UpVote> GetUpVote(UpVote vote)
+        public async Task<Vote> GetVote(Vote vote)
         {
-            return await _context.UpVote.Where(x => x == vote).FirstOrDefaultAsync();
+            return await _context.Vote.Where(x => x == vote).FirstOrDefaultAsync();
         }
 
-        /// <summary>
-        /// Retrieves a specified downvote from the database
-        /// </summary>
-        /// <param name="vote">The specified vote</param>
-        /// <returns>The specified vote</returns>
-        public async Task<DownVote> GetDownVote(DownVote vote)
+        ///// <summary>
+        ///// Removes a specified vote from the database
+        ///// </summary>
+        ///// <param name="vote">The vote to remove</param>
+        ///// <returns>Successful completion of task</returns>
+        public async Task DeleteVote(Vote vote)
         {
-            return await _context.DownVote.Where(x => x == vote).FirstOrDefaultAsync();
-        }
-
-        /// <summary>
-        /// Removes a specified downvote from the database
-        /// </summary>
-        /// <param name="vote">The vote to remove</param>
-        /// <returns>Successful completion of task</returns>
-        public async Task DeleteDownVote(DownVote vote)
-        {
-            DownVote downVote = await GetDownVote(vote);
+            Vote result = await GetVote(vote);
             Post post = await _context.Post.Where(x => x.Id == vote.PostId).FirstOrDefaultAsync();
-            post.DownVotes--;
+
+            if (result.UpVote) post.UpVotes--;
+            else post.DownVotes--;
 
             _context.Entry(post).State = EntityState.Modified;
-            _context.Entry(downVote).State = EntityState.Deleted;
-
-            await _context.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Removes a specified upvote from the database
-        /// </summary>
-        /// <param name="vote">The vote to remove</param>
-        /// <returns>Successful completion of task</returns>s
-        public async Task DeleteUpVote(UpVote vote)
-        {
-            UpVote upVote = await GetUpVote(vote);
-            Post post = await _context.Post.Where(x => x.Id == vote.PostId).FirstOrDefaultAsync();
-            post.UpVotes--;
-
-            _context.Entry(post).State = EntityState.Modified;
-            _context.Entry(upVote).State = EntityState.Deleted;
+            _context.Entry(result).State = EntityState.Deleted;
 
             await _context.SaveChangesAsync();
         }
@@ -112,10 +89,12 @@ namespace Dev_Blog.Models.Services
         /// </summary>
         /// <param name="vote">The vote to check for</param>
         /// <returns>A boolean indicating whether the vote exists within the database</returns>
-        public async Task<bool> HasUpVoted(UpVote vote)
+        public async Task<bool> HasUpVoted(Vote vote)
         {
-            var result = await _context.UpVote.Where(x => x == vote).FirstOrDefaultAsync();
-            return result != null ? true : false;
+            var result = await _context.Vote.Where(x => x == vote).FirstOrDefaultAsync();
+
+            if (result != null) return result.UpVote;
+            else return false;
         }
 
         /// <summary>
@@ -123,10 +102,12 @@ namespace Dev_Blog.Models.Services
         /// </summary>
         /// <param name="vote">The vote to check for</param>
         /// <returns>A boolean indicating whether the vote exists within the database</returns>
-        public async Task<bool> HasDownVoted(DownVote vote)
+        public async Task<bool> HasDownVoted(Vote vote)
         {
-            var result = await _context.DownVote.Where(x => x == vote).FirstOrDefaultAsync();
-            return result != null ? true : false;
+            var result = await _context.Vote.Where(x => x == vote).FirstOrDefaultAsync();
+
+            if (result != null) return result.DownVote;
+            else return false;
         }
     }
 }
