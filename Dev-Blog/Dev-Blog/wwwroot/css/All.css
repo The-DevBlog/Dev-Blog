@@ -16,3 +16,14 @@
 #bootstrap-override {
     text-align: center;
 }
+
+/*Dark Theme*/
+#bootstrap-override {
+    background-color: #313131;
+    color: white;
+}
+
+    #bootstrap-override .card {
+        background-color: #414141;
+        color: white;
+    }

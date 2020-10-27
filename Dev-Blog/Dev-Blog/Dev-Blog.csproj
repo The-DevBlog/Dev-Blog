@@ -4,6 +4,8 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<RootNamespace>Dev_Blog</RootNamespace>
 		<UserSecretsId>0b3c0217-dc3b-40a9-a7a2-d81fa483bb86</UserSecretsId>
+		<!--<Nullable>enable</Nullable>-->
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

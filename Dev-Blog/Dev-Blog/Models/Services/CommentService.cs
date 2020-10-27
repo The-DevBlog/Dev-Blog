@@ -36,7 +36,6 @@ namespace Dev_Blog.Models.Services
                 PostId = post.Id,
                 Content = content,
                 Date = DateTime.Now,
-                Post = post,
                 UserName = userName
             };
 
@@ -51,7 +50,7 @@ namespace Dev_Blog.Models.Services
         /// <returns>Returns all comments</returns>
         public async Task<List<Comment>> GetAllComments()
         {
-            List<Comment> comments = await _context.Comment.OrderByDescending(x => x.Date).Include(x => x.Post)
+            List<Comment> comments = await _context.Comment.OrderByDescending(x => x.Date)
                 .ToListAsync();
             return comments;
         }
