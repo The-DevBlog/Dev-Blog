@@ -11,7 +11,7 @@
 }
 
 /*Posts*/
-#bootstrap-override #post-description {
+#bootstrap-override .post-description {
     padding: 15px;
     background-color: #626262;
     border-radius: 5px;

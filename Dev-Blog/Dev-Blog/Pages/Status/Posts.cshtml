@@ -20,7 +20,7 @@
                 {
                     if (User.Identity.Name == Model.AdminUser)
                     {
-                        <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
+                        <a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>
                     }
                 }
                 if (Model.Posts != null)
@@ -64,7 +64,7 @@
                             <!-- Post Information -->
                             <div class="card-body text-center">
                                 <img class="update-img" src=@post.ImgURL />
-                                <p id="post-description">@post.Description</p>
+                                <p class="post-description">@post.Description</p>
 
                                 <!-- Voting System -->
                                 <div id=@voteSystem class="voting-system text-left">
@@ -92,7 +92,7 @@
                                 foreach (var comment in post.Comments)
                                 {
                                     <!--Delete Comment Button-->
-                                    <div class="posted-comments comment-box">
+                                    <div comment class="posted-comments comment-box">
                                         <span class="glyphicon glyphicon-user user-icon"></span>
                                         <span class="comment-username">@comment.UserName</span>
                                         <div class="float-right">
@@ -232,7 +232,7 @@
             // new comment to render to page
             var renderComment = function (comment, date, idx) {
                 $(`#form${idx}`).before(
-                    $(`<div class="posted-comments comment-box">` +
+                    $(`<div comment class="posted-comments comment-box">` +
                         `<span class="comment-username">${comment.UserName}</span>` +
                         `<div class="float-right">` +
                         `<span>${date}</span>` +

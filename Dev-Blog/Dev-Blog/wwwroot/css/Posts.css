@@ -8,6 +8,10 @@
     margin-bottom: 15px;
 }
 
+#bootstrap-override [edit] {
+    font-family: 'Press Start 2P', cursive;
+}
+
 /*Voting system*/
 #bootstrap-override .voting-system span {
     font-family: 'Press Start 2P', cursive;
@@ -79,4 +83,8 @@ a[edit] {
     border: 1.5px solid #C6C6C6;
     border-radius: 3.5px;
     margin-bottom: 5px;
+}
+
+#bootstrap-override div[comment] {
+    background-color: #313131;
 }
