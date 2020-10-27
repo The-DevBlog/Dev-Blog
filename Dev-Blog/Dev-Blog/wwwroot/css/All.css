@@ -17,13 +17,26 @@
     text-align: center;
 }
 
-/*Dark Theme*/
+    /*Dark Theme*/
+    #bootstrap-override .navbar-brand {
+        color: #ca3e47;
+    }
+
 #bootstrap-override {
     background-color: #313131;
-    color: white;
+    color: #fffaf0;
 }
 
-    #bootstrap-override .card {
+    #bootstrap-override .card,
+    #bootstrap-override > header {
         background-color: #414141;
-        color: white;
+        color: #fffaf0;
+    }
+
+    #bootstrap-override .card-header {
+        background-color: #626262;
+    }
+
+    #bootstrap-override textarea {
+        color: black;
     }

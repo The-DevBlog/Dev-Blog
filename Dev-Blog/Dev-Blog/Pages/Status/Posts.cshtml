@@ -13,8 +13,6 @@
 </head>
 <body id="bootstrap-override">
     <main>
-        <div id="theTest">
-        </div>
         <div class="container">
             @{
                 if (User.Identity.IsAuthenticated)
@@ -46,7 +44,7 @@
                                 <div class="float-right">
                                     <strong>@post.Date.ToShortDateString()</strong>
 
-                                    <!-- Delete post form -->
+                                    <!-- Delete/Edit post form -->
                                     @if (User.Identity.Name == Model.AdminUser)
                                     {
                                         <form method="post" class="delete-form">
@@ -54,7 +52,7 @@
                                             <button asp-page-handler="Delete" type="submit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
                                             </button>
-                                            <a class="nav-link" asp-route-id=@post.Id asp-page="Edit">
+                                            <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
                                             </a>
                                         </form>
@@ -73,12 +71,12 @@
                                         <!-- UpVote -->
                                         <input hidden asp-for="@post.Id" value=@post.Id />
                                         <button id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
-                                        <span>@post.UpVotes</span>
+                                        <span up>@post.UpVotes</span>
 
                                         <!-- DownVote -->
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id=@downVoteId value=@post.Id class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
-                                        <span>@post.DownVotes</span>
+                                        <button id=@downVoteId value=@post.Id down class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
+                                        <span down>@post.DownVotes</span>
 
                                         @if (!User.Identity.IsAuthenticated)
                                         {

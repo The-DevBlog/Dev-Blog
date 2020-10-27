@@ -36,7 +36,8 @@ namespace Dev_Blog.Controllers
             {
                 PostId = comment.PostId,
                 Content = comment.Content,
-                UserName = HttpContext.User.Identity.Name
+                UserName = HttpContext.User.Identity.Name,
+                UserId = _userManager.GetUserId(User)
             });
 
             Object[] json = { newComment, newComment.Date.ToString("MM/dd/yyyy hh:mm tt") };
