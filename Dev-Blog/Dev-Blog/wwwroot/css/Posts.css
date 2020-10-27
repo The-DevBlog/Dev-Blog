@@ -5,8 +5,11 @@
 }
 
 #bootstrap-override .card {
-    text-align: left;
     margin-bottom: 15px;
+}
+
+#bootstrap-override [edit] {
+    font-family: 'Press Start 2P', cursive;
 }
 
 /*Voting system*/
@@ -76,34 +79,12 @@ a[edit] {
     color: #8B8B8B;
 }
 
-#bootstrap-override .update-img {
-    height: 432px;
-    width: 768px;
-}
-
 #bootstrap-override .posted-comments {
     border: 1.5px solid #C6C6C6;
     border-radius: 3.5px;
     margin-bottom: 5px;
 }
 
-@media screen and (max-width: 975px) {
-    #bootstrap-override .update-img {
-        height: 360px;
-        width: 640px;
-    }
-}
-
-@media screen and (max-width: 760px) {
-    #bootstrap-override .update-img {
-        height: 252px;
-        width: 448px;
-    }
-}
-
-@media screen and (max-width: 525px) {
-    #bootstrap-override .update-img {
-        height: 234px;
-        width: 416px;
-    }
+#bootstrap-override div[comment] {
+    background-color: #313131;
 }
