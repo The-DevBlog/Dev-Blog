@@ -14,14 +14,22 @@
     font-family: 'Press Start 2P', cursive;
 }
 
-    #bootstrap-override .login-to-vote {
-        font-size: 0.75em;
-        color: #727272
-    }
+#bootstrap-override .login-to-vote {
+    font-size: 0.75em;
+    color: #727272
+}
 
 #bootstrap-override .voting-system button {
     border: none;
     background: inherit;
+}
+
+span[up] {
+    color: greenyellow;
+}
+
+span[down] {
+    color: orangered;
 }
 
 /*Delete button */
@@ -38,14 +46,14 @@
             color: red;
         }
 
-    /*Edit button*/
-    #bootstrap-override .delete-form a {
-        color: black;
-    }
+/*Edit button*/
+a[edit] {
+    color: #fffaf0;
+}
 
-        #bootstrap-override .delete-form a:hover {
-            color: #A5A5A5;
-        }
+#bootstrap-override .delete-form a:hover {
+    color: #A5A5A5;
+}
 
 /*Edit form*/
 #bootstrap-override #edit-form textarea {
