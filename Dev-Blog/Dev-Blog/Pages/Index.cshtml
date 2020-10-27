@@ -27,8 +27,8 @@
                         <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
                     </div>
                     <div class="card-body text-center">
-                        <img id="update-img" src=@Model.Post.ImgURL />
-                        <p description>@Model.Post.Description</p>
+                        <img id="update-img" class="update-img" src=@Model.Post.ImgURL />
+                        <p id="post-description">@Model.Post.Description</p>
 
                         <hr />
 
