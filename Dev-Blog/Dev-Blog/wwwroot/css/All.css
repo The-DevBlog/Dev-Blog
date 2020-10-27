@@ -17,6 +17,14 @@
     text-align: center;
 }
 
+    #bootstrap-override p[description] {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #626262;
+        border-radius: 5px;
+        text-align: center;
+    }
+
     /*Dark Theme*/
     #bootstrap-override .navbar-brand {
         color: #ca3e47;
