@@ -23,22 +23,10 @@ namespace Dev_Blog.Models.Services
         /// <summary>
         /// Adds a comment to the database
         /// </summary>
-        /// <param name="userId">Id of the user associated with the comment</param>
-        /// <param name="post">Post that is being commented on</param>
-        /// <param name="content">The content of the comment</param>
-        /// <param name="userName">Username of current user</param>
-        /// <returns>Successful completion of task</returns>
-        public async Task<Comment> Create(string userId, Post post, string content, string userName)
+        /// <param name="comment">The comment to add</param>
+        /// <returns>The new comment</returns>
+        public async Task<Comment> Create(Comment comment)
         {
-            Comment comment = new Comment()
-            {
-                UserId = userId,
-                PostId = post.Id,
-                Content = content,
-                Date = DateTime.Now,
-                UserName = userName
-            };
-
             _context.Entry(comment).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return comment;

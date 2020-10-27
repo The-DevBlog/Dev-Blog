@@ -158,9 +158,8 @@
                     dataType: "json",
                     async: true,
                     success: function (data) {
-                        console.log("Success");
                         console.log(status);
-                        renderComment(data, postId);
+                        renderComment(data[0], data[1], postId);
                     },
                     error: function (hxr, status, error) {
                         console.log("ERROR");
@@ -187,7 +186,6 @@
                     async: true,
                     success: function (data) {
                         console.log("Success");
-                        console.log(data);
                         updateVotes(data[0], data[1], postId);
                     },
                     error: function () {
@@ -232,12 +230,12 @@
             }
 
             // new comment to render to page
-            var renderComment = function (comment, idx) {
+            var renderComment = function (comment, date, idx) {
                 $(`#form${idx}`).before(
                     $(`<div class="posted-comments comment-box">` +
                         `<span class="comment-username">${comment.UserName}</span>` +
                         `<div class="float-right">` +
-                        `<span>${comment.Date}</span>` +
+                        `<span>${date}</span>` +
                         `</div>` +
                         `<p>${comment.Content}</p>` +
                         `</div>`

@@ -10,12 +10,9 @@ namespace Dev_Blog.Models.Interfaces
         /// <summary>
         /// Adds a comment to the database
         /// </summary>
-        /// <param name="userId">Id of the user associated with the comment</param>
-        /// <param name="post">Post that is being commented on</param>
-        /// <param name="content">The content of the comment</param>
-        /// <param name="userName">Username of current user</param>
-        /// <returns>Successful completion of task</returns>
-        public Task<Comment> Create(string userId, Post post, string content, string userName);
+        /// <param name="comment">The comment to add</param>
+        /// <returns>The new comment</returns>
+        public Task<Comment> Create(Comment comment);
 
         /// <summary>
         /// Retrieves all comments from database
