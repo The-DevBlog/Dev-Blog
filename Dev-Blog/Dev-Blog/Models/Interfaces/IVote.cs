@@ -8,59 +8,45 @@ namespace Dev_Blog.Models.Interfaces
     public interface IVote
     {
         /// <summary>
-        /// Adds an upvote to the database
+        /// Adds a vote to the database
         /// </summary>
         /// <param name="vote">The vote to add</param>
         /// <returns>Successful completion of task</returns>
-        public Task CreateUpVote(UpVote vote);
+        public Task CreateUpVote(Vote vote);
 
         /// <summary>
-        /// Adds an downvote to the database
+        /// Adds aa vote to the database
         /// </summary>
         /// <param name="vote">The vote to add</param>
         /// <returns>Successful completion of task</returns>
-        public Task CreateDownVote(DownVote vote);
+        public Task CreateDownVote(Vote vote);
 
-        /// <summary>
-        /// Removes a specified downvote from the database
-        /// </summary>
-        /// <param name="vote">The vote to remove</param>
-        /// <returns>Successful completion of task</returns>
-        public Task DeleteDownVote(DownVote vote);
-
-        /// <summary>
-        /// Removes a specified upvote from the database
-        /// </summary>
-        /// <param name="vote">The vote to remove</param>
-        /// <returns>Successful completion of task</returns>
-        public Task DeleteUpVote(UpVote vote);
+        ///// <summary>
+        ///// Removes a specified vote from the database
+        ///// </summary>
+        ///// <param name="vote">The vote to remove</param>
+        ///// <returns>Successful completion of task</returns>
+        public Task DeleteVote(Vote vote);
 
         /// <summary>
         /// Checks to see if the user has already upvoted on a specified post
         /// </summary>
         /// <param name="vote">The vote to check for</param>
         /// <returns>A boolean indicating whether the vote exists within the database</returns>
-        public Task<bool> HasUpVoted(UpVote vote);
+        public Task<bool> HasUpVoted(Vote vote);
 
         /// <summary>
         /// Checks to see if the user has already downvoted on a specified post
         /// </summary>
         /// <param name="vote">The vote to check for</param>
         /// <returns>A boolean indicating whether the vote exists within the database</returns>
-        public Task<bool> HasDownVoted(DownVote vote);
+        public Task<bool> HasDownVoted(Vote vote);
 
         /// <summary>
-        /// Retrieves a specified upvote from the database
+        /// Retrieves a specified vote from the database
         /// </summary>
         /// <param name="vote">The specified vote</param>
         /// <returns>The specified vote</returns>
-        public Task<UpVote> GetUpVote(UpVote vote);
-
-        /// <summary>
-        /// Retrieves a specified downvote from the database
-        /// </summary>
-        /// <param name="vote">The specified vote</param>
-        /// <returns>The specified vote</returns>
-        public Task<DownVote> GetDownVote(DownVote vote);
+        public Task<Vote> GetVote(Vote vote);
     }
 }
