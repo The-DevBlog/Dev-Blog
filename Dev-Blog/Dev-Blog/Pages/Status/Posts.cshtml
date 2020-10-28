@@ -50,7 +50,7 @@
                                     {
                                         <form method="post" class="delete-form">
                                             <input hidden asp-for=@post.Id>
-                                            <button asp-page-handler="Delete" type="submit">
+                                            <button asp-page-handler="DeletePost" type="submit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
                                             </button>
                                             <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
