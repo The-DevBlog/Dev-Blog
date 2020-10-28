@@ -81,3 +81,13 @@
     #bootstrap-override textarea {
         color: black;
     }
+
+    #bootstrap-override .modal-content {
+        background-color: #414141;
+        color: #fffaf0;
+    }
+
+    #bootstrap-override .modal-header,
+    #bootstrap-override .modal-footer {
+        border-color: #313131;
+    }

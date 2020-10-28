@@ -1,27 +1,31 @@
 ﻿@model Dev_Blog.Models.ViewModels.AccountVM
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<Dev_Blog.Models.User> SignInManager
-<a data-toggle="modal" data-target="#loginModal" class="nav-link">Login</a>
-<div class="modal fade" id="loginModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Login</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form class="text-center border border-light p-5" method="post">
-                    <h5>UserName</h5>
-                    <div asp-validation-summary="All" class="error-message"></div>
-                    <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="UserName" asp-for="@Model.UserName">
-                    <h5>Password</h5>
-                    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Password">
-                    <button class="btn btn-info btn-block my-4" type="submit" asp-page-handler="Login">Sign in</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <head>
+        <link type="text/css" rel="stylesheet" href="~/css/All.css" />
+    </head>
+
+    <a data-toggle="modal" data-target="#loginModal" class="nav-link">Login</a>
+    <div class="modal fade" id="loginModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Login</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="text-center p-5" method="post">
+                        <h5>UserName</h5>
+                        <div asp-validation-summary="All" class="error-message"></div>
+                        <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="UserName" asp-for="@Model.UserName">
+                        <h5>Password</h5>
+                        <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Password">
+                        <button class="btn btn-info btn-block my-4" type="submit" asp-page-handler="Login">Sign in</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
