@@ -31,7 +31,7 @@
         width: 640px;
     }
 
-    #bootstrap-override p[description] {
+    #bootstrap-override .post-description {
         width: 640px;
     }
 }
@@ -42,7 +42,7 @@
         width: 448px;
     }
 
-    #bootstrap-override p[description] {
+    #bootstrap-override .post-description {
         width: 448px;
     }
 }
@@ -52,10 +52,10 @@
         height: 234px;
         width: 416px;
     }
-}
 
-#bootstrap-override p[description] {
-    width: 416px;
+    #bootstrap-override .post-description {
+        width: 416px;
+    }
 }
 
 /*Dark Theme*/
