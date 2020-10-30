@@ -14,42 +14,4 @@
 </head>
 <body id="bootstrap-override">
     <h1>My Bio</h1>
-    <div id="renderHere">
-    </div>
-    <div>
-        <button href="#" class="btn btn-primary">Submit</button>
-    </div>
-
-    <script>
-        $(document).ready(function () {
-
-            $("button").on("click", function (e) {
-
-                var comments;
-
-                $.ajax({
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    url: '@Url.Action("GetComments", "Ajax")',
-                    dataType: "json",
-                    async: true,
-                    success: function (data) {
-                        console.log("Success");
-                        renderComments(data);
-                    },
-                    error: function (hxr, status, error) {
-                        console.log("ERROR");
-                    }
-                })
-
-                e.preventDefault();
-            })
-
-            var renderComments = function (comments) {
-                comments.forEach((item) => {
-                    $("#renderHere").append(`<h3>${item.Content}</h3>`)
-                });
-            }
-        })
-    </script>
 </body>
