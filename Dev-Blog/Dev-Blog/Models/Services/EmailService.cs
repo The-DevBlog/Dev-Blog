@@ -57,6 +57,7 @@ namespace Dev_Blog.Models.Services
                 Subject = "Suggestion",
                 HtmlContent = $"<p>{context}</p>"
             };
+
             msg.AddTo(_config.GetSection("AdminEmail").Value);
             await client.SendEmailAsync(msg);
         }

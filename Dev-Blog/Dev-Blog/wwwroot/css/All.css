@@ -31,7 +31,7 @@
         width: 640px;
     }
 
-    #bootstrap-override p[description] {
+    #bootstrap-override .post-description {
         width: 640px;
     }
 }
@@ -42,7 +42,7 @@
         width: 448px;
     }
 
-    #bootstrap-override p[description] {
+    #bootstrap-override .post-description {
         width: 448px;
     }
 }
@@ -52,10 +52,10 @@
         height: 234px;
         width: 416px;
     }
-}
 
-#bootstrap-override p[description] {
-    width: 416px;
+    #bootstrap-override .post-description {
+        width: 416px;
+    }
 }
 
 /*Dark Theme*/
@@ -78,6 +78,17 @@
         background-color: #626262;
     }
 
-    #bootstrap-override textarea {
-        color: black;
+    #bootstrap-override .modal-content {
+        background-color: #414141;
+        color: #fffaf0;
+    }
+
+    #bootstrap-override .modal-header,
+    #bootstrap-override .modal-footer {
+        border-color: #313131;
+    }
+
+    #bootstrap-override .modal-body input {
+        background-color: #313131;
+        border: none;
     }

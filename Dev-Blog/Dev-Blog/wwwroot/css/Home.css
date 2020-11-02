@@ -17,4 +17,5 @@
 #bootstrap-override .card-footer textarea {
     margin: 0px auto 15px;
     width: 70%;
+    color: black;
 }

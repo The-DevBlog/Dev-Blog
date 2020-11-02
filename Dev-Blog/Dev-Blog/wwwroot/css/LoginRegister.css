@@ -1,0 +1,9 @@
+﻿#bootstrap-override .modal-body .btn {
+    background-color: #ca3e47;
+    color: #fffaf0;
+}
+
+    #bootstrap-override .modal-body .btn:hover {
+        background-color: #83272D;
+        color: #313131;
+    }
