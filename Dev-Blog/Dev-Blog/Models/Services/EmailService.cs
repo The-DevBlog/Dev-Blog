@@ -31,14 +31,12 @@ namespace Dev_Blog.Models.Services
 
             var msg = new SendGridMessage()
             {
-                //From = new EmailAddress(_config.GetSection("AdminEmail").Value),
-                From = new EmailAddress("devmaster@thedevblog.net"),
+                From = new EmailAddress(_config.GetSection("AdminEmail").Value),
                 Subject = "Welcome",
                 HtmlContent = "<p>Thank you for subscribing!</p>"
             };
 
             msg.AddTo(email);
-
             await client.SendEmailAsync(msg);
         }
 
@@ -59,6 +57,7 @@ namespace Dev_Blog.Models.Services
                 Subject = "Suggestion",
                 HtmlContent = $"<p>{context}</p>"
             };
+
             msg.AddTo(_config.GetSection("AdminEmail").Value);
             await client.SendEmailAsync(msg);
         }
