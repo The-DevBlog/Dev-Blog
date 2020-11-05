@@ -1,4 +1,6 @@
-﻿#bootstrap-override .modal-body .btn {
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override .modal-body .btn {
     background-color: #ca3e47;
     color: #fffaf0;
 }
@@ -7,3 +9,9 @@
         background-color: #83272D;
         color: #313131;
     }
+
+/*Login Error Page*/
+#bootstrap-override #login-error {
+    margin-top: 20%;
+    font-family: 'Press Start 2P', cursive;
+}

@@ -51,7 +51,7 @@ namespace Dev_Blog.Models.Base
 
             ModelState.AddModelError("", "Invalid email or password");
 
-            return Page();
+            return RedirectToPage("Account/LoginError");
         }
 
         // REGISTER
