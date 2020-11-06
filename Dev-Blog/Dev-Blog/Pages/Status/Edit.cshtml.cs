@@ -15,8 +15,9 @@ namespace Dev_Blog.Pages.Status
     [Authorize(Policy = "Admin")]
     public class EditModel : BasePage
     {
-        public EditModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
+        public EditModel(IPost post, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
         {
+            _post = post;
         }
 
         private readonly IPost _post;
@@ -26,11 +27,6 @@ namespace Dev_Blog.Pages.Status
 
         [BindProperty]
         public string Description { get; set; }
-
-        public EditModel(IPost post)
-        {
-            _post = post;
-        }
 
         public async Task<IActionResult> OnGet(int id)
         {
