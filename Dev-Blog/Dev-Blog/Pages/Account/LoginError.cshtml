@@ -1,6 +1,7 @@
 ﻿@page
-@model Dev_Blog.Pages.Bio.BioModel
+@model Dev_Blog.Pages.Account.LoginErrorModel
 @{
+    ViewData["Title"] = "Login Error";
     Layout = "_Layout";
 }
 
@@ -9,20 +10,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/css/All.css" />
-    <link rel="stylesheet" type="text/css" href="~/css/Bio.css" />
-
-    <title>Bio</title>
+    <link rel="stylesheet" type="text/css" href="~/css/LoginRegister.css" />
+    <title>Status</title>
 </head>
 <body id="bootstrap-override">
     <main>
-        <div class="container">
+        <div id="login-error" class="container">
             <div class="card">
-                <div class="card-header text-center">
-                    <h3>About the Creator</h3>
-                </div>
                 <div class="card-body text-center">
-                    <p class="d-inline-flex">This is a very long description about myself.</p>
-                    <img src="~/Imgs/Me.jpg" height="400" width="400" />
+                    <h3>Login Error</h3>
+                    <h4>UserName and Password do not match</h4>
                 </div>
             </div>
         </div>

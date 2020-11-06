@@ -117,7 +117,7 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <form>
-                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
+                                        <textarea maxlength="750" asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
                                         <input hidden asp-for="@post.Id" value=@post.Id />
                                         <button class="commentBtn btn btn-secondary" value=@post.Id>Comment</button>
                                     </form>
@@ -159,10 +159,16 @@
                     dataType: "json",
                     async: true,
                     success: function (data) {
-                        console.log(status);
-                        renderComment(data[0], data[1], postId);
+                        console.log("Success");
+
+                        // if comment is over 750 characters
+                        if (data[1] === "unsuccessful") {
+                            $(`#form${postId} textarea`).val(data[0]);
+                        } else {
+                            renderComment(data[0], data[1], postId);
+                        }
                     },
-                    error: function (hxr, status, error) {
+                    error: function () {
                         console.log("ERROR");
                     }
                 });
@@ -191,7 +197,6 @@
                     },
                     error: function () {
                         console.log("ERROR");
-                        console.log(data);
                     }
                 })
                 e.preventDefault();
@@ -214,7 +219,6 @@
                     async: true,
                     success: function (data) {
                         console.log("Success");
-                        console.log(data);
                         updateVotes(data[0], data[1], postId);
                     },
                     error: function () {
