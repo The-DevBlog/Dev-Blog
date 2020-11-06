@@ -12,7 +12,7 @@ namespace Dev_Blog.Pages.Account
 {
     public class LoginErrorModel : BasePage
     {
-        public LoginErrorModel(SignInManager<User> signInManager) : base(signInManager)
+        public LoginErrorModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
         {
         }
 

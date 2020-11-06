@@ -37,7 +37,7 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(IPost post, IConfiguration config, IComment comment, SignInManager<User> signInManager) : base(signInManager)
+        public PostsModel(IPost post, IConfiguration config, IComment comment, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
         {
             _comment = comment;
             _config = config;

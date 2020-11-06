@@ -6,6 +6,7 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,6 +15,10 @@ namespace Dev_Blog.Pages.Status
     [Authorize(Policy = "Admin")]
     public class EditModel : BasePage
     {
+        public EditModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
+        {
+        }
+
         private readonly IPost _post;
 
         [BindProperty]

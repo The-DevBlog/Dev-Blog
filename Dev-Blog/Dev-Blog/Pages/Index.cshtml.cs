@@ -20,7 +20,6 @@ namespace Dev_Blog.Pages
     {
         private readonly IPost _post;
         private readonly IEmail _email;
-        private readonly SignInManager<User> _signInManager;
 
         [BindProperty]
         public Post Post { get; set; }
@@ -28,7 +27,7 @@ namespace Dev_Blog.Pages
         [BindProperty]
         public string Context { get; set; }
 
-        public IndexModel(IEmail email, IPost post, SignInManager<User> signInManager) : base(email, signInManager)
+        public IndexModel(IEmail email, IPost post, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager, email)
         {
             _email = email;
             _post = post;
