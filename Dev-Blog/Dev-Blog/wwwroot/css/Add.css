@@ -1,5 +1,22 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+#bootstrap-override .panel-body {
+    background-color: #414141;
+    color: #fffaf0;
+    border: none;
+}
+
+#bootstrap-override .container * {
+    border: none;
+}
+
+#bootstrap-override .panel-body textarea,
+#bootstrap-override .panel-body input,
+#bootstrap-override .panel-body div {
+    color: #fffaf0;
+    background-color: #313131;
+}
+
 .pb-cmnt-container {
     font-family: Lato;
     margin-top: 100px;

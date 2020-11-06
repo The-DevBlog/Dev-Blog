@@ -1,0 +1,5 @@
+﻿#bootstrap-override textarea {
+    color: #fffaf0;
+    background-color: #313131;
+    border: none;
+}
