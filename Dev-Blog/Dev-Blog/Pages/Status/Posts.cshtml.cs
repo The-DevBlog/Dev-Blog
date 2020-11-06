@@ -21,8 +21,6 @@ namespace Dev_Blog.Pages.Status
         private readonly IPost _post;
         private readonly IConfiguration _config;
         private readonly IComment _comment;
-        private readonly IEmail _email;
-        private readonly UserManager<User> _userManager;
 
         [BindProperty]
         public List<Post> Posts { get; set; }
@@ -39,11 +37,9 @@ namespace Dev_Blog.Pages.Status
         [BindProperty]
         public string AdminUser { get; set; }
 
-        public PostsModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post, IConfiguration config, IComment comment) : base(signInManager, userManager, email)
+        public PostsModel(IPost post, IConfiguration config, IComment comment, SignInManager<User> signInManager) : base(signInManager)
         {
-            _email = email;
             _comment = comment;
-            _userManager = userManager;
             _config = config;
             _post = post;
         }
