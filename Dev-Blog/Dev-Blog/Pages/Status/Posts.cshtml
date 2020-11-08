@@ -28,33 +28,7 @@
                 if (Model.Posts != null)
                 {
                     <!-- Pagination -->
-                    <form method="post" class="text-center">
-
-                        @{
-                            <!-- Page Left -->
-                            if (Model.PageNumber == 1)
-                            {
-                                <a pageLeft disable class="glyphicon glyphicon-chevron-left"></a>
-
-                            }
-                            else
-                            {
-                                <a page pageLeft asp-page="Posts" asp-page-handler="PageLeft" class="glyphicon glyphicon-chevron-left"></a>
-
-                            }
-                            <span page>@Model.PageNumber</span>
-
-                            <!-- Page Right -->
-                            if (Model.PageNumber == Model.LastPage)
-                            {
-                                <a pageRight disable class="glyphicon glyphicon-chevron-right"></a>
-                            }
-                            else
-                            {
-                                <a page pageRight asp-page="Posts" asp-page-handler="PageRight" class="glyphicon glyphicon-chevron-right"></a>
-                            }
-                        }
-                    </form>
+                    await Html.RenderPartialAsync("_Pages", Model);
 
                     <!-- All Posts -->
                     foreach (var post in Model.Posts)
@@ -156,6 +130,8 @@
                             </div>
                         </div>
                     }
+                    <!-- Pagination -->
+                    await Html.RenderPartialAsync("_Pages", Model);
                 }
             }
         </div>

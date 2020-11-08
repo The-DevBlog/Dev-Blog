@@ -19,31 +19,19 @@ using PagedList.Mvc;
 
 namespace Dev_Blog.Pages.Status
 {
+    [BindProperties]
     public class PostsModel : BasePage
     {
         private readonly IPost _post;
         private readonly IConfiguration _config;
         private readonly IComment _comment;
 
-        [BindProperty]
         public int PageNumber { get; set; }
-
-        [BindProperty]
         public int LastPage { get; set; }
-
-        [BindProperty]
         public List<Post> Posts { get; set; }
-
-        [BindProperty]
         public Post Post { get; set; }
-
-        [BindProperty]
         public List<Comment> Comments { get; set; }
-
-        [BindProperty]
         public Comment Comment { get; set; }
-
-        [BindProperty]
         public string AdminUser { get; set; }
 
         public PostsModel(IPost post, IConfiguration config, IComment comment, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
