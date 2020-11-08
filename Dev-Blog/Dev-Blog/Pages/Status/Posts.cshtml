@@ -4,6 +4,7 @@
     ViewData["Title"] = "Updates";
     Layout = "_Layout";
 }
+
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -20,22 +21,22 @@
                 {
                     if (User.Identity.Name == Model.AdminUser)
                     {
+                        <!-- Add Post -->
                         <a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>
                     }
                 }
                 if (Model.Posts != null)
                 {
+                    <!-- Pagination -->
+                    await Html.RenderPartialAsync("_Pages", Model);
+
                     <!-- All Posts -->
-                    string formId = "";
-                    string upVoteId = "";
-                    string downVoteId = "";
-                    string voteSystem = "";
                     foreach (var post in Model.Posts)
                     {
-                        formId = "form" + post.Id;
-                        upVoteId = "upVote" + post.Id;
-                        downVoteId = "downVote" + post.Id;
-                        voteSystem = "voteSystem" + post.Id;
+                        string formId = "form" + post.Id;
+                        string upVoteId = "upVote" + post.Id;
+                        string downVoteId = "downVote" + post.Id;
+                        string voteSystem = "voteSystem" + post.Id;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -71,12 +72,12 @@
                                     <form>
                                         <!-- UpVote -->
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
+                                        <button vote id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
                                         <span up>@post.UpVotes</span>
 
                                         <!-- DownVote -->
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id=@downVoteId value=@post.Id down class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
+                                        <button vote id=@downVoteId value=@post.Id down class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
                                         <span down>@post.DownVotes</span>
 
                                         @if (!User.Identity.IsAuthenticated)
@@ -91,6 +92,7 @@
                             {
                                 foreach (var comment in post.Comments)
                                 {
+                                    <!-- Comment -->
                                     <div comment class="posted-comments comment-box">
                                         <span class="glyphicon glyphicon-user user-icon"></span>
                                         <span class="comment-username">@comment.UserName</span>
@@ -129,6 +131,8 @@
                             </div>
                         </div>
                     }
+                    <!-- Pagination -->
+                    await Html.RenderPartialAsync("_Pages", Model);
                 }
             }
         </div>
@@ -226,7 +230,7 @@
                     }
                 })
                 e.preventDefault();
-            })
+            });
 
             // update the vote count
             var updateVotes = function (upVotes, downVotes, id) {

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Mvc;
+using PagedList;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Xml.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace Dev_Blog.Models.Services
 {
@@ -52,12 +56,51 @@ namespace Dev_Blog.Models.Services
         }
 
         /// <summary>
-        /// Get a list of all posts
+        /// Returns a count of all the posts in the database
         /// </summary>
-        /// <returns>Successful result with list of posts</returns>
-        public async Task<List<Post>> GetAllPosts()
+        /// <returns>Count of all posts</returns>
+        public async Task<int> GetCount()
         {
-            return await _context.Post.Include(x => x.Comments).OrderByDescending(x => x.Date).ToListAsync();
+            return await _context.Post.CountAsync();
+        }
+
+        /// <summary>
+        /// Determines if there is a next page
+        /// </summary>
+        /// <param name="page">The page number to get</param>
+        /// <returns>A boolean</returns>
+        public async Task<bool> CanPageRight(int page)
+        {
+            int total = await _context.Post.CountAsync();
+            int skip = 5 * (page - 1);
+            return skip < total;
+        }
+
+        /// <summary>
+        /// Returns one page worth of posts (5 max)
+        /// </summary>
+        /// <param name="page">The page number to get</param>
+        /// <returns>5 posts</returns>
+        public async Task<List<Post>> GetPage(int page)
+        {
+            int skip = 5 * (page - 1);
+
+            return await _context.Post.Include(x => x.Comments)
+            .OrderByDescending(x => x.Date)
+            .Skip(skip)
+            .Take(5)
+            .ToListAsync();
+        }
+
+        /// <summary>
+        /// Returns the last page of posts
+        /// </summary>
+        /// <returns>Int of last page</returns>
+        public async Task<int> GetLastPage()
+        {
+            decimal postCount = await _context.Post.CountAsync();
+            var lastPage = Math.Ceiling(decimal.Divide(postCount, 5));
+            return Decimal.ToInt32(lastPage);
         }
 
         /// <summary>

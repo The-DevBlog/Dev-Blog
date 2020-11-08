@@ -1,5 +1,9 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+#bootstrap-override a:hover {
+    text-decoration: none;
+}
+
 #bootstrap-override #add-post {
     margin: 15px;
 }
@@ -12,6 +16,37 @@
     font-family: 'Press Start 2P', cursive;
 }
 
+/*Pagination*/
+a[page],
+a[skipFirst] span,
+a[skipLast] span {
+    border: none;
+    color: #ca3e47;
+    font-weight: 600;
+    outline: none;
+}
+
+#bootstrap-override [disable],
+#bootstrap-override span[disable] {
+    color: #727272;
+    border: none;
+    outline: none;
+}
+
+a[skipFirst] {
+    margin-right: 12px;
+}
+
+a[skipLast] {
+    margin-left: 12px;
+}
+
+    a[skipFirst]:hover > span,
+    a[skipLast]:hover > span,
+    a[page]:hover {
+        color: #fffaf0;
+    }
+
 /*Voting system*/
 #bootstrap-override .voting-system span {
     font-family: 'Press Start 2P', cursive;
@@ -19,7 +54,7 @@
 
 #bootstrap-override .login-to-vote {
     font-size: 0.75em;
-    color: #727272
+    color: #727272;
 }
 
 #bootstrap-override .voting-system button {
@@ -32,8 +67,17 @@ span[up] {
 }
 
 span[down] {
-    color: orangered;
+    color: #ca3e47;
 }
+
+button[vote] {
+    outline: none;
+    color: #AEAEAE;
+}
+
+    button[vote]:hover {
+        color: #fffaf0;
+    }
 
 /*Delete button */
 #bootstrap-override .delete-form {
@@ -46,7 +90,7 @@ span[down] {
     }
 
         #bootstrap-override .delete-form button:hover {
-            color: red;
+            color: #ca3e47;
         }
 
 /*Edit button*/

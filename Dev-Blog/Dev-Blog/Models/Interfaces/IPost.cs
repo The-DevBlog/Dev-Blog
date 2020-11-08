@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dropbox.Api.TeamLog;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,16 +18,36 @@ namespace Dev_Blog.Models.Interfaces
         Task<Post> Create(Post post, string url);
 
         /// <summary>
-        /// Get a list of all posts
+        /// Determines if there is a next page
         /// </summary>
-        /// <returns>Successful result with list of posts</returns>
-        Task<List<Post>> GetAllPosts();
+        /// <param name="page">The page number to get</param>
+        /// <returns>A boolean</returns>
+        Task<bool> CanPageRight(int page);
+
+        /// <summary>
+        /// Returns the last page of posts
+        /// </summary>
+        /// <returns>Int of last page</returns>
+        Task<int> GetLastPage();
+
+        /// <summary>
+        /// Returns one page worth of posts (5 max)
+        /// </summary>
+        /// <param name="page">The page number to get</param>
+        /// <returns>5 posts</returns>
+        Task<List<Post>> GetPage(int page);
 
         /// <summary>
         /// Gets the most recent post
         /// </summary>
         /// <returns>Most recent post</returns>
         Task<Post> GetLatestPost();
+
+        /// <summary>
+        /// Returns a count of all the posts in the database
+        /// </summary>
+        /// <returns>Count of all posts</returns>
+        Task<int> GetCount();
 
         /// <summary>
         /// Retrieves a specified post
