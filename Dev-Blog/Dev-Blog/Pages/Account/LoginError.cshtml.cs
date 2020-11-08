@@ -10,23 +10,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dev_Blog.Pages.Account
 {
-    public class LogoutModel : PageModel
+    public class LoginErrorModel : BasePage
     {
-        private readonly SignInManager<User> _signInManager;
-
-        public LogoutModel(SignInManager<User> signInManager)
+        public LoginErrorModel(SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
         {
-            _signInManager = signInManager;
         }
 
         public void OnGet()
         {
-        }
-
-        public async Task<IActionResult> OnPost()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToPage("/Index");
         }
     }
 }

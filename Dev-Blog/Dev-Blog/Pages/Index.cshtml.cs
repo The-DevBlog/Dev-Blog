@@ -27,7 +27,7 @@ namespace Dev_Blog.Pages
         [BindProperty]
         public string Context { get; set; }
 
-        public IndexModel(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email, IPost post) : base(signInManager, userManager, email)
+        public IndexModel(IEmail email, IPost post, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager, email)
         {
             _email = email;
             _post = post;

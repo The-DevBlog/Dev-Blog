@@ -2,11 +2,6 @@
     text-align: left;
 }
 
-#bootstrap-override #update-img {
-    height: 432px;
-    width: 768px;
-}
-
 #bootstrap-override hr {
     border-radius: 2.5px;
     height: 5px;
@@ -22,30 +17,5 @@
 #bootstrap-override .card-footer textarea {
     margin: 0px auto 15px;
     width: 70%;
-}
-
-@media screen and (max-width: 975px) {
-    #bootstrap-override #update-img {
-        height: 360px;
-        width: 640px;
-    }
-}
-
-@media screen and (max-width: 760px) {
-    #bootstrap-override #update-img {
-        height: 252px;
-        width: 448px;
-    }
-}
-
-@media screen and (max-width: 525px) {
-    #bootstrap-override #update-img {
-        height: 234px;
-        width: 416px;
-    }
-
-    #bootstrap-override .card-footer textarea {
-        margin: 0px auto 15px;
-        width: 100%;
-    }
+    color: black;
 }

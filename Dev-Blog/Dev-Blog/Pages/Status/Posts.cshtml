@@ -4,11 +4,13 @@
     ViewData["Title"] = "Updates";
     Layout = "_Layout";
 }
+
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/css/Posts.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/All.css" />
     <title>Status</title>
 </head>
 <body id="bootstrap-override">
@@ -19,22 +21,22 @@
                 {
                     if (User.Identity.Name == Model.AdminUser)
                     {
-                        <a id="add-post" class="btn btn-primary" asp-page="Add">Add Post</a>
+                        <!-- Add Post -->
+                        <a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>
                     }
                 }
                 if (Model.Posts != null)
                 {
+                    <!-- Pagination -->
+                    await Html.RenderPartialAsync("_Pages", Model);
+
                     <!-- All Posts -->
-                    string formId = "";
-                    string upVoteId = "";
-                    string downVoteId = "";
-                    string voteSystem = "";
                     foreach (var post in Model.Posts)
                     {
-                        formId = "form" + post.Id;
-                        upVoteId = "upVote" + post.Id;
-                        downVoteId = "downVote" + post.Id;
-                        voteSystem = "voteSystem" + post.Id;
+                        string formId = "form" + post.Id;
+                        string upVoteId = "upVote" + post.Id;
+                        string downVoteId = "downVote" + post.Id;
+                        string voteSystem = "voteSystem" + post.Id;
                         <div class="card">
                             <div class="card-header">
                                 <span>
@@ -49,7 +51,7 @@
                                     {
                                         <form method="post" class="delete-form">
                                             <input hidden asp-for=@post.Id>
-                                            <button asp-page-handler="Delete" type="submit">
+                                            <button asp-page-handler="DeletePost" type="submit">
                                                 @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
                                             </button>
                                             <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
@@ -63,19 +65,19 @@
                             <!-- Post Information -->
                             <div class="card-body text-center">
                                 <img class="update-img" src=@post.ImgURL />
-                                <p>@post.Description</p>
+                                <p class="post-description">@post.Description</p>
 
                                 <!-- Voting System -->
                                 <div id=@voteSystem class="voting-system text-left">
                                     <form>
                                         <!-- UpVote -->
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
+                                        <button vote id=@upVoteId value=@post.Id class="upVoteHandler glyphicon glyphicon-thumbs-up"></button>
                                         <span up>@post.UpVotes</span>
 
                                         <!-- DownVote -->
                                         <input hidden asp-for="@post.Id" value=@post.Id />
-                                        <button id=@downVoteId value=@post.Id down class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
+                                        <button vote id=@downVoteId value=@post.Id down class="downVoteHandler glyphicon glyphicon-thumbs-down"></button>
                                         <span down>@post.DownVotes</span>
 
                                         @if (!User.Identity.IsAuthenticated)
@@ -90,11 +92,14 @@
                             {
                                 foreach (var comment in post.Comments)
                                 {
-                                    <!--Delete Comment Button-->
-                                    <div class="posted-comments comment-box">
+                                    <!-- Comment -->
+                                    <div comment class="posted-comments comment-box">
+                                        <span class="glyphicon glyphicon-user user-icon"></span>
                                         <span class="comment-username">@comment.UserName</span>
                                         <div class="float-right">
                                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+
+                                            <!--Delete Comment Button-->
                                             <form method="post" class="delete-form">
                                                 @if (User.Identity.Name == Model.AdminUser)
                                                 {
@@ -114,7 +119,7 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     <form>
-                                        <textarea asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
+                                        <textarea maxlength="750" asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
                                         <input hidden asp-for="@post.Id" value=@post.Id />
                                         <button class="commentBtn btn btn-secondary" value=@post.Id>Comment</button>
                                     </form>
@@ -126,6 +131,8 @@
                             </div>
                         </div>
                     }
+                    <!-- Pagination -->
+                    await Html.RenderPartialAsync("_Pages", Model);
                 }
             }
         </div>
@@ -156,10 +163,16 @@
                     dataType: "json",
                     async: true,
                     success: function (data) {
-                        console.log(status);
-                        renderComment(data[0], data[1], postId);
+                        console.log("Success");
+
+                        // if comment is over 750 characters
+                        if (data[1] === "unsuccessful") {
+                            $(`#form${postId} textarea`).val(data[0]);
+                        } else {
+                            renderComment(data[0], data[1], postId);
+                        }
                     },
-                    error: function (hxr, status, error) {
+                    error: function () {
                         console.log("ERROR");
                     }
                 });
@@ -188,7 +201,6 @@
                     },
                     error: function () {
                         console.log("ERROR");
-                        console.log(data);
                     }
                 })
                 e.preventDefault();
@@ -211,7 +223,6 @@
                     async: true,
                     success: function (data) {
                         console.log("Success");
-                        console.log(data);
                         updateVotes(data[0], data[1], postId);
                     },
                     error: function () {
@@ -219,7 +230,7 @@
                     }
                 })
                 e.preventDefault();
-            })
+            });
 
             // update the vote count
             var updateVotes = function (upVotes, downVotes, id) {
@@ -230,7 +241,8 @@
             // new comment to render to page
             var renderComment = function (comment, date, idx) {
                 $(`#form${idx}`).before(
-                    $(`<div class="posted-comments comment-box">` +
+                    $(`<div comment class="posted-comments comment-box">` +
+                        `<span class="glyphicon glyphicon-user user-icon"></span>` +
                         `<span class="comment-username">${comment.UserName}</span>` +
                         `<div class="float-right">` +
                         `<span>${date}</span>` +

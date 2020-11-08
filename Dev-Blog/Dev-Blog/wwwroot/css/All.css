@@ -1,9 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-#bootstrap-override main > div:first-of-type {
-    margin: auto;
-}
-
+/*Header*/
 #bootstrap-override nav {
     font-family: 'Press Start 2P', cursive;
 }
@@ -13,14 +10,58 @@
     background-color: inherit;
 }
 
-#bootstrap-override {
-    text-align: center;
+/*Posts*/
+#bootstrap-override .post-description {
+    padding: 15px;
+    background-color: #626262;
+    border-radius: 5px;
+    margin: 15px auto;
+    width: 768px;
 }
 
-    /*Dark Theme*/
-    #bootstrap-override .navbar-brand {
-        color: #ca3e47;
+#bootstrap-override .update-img {
+    height: 432px;
+    width: 768px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 975px) {
+    #bootstrap-override .update-img {
+        height: 360px;
+        width: 640px;
     }
+
+    #bootstrap-override .post-description {
+        width: 640px;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    #bootstrap-override .update-img {
+        height: 252px;
+        width: 448px;
+    }
+
+    #bootstrap-override .post-description {
+        width: 448px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    #bootstrap-override .update-img {
+        height: 234px;
+        width: 416px;
+    }
+
+    #bootstrap-override .post-description {
+        width: 416px;
+    }
+}
+
+/*Dark Theme*/
+#bootstrap-override .navbar-brand {
+    color: #ca3e47;
+}
 
 #bootstrap-override {
     background-color: #313131;
@@ -37,6 +78,17 @@
         background-color: #626262;
     }
 
-    #bootstrap-override textarea {
-        color: black;
+    #bootstrap-override .modal-content {
+        background-color: #414141;
+        color: #fffaf0;
+    }
+
+    #bootstrap-override .modal-header,
+    #bootstrap-override .modal-footer {
+        border-color: #313131;
+    }
+
+    #bootstrap-override .modal-body input {
+        background-color: #313131;
+        border: none;
     }

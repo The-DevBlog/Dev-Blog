@@ -1,0 +1,10 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override * {
+    font-family: 'Press Start 2P', cursive;
+}
+
+#bootstrap-override img {
+    margin-left: 20px;
+    border-radius: 5px;
+}

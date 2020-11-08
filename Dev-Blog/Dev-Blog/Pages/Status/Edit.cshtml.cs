@@ -6,6 +6,7 @@ using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,6 +15,11 @@ namespace Dev_Blog.Pages.Status
     [Authorize(Policy = "Admin")]
     public class EditModel : BasePage
     {
+        public EditModel(IPost post, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
+        {
+            _post = post;
+        }
+
         private readonly IPost _post;
 
         [BindProperty]
@@ -21,11 +27,6 @@ namespace Dev_Blog.Pages.Status
 
         [BindProperty]
         public string Description { get; set; }
-
-        public EditModel(IPost post)
-        {
-            _post = post;
-        }
 
         public async Task<IActionResult> OnGet(int id)
         {

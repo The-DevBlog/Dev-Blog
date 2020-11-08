@@ -6,6 +6,8 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Services
@@ -57,6 +59,7 @@ namespace Dev_Blog.Models.Services
                 Subject = "Suggestion",
                 HtmlContent = $"<p>{context}</p>"
             };
+
             msg.AddTo(_config.GetSection("AdminEmail").Value);
             await client.SendEmailAsync(msg);
         }

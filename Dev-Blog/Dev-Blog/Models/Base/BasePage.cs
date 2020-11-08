@@ -3,9 +3,6 @@ using Dev_Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -20,22 +17,38 @@ namespace Dev_Blog.Models.Base
         [BindProperty]
         public AccountVM Input { get; set; }
 
+        public BasePage(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email)
+        {
+            _email = email;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         public BasePage(SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
+        public BasePage(IEmail email, SignInManager<User> signInManager)
+        {
+            _email = email;
+            _signInManager = signInManager;
+        }
+
+        public BasePage(IEmail email)
+        {
+            _email = email;
+        }
+
+        public BasePage(SignInManager<User> signInManager)
+        {
+            _signInManager = signInManager;
+        }
+
         public BasePage(UserManager<User> userManager)
         {
             _userManager = userManager;
-        }
-
-        public BasePage(SignInManager<User> signInManager, UserManager<User> userManager, IEmail email)
-        {
-            _email = email;
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         public BasePage()
@@ -46,10 +59,18 @@ namespace Dev_Blog.Models.Base
         public async Task<IActionResult> OnPostLogin()
         {
             var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, false, false);
-            if (result.Succeeded)
+
+            // if successful login and current page is login error
+            if (result.Succeeded && Request.Path.ToString() == "/Account/LoginError")
+                return RedirectToPage("Index");
+
+            // if successful login
+            else if (result.Succeeded)
                 Response.Redirect(Request.Path.ToString());
 
-            ModelState.AddModelError("", "Invalid email or password");
+            // if unsuccessful
+            else
+                return RedirectToPage("/Account/LoginError");
 
             return Page();
         }
