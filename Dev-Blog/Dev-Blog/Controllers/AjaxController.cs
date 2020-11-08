@@ -35,8 +35,6 @@ namespace Dev_Blog.Controllers
             // if comment is greater than 750 characters
             if (comment.Content.Length >= 750)
             {
-                //string[] result = new
-
                 string[] result = new string[]
                 {
                     "Comment length must be 750 characters or less.",

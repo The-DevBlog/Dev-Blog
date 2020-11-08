@@ -12,6 +12,25 @@
     font-family: 'Press Start 2P', cursive;
 }
 
+/*Pagination*/
+#bootstrap-override a[page] {
+    border: none;
+    color: #ca3e47;
+    outline: none;
+    text-decoration: none;
+}
+
+    #bootstrap-override a[page]:hover {
+        color: #fffaf0;
+    }
+
+#bootstrap-override a[disable] {
+    color: #727272;
+    border: none;
+    text-decoration: none;
+    outline: none;
+}
+
 /*Voting system*/
 #bootstrap-override .voting-system span {
     font-family: 'Press Start 2P', cursive;
@@ -19,7 +38,7 @@
 
 #bootstrap-override .login-to-vote {
     font-size: 0.75em;
-    color: #727272
+    color: #727272;
 }
 
 #bootstrap-override .voting-system button {
@@ -32,8 +51,17 @@ span[up] {
 }
 
 span[down] {
-    color: orangered;
+    color: #ca3e47;
 }
+
+button[vote] {
+    outline: none;
+    color: #AEAEAE;
+}
+
+    button[vote]:hover {
+        color: #fffaf0;
+    }
 
 /*Delete button */
 #bootstrap-override .delete-form {
@@ -46,7 +74,7 @@ span[down] {
     }
 
         #bootstrap-override .delete-form button:hover {
-            color: red;
+            color: #ca3e47;
         }
 
 /*Edit button*/
