@@ -1,5 +1,9 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+#bootstrap-override a:hover {
+    text-decoration: none;
+}
+
 #bootstrap-override #add-post {
     margin: 15px;
 }
@@ -13,23 +17,35 @@
 }
 
 /*Pagination*/
-#bootstrap-override a[page] {
+a[page],
+a[skipFirst] span,
+a[skipLast] span {
     border: none;
     color: #ca3e47;
+    font-weight: 600;
     outline: none;
-    text-decoration: none;
 }
 
-    #bootstrap-override a[page]:hover {
-        color: #fffaf0;
-    }
-
-#bootstrap-override a[disable] {
+#bootstrap-override [disable],
+#bootstrap-override span[disable] {
     color: #727272;
     border: none;
-    text-decoration: none;
     outline: none;
 }
+
+a[skipFirst] {
+    margin-right: 12px;
+}
+
+a[skipLast] {
+    margin-left: 12px;
+}
+
+    a[skipFirst]:hover > span,
+    a[skipLast]:hover > span,
+    a[page]:hover {
+        color: #fffaf0;
+    }
 
 /*Voting system*/
 #bootstrap-override .voting-system span {

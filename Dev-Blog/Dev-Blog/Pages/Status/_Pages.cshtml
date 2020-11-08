@@ -5,13 +5,19 @@
         <!-- Page Left -->
         if (Model.PageNumber == 1)
         {
+            <a skipFirst>
+                <span pageLeft disable>1..</span>
+            </a>
             <a pageLeft disable class="glyphicon glyphicon-chevron-left"></a>
 
         }
         else
         {
-            <a page pageLeft asp-page="Posts" asp-page-handler="PageLeft" class="glyphicon glyphicon-chevron-left"></a>
+            <a skipFirst asp-page="Posts" asp-page-handler="FirstPage">
+                <span pageLeft>1..</span>
+            </a>
 
+            <a page pageLeft asp-page="Posts" asp-page-handler="PageLeft" class="glyphicon glyphicon-chevron-left"></a>
         }
         <span page>@Model.PageNumber</span>
 
@@ -19,10 +25,17 @@
         if (Model.PageNumber == Model.LastPage)
         {
             <a pageRight disable class="glyphicon glyphicon-chevron-right"></a>
+            <a skipLast>
+                <span pageRight disable asp-page="Posts" asp-page-handler="PageRight">..Last</span>
+            </a>
         }
         else
         {
             <a page pageRight asp-page="Posts" asp-page-handler="PageRight" class="glyphicon glyphicon-chevron-right"></a>
+
+            <a skipLast asp-page="Posts" asp-page-handler="LastPage">
+                <span pageRight asp-page="Posts" asp-page-handler="PageRight">..Last</span>
+            </a>
         }
     }
 </form>

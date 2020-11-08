@@ -59,6 +59,7 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnGetPageLeft()
         {
+            // get previous page number
             int pageIdx = int.Parse(Request.Cookies["pageTracker"]) - 1;
             AdminUser = _config["AdminUserName"];
 
@@ -77,6 +78,7 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnGetPageRight()
         {
+            // get next page number
             int pageIdx = int.Parse(Request.Cookies["pageTracker"]) + 1;
             AdminUser = _config["AdminUserName"];
 
@@ -90,6 +92,25 @@ namespace Dev_Blog.Pages.Status
 
             LastPage = await _post.GetLastPage();
             PageNumber = pageIdx;
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetLastPage()
+        {
+            LastPage = await _post.GetLastPage();
+            Posts = await _post.GetPage(LastPage);
+            PageNumber = LastPage;
+            AddCookie(LastPage);
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetFirstPage()
+        {
+            Posts = await _post.GetPage(1);
+            PageNumber = 1;
+            AddCookie(1);
 
             return Page();
         }
