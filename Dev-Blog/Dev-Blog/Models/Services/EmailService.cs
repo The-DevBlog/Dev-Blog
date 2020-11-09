@@ -1,5 +1,7 @@
-﻿using Dev_Blog.Models.Interfaces;
+﻿using Dev_Blog.Data;
+using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;

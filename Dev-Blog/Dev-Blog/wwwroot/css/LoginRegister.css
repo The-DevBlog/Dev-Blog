@@ -22,7 +22,7 @@
         list-style: none;
     }
 /*Login Error Page*/
-#bootstrap-override #login-error {
+#bootstrap-override #login-register-error {
     margin-top: 20%;
     font-family: 'Press Start 2P', cursive;
 }

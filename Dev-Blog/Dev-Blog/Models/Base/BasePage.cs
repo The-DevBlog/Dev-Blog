@@ -86,7 +86,12 @@ namespace Dev_Blog.Models.Base
 
             var result = await _userManager.CreateAsync(user, Input.Password);
 
-            if (result.Succeeded)
+            // if successful login and current page is login error
+            if (result.Succeeded && Request.Path.ToString() == "/Account/LoginError")
+                return RedirectToPage("Index");
+
+            // if successful
+            else if (result.Succeeded)
             {
                 await _email.Welcome(user.Email);
                 Claim userName = new Claim("UserName", Input.UserName);
@@ -97,6 +102,11 @@ namespace Dev_Blog.Models.Base
 
                 Response.Redirect(Request.Path.ToString());
             }
+
+            // if unsuccessful
+            else
+                return RedirectToPage("/Account/RegistrationError");
+
             return Page();
         }
     }
