@@ -13,7 +13,7 @@ namespace Dev_Blog.Pages.Account
 {
     public class RegistrationErrorModel : BasePage
     {
-        public RegistrationErrorModel(IEmail email, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager)
+        public RegistrationErrorModel(IEmail email, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager, email)
         {
         }
     }

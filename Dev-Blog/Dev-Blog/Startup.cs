@@ -62,6 +62,7 @@ namespace Dev_Blog
             services.AddTransient<IComment, CommentService>();
             services.AddTransient<IEmail, EmailService>();
             services.AddTransient<IVote, VoteService>();
+            services.AddTransient<IValidator, ValidatorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
