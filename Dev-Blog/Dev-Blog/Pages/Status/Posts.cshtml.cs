@@ -39,6 +39,7 @@ namespace Dev_Blog.Pages.Status
             _comment = comment;
             _config = config;
             _post = post;
+            AdminUser = _config["AdminUserName"];
         }
 
         public async Task<IActionResult> OnGet()
@@ -51,7 +52,6 @@ namespace Dev_Blog.Pages.Status
                 pageIdx = int.Parse(Request.Cookies["pageTracker"]);
 
             PageNumber = pageIdx;
-            AdminUser = _config["AdminUserName"];
             Posts = await _post.GetPage(pageIdx);
 
             return Page();
@@ -61,7 +61,6 @@ namespace Dev_Blog.Pages.Status
         {
             // get previous page number
             int pageIdx = int.Parse(Request.Cookies["pageTracker"]) - 1;
-            AdminUser = _config["AdminUserName"];
 
             if (pageIdx >= 1)
             {
@@ -80,7 +79,6 @@ namespace Dev_Blog.Pages.Status
         {
             // get next page number
             int pageIdx = int.Parse(Request.Cookies["pageTracker"]) + 1;
-            AdminUser = _config["AdminUserName"];
 
             if (await _post.CanPageRight(pageIdx))
             {

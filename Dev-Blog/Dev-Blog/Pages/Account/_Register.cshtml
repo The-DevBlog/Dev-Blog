@@ -4,9 +4,10 @@
 <head>
     <link type="text/css" rel="stylesheet" href="~/css/All.css" />
     <link type="text/css" rel="stylesheet" href="~/css/LoginRegister.css" />
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <a data-toggle="modal" data-target="#registerModal" class="nav-link">Sign Up</a>
 <div class="modal fade" id="registerModal" role="dialog">
@@ -19,14 +20,14 @@
             <div class="modal-body">
                 <form class="text-center p-5" method="post">
                     <h5>UserName</h5>
-                    <div asp-validation-summary="All" class="error-message"></div>
-                    <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="UserName" asp-for="@Model.UserName">
+                    <div id="validation" asp-validation-summary="All" class="error-message"></div>
+                    <input id="userNameInput" type="text" maxlength="25" class="form-control mb-4" placeholder="UserName" asp-for="@Model.UserName">
                     <h5>Email</h5>
-                    <input type="email" class="form-control mb-4" placeholder="Email" asp-for="@Model.Email" />
+                    <input id="emailInput" type="email" class="form-control mb-4" placeholder="Email" asp-for="@Model.Email" />
                     <h5>Password</h5>
                     <input type="password" maxlength="35" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Password">
                     <input type="password" maxlength="35" class="form-control mb-4" placeholder="Confirm Password" asp-for="@Model.ConfirmPassword" />
-                    <button class="btn btn-block my-4" type="submit" asp-page-handler="Register">Sign Up</button>
+                    <button id="registerBtn" class="btn btn-block my-4" type="submit" asp-page-handler="Register">Sign Up</button>
                 </form>
             </div>
             <div class="modal-footer">
@@ -35,3 +36,63 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+
+        $("#registerBtn").on("click", function (e) {
+
+            var ValidateVM = {
+                UserName: $("#userNameInput").val(),
+                Email: $("#emailInput").val()
+            };
+
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                url: '@Url.Action("Validate", "Validator")',
+                data: JSON.stringify(ValidateVM),
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    console.log("Success");
+                    console.log(data);
+
+                    var isValid = true;
+
+                    // only run validateEmail() if the email is not null
+                    if (ValidateVM.UserName != null) isValid = validateEmail(data[0]);
+
+                    // only run validateUserName() if the username is not null
+                    if (ValidateVM.Email != null) isValid = validateUserName(data[1]);
+
+                    if (isValid) e.preventDefault();
+                    else $("#registerBtn").submit();
+
+                },
+                error: function () {
+                    console.log("ERROR");
+                }
+            });
+        });
+
+        // function to display error message if email is already registered
+        var validateEmail = function (email) {
+            if (email) {
+                $("#validation ul").append(
+                    $('<li>email already registered</li>')
+                );
+                return false;
+            }
+        }
+
+        // function to display error if username is already taken
+        var validateUserName = function (username) {
+            if (username) {
+                $("#validation ul").append(
+                    $('<li>username taken</li>')
+                );
+                return false;
+            }
+        }
+    });
+</script>

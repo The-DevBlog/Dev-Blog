@@ -1,9 +1,12 @@
 ﻿using Dev_Blog.Pages;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Dev_Blog.Data;
 
 namespace Dev_Blog.Models.ViewModels
 {
@@ -15,13 +18,13 @@ namespace Dev_Blog.Models.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(20)]
+        [StringLength(35)]
         public string Password { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Compare("Password")]
-        [StringLength(20)]
+        [StringLength(35)]
         public string ConfirmPassword { get; set; }
 
         [Required]

@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dev_Blog.Pages.Account
+namespace Dev_Blog.Pages.Error
 {
-    public class LoginErrorModel : BasePage
+    public class ErrorModel : BasePage
     {
-        public LoginErrorModel(IEmail email, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager, email)
+        public ErrorModel(IEmail email, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager, email)
         {
         }
     }

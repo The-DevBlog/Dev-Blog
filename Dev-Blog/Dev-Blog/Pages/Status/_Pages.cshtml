@@ -6,7 +6,7 @@
         if (Model.PageNumber == 1)
         {
             <a skipFirst>
-                <span pageLeft disable>1..</span>
+                <span pageLeft disable>1 . .</span>
             </a>
             <a pageLeft disable class="glyphicon glyphicon-chevron-left"></a>
 
@@ -14,7 +14,7 @@
         else
         {
             <a skipFirst asp-page="Posts" asp-page-handler="FirstPage">
-                <span pageLeft>1..</span>
+                <span pageLeft>1 . .</span>
             </a>
 
             <a page pageLeft asp-page="Posts" asp-page-handler="PageLeft" class="glyphicon glyphicon-chevron-left"></a>
@@ -26,7 +26,7 @@
         {
             <a pageRight disable class="glyphicon glyphicon-chevron-right"></a>
             <a skipLast>
-                <span pageRight disable asp-page="Posts" asp-page-handler="PageRight">..Last</span>
+                <span pageRight disable asp-page="Posts" asp-page-handler="PageRight">. . Last</span>
             </a>
         }
         else
@@ -34,7 +34,7 @@
             <a page pageRight asp-page="Posts" asp-page-handler="PageRight" class="glyphicon glyphicon-chevron-right"></a>
 
             <a skipLast asp-page="Posts" asp-page-handler="LastPage">
-                <span pageRight asp-page="Posts" asp-page-handler="PageRight">..Last</span>
+                <span pageRight asp-page="Posts" asp-page-handler="PageRight">. . Last</span>
             </a>
         }
     }
