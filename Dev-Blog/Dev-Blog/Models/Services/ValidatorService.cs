@@ -18,17 +18,31 @@ namespace Dev_Blog.Models.Services
             _userContext = userContext;
         }
 
+        /// <summary>
+        /// Checks if username already exists in database
+        /// </summary>
+        /// <param name="userName">Username to check for</param>
+        /// <returns>boolean</returns>
         public bool UserNameExists(string userName)
         {
             return _userContext.Users.Any(x => x.NormalizedUserName == userName.ToUpper());
         }
 
+        /// <summary>
+        /// Checks if email already exists in database
+        /// </summary>
+        /// <param name="email">Email to check for</param>
+        /// <returns>boolean</returns>
         public bool EmailExists(string email)
         {
             return _userContext.Users.Any(x => x.NormalizedEmail == email.ToUpper());
         }
 
-        // prevent CSS attacks
+        /// <summary>
+        /// Ensures a user cannot create CSS attacks
+        /// </summary>
+        /// <param name="comment">The comment to validate</param>
+        /// <returns>String</returns>
         public string ValidateComment(string comment)
         {
             StringBuilder sb = new StringBuilder();

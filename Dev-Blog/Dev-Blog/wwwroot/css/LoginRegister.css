@@ -15,3 +15,21 @@
     margin-top: 20%;
     font-family: 'Press Start 2P', cursive;
 }
+
+/*Registration error*/
+#bootstrap-override .modal-body div {
+    color: #ca3e47;
+    font-weight: 800;
+    font-family: Courier New, Courier, monospace;
+    margin-bottom: 15px;
+}
+
+    #bootstrap-override .modal-body div ul {
+        list-style: none;
+    }
+
+/*Login Error Page*/
+#bootstrap-override #login-error {
+    margin-top: 20%;
+    font-family: 'Press Start 2P', cursive;
+}
