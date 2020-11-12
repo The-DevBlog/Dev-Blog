@@ -46,10 +46,12 @@ namespace Dev_Blog.Models.Services
         /// </summary>
         /// <param name="post">The post to modify</param>
         /// <param name="description">The new description of the post</param>
+        /// <param name="updateNum">New udpate number of the post</param>
         /// <returns>The modified post</returns>
-        public async Task<Post> Edit(Post post, string description)
+        public async Task<Post> Edit(Post post, string description, string updateNum)
         {
             post.Description = description;
+            post.UpdateNum = updateNum;
             _context.Entry(post).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return post;
