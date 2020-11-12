@@ -3,7 +3,9 @@ using Dev_Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Base
@@ -51,10 +53,6 @@ namespace Dev_Blog.Models.Base
             _userManager = userManager;
         }
 
-        public BasePage()
-        {
-        }
-
         // LOGIN
         public async Task<IActionResult> OnPostLogin()
         {
@@ -69,7 +67,7 @@ namespace Dev_Blog.Models.Base
                 Response.Redirect(Request.Path.ToString());
 
             // if unsuccessful
-            else return RedirectToPage("/Error/Error");
+            else return RedirectToPage("/Account/LoginError");
 
             return Page();
         }
