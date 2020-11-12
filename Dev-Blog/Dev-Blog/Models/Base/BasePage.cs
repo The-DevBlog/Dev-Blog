@@ -69,8 +69,7 @@ namespace Dev_Blog.Models.Base
                 Response.Redirect(Request.Path.ToString());
 
             // if unsuccessful
-            else
-                return RedirectToPage("/Account/LoginError");
+            else return RedirectToPage("/Error/Error");
 
             return Page();
         }
@@ -104,8 +103,7 @@ namespace Dev_Blog.Models.Base
             }
 
             // if unsuccessful
-            else
-                return RedirectToPage("/Account/RegistrationError");
+            else return RedirectToPage("/Error/Error");
 
             return Page();
         }
