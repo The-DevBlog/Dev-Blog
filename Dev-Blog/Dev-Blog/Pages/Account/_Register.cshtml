@@ -21,11 +21,11 @@
                 <form class="text-center p-5" method="post">
                     <h5>UserName</h5>
                     <div id="validation" asp-validation-summary="All" class="error-message"></div>
-                    <input id="userNameInput" type="text" maxlength="25" class="form-control mb-4" placeholder="UserName" asp-for="@Model.UserName">
+                    <input id="userNameInput" type="text" maxlength="25" class="form-control mb-4" placeholder="UserName" pattern="^[a-zA-Z0-9]+$" title="Username can only contain letters and digits" asp-for="@Model.UserName">
                     <h5>Email</h5>
                     <input id="emailInput" type="email" class="form-control mb-4" placeholder="Email" asp-for="@Model.Email" />
                     <h5>Password</h5>
-                    <input type="password" maxlength="35" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" asp-for="@Model.Password">
+                    <input type="password" maxlength="35" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" asp-for="@Model.Password">
                     <input type="password" maxlength="35" class="form-control mb-4" placeholder="Confirm Password" asp-for="@Model.ConfirmPassword" />
                     <button id="registerBtn" class="btn btn-block my-4" type="submit" asp-page-handler="Register">Sign Up</button>
                 </form>
@@ -56,7 +56,6 @@
                 success: function (data) {
                     console.log("Success");
                     console.log(data);
-
                     var isValid = true;
 
                     // only run validateEmail() if the email is not null
