@@ -1,5 +1,10 @@
-﻿#bootstrap-override textarea {
+﻿#bootstrap-override input,
+#bootstrap-override textarea {
     color: #fffaf0;
     background-color: #313131;
     border: none;
+}
+
+button[editBtn] {
+    margin-top: 15px;
 }

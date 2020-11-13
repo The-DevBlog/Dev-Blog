@@ -10,6 +10,38 @@
     background-color: inherit;
 }
 
+ul[navUL] {
+    width: 100%;
+}
+
+    ul[navUL] > li {
+        width: 105px;
+    }
+
+    ul[navUL] div[navDiv] {
+        display: inline-flex;
+        position: absolute;
+        right: 0;
+        width: 105px;
+        margin-top: 10px;
+    }
+
+    ul[navUL] li[rightLi]:hover {
+        cursor: pointer;
+    }
+
+@media screen and (max-width: 990px) {
+    ul[navUL] div[navDiv] {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 990px) {
+    ul[navUL] div[navDiv] {
+        width: 200px;
+    }
+}
+
 /*Posts*/
 #bootstrap-override .post-description {
     padding: 15px;

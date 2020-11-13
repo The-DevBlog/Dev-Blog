@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dev_Blog.Pages.Status
 {
+    [BindProperties]
     [Authorize(Policy = "Admin")]
     public class EditModel : BasePage
     {
@@ -22,11 +23,9 @@ namespace Dev_Blog.Pages.Status
 
         private readonly IPost _post;
 
-        [BindProperty]
         public Post Post { get; set; }
-
-        [BindProperty]
         public string Description { get; set; }
+        public string UpdateNum { get; set; }
 
         public async Task<IActionResult> OnGet(int id)
         {
@@ -36,7 +35,7 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnPost()
         {
-            await _post.Edit(Post, Description);
+            await _post.Edit(Post, Description, UpdateNum);
             return RedirectToPage("Posts");
         }
     }
