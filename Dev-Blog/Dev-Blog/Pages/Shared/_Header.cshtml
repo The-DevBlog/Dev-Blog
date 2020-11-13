@@ -3,7 +3,7 @@
 @inject SignInManager<Dev_Blog.Models.User> SignInManager
 @model Dev_Blog.Models.Base.BasePage
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-xl navbar-dark">
         <img src="~/Imgs/Logo.png" height="115" width="100" />
         <a class="navbar-brand" asp-page="/Index">the Dev Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -21,32 +21,30 @@
                 <li leftLi class="nav-item">
                     <a class="nav-link" asp-page="/Bio/Bio">Creator</a>
                 </li>
-                <div navDiv>
-                    @{
-                        if (User.Identity.IsAuthenticated)
-                        {
-                            <li rightLi class="nav-item" id="welcome-user">
-                                <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
-                            </li>
-                            <li rightLi class="nav-item">
-                                <a class="nav-link">
-                                    <form asp-page="/Account/Logout" method="post">
-                                        <button id="logout-button" type="submit">Logout</button>
-                                    </form>
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li rightLi class="nav-item">
-                                @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
-                            </li>
-                            <li rightLi class="nav-item">
-                                @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
-                            </li>
-                        }
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <li rightLi class="nav-item" id="welcome-user">
+                            <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <form asp-page="/Account/Logout" method="post">
+                                    <button id="logout-button" type="submit">Logout</button>
+                                </form>
+                            </a>
+                        </li>
                     }
-                </div>
+                    else
+                    {
+                        <li rightLi class="nav-item">
+                            @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
+                        </li>
+                        <li class="nav-item">
+                            @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
+                        </li>
+                    }
+                }
             </ul>
         </div>
     </nav>

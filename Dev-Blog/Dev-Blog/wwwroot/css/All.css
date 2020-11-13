@@ -12,33 +12,26 @@
 
 ul[navUL] {
     width: 100%;
+    border: 1px solid yellow;
 }
 
     ul[navUL] > li {
-        width: 105px;
+        display: inline-block;
     }
 
-    ul[navUL] div[navDiv] {
-        display: inline-flex;
-        position: absolute;
-        right: 0;
-        width: 105px;
-        margin-top: 10px;
-    }
-
-    ul[navUL] li[rightLi]:hover {
-        cursor: pointer;
-    }
-
-@media screen and (max-width: 990px) {
-    ul[navUL] div[navDiv] {
-        display: block;
-    }
+li[rightLi] {
+    border: 1px solid red;
+    margin-left: auto;
 }
 
-@media screen and (min-width: 990px) {
-    ul[navUL] div[navDiv] {
-        width: 200px;
+    li[rightLi]:first-child {
+        text-align: right;
+    }
+
+@media screen and (max-width: 1200px) {
+    li[rightLi] {
+        text-align: left;
+        margin-left: 0;
     }
 }
 
