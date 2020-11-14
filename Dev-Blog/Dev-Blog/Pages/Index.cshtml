@@ -41,20 +41,11 @@
 
                     <!--Suggestion Box-->
                     <div class="card-footer text-center">
-                        <h4>Have a suggestion? Leave a comment!</h4>
-                        <form method="post">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <textarea asp-for=@Model.Context placeholder="Leave suggestion here.." class="pb-cmnt-textarea d-block" maxlength="1000"></textarea>
-                                <button class="btn btn-primary" asp-page-handler="Suggestion" type="submit">
-                                    Submit
-                                </button>
-                            }
-                            else
-                            {
-                                <textarea placeholder="Login in to leave a suggestion.." class="d-block"></textarea>
-                            }
-                        </form>
+                        <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
+                            <button class="btn btn-secondary">
+                                <h4>Have a suggestion? Send an email!</h4>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>

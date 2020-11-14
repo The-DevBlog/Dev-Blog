@@ -16,15 +16,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Dev_Blog.Pages
 {
+    [BindProperties]
     public class IndexModel : BasePage
     {
         private readonly IPost _post;
         private readonly IEmail _email;
 
-        [BindProperty]
         public Post Post { get; set; }
-
-        [BindProperty]
         public string Context { get; set; }
 
         public IndexModel(IEmail email, IPost post, SignInManager<User> signInManager, UserManager<User> userManager) : base(signInManager, userManager, email)
@@ -36,17 +34,6 @@ namespace Dev_Blog.Pages
         public async Task<IActionResult> OnGet()
         {
             Post = await _post.GetLatestPost();
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostSuggestion()
-        {
-            Post = await _post.GetLatestPost();
-
-            var email = User.Claims.FirstOrDefault(x => x.Type == "Email").ToString();
-            await _email.Suggestion(email, Context);
-
             return Page();
         }
     }
