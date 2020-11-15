@@ -24,28 +24,22 @@ using Microsoft.Extensions.Azure;
 namespace Dev_Blog.Pages.Status
 {
     [Authorize(Policy = "Admin")]
+    [BindProperties]
     public class AddModel : BasePage
     {
         private readonly IImage _image;
         private readonly IPost _post;
+        private readonly IEmail _email;
 
-        [BindProperty]
         public Post Post { get; set; }
-
-        [BindProperty]
         public string Name { get; set; }
-
-        [BindProperty]
         public IFormFile Image { get; set; }
 
-        public AddModel(SignInManager<User> signInManager, UserManager<User> userManager, IImage image, IPost post) : base(signInManager, userManager)
+        public AddModel(IEmail email, SignInManager<User> signInManager, UserManager<User> userManager, IImage image, IPost post) : base(signInManager, userManager)
         {
+            _email = email;
             _image = image;
             _post = post;
-        }
-
-        public void OnGet()
-        {
         }
 
         public async Task<IActionResult> OnPost()
@@ -58,6 +52,10 @@ namespace Dev_Blog.Pages.Status
                 var url = await _image.Upload(Image, imgName);
                 await _post.Create(Post, url);
             }
+
+            // email subscribed users
+            await _email.NewPost();
+
             return RedirectToPage("Posts");
         }
     }

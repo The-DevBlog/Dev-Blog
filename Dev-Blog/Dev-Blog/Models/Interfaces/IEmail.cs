@@ -17,6 +17,12 @@ namespace Dev_Blog.Models.Interfaces
         public Task Welcome(string email);
 
         /// <summary>
+        /// Sends an email to all subscribed users when a new post is made
+        /// </summary>
+        /// <returns>Successful completion of task</returns>
+        Task NewPost();
+
+        /// <summary>
         /// Sends a suggestion to the admin
         /// </summary>
         /// <param name="email">The admin's email</param>
