@@ -38,12 +38,12 @@ namespace Dev_Blog.Models.Services
 
             var msg = new SendGridMessage()
             {
+                TemplateId = _config.GetSection("WELCOME_EMAIL").Value,
                 From = new EmailAddress(_config.GetSection("AdminEmail").Value),
-                Subject = "Welcome",
-                HtmlContent = "<p>Thank you for subscribing!</p>"
             };
 
             msg.AddTo(email);
+
             await client.SendEmailAsync(msg);
         }
 
