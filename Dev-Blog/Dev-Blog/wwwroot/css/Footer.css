@@ -22,8 +22,9 @@
 }
 
 #main-footer div[deleteAccount] {
-    margin: 5px 0px 0px 10px;
-    float: left;
+    position: absolute;
+    left: 10px;
+    margin-top: 5px;
     background-color: #313131;
     color: #ca3e47;
     border: 1px solid #313131;
