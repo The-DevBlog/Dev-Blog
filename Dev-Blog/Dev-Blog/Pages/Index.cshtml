@@ -6,9 +6,6 @@
 }
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/css/Home.css" />
     <title>Home</title>
 </head>
@@ -16,38 +13,38 @@
     <main>
         @if (Model.Post != null)
         {
-            <div class="container">
-                <div class="card">
+        <div class="container">
+            <div class="card">
 
-                    <!-- Latest Post -->
-                    <div class="card-header">
-                        <span>
-                            Update
-                            <strong>@Model.Post.UpdateNum</strong>
-                        </span>
-                        <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
-                    </div>
-                    <div class="card-body text-center">
-                        <img id="update-img" class="update-img" src=@Model.Post.ImgURL />
-                        <p class="post-description">@Model.Post.Description</p>
+                <!-- Latest Post -->
+                <div class="card-header">
+                    <span>
+                        Update
+                        <strong>@Model.Post.UpdateNum</strong>
+                    </span>
+                    <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
+                </div>
+                <div class="card-body text-center">
+                    <img id="update-img" class="update-img" src=@Model.Post.ImgURL />
+                    <p class="post-description">@Model.Post.Description</p>
 
-                        <hr />
+                    <hr />
 
-                        <div class="m-auto embed-responsive-16by9 embed-responsive">
-                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9ou1pl0XNRs"></iframe>
-                        </div>
-                    </div>
-
-                    <!--Suggestion Box-->
-                    <div suggestion class="card-footer text-center">
-                        <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
-                            <button class="btn btn-secondary">
-                                <h4>Have a suggestion? Send an email!</h4>
-                            </button>
-                        </a>
+                    <div class="m-auto embed-responsive-16by9 embed-responsive">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9ou1pl0XNRs"></iframe>
                     </div>
                 </div>
+
+                <!--Suggestion Box-->
+                <div suggestion class="card-footer text-center">
+                    <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
+                        <button class="btn btn-secondary">
+                            <h4>Have a suggestion? Send an email!</h4>
+                        </button>
+                    </a>
+                </div>
             </div>
+        </div>
         }
     </main>
 </body>

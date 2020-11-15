@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Base
@@ -110,9 +109,15 @@ namespace Dev_Blog.Models.Base
         // Delete Account
         public async Task<IActionResult> OnPostDeleteAccount()
         {
-            //var user = User.Identity.Name;
-            await _userManager.DeleteAsync(User.Identity);
-            return Page();
+            // Get current user
+            var username = User.Identity.Name.ToUpper();
+            User user = _userManager.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
+
+            // Sign current user out and delete account
+            await _signInManager.SignOutAsync();
+            await _userManager.DeleteAsync(user);
+
+            return RedirectToPage("/Index");
         }
     }
 }

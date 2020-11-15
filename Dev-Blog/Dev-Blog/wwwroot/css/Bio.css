@@ -1,6 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-#bootstrap-override * {
+#bootstrap-override .container * {
     font-family: 'Press Start 2P', cursive;
 }
 

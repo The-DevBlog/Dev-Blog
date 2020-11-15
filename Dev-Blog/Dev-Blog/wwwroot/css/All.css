@@ -1,42 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/*Header*/
-#bootstrap-override nav {
-    font-family: 'Press Start 2P', cursive;
-}
-
-#bootstrap-override #logout-button {
-    border: none;
-    background-color: inherit;
-}
-
-ul[navUL] {
-    width: 100%;
-}
-
-    ul[navUL] > li {
-        display: inline-block;
-    }
-
-li[rightLi] {
-    margin-left: auto;
-}
-
-    li[rightLi]:first-child {
-        text-align: right;
-    }
-
-@media screen and (max-width: 1200px) {
-    li[rightLi] {
-        text-align: left;
-        margin-left: 0;
-    }
-}
-
-main {
-    margin-bottom: 125px;
-}
-
 /*Posts*/
 #bootstrap-override .post-description {
     padding: 15px;
