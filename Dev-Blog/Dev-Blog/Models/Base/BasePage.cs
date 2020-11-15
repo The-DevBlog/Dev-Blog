@@ -106,5 +106,13 @@ namespace Dev_Blog.Models.Base
 
             return Page();
         }
+
+        // Delete Account
+        public async Task<IActionResult> OnPostDeleteAccount()
+        {
+            //var user = User.Identity.Name;
+            await _userManager.DeleteAsync(User.Identity);
+            return Page();
+        }
     }
 }

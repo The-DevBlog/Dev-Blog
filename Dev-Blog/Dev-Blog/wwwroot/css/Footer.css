@@ -1,0 +1,27 @@
+﻿footer[main] {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: #BEB8AB;
+    background-color: #414141;
+}
+
+#main-footer > div,
+#main-footer > li,
+#main-footer > a {
+    display: inline-block;
+    border: 1px solid yellow;
+}
+
+#main-footer a {
+    font-family: 'Press Start 2P', cursive;
+}
+
+    #main-footer a:hover {
+        color: #B0ACA4;
+        cursor: pointer;
+    }
+
+#main-footer > li {
+    list-style-type: none;
+}

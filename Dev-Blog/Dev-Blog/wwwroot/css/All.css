@@ -37,15 +37,6 @@ main {
     margin-bottom: 125px;
 }
 
-/*Footer*/
-footer[main] {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    color: #BEB8AB;
-    background-color: #414141;
-}
-
 /*Posts*/
 #bootstrap-override .post-description {
     padding: 15px;
