@@ -1,47 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/*Header*/
-#bootstrap-override nav {
-    font-family: 'Press Start 2P', cursive;
-}
-
-#bootstrap-override #logout-button {
-    border: none;
-    background-color: inherit;
-}
-
-ul[navUL] {
-    width: 100%;
-}
-
-    ul[navUL] > li {
-        width: 105px;
-    }
-
-    ul[navUL] div[navDiv] {
-        display: inline-flex;
-        position: absolute;
-        right: 0;
-        width: 105px;
-        margin-top: 10px;
-    }
-
-    ul[navUL] li[rightLi]:hover {
-        cursor: pointer;
-    }
-
-@media screen and (max-width: 990px) {
-    ul[navUL] div[navDiv] {
-        display: block;
-    }
-}
-
-@media screen and (min-width: 990px) {
-    ul[navUL] div[navDiv] {
-        width: 200px;
-    }
-}
-
 /*Posts*/
 #bootstrap-override .post-description {
     padding: 15px;
@@ -57,10 +15,18 @@ ul[navUL] {
     border-radius: 5px;
 }
 
-@media screen and (max-width: 975px) {
+@media screen and (max-width: 992px) {
     #bootstrap-override .update-img {
         height: 360px;
         width: 640px;
+    }
+
+    #bootstrap-override div[suggestion] h4 {
+        font-size: .73em;
+    }
+
+    #bootstrap-override div[suggestion] button {
+        width: 100%;
     }
 
     #bootstrap-override .post-description {
@@ -80,6 +46,10 @@ ul[navUL] {
 }
 
 @media screen and (max-width: 525px) {
+    #bootstrap-override div[suggestion] h4 {
+        font-size: .58em;
+    }
+
     #bootstrap-override .update-img {
         height: 234px;
         width: 416px;

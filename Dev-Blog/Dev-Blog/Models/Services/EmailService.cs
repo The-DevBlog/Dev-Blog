@@ -1,6 +1,7 @@
 ﻿using Dev_Blog.Data;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
+using DnsClient;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
@@ -44,6 +45,7 @@ namespace Dev_Blog.Models.Services
             await client.SendEmailAsync(msg);
         }
 
+        // TODO: not working
         /// <summary>
         /// Sends a suggestion to the admin
         /// </summary>
