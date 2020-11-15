@@ -33,3 +33,7 @@ li[rightLi] {
 main {
     margin-bottom: 125px;
 }
+
+ul[navUL] > li:hover {
+    cursor: pointer;
+}
