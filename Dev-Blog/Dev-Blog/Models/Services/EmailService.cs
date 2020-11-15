@@ -66,11 +66,13 @@ namespace Dev_Blog.Models.Services
             // get all users who are subscribed
             List<User> users = _userManager.Users.Where(x => x.UserName != _config.GetSection("AdminUserName").Value && x.Subscribed).ToList();
 
-            List<EmailAddress> emails = new List<EmailAddress>();
-            users.ForEach(x => emails.Add(new EmailAddress(x.Email)));
-
-            msg.AddTos(emails);
-            await client.SendEmailAsync(msg);
+            if (users.Count > 0)
+            {
+                List<EmailAddress> emails = new List<EmailAddress>();
+                users.ForEach(x => emails.Add(new EmailAddress(x.Email)));
+                msg.AddTos(emails);
+                await client.SendEmailAsync(msg);
+            }
         }
 
         // TODO: not working

@@ -29,16 +29,6 @@ namespace Dev_Blog.Data
             {
                 entity.HasKey(e => new { e.PostId, e.UserId });
             });
-
-            //modelBuilder.Entity<Comment>(entity =>
-            //{
-            //    entity.HasKey(e => e.Id);
-            //});
-
-            //modelBuilder.Entity<Post>(entity =>
-            //{
-            //    entity.HasKey(e => e.Id);
-            //});
         }
     }
 }

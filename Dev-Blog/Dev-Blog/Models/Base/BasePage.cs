@@ -77,6 +77,7 @@ namespace Dev_Blog.Models.Base
         {
             User user = new User()
             {
+                Subscribed = true,
                 UserName = Input.UserName,
                 Email = Input.Email
             };
