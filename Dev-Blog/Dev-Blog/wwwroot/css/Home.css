@@ -13,3 +13,7 @@
 #bootstrap-override .card-footer h4 {
     font-family: 'Press Start 2P', cursive;
 }
+
+div[suggestion] {
+    padding: 75px;
+}
