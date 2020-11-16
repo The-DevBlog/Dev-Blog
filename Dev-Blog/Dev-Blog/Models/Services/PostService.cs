@@ -5,12 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Mvc;
-using PagedList;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Xml.Schema;
-using Microsoft.AspNetCore.Http;
 
 namespace Dev_Blog.Models.Services
 {

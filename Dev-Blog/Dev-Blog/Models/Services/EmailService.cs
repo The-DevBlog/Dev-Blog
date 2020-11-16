@@ -1,16 +1,10 @@
-﻿using Dev_Blog.Data;
-using Dev_Blog.Models.Interfaces;
-using Dev_Blog.Models.ViewModels;
-using DnsClient;
+﻿using Dev_Blog.Models.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Services
@@ -50,17 +44,17 @@ namespace Dev_Blog.Models.Services
         /// <summary>
         /// Sends an email to all subscribed users when a new post is made
         /// </summary>
+        /// <param name="img">The image to attach</param>"
         /// <returns>Successful completion of task</returns>
-        public async Task NewPost()
+        public async Task NewPost(string img = null)
         {
             var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress(_config.GetSection("AdminEmail").Value),
-                Subject = "New Post",
-                HtmlContent = "<p>Check out this new post!</p>"
+                TemplateId = _config.GetSection("NEW_POST_EMAIL").Value,
+                From = new EmailAddress(_config.GetSection("AdminEmail").Value)
             };
 
             // get all users who are subscribed

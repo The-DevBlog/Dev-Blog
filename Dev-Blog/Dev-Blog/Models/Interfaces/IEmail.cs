@@ -1,9 +1,4 @@
-﻿using Dev_Blog.Models.ViewModels;
-using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Interfaces
 {
@@ -19,8 +14,9 @@ namespace Dev_Blog.Models.Interfaces
         /// <summary>
         /// Sends an email to all subscribed users when a new post is made
         /// </summary>
+        /// <param name="img">The image to attach</param>"
         /// <returns>Successful completion of task</returns>
-        Task NewPost();
+        Task NewPost(string img = null);
 
         /// <summary>
         /// Sends a suggestion to the admin

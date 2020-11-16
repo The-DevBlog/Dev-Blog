@@ -1,25 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
-using Dev_Blog.Models.ViewModels;
-using Dropbox.Api;
-using Dropbox.Api.Files;
-using Dropbox.Api.Team;
 using ECommerce.Models.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Azure;
 
 namespace Dev_Blog.Pages.Status
 {
@@ -49,12 +38,12 @@ namespace Dev_Blog.Pages.Status
 
             if (Image != null)
             {
-                var url = await _image.Upload(Image, imgName);
+                string url = await _image.Upload(Image, imgName);
                 await _post.Create(Post, url);
+                await _email.NewPost(url);
             }
-
-            // email subscribed users
-            await _email.NewPost();
+            else
+                await _email.NewPost();
 
             return RedirectToPage("Posts");
         }

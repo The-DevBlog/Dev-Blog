@@ -1,14 +1,10 @@
 ﻿using Dev_Blog.Models;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
-using Dropbox.Api.TeamLog;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Controllers

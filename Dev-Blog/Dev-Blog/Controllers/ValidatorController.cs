@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Dev_Blog.Data;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
