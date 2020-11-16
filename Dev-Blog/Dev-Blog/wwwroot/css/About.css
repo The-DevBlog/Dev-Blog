@@ -1,0 +1,41 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+#bootstrap-override .container * {
+    font-family: 'Press Start 2P', cursive;
+}
+
+/*About the game*/
+div[gameDescription] p {
+    padding: 200px 0px;
+}
+
+/*About the creator*/
+div[creatorDescription] img {
+    margin-left: 20px;
+    border-radius: 5px;
+    float: right;
+}
+
+div[creatorDescription] p {
+    display: inline-block;
+    width: 60%;
+}
+
+@media screen and (max-width: 1280px) {
+    div[creatorDescription] p {
+        width: 52%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    div[creatorDescription] img {
+        float: none;
+        display: block;
+        margin: auto;
+    }
+
+    div[creatorDescription] p {
+        display: block;
+        width: 100%;
+    }
+}

@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@using System.Security.Claims;
 @inject SignInManager<Dev_Blog.Models.User> SignInManager
 @model Dev_Blog.Models.Base.BasePage
 <link type="text/css" rel="stylesheet" href="~/css/Header.css" />
@@ -21,30 +20,30 @@
                     <a class="nav-link" asp-page="/Status/Posts">Status</a>
                 </li>
                 <li leftLi class="nav-item">
-                    <a class="nav-link" asp-page="/Bio/Bio">Creator</a>
+                    <a class="nav-link" asp-page="/About/About">About</a>
                 </li>
                 @{
                     if (User.Identity.IsAuthenticated)
                     {
-                    <li rightLi class="nav-item" id="welcome-user">
-                        <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">
-                            <form asp-page="/Account/Logout" method="post">
-                                <button id="logout-button" type="submit">Logout</button>
-                            </form>
-                        </a>
-                    </li>
+                        <li rightLi class="nav-item" id="welcome-user">
+                            <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <form asp-page="/Account/Logout" method="post">
+                                    <button id="logout-button" type="submit">Logout</button>
+                                </form>
+                            </a>
+                        </li>
                     }
                     else
                     {
-                    <li rightLi class="nav-item">
-                        @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
-                    </li>
-                    <li class="nav-item">
-                        @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
-                    </li>
+                        <li rightLi class="nav-item">
+                            @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
+                        </li>
+                        <li class="nav-item">
+                            @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
+                        </li>
                     }
                 }
             </ul>

@@ -9,6 +9,23 @@
     background: #dddddd;
 }
 
+/*Youtube video*/
+div[youtube] {
+    text-align: center;
+}
+
+    div[youtube] img {
+        background-color: #1A1A1A;
+    }
+
+    div[youtube] h2 {
+        font-family: 'Press Start 2P', cursive;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
 /*Suggestion Box*/
 #bootstrap-override .card-footer h4 {
     font-family: 'Press Start 2P', cursive;
