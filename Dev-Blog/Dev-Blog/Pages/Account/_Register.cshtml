@@ -1,9 +1,13 @@
 ﻿@model Dev_Blog.Models.ViewModels.AccountVM
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<Dev_Blog.Models.User> SignInManager
-<head>
-    <link type="text/css" rel="stylesheet" href="~/css/Modals.css" />
-</head>
+
+<link type="text/css" rel="stylesheet" href="~/css/Modals.css" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <a data-toggle="modal" data-target="#registerModal" class="nav-link">Sign Up</a>
 <div class="modal fade" id="registerModal" role="dialog">
     <div class="modal-dialog">

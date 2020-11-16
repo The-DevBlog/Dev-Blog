@@ -1,10 +1,7 @@
 ﻿using Dev_Blog.Data;
 using Dev_Blog.Models.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Dev_Blog.Models.Services

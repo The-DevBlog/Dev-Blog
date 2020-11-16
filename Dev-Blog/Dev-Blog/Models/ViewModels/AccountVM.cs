@@ -1,12 +1,4 @@
-﻿using Dev_Blog.Pages;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Dev_Blog.Data;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Dev_Blog.Models.ViewModels
 {
