@@ -5,9 +5,6 @@
 }
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/css/Posts.css" />
     <link rel="stylesheet" type="text/css" href="~/css/Edit.css" />
     <title>Status</title>
@@ -29,13 +26,13 @@
                     <div class="card-body">
                         <img class="update-img" src=@Model.Post.ImgURL />
                         <p>@Model.Post.Description</p>
-                        <textarea asp-for="@Model.Description" placeholder="New description here"></textarea>
+                        <textarea asp-for="@Model.Description" placeholder="New description here.."></textarea>
+                        <input type="text" asp-for=@Model.UpdateNum placeholder="Update number here..">
 
                         <input hidden asp-for=@Model.Post.Id>
                         <input hidden type="datetime" asp-for=@Model.Post.Date>
                         <input hidden type="text" asp-for=@Model.Post.ImgURL>
-                        <input hidden type="text" asp-for=@Model.Post.UpdateNum>
-                        <button class="btn btn-primary" type="submit" style="display: block">Update</button>
+                        <button editBtn class="btn btn-primary" type="submit" style="display: block">Update</button>
                     </div>
                 </div>
             </div>

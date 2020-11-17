@@ -1,14 +1,10 @@
 ﻿using Dev_Blog.Models;
 using Dev_Blog.Models.Interfaces;
 using Dev_Blog.Models.ViewModels;
-using Dropbox.Api.TeamLog;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Controllers
@@ -17,12 +13,14 @@ namespace Dev_Blog.Controllers
     public class AjaxController : ControllerBase
     {
         private readonly IComment _comment;
+        private readonly IValidator _validator;
         private readonly IPost _post;
         private readonly IVote _vote;
         private readonly UserManager<User> _userManager;
 
-        public AjaxController(IVote vote, IPost post, IComment comment, UserManager<User> userManager)
+        public AjaxController(IValidator validator, IVote vote, IPost post, IComment comment, UserManager<User> userManager)
         {
+            _validator = validator;
             _vote = vote;
             _post = post;
             _userManager = userManager;
@@ -32,8 +30,11 @@ namespace Dev_Blog.Controllers
         [HttpPost("/PostComment")]
         public async Task<string> PostComment(CommentVM comment)
         {
+            // prevent CSS attack
+            string content = _validator.ValidateComment(comment.Content);
+
             // if comment is greater than 750 characters
-            if (comment.Content.Length >= 750)
+            if (content.Length >= 750)
             {
                 string[] result = new string[]
                 {
@@ -46,7 +47,7 @@ namespace Dev_Blog.Controllers
             Comment newComment = await _comment.Create(new Comment
             {
                 PostId = comment.PostId,
-                Content = comment.Content,
+                Content = content,
                 UserName = HttpContext.User.Identity.Name,
                 UserId = _userManager.GetUserId(User)
             });

@@ -3,17 +3,8 @@ using Dropbox.Api;
 using Dropbox.Api.Files;
 using ECommerce.Models.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Auth;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting.Internal;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ECommerce.Models.Services

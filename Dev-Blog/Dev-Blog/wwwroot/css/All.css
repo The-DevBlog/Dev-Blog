@@ -1,15 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/*Header*/
-#bootstrap-override nav {
-    font-family: 'Press Start 2P', cursive;
-}
-
-#bootstrap-override #logout-button {
-    border: none;
-    background-color: inherit;
-}
-
 /*Posts*/
 #bootstrap-override .post-description {
     padding: 15px;
@@ -25,10 +15,18 @@
     border-radius: 5px;
 }
 
-@media screen and (max-width: 975px) {
+@media screen and (max-width: 992px) {
     #bootstrap-override .update-img {
         height: 360px;
         width: 640px;
+    }
+
+    #bootstrap-override div[suggestion] h4 {
+        font-size: .73em;
+    }
+
+    #bootstrap-override div[suggestion] button {
+        width: 100%;
     }
 
     #bootstrap-override .post-description {
@@ -48,6 +46,10 @@
 }
 
 @media screen and (max-width: 525px) {
+    #bootstrap-override div[suggestion] h4 {
+        font-size: .58em;
+    }
+
     #bootstrap-override .update-img {
         height: 234px;
         width: 416px;

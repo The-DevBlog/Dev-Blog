@@ -1,0 +1,39 @@
+﻿#bootstrap-override nav {
+    font-family: 'Press Start 2P', cursive;
+}
+
+#bootstrap-override #logout-button {
+    border: none;
+    background-color: inherit;
+}
+
+ul[navUL] {
+    width: 100%;
+}
+
+    ul[navUL] > li {
+        display: inline-block;
+    }
+
+li[rightLi] {
+    margin-left: auto;
+}
+
+    li[rightLi]:first-child {
+        text-align: right;
+    }
+
+@media screen and (max-width: 1200px) {
+    li[rightLi] {
+        text-align: left;
+        margin-left: 0;
+    }
+}
+
+main {
+    margin-bottom: 125px;
+}
+
+ul[navUL] > li:hover {
+    cursor: pointer;
+}

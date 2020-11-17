@@ -1,8 +1,4 @@
-﻿using Dropbox.Api.TeamLog;
-using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Interfaces
@@ -68,7 +64,8 @@ namespace Dev_Blog.Models.Interfaces
         /// </summary>
         /// <param name="post">The post to modify</param>
         /// <param name="description">The new description of the post</param>
+        /// <param name="updateNum">New udpate number of the post</param>
         /// <returns>The modified post</returns>
-        public Task<Post> Edit(Post post, string description);
+        public Task<Post> Edit(Post post, string description, string updateNum);
     }
 }

@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject SignInManager<Dev_Blog.Models.User> SignInManager
 @model Dev_Blog.Models.Base.BasePage
-
+<link type="text/css" rel="stylesheet" href="~/css/Header.css" />
+<link type="text/css" rel="stylesheet" href="~/css/Modals.css" />
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-xl navbar-dark">
         <img src="~/Imgs/Logo.png" height="115" width="100" />
         <a class="navbar-brand" asp-page="/Index">the Dev Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -11,45 +12,41 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+            <ul navUL class="navbar-nav mr-auto">
+                <li leftLi class="nav-item">
                     <a class="nav-link" asp-page="/Index">Home</a>
                 </li>
-                <li class="nav-item">
+                <li leftLi class="nav-item">
                     <a class="nav-link" asp-page="/Status/Posts">Status</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-page="/Bio/Bio">Creator</a>
+                <li leftLi class="nav-item">
+                    <a class="nav-link" asp-page="/About/About">About</a>
                 </li>
-            </ul>
-            <div class="collapse navbar-collapse justify-content-end float-right">
-                <ul class="navbar-nav">
-                    @{
-                        if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item" id="welcome-user">
-                                <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link">
-                                    <form asp-page="/Account/Logout" method="post">
-                                        <button id="logout-button" type="submit">Logout</button>
-                                    </form>
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
-                            </li>
-                            <li class="nav-item">
-                                @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
-                            </li>
-                        }
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <li rightLi class="nav-item" id="welcome-user">
+                            <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <form asp-page="/Account/Logout" method="post">
+                                    <button id="logout-button" type="submit">Logout</button>
+                                </form>
+                            </a>
+                        </li>
                     }
-                </ul>
-            </div>
+                    else
+                    {
+                        <li rightLi class="nav-item">
+                            @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
+                        </li>
+                        <li class="nav-item">
+                            @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
+                        </li>
+                    }
+                }
+            </ul>
         </div>
     </nav>
 </header>

@@ -1,21 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Dev_Blog.Models;
 using Dev_Blog.Models.Base;
 using Dev_Blog.Models.Interfaces;
-using Dev_Blog.Models.ViewModels;
-using Dropbox.Api.CloudDocs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
-using PagedList;
-using PagedList.Mvc;
 
 namespace Dev_Blog.Pages.Status
 {
@@ -39,6 +31,7 @@ namespace Dev_Blog.Pages.Status
             _comment = comment;
             _config = config;
             _post = post;
+            AdminUser = _config["AdminUserName"];
         }
 
         public async Task<IActionResult> OnGet()
@@ -51,7 +44,6 @@ namespace Dev_Blog.Pages.Status
                 pageIdx = int.Parse(Request.Cookies["pageTracker"]);
 
             PageNumber = pageIdx;
-            AdminUser = _config["AdminUserName"];
             Posts = await _post.GetPage(pageIdx);
 
             return Page();
@@ -61,7 +53,6 @@ namespace Dev_Blog.Pages.Status
         {
             // get previous page number
             int pageIdx = int.Parse(Request.Cookies["pageTracker"]) - 1;
-            AdminUser = _config["AdminUserName"];
 
             if (pageIdx >= 1)
             {
@@ -80,7 +71,6 @@ namespace Dev_Blog.Pages.Status
         {
             // get next page number
             int pageIdx = int.Parse(Request.Cookies["pageTracker"]) + 1;
-            AdminUser = _config["AdminUserName"];
 
             if (await _post.CanPageRight(pageIdx))
             {

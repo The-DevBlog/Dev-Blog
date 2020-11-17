@@ -1,16 +1,13 @@
 ﻿@page
 @model Dev_Blog.Pages.IndexModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
     Layout = "_Layout";
 }
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="~/css/All.css" />
     <link rel="stylesheet" type="text/css" href="~/css/Home.css" />
+
     <title>Home</title>
 </head>
 <body id="bootstrap-override">
@@ -34,27 +31,24 @@
 
                         <hr />
 
-                        <div class="m-auto embed-responsive-16by9 embed-responsive">
-                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9ou1pl0XNRs"></iframe>
+                        <div youtube class="m-auto embed-responsive-16by9 embed-responsive">
+                            @*<iframe class="embed-responsive-item" src="#"></iframe>*@
+                            <img class="embed-responsive-item" />
+                            <h2>
+                                YouTube Channel
+                                <br /><br />
+                                Coming Soon
+                            </h2>
                         </div>
                     </div>
 
                     <!--Suggestion Box-->
-                    <div class="card-footer text-center">
-                        <h4>Have a suggestion? Leave a comment!</h4>
-                        <form method="post">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <textarea asp-for=@Model.Context placeholder="Leave suggestion here.." class="pb-cmnt-textarea d-block" maxlength="1000"></textarea>
-                                <button class="btn btn-primary" asp-page-handler="Suggestion" type="submit">
-                                    Submit
-                                </button>
-                            }
-                            else
-                            {
-                                <textarea placeholder="Login in to leave a suggestion.." class="d-block"></textarea>
-                            }
-                        </form>
+                    <div suggestion class="card-footer text-center">
+                        <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
+                            <button class="btn btn-secondary">
+                                <h4>Have a suggestion? Send an email!</h4>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
