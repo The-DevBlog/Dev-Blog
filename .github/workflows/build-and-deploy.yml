@@ -5,7 +5,7 @@ on: [pull_request]
 env:
   AZURE_WEBAPP_NAME: thedevblog
   AZURE_WEBAPP_PACKAGE_PATH: './published'
-  NETCORE_VERSION: '5.0.100'
+  NETCORE_VERSION: '3.1.402'
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version ${{ env.NETCORE_VERSION }}
+        dotnet-version: ${{ env.NETCORE_VERSION }}
 
     - name: Restore
       run: dotnet Restore
