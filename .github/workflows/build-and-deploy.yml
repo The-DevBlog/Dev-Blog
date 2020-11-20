@@ -5,7 +5,7 @@ on: [pull_request]
 env:
   AZURE_WEBAPP_NAME: thedevblog
   AZURE_WEBAPP_PACKAGE_PATH: './published'
-  NETCORE_VERSION: '3.1.402'
+  NETCORE_VERSION: '5.0.100'
 
 jobs:
   build:
