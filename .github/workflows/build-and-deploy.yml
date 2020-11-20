@@ -1,6 +1,6 @@
 name: "build and deploy"
 
-on: [build]
+on: [pull_request]
 
 env:
   AZURE_WEBAPP_NAME: thedevblog
