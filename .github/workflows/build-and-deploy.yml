@@ -4,7 +4,7 @@ on: [pull_request]
 
 env:
   AZURE_WEBAPP_NAME: thedevblog
-  AZURE_WEBAPP_PACKAGE_PATH: './published'
+  AZURE_WEBAPP_PACKAGE_PATH: './Dev-Blog'
   NETCORE_VERSION: '3.1.402'
 
 jobs:
