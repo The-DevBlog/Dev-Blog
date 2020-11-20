@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: ${{ env.NETCORE_VERSION }}
 
-     name: Restore
+    - name: Restore
       run: dotnet restore
 
     - name: Build
