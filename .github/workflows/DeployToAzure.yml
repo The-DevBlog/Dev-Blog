@@ -1,4 +1,4 @@
-name: .NET Core
+name: "Deploy to Azure"
 
 on:
   push:
@@ -6,20 +6,34 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  AZURE_WEBAPP_NAME: thedevblog
+  AZURE_WEBAPP_PACKAGE_PATH: './Dev-Blog'
+
 jobs:
   build:
-
+    name: Deploy to Azure
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: Setup .NET Core SDK 3.1.301
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
+
     - name: Install dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+
+    - name: Publish
+      run:  dotnet publish --no-build -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+
+    - name: 'Deploy to Azure'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} 
