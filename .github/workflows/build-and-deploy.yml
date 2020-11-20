@@ -1,0 +1,41 @@
+name: "build and deploy"
+
+on: [build]
+
+env:
+  AZURE_WEBAPP_NAME: thedevblog
+  AZURE_WEBAPP_PACKAGE_PATH: './published'
+  NETCORE_VERSION: '3.1.103'
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@vs
+
+    - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version ${{ env.NETCORE_VERSION }}
+
+    - name: Restore
+      run: dotnet Restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Publish
+      run: dotnet publish --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: 'Deploy to Azure'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} 
+
+
+
+
+
