@@ -79,6 +79,11 @@ namespace Dev_Blog
                 app.UseHsts();
             }
 
+            app.UseCors(builder =>
+                builder.WithOrigins("https://thedevblog.azurewebsites.net/")
+                    .AllowAnyHeader()
+            );
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
