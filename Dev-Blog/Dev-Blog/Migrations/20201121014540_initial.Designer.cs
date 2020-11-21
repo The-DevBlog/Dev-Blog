@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Dev_Blog.Migrations.AppDb
+namespace Dev_Blog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201027002707_editCommentTable5")]
-    partial class editCommentTable5
+    [Migration("20201121014540_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
