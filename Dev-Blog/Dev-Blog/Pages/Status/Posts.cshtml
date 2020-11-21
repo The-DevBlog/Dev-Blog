@@ -14,14 +14,14 @@
     <main>
         <div class="container">
             @{
-                if (User.Identity.IsAuthenticated)
-                {
-                    if (User.Identity.Name == Model.AdminUser)
+                @*if (User.Identity.IsAuthenticated)
                     {
-                        <!-- Add Post -->
-                        <a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>
-                    }
-                }
+                        if (User.Identity.Name == Model.AdminUser)
+                        {*@
+                <!-- Add Post -->
+                <a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>
+                @*}
+                    }*@
                 if (Model.Posts != null)
                 {
                     <!-- Pagination -->
