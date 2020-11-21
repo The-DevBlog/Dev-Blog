@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dev_Blog.Pages.Status
 {
-    //[Authorize(Policy = "Admin")]
+    [Authorize(Policy = "Admin")]
     [BindProperties]
     public class AddModel : BasePage
     {
