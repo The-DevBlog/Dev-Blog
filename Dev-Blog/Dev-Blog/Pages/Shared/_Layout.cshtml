@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-    @{ await Html.RenderPartialAsync("_Header");}
+    @*@{ await Html.RenderPartialAsync("_Header");}*@
+    @Html.Partial("_Header")
     @RenderBody()
-    @{ await Html.RenderPartialAsync("_Footer");}
+    @*@{ await Html.RenderPartialAsync("_Footer");}*@
+    @Html.Partial("_Footer")
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
