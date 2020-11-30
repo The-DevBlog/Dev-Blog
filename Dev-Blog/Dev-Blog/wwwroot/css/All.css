@@ -43,11 +43,15 @@
 
 @media screen and (max-width: 525px) {
     #bootstrap-override div[suggestion] h4 {
-        font-size: .58em;
+        font-size: .45em;
     }
 
     #bootstrap-override .update-img {
         width: 100%;
+    }
+
+    #bootstrap-override .navbar-brand {
+        margin-right: 0px;
     }
 }
 
