@@ -6,8 +6,7 @@
 }
 
 <head>
-    <link rel="stylesheet" type="text/css" href="~/css/Home.css" />
-
+    <link rel="stylesheet" type="text/css" href="~/css/home.css" />
     <title>Home</title>
 </head>
 <body id="bootstrap-override">
@@ -17,31 +16,31 @@
                 @if (Model.Post != null)
                 {
                     <!-- Latest Post -->
-                <div class="card-header">
-                    <span>
-                        Update
-                        <strong>@Model.Post.UpdateNum</strong>
-                    </span>
-                    <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
-                </div>
-                <div class="card-body text-center">
-                    <img id="update-img" class="update-img" src=@Model.Post.ImgURL />
-                    <p class="post-description">@Model.Post.Description</p>
+                    <div class="card-header">
+                        <span>
+                            Update
+                            <strong>@Model.Post.UpdateNum</strong>
+                        </span>
+                        <strong class="float-right">@Model.Post.Date.ToShortDateString()</strong>
+                    </div>
+                    <div class="card-body text-center">
+                        <img id="update-img" class="update-img" src=@Model.Post.ImgURL />
+                        <p class="post-description">@Model.Post.Description</p>
 
-                    <hr />
-                </div>
+                        <hr />
+                    </div>
                 }
                 <div youtube class="m-auto embed-responsive-16by9 embed-responsive">
                     @*<iframe class="embed-responsive-item" src="#"></iframe>*@
                     <img class="embed-responsive-item" />
                     <h2>
-                        YouTube ANOTHER TEST
+                        YouTube Channel
                         <br /><br />
                         Coming Soon
                     </h2>
                 </div>
                 <!--Suggestion Box-->
-                <div suggestion class="card-footer text-center">
+                <div suggestion class="card-footer">
                     <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
                         <button class="btn btn-secondary">
                             <h4>Have a suggestion? Send an email!</h4>

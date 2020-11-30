@@ -32,5 +32,6 @@ div[youtube] {
 }
 
 div[suggestion] {
+    text-align: center;
     padding: 75px;
 }
