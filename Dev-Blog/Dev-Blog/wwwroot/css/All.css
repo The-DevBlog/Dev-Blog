@@ -6,7 +6,7 @@
     background-color: #626262;
     border-radius: 5px;
     margin: 15px auto;
-    width: 100%;
+    width: 768px;
 }
 
 #bootstrap-override .update-img {
@@ -16,6 +16,10 @@
 }
 
 @media screen and (max-width: 992px) {
+    #bootstrap-override .post-description {
+        width: auto;
+    }
+
     #bootstrap-override .update-img {
         height: 360px;
         width: 640px;

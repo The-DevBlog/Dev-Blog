@@ -33,4 +33,5 @@ div[youtube] {
 
 div[suggestion] {
     border: 2px solid red;
+    padding: 75px;
 }
