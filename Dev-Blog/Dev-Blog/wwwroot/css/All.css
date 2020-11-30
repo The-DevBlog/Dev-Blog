@@ -16,6 +16,10 @@
 }
 
 @media screen and (max-width: 992px) {
+    #bootstrap-override .post-description {
+        width: auto;
+    }
+
     #bootstrap-override .update-img {
         height: 360px;
         width: 640px;
@@ -28,10 +32,6 @@
     #bootstrap-override div[suggestion] button {
         width: 100%;
     }
-
-    #bootstrap-override .post-description {
-        width: 640px;
-    }
 }
 
 @media screen and (max-width: 760px) {
@@ -39,24 +39,19 @@
         height: 252px;
         width: 448px;
     }
-
-    #bootstrap-override .post-description {
-        width: 448px;
-    }
 }
 
 @media screen and (max-width: 525px) {
     #bootstrap-override div[suggestion] h4 {
-        font-size: .58em;
+        font-size: .45em;
     }
 
     #bootstrap-override .update-img {
-        height: 234px;
-        width: 416px;
+        width: 100%;
     }
 
-    #bootstrap-override .post-description {
-        width: 416px;
+    #bootstrap-override .navbar-brand {
+        margin-right: 0px;
     }
 }
 
