@@ -6,7 +6,7 @@
     background-color: #626262;
     border-radius: 5px;
     margin: 15px auto;
-    width: 768px;
+    width: 100%;
 }
 
 #bootstrap-override .update-img {
@@ -28,19 +28,11 @@
     #bootstrap-override div[suggestion] button {
         width: 100%;
     }
-
-    #bootstrap-override .post-description {
-        width: 640px;
-    }
 }
 
 @media screen and (max-width: 760px) {
     #bootstrap-override .update-img {
         height: 252px;
-        width: 448px;
-    }
-
-    #bootstrap-override .post-description {
         width: 448px;
     }
 }
@@ -51,12 +43,7 @@
     }
 
     #bootstrap-override .update-img {
-        height: 234px;
-        width: 416px;
-    }
-
-    #bootstrap-override .post-description {
-        width: 416px;
+        width: 100%;
     }
 }
 
