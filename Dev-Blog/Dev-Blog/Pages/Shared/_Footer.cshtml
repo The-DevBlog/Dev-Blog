@@ -8,10 +8,16 @@
             <div deleteAccount>
                 @{ await Html.RenderPartialAsync("../Account/_Delete");}
             </div>
+
+            <div signedIn class="py-3">
+                © 2020 Copyright: TheDevBlog
+            </div>
+        }
+        else
+        {
+            <div class="py-3">
+                © 2020 Copyright: TheDevBlog
+            </div>
         }
     }
-
-    <div class="py-3">
-        © 2020 Copyright: TheDevBlog
-    </div>
 </footer>
