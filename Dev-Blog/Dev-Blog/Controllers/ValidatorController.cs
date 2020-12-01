@@ -20,11 +20,19 @@ namespace Dev_Blog.Controllers
         [HttpPost("/Validate")]
         public async Task<string> Validate([FromBody] ValidateVM input)
         {
-            bool email = _validator.EmailExists(input.Email);
-            bool userName = _validator.UserNameExists(input.UserName);
+            string email, username;
 
-            Object[] json = { email, userName };
+            if (input.UserName == "")
+                username = null;
+            else
+                username = _validator.UserNameExists(input.UserName).ToString();
 
+            if (input.Email == "")
+                email = null;
+            else
+                email = _validator.EmailExists(input.Email).ToString();
+
+            Object[] json = { email, username };
             return JsonConvert.SerializeObject(json);
         }
     }
