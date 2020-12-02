@@ -13,6 +13,13 @@ namespace Dev_Blog.Models.Interfaces
         public Task<Comment> Create(Comment comment);
 
         /// <summary>
+        /// Returns the comment count for specified post
+        /// </summary>
+        /// <param name="postId">The id of specified post</param>
+        /// <returns>Int</returns>
+        Task<int> GetCount(int postId);
+
+        /// <summary>
         /// Retrieves all comments from database
         /// </summary>
         /// <returns>Returns all comments</returns>

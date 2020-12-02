@@ -1,12 +1,8 @@
 ﻿using Dev_Blog.Data;
 using Dev_Blog.Models.Interfaces;
-using Dropbox.Api.CloudDocs;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Dev_Blog.Models.Services
@@ -41,6 +37,17 @@ namespace Dev_Blog.Models.Services
             List<Comment> comments = await _context.Comment.OrderByDescending(x => x.Date)
                 .ToListAsync();
             return comments;
+        }
+
+        /// <summary>
+        /// Returns the comment count for specified post
+        /// </summary>
+        /// <param name="postId">The id of specified post</param>
+        /// <returns>Int</returns>
+        public async Task<int> GetCount(int postId)
+        {
+            Post post = await _context.Post.Where(x => x.Id == postId).FirstOrDefaultAsync();
+            return post.Comments.Count();
         }
 
         /// <summary>
