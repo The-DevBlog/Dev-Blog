@@ -30,3 +30,10 @@
     border: 1px solid #313131;
     border-radius: 5px;
 }
+
+@media screen and (max-width: 767px) {
+    div[signedIn] {
+        float: right;
+        margin-right: 15px;
+    }
+}

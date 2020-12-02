@@ -44,8 +44,14 @@ namespace Dev_Blog.Models.Services
         /// <returns>The modified post</returns>
         public async Task<Post> Edit(Post post, string description, string updateNum)
         {
-            post.Description = description;
-            post.UpdateNum = updateNum;
+            // if no new description is written, leave as is
+            if (description == null) post.Description = post.Description;
+            else post.Description = description;
+
+            // if no new update number is written, leave as is
+            if (updateNum == null) post.UpdateNum = post.UpdateNum;
+            else post.UpdateNum = updateNum;
+
             _context.Entry(post).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return post;
