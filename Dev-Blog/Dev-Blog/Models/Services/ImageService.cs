@@ -29,11 +29,9 @@ namespace ECommerce.Models.Services
             var url = "";
             var destination = _config["DestinationPath"] + imgName;
 
-            // TODO: add functionality to add an image from anywhere in my local directory.
             using (var dbx = new DropboxClient(_config["DropboxToken"]))
             {
-                string srcFile = _config["PathToImgs"] + image.FileName;
-                using (var fs = new FileStream(srcFile, FileMode.Open))
+                using (var fs = image.OpenReadStream())
                 {
                     var updated = await dbx.Files.UploadAsync(
                         destination,

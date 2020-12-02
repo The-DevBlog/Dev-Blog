@@ -31,6 +31,7 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnPost()
         {
+            Post = await _post.GetPost(Post.Id);
             await _post.Edit(Post, Description, UpdateNum);
             return RedirectToPage("Posts");
         }
