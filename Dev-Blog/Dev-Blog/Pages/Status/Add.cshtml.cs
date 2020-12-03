@@ -33,6 +33,7 @@ namespace Dev_Blog.Pages.Status
 
         public async Task<IActionResult> OnPost()
         {
+            // create unique image name
             string ext = Path.GetExtension(Image.FileName);
             string imgName = $"{DateTime.Now.Ticks}{Name}{ext}";
 
