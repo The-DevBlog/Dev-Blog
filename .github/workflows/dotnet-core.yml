@@ -23,6 +23,7 @@ jobs:
       
       # Run dotnet build and publish
       - name: dotnet build and publish
+      - working-directory: './Dev-Blog/Dev-Blog'
         run: |
           dotnet restore
           dotnet build --configuration Release
