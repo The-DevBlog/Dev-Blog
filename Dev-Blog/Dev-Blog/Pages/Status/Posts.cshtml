@@ -31,11 +31,12 @@
                     <!-- All Posts -->
                     foreach (var post in Model.Posts)
                     {
+                        string postId = "post" + post.Id;
                         string formId = "form" + post.Id;
                         string upVoteId = "upVote" + post.Id;
                         string downVoteId = "downVote" + post.Id;
                         string voteSystem = "voteSystem" + post.Id;
-                        <div class="card">
+                        <div id=@postId class="card">
                             <div class="card-header">
                                 <span>
                                     Update
@@ -111,6 +112,13 @@
                                         <p>@comment.Content</p>
                                     </div>
                                 }
+                            }
+                            <!--This is a reference point to render the new comments before-->
+                            <span @postId hidden></span>
+
+                            @if (post.Comments.Count > 5)
+                            {
+                                <button showComments count=@post.Comments.Count value=@post.Id>Show all @post.Comments.Count comments</button>
                             }
                             <!-- Comment Box -->
                             <div id=@formId class="comment-box form-group">
@@ -238,8 +246,8 @@
 
             // new comment to render to page
             var renderComment = function (comment, date, idx) {
-                $(`#form${idx}`).before(
-                    $(`<div comment class="posted-comments comment-box">` +
+                $(`span[post${idx}]`).before(
+                    $(`<div comment class="posted-comments comment-box" style="display:block;">` +
                         `<span class="glyphicon glyphicon-user user-icon"></span>` +
                         `<span class="comment-username">${comment.UserName}</span>` +
                         `<div class="float-right">` +
@@ -250,6 +258,21 @@
                     )
                 );
             }
+
+            // show and hide comments toggler
+            $("button[showComments]").on("click", function () {
+                var id = $(this).attr("value");
+                var count = $(this).attr("count");
+                var comments = $(`#post${id} div[comment]:nth-child(1n + 8)`);
+
+                if (comments.css("display") == "none") {
+                    comments.css("display", "block");
+                    $(this).html("Hide comments");
+                } else {
+                    comments.css("display", "none");
+                    $(this).html(`Show all ${count} comments`);
+                }
+            });
         });
     </script>
 </body>
