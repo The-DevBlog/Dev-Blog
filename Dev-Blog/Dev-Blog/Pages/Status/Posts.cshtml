@@ -31,21 +31,22 @@
  <!-- All Posts -->
                     foreach (var post in Model.Posts)
                     {
+                        string postId = "post" + post.Id;
                         string formId = "form" + post.Id;
                         string upVoteId = "upVote" + post.Id;
                         string downVoteId = "downVote" + post.Id;
                         string voteSystem = "voteSystem" + post.Id;
-                <div class="card">
-                    <div class="card-header">
-                        <span>
-                            Update
-                            <strong>@post.UpdateNum</strong>
-                        </span>
-                        <div class="float-right">
-                            <strong>@post.Date.ToShortDateString()</strong>
+                        <div id=@postId class="card">
+                            <div class="card-header">
+                                <span>
+                                    Update
+                                    <strong>@post.UpdateNum</strong>
+                                </span>
+                                <div class="float-right">
+                                    <strong>@post.Date.ToShortDateString()</strong>
 
-                            <!-- Delete/Edit post form -->
-                            @if (User.Identity.Name == Model.AdminUser)
+                                    <!-- Delete/Edit post form -->
+                                    @if (User.Identity.Name == Model.AdminUser)
                                     {
                             <form method="post" class="delete-form">
                                 <input hidden asp-for=@post.Id>
@@ -91,30 +92,37 @@
                                 foreach (var comment in post.Comments)
                                 {
                                     <!-- Comment -->
-                    <div comment class="posted-comments comment-box">
-                        <span class="glyphicon glyphicon-user user-icon"></span>
-                        <span class="comment-username">@comment.UserName</span>
-                        <div class="float-right">
-                            <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+                                    <div comment class="posted-comments comment-box">
+                                        <span class="glyphicon glyphicon-user user-icon"></span>
+                                        <span class="comment-username">@comment.UserName</span>
+                                        <div class="float-right">
+                                            <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
 
-                            <!--Delete Comment Button-->
-                            <form method="post" class="delete-form">
-                                @if (User.Identity.Name == Model.AdminUser)
-                                                {
-                                <input hidden asp-for=@comment.Id>
-                                <button type="submit" asp-page-handler="DeleteComment">
-                                    @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
-                                </button>
-                                                }
-                            </form>
-                        </div>
-                        <p>@comment.Content</p>
-                    </div>
+                                            <!--Delete Comment Button-->
+                                            @if (User.Identity.Name == Model.AdminUser)
+                                            {
+                                                <form method="post" class="delete-form">
+                                                    <input hidden asp-for=@comment.Id>
+                                                    <button type="submit" asp-page-handler="DeleteComment">
+                                                        @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                        <p>@comment.Content</p>
+                                    </div>
                                 }
                             }
-                    <!-- Comment Box -->
-                    <div id=@formId class="comment-box form-group">
-                        @if (User.Identity.IsAuthenticated)
+                            <!--This is a reference point to render the new comments before-->
+                            <span @postId hidden></span>
+
+                            @if (post.Comments.Count > 5)
+                            {
+                                <button showComments count=@post.Comments.Count value=@post.Id>Show all @post.Comments.Count comments</button>
+                            }
+                            <!-- Comment Box -->
+                            <div id=@formId class="comment-box form-group">
+                                @if (User.Identity.IsAuthenticated)
                                 {
                         <form>
                             <textarea maxlength="750" asp-for=@Model.Comment.Content class="form-control" placeholder="comment.." rows="2"></textarea>
@@ -238,8 +246,8 @@
 
             // new comment to render to page
             var renderComment = function (comment, date, idx) {
-                $(`#form${idx}`).before(
-                    $(`<div comment class="posted-comments comment-box">` +
+                $(`span[post${idx}]`).before(
+                    $(`<div comment class="posted-comments comment-box" style="display:block;">` +
                         `<span class="glyphicon glyphicon-user user-icon"></span>` +
                         `<span class="comment-username">${comment.UserName}</span>` +
                         `<div class="float-right">` +
@@ -250,6 +258,21 @@
                     )
                 );
             }
+
+            // show and hide comments toggler
+            $("button[showComments]").on("click", function () {
+                var id = $(this).attr("value");
+                var count = $(this).attr("count");
+                var comments = $(`#post${id} div[comment]:nth-child(1n + 8)`);
+
+                if (comments.css("display") == "none") {
+                    comments.css("display", "block");
+                    $(this).html("Hide comments");
+                } else {
+                    comments.css("display", "none");
+                    $(this).html(`Show all ${count} comments`);
+                }
+            });
         });
     </script>
 </body>
