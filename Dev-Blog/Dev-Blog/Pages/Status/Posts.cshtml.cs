@@ -44,6 +44,7 @@ namespace Dev_Blog.Pages.Status
                 pageIdx = int.Parse(Request.Cookies["pageTracker"]);
 
             PageNumber = pageIdx;
+            LastPage = await _post.GetLastPage();
             Posts = await _post.GetPage(pageIdx);
 
             return Page();

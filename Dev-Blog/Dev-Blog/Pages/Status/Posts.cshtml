@@ -99,15 +99,15 @@
                                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
 
                                             <!--Delete Comment Button-->
-                                            <form method="post" class="delete-form">
-                                                @if (User.Identity.Name == Model.AdminUser)
-                                                {
+                                            @if (User.Identity.Name == Model.AdminUser)
+                                            {
+                                                <form method="post" class="delete-form">
                                                     <input hidden asp-for=@comment.Id>
                                                     <button type="submit" asp-page-handler="DeleteComment">
                                                         @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
                                                     </button>
-                                                }
-                                            </form>
+                                                </form>
+                                            }
                                         </div>
                                         <p>@comment.Content</p>
                                     </div>
