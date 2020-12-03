@@ -133,3 +133,22 @@ a[edit] {
     background-color: #313131;
     border-color: #313131;
 }
+
+button[showComments] {
+    outline: none;
+    border: none;
+    background-color: #626262;
+    opacity: .75;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 7.5px;
+    border-radius: 5px;
+}
+
+    button[showComments]:hover {
+        background-color: #8A8A8A;
+    }
+
+div[comment]:nth-child(1n+8) {
+    display: none;
+}
