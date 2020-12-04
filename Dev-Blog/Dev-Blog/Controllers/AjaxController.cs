@@ -31,10 +31,10 @@ namespace Dev_Blog.Controllers
         public async Task<string> PostComment(CommentVM comment)
         {
             // prevent CSS attack
-            string content = _validator.ValidateComment(comment.Content);
+            string safeContent = _validator.ValidateComment(comment.Content);
 
             // if comment is greater than 750 characters
-            if (content.Length >= 750)
+            if (safeContent.Length >= 750)
             {
                 string[] result = new string[]
                 {
@@ -47,12 +47,14 @@ namespace Dev_Blog.Controllers
             Comment newComment = await _comment.Create(new Comment
             {
                 PostId = comment.PostId,
-                Content = content,
+                Content = comment.Content,
                 UserName = HttpContext.User.Identity.Name,
                 UserId = _userManager.GetUserId(User)
             });
 
+            newComment.Content = safeContent;
             Object[] json = { newComment, newComment.Date.ToString("MM/dd/yyyy hh:mm tt") };
+
             return JsonConvert.SerializeObject(json);
         }
 
