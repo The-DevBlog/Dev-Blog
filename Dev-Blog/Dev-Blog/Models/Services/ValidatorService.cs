@@ -45,7 +45,7 @@ namespace Dev_Blog.Models.Services
             StringBuilder sb = new StringBuilder();
             sb.Append(HttpUtility.HtmlEncode(comment));
             comment = sb.ToString();
-            return HttpUtility.HtmlEncode(comment);
+            return comment;
         }
     }
 }
