@@ -25,25 +25,25 @@
                 @{
                     if (User.Identity.IsAuthenticated)
                     {
-                        <li rightLi class="nav-item" id="welcome-user">
-                            <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link">
-                                <form asp-page="/Account/Logout" method="post">
-                                    <button id="logout-button" type="submit">Logout</button>
-                                </form>
-                            </a>
-                        </li>
+                    <li rightLi class="nav-item" id="welcome-user">
+                        <a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <form asp-page="/Account/Logout" method="post">
+                                <button id="logout-button" type="submit">Logout</button>
+                            </form>
+                        </a>
+                    </li>
                     }
                     else
                     {
-                        <li rightLi class="nav-item">
-                            @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
-                        </li>
-                        <li class="nav-item">
-                            @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
-                        </li>
+                    <li rightLi class="nav-item">
+                        @{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}
+                    </li>
+                    <li class="nav-item">
+                        @{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}
+                    </li>
                     }
                 }
             </ul>
