@@ -1,7 +1,26 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-#bootstrap-override h3 {
+h3[unsub],
+form[unsub] {
     text-align: center;
     margin-top: 15%;
     font-family: 'Press Start 2P', cursive;
+}
+
+form[unsub] {
+    width: 400px;
+    margin: auto;
+}
+
+button[unsub] {
+    color: #fffaf0;
+    background-color: #ca3e47;
+    width: auto;
+    margin: auto;
+}
+
+@media screen and (max-width: 415px) {
+    form[unsub] {
+        width: 100%;
+    }
 }
