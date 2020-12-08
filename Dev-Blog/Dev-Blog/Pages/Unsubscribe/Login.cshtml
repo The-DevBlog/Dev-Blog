@@ -1,0 +1,22 @@
+﻿@page
+@model Dev_Blog.Pages.Unsubscribe.LoginModel
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Dev_Blog.Models.User> SignInManager
+@{
+    ViewData["Title"] = "Unsubscribe";
+    Layout = "_Layout";
+}
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/all.css" />
+    <title>Unsubscribe</title>
+</head>
+<body id="bootstrap-override">
+    <form class="text-center p-5" method="post">
+        <h5>UserName</h5>
+        <div asp-validation-summary="All" class="error-message"></div>
+        <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="UserName" asp-for="@Model.Input.UserName">
+        <h5>Password</h5>
+        <input type="password" class="form-control mb-4" placeholder="Password" asp-for="@Model.Input.Password">
+        <button class="btn btn-block my-4" type="submit">Sign in</button>
+    </form>
+</body>
