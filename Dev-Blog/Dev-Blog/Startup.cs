@@ -37,6 +37,7 @@ namespace Dev_Blog
         {
             services.AddMvc();
             services.AddRazorPages();
+            services.AddServerSideBlazor();
 
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -90,6 +91,7 @@ namespace Dev_Blog
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapBlazorHub();
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
