@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Dev_Blog_Server_5._0</RootNamespace>
-    <UserSecretsId>6cf4cf5e-eb88-4588-ae9f-317b51a1225c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
-using Dev_Blog_Server_5._0.Data;
+using DataLibrary;
+using DataLibrary.Interfaces;
+using DevBlog_BlazorServer.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -10,12 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using DataLibrary;
-using DataLibrary.Interfaces;
 
-namespace Dev_Blog_Server_5._0
+namespace DevBlog_BlazorServer
 {
     public class Startup
     {
