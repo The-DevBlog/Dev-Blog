@@ -1,7 +1,32 @@
 ﻿@page "/posts"
 
+@using DevBlog_BlazorServer.Models
+@using Microsoft.Extensions.Configuration
+@inject DataLibrary.Interfaces.IDataAccess _data
+@inject IConfiguration _config
+
 <h3>Posts</h3>
 
-@code {
+@{
+    foreach (var post in posts)
+    {
+        <div style="margin-top: 20px">
+            <p>@post.UpdateNum</p>
+            <p>@post.Date.ToShortDateString()</p>
+            <p>@post.Description</p>
+            <p>@post.UpVotes</p>
+            <p>@post.DownVotes</p>
+            <img src=@post.ImgURL />
+        </div>
+    }
+}
 
+@code {
+    List<PostModel> posts;
+    protected override async Task OnInitializedAsync()
+    {
+        string sql = "SELECT * FROM post;";
+
+        posts = await _data.LoadData<PostModel, dynamic>(sql, new { }, _config.GetConnectionString("DevBlogDB"));
+    }
 }
