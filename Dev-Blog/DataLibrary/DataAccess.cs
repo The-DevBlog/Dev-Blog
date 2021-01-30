@@ -12,20 +12,33 @@ namespace DataLibrary
 {
     public class DataAccess : IDataAccess
     {
-        public async Task<List<T>> LoadData<T, U>(string sql, U paramters, string connectionStr)
+        public async Task<List<T>> LoadData<T, U>(string table, U parameters, string connectionStr)
         {
+            string sql = $"SELECT * FROM {table};";
+
             using (IDbConnection connection = new MySqlConnection(connectionStr))
             {
-                var rows = await connection.QueryAsync<T>(sql, paramters);
+                var rows = await connection.QueryAsync<T>(sql, parameters);
                 return rows.ToList();
             }
         }
 
-        public Task SaveData<T>(string sql, T paramters, string connectionStr)
+        public async Task<T> GetLatest<T>(string table, string connectionStr)
+        {
+            string sql = $"SELECT * FROM {table} LIMIT 1;";
+
+            using (IDbConnection connection = new MySqlConnection(connectionStr))
+            {
+                var row = await connection.QueryAsync<T>(sql);
+                return row.FirstOrDefault();
+            }
+        }
+
+        public Task SaveData<T>(string sql, T parameters, string connectionStr)
         {
             using (IDbConnection connection = new MySqlConnection(connectionStr))
             {
-                return connection.ExecuteAsync(sql, paramters);
+                return connection.ExecuteAsync(sql, parameters);
             }
         }
 

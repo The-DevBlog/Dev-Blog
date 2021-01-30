@@ -50,7 +50,7 @@ else
         newPerson = new PersonModel();
         string sql = "SELECT * FROM people;";
 
-        people = await _data.LoadData<PersonModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        people = await _data.LoadData<PersonModel, dynamic>("people", new { }, _config.GetConnectionString("default"));
     }
 
     private async Task InsertData()

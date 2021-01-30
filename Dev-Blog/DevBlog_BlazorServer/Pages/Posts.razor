@@ -5,18 +5,18 @@
 @inject DataLibrary.Interfaces.IDataAccess _data
 @inject IConfiguration _config
 
-<h3>Posts</h3>
-
 @{
     foreach (var post in posts)
     {
-        <div style="margin-top: 20px">
+        <div style="margin-top: 20px; border: 2px solid red;">
             <p>@post.UpdateNum</p>
             <p>@post.Date.ToShortDateString()</p>
-            <p>@post.Description</p>
-            <p>@post.UpVotes</p>
-            <p>@post.DownVotes</p>
             <img src=@post.ImgURL />
+            <p>@post.Description</p>
+            <button class="glyphicon glyphicon-thumbs-up"></button>
+            <span>@post.UpVotes</span>
+            <button class="glyphicon glyphicon-thumbs-down"></button>
+            <span>@post.DownVotes</span>
         </div>
     }
 }
@@ -25,8 +25,6 @@
     List<PostModel> posts;
     protected override async Task OnInitializedAsync()
     {
-        string sql = "SELECT * FROM post;";
-
-        posts = await _data.LoadData<PostModel, dynamic>(sql, new { }, _config.GetConnectionString("DevBlogDB"));
+        posts = await _data.LoadData<PostModel, dynamic>("post", new { }, _config.GetConnectionString("DevBlogDB"));
     }
 }

@@ -1,9 +1,4 @@
-header {
-    background-color: #414141;
-    color: #fffaf0;
-}
-
-.page {
+/*.page {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -72,4 +67,4 @@ header {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
-}
+}*/
