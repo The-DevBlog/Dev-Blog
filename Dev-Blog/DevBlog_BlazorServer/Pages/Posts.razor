@@ -26,5 +26,6 @@
     protected override async Task OnInitializedAsync()
     {
         posts = await _data.LoadData<PostModel, dynamic>("post", new { }, _config.GetConnectionString("DevBlogDB"));
+        posts.Reverse();
     }
 }

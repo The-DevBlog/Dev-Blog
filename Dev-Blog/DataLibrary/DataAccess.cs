@@ -25,7 +25,9 @@ namespace DataLibrary
 
         public async Task<T> GetLatest<T>(string table, string connectionStr)
         {
-            string sql = $"SELECT * FROM {table} LIMIT 1;";
+            string sql = $"SELECT * FROM {table} " +
+                         "ORDER BY Id " +
+                         "DESC LIMIT 1";
 
             using (IDbConnection connection = new MySqlConnection(connectionStr))
             {
