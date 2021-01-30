@@ -1,3 +1,8 @@
+header {
+    background-color: #414141;
+    color: #fffaf0;
+}
+
 .page {
     position: relative;
     display: flex;
