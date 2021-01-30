@@ -28,5 +28,9 @@ namespace DataLibrary
                 return connection.ExecuteAsync(sql, paramters);
             }
         }
+
+        //public Task UpdateDB<T>(string sql, T paramters)
+        //{
+        //}
     }
 }

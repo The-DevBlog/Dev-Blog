@@ -1,4 +1,49 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<User> SignInManager
+<header>
+    <NavMenu class="navbar navbar-expand-xl navbar-dark">
+        <!-- HOME LINK / LOGO-->
+        <img src="~/Imgs/Logo.png" height="115" width="100" />
+        @*<a class="navbar-brand" asp-page="/Index">the Dev Blog</a>*@
+        <NavLink class="navbar-brand" href="Index">
+            The Dev Blog
+        </NavLink>
+
+        <!-- TOGGLER -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- PAGE LINKS -->
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul navUL class="navbar-nav mr-auto">
+                <li leftLi class="nav-item">
+                    <a class="nav-link" asp-page="/Index">Home</a>
+                </li>
+                <li leftLi class="nav-item">
+                    <a class="nav-link" asp-page="/Status/Posts">Status</a>
+                </li>
+                <li leftLi class="nav-item">
+                    <a class="nav-link" asp-page="/About/About">About</a>
+                </li>
+
+                <!-- IF USER IS SIGNED IN -->
+                @{
+                    if (User.Identity)
+                }
+            </ul>
+        </div>
+        <NavLink>
+        </NavLink>
+        <NavLink>
+        </NavLink>
+        <NavLink>
+        </NavLink>
+    </NavMenu>
+</header>
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">DevBlog_BlazorServer</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -20,6 +65,11 @@
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="fetchdata">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="people">
+                <span class="oi oi-person" aria-hidden="true"></span>People
             </NavLink>
         </li>
     </ul>

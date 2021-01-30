@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dev-Blog", "Dev-Blog\Dev-Bl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLibrary", "DataLibrary\DataLibrary.csproj", "{B5FB7C34-942D-4078-A2B4-57B289F5B3EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevBlog_BlazorServer", "DevBlog_BlazorServer\DevBlog_BlazorServer.csproj", "{8E43733A-768F-42F1-B58D-DBAAAE58255D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevBlog_BlazorServer", "DevBlog_BlazorServer\DevBlog_BlazorServer.csproj", "{8E43733A-768F-42F1-B58D-DBAAAE58255D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

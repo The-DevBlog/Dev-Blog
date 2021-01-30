@@ -8,9 +8,13 @@
 
 <h3>People</h3>
 
-<button class="btn btn-primary" @onclick="InsertData">Insert</button>
-<button class="btn btn-warning" @onclick="UpdateData">Update</button>
-<button class="btn btn-danger" @onclick="DeleteData">Delete</button>
+<EditForm Model=@newPerson OnValidSubmit=@InsertData>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value=newPerson.FirstName DisplayName="First Name" />
+    <InputText @bind-Value=newPerson.LastName DisplayName="Last Name" />
+    <button class="btn btn-primary" type="submit">Add</button>
+</EditForm>
 
 @if (people == null)
 {
@@ -20,15 +24,30 @@ else
 {
     @foreach (var person in people)
     {
-        <p>@person.FirstName @person.LastName</p>
+        <div style="display: inline-block; margin-top: 20px; width: 75%;">
+            <span>@person.FirstName @person.LastName</span>
+            <div style="display: inline-block; float: right;">
+                <EditForm style="display: inline-block;" Model=@newPerson OnValidSubmit="() => UpdateData(person.Id)">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <InputText @bind-Value=newPerson.FirstName DisplayName="First Name" />
+                    <InputText @bind-Value=newPerson.LastName DisplayName="Last Name" />
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </EditForm>
+                <button class="btn btn-danger" @onclick="() => DeleteData(person.Id)">Delete</button>
+            </div>
+        </div>
     }
 }
 
 @code {
     List<PersonModel> people;
+    PersonModel newPerson;
+    private int id;
 
     protected override async Task OnInitializedAsync()
     {
+        newPerson = new PersonModel();
         string sql = "SELECT * FROM people;";
 
         people = await _data.LoadData<PersonModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
@@ -36,29 +55,38 @@ else
 
     private async Task InsertData()
     {
-        string sql = "INSERT INTO people (FirstName, LastName) values (@FirstName, @LastName);";
+        string sql = "INSERT INTO people " +
+                     "(FirstName, LastName) " +
+                     "values (@FirstName, @LastName);";
 
-        await _data.SaveData(sql, new { FirstName = "Sauromon", LastName = "TheWise" }, _config.GetConnectionString("default"));
+        await _data.SaveData(sql, new { FirstName = newPerson.FirstName, LastName = newPerson.LastName }, _config.GetConnectionString("default"));
 
+        newPerson = new PersonModel();
         await OnInitializedAsync();
     }
 
-    private async Task UpdateData()
+    private async Task UpdateData(int id)
     {
-        string sql = "UPDATE people SET FirstName = @FirstName WHERE LastName = @LastName;";
+        int num = newPerson.Id;
+        string sql = "UPDATE people SET " +
+                     "FirstName = @FirstName, " +
+                     "LastName = @LastName " +
+                     "WHERE Id = @Id;";
 
-        await _data.SaveData(sql, new { FirstName = "Mithrandere", LastName = "TheGrey" }, _config.GetConnectionString("default"));
+        await _data.SaveData(sql, new { FirstName = newPerson.FirstName, LastName = newPerson.LastName, Id = id }, _config.GetConnectionString("default"));
 
+        newPerson = new PersonModel();
         await OnInitializedAsync();
     }
 
-    private async Task DeleteData()
+    private async Task DeleteData(int id)
     {
-        string sql = "DELETE FROM people WHERE LastName = @LastName;";
+        string sql = "DELETE FROM people " +
+                     "WHERE Id = @Id;";
 
-        await _data.SaveData(sql, new { LastName = "Baggins" }, _config.GetConnectionString("default"));
+        await _data.SaveData(sql, new { Id = id }, _config.GetConnectionString("default"));
 
         await OnInitializedAsync();
     }
 
-} 
+}
