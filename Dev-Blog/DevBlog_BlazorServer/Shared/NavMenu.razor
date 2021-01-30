@@ -1,33 +1,27 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject AuthenticationStateProvider Auth
 
-<nav class="navbar navbar-expand-xl navbar-dark">
+<nav>
     <!-- LOGO -->
     <img src="/Imgs/Logo.png" height="115" width="100" />
 
     <!-- HOME LINK -->
-    <NavLink class="navbar-brand" href="/">
+    <NavLink href="/">
         The Dev Blog
     </NavLink>
 
-    <!-- TOGGLER -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul navUL class="navbar-nav mr-auto">
+    <div>
+        <ul>
 
             <!-- PAGE LINKS -->
-            <NavLink leftLi class="nav-item">
-                <a class="nav-link" asp-page="/Index">Home</a>
+            <NavLink href="/">
+                Home
             </NavLink>
-            <NavLink leftLi class="nav-item">
-                <a class="nav-link" asp-page="/Status/Posts">Status</a>
+            <NavLink href="/Posts">
+                Status
             </NavLink>
-            <NavLink leftLi class="nav-item">
-                <a class="nav-link" asp-page="/About/About">About</a>
+            <NavLink href="/About">
+                About
             </NavLink>
 
             @{
@@ -35,28 +29,26 @@
                 if (authorized)
                 {
                     <!-- WELCOME USER -->
-                    <NavLink rightLi class="nav-item" id="welcome-user">
+                    <NavLink>
                         @*<a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>*@
-                        <a class="nav-link disabled">Welcome USER</a>
+                        <a>Welcome USER</a>
                     </NavLink>
 
                     <!-- LOGOUT -->
-                    <NavLink class="nav-item">
-                        <a class="nav-link">
-                            <EditForm asp-page="/Account/Logout" method="post">
-                                <button id="logout-button" type="submit">Logout</button>
-                            </EditForm>
-                        </a>
+                    <NavLink href="/Account/Logout">
+                        <EditForm asp-page="/Account/Logout" method="post">
+                            <button type="submit">Logout</button>
+                        </EditForm>
                     </NavLink>
                 }
                 <!-- LOGIN / SIGN UP -->
                 else
                 {
-                    <li rightLi class="nav-item">
+                    <li>
                         @*@{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}*@
                         LOGIN
                     </li>
-                    <li class="nav-item">
+                    <li>
                         @*@{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}*@
                         SIGN UP
                     </li>
