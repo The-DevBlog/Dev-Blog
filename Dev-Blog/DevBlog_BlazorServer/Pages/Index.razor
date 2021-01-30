@@ -4,18 +4,33 @@
 @using Microsoft.Extensions.Configuration
 @inject DataLibrary.Interfaces.IDataAccess _data
 @inject IConfiguration _config
+<!-- LATEST POST -->
+<p>@latestPost.UpdateNum</p>
+<p>@latestPost.Date.ToShortDateString()</p>
+<img src=@latestPost.ImgURL />
+<p>@latestPost.Description</p>
+<button class="glyphicon glyphicon-thumbs-up"></button>
+<span>@latestPost.UpVotes</span>
+<button class="glyphicon glyphicon-thumbs-down"></button>
+<span>@latestPost.DownVotes</span>
 
-<h1>HOME</h1>
+<!-- YOUTUBE LINK -->
+<div>
+    @*<iframe src="#"></iframe>*@
+    <h2>
+        YouTube Channel
+        <br /><br />
+        Coming Soon
+    </h2>
+</div>
 
-<div style="margin-top: 20px; border: 2px solid red;">
-    <p>@latestPost.UpdateNum</p>
-    <p>@latestPost.Date.ToShortDateString()</p>
-    <img src=@latestPost.ImgURL />
-    <p>@latestPost.Description</p>
-    <button class="glyphicon glyphicon-thumbs-up"></button>
-    <span>@latestPost.UpVotes</span>
-    <button class="glyphicon glyphicon-thumbs-down"></button>
-    <span>@latestPost.DownVotes</span>
+<!-- SUGGESTION BOX -->
+<div>
+    <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
+        <button>
+            <h4>Have a suggestion? Send an email!</h4>
+        </button>
+    </a>
 </div>
 
 @code {
