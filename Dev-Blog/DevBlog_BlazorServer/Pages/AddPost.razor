@@ -1,0 +1,45 @@
+﻿@using DevBlog_BlazorServer.Models
+@using Microsoft.Extensions.Configuration
+@inject DataLibrary.Interfaces.IDataAccess _data
+@inject IConfiguration _config
+
+<h3>AddPost</h3>
+
+<EditForm Model=@newPost OnValidSubmit=@InsertData>
+    <InputText @bind-Value=newPost.UpdateNum />
+    <InputTextArea @bind-Value=newPost.Description />
+    <InputText @bind-Value=newPost.UpdateNum />
+    <InputText @bind-Value=fileName />
+</EditForm>
+
+@code {
+    PostModel newPost;
+    string fileName;
+    protected override async Task OnInitializedAsync()
+    {
+        newPost = new PostModel();
+    }
+
+    private async Task InsertData()
+    {
+        string sql = "INSERT INTO post" +
+                     "(UpdateNum, Date, ImgURL, Description, DownVotes, UpVotes)" +
+                     "values (@UpdateNum, @Date, @ImgURL, @Description, @DownVotes, @UpVotes);";
+
+        await _data.SaveData(sql, new
+        {
+            UpdateNum = newPost.UpdateNum,
+            Date = newPost.Date,
+            ImgURL = newPost.ImgURL,
+            Description = newPost.Description,
+            DownVotes = newPost.DownVotes,
+            UpVotes = newPost.UpdateNum
+        }, _config.GetConnectionString("DevBlogDB"));
+
+        newPost = new PostModel();
+
+        @*string ext = Path*@
+
+        await OnInitializedAsync();
+    }
+}
