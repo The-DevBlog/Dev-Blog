@@ -3,37 +3,44 @@
 @using DevBlog_BlazorServer.Models
 @using Microsoft.Extensions.Configuration
 @using System.IO
-@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Http
+@using Dropbox.Api;
+@using Dropbox.Api.Files
 
 @inject DataLibrary.Interfaces.IDataAccess _data
 @inject IConfiguration _config
 
 <h3>AddPost</h3>
 
-<EditForm Model=@newPost OnValidSubmit=@InsertData>
+<EditForm Model=@newPost OnValidSubmit=InsertData>
     <InputText @bind-Value=newPost.UpdateNum />
     <InputTextArea @bind-Value=newPost.Description />
     <InputText @bind-Value=name />
-    <InputFile @bind-Value=file />
+    <InputFile OnChange=HandleFileInput />
     <button type="submit">Add Post</button>
 </EditForm>
 
 @code {
     PostModel newPost;
     string name;
-    @*IFormFile file;*@
-    FileStream file;
+    IBrowserFile file;
+    Stream fs;
+
     protected override async Task OnInitializedAsync()
     {
         newPost = new PostModel();
     }
 
+    private async Task HandleFileInput(InputFileChangeEventArgs e)
+    {
+        file = e.File;
+        fs = file.OpenReadStream();
+    }
+
     private async Task InsertData()
     {
         // Add image to Dropbox
-        string ext = Path.GetExtension(file.Name);
-        string fileName = $"{DateTime.Now.Ticks}{name}{ext}";
-        string url = _data.AddImgToDropBox<PostModel>(newPost, file, name).Result;
+        string url = await _data.AddImgToDropBox(fs, name);
 
         string sql = "INSERT INTO post" +
                      "(UpdateNum, Date, ImgURL, Description, DownVotes, UpVotes)" +
@@ -43,8 +50,8 @@
         await _data.SaveData(sql, new
         {
             UpdateNum = newPost.UpdateNum,
-            Date = newPost.Date,
-            ImgURL = newPost.ImgURL,
+            Date = DateTime.Now,
+            ImgURL = url,
             Description = newPost.Description,
             DownVotes = 0,
             UpVotes = 0

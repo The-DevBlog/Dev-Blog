@@ -13,6 +13,6 @@ namespace DataLibrary.Interfaces
 
         Task<T> GetLatest<T>(string table, string connectionStr);
 
-        Task<string> AddImgToDropBox<T>(T model, FileStream stream, string fileName);
+        Task<string> AddImgToDropBox(Stream fs, string fileName);
     }
 }

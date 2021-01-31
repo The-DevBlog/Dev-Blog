@@ -10,6 +10,7 @@ using Dropbox.Api.Files;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System;
 
 namespace DataLibrary
 {
@@ -54,21 +55,24 @@ namespace DataLibrary
             }
         }
 
-        public async Task<string> AddImgToDropBox<T>(T model, FileStream stream, string fileName)
+        public async Task<string> AddImgToDropBox(Stream fs, string name)
         {
+            // create unique file name
+            string ext = Path.GetExtension(name);
+            string fileName = $"{DateTime.Now.Ticks}{name}{ext}";
+
             string url = "";
             string dest = _config["DestinationPath"] + fileName;
 
             using (var dbx = new DropboxClient(_config["DropboxToken"]))
             {
-                using (var fs = stream.Read())
-                {
-                    var updated = await dbx.Files.UploadAsync(
-                        dest,
-                        WriteMode.Overwrite.Instance,
-                        body: fs
-                    );
-                };
+                // upload file to dbx
+                var updated = await dbx.Files.UploadAsync(
+                    dest,
+                    WriteMode.Overwrite.Instance,
+                    body: fs
+                );
+                fs.Close();
 
                 // create shareable link
                 var link = dbx.Sharing.CreateSharedLinkWithSettingsAsync(dest);
