@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevBlog_BlazorServer.Models
@@ -12,6 +13,6 @@ namespace DevBlog_BlazorServer.Models
         public string Description { get; set; }
         public int UpVotes { get; set; } = 0;
         public int DownVotes { get; set; } = 0;
-        //public List<Comment> Comments { get; set; }
+        public List<CommentModel> Comments { get; set; }
     }
 }

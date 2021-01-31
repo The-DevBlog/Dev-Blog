@@ -8,6 +8,7 @@
 @{
     foreach (var post in posts)
     {
+        <!-- Render Posts -->
         <div style="margin-top: 20px; border: 2px solid red;">
             <p>@post.UpdateNum</p>
             <p>@post.Date.ToShortDateString()</p>
@@ -17,15 +18,37 @@
             <span>@post.UpVotes</span>
             <button class="glyphicon glyphicon-thumbs-down"></button>
             <span>@post.DownVotes</span>
+
+            <!-- Render Comments -->
+            <div>
+                @{
+                    if (post.Comments != null)
+                    {
+                        foreach (var comment in post.Comments)
+                        {
+                            <span>@comment.UserName</span>
+                            <span>
+                                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
+                            </span>
+                            <p>@comment.Content</p>
+                        }
+                    }
+                }
+            </div>
         </div>
     }
 }
 
 @code {
     List<PostModel> posts;
+    @*List<CommentModel> comments;*@
     protected override async Task OnInitializedAsync()
     {
+        // get all posts
         posts = await _data.LoadData<PostModel, dynamic>("post", new { }, _config.GetConnectionString("DevBlogDB"));
         posts.Reverse();
+
+        // get all comments
+        @*comments = await _data.LoadData<CommentModel, dynamic>("comment", new { }, _config.GetConnectionString("DevBlogDB"));*@
     }
 }

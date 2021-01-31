@@ -34,6 +34,7 @@ namespace DevBlog_BlazorServer
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<PostModel>();
+            services.AddTransient<CommentModel>();
             services.AddSingleton<IDataAccess, DataAccess>();
         }
 
