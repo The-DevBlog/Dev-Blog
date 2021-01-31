@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace DataLibrary.Interfaces
 {
@@ -10,5 +11,7 @@ namespace DataLibrary.Interfaces
         Task SaveData<T>(string sql, T paramters, string connectionStr);
 
         Task<T> GetLatest<T>(string table, string connectionStr);
+
+        Task<string> AddImgToDropBox<T>(T model, IFormFile file, string fileName);
     }
 }

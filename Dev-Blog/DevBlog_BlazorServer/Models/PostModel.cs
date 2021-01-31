@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevBlog_BlazorServer.Models
 {
@@ -12,8 +10,8 @@ namespace DevBlog_BlazorServer.Models
         public DateTime Date { get; set; }
         public string ImgURL { get; set; }
         public string Description { get; set; }
-        public int UpVotes { get; set; }
-        public int DownVotes { get; set; }
+        public int UpVotes { get; set; } = 0;
+        public int DownVotes { get; set; } = 0;
         //public List<Comment> Comments { get; set; }
     }
 }

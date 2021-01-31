@@ -1,5 +1,10 @@
-﻿@using DevBlog_BlazorServer.Models
+﻿@page "/addpost"
+
+@using DevBlog_BlazorServer.Models
 @using Microsoft.Extensions.Configuration
+@using System.IO
+@using Microsoft.AspNetCore.Http;
+
 @inject DataLibrary.Interfaces.IDataAccess _data
 @inject IConfiguration _config
 
@@ -8,13 +13,15 @@
 <EditForm Model=@newPost OnValidSubmit=@InsertData>
     <InputText @bind-Value=newPost.UpdateNum />
     <InputTextArea @bind-Value=newPost.Description />
-    <InputText @bind-Value=newPost.UpdateNum />
-    <InputText @bind-Value=fileName />
+    <InputText @bind-Value=name />
+    <InputFile @bind-Value=file />
+    <button type="submit">Add Post</button>
 </EditForm>
 
 @code {
     PostModel newPost;
-    string fileName;
+    string name;
+    IFormFile file;
     protected override async Task OnInitializedAsync()
     {
         newPost = new PostModel();
@@ -22,24 +29,27 @@
 
     private async Task InsertData()
     {
+        // Add image to Dropbox
+        string ext = Path.GetExtension(file.FileName);
+        string fileName = $"{DateTime.Now.Ticks}{name}{ext}";
+        string url = _data.AddImgToDropBox<PostModel>(newPost, file, name).Result;
+
         string sql = "INSERT INTO post" +
                      "(UpdateNum, Date, ImgURL, Description, DownVotes, UpVotes)" +
                      "values (@UpdateNum, @Date, @ImgURL, @Description, @DownVotes, @UpVotes);";
 
+        // Post to DB
         await _data.SaveData(sql, new
         {
             UpdateNum = newPost.UpdateNum,
             Date = newPost.Date,
             ImgURL = newPost.ImgURL,
             Description = newPost.Description,
-            DownVotes = newPost.DownVotes,
-            UpVotes = newPost.UpdateNum
+            DownVotes = 0,
+            UpVotes = 0
         }, _config.GetConnectionString("DevBlogDB"));
 
         newPost = new PostModel();
-
-        @*string ext = Path*@
-
         await OnInitializedAsync();
     }
 }
