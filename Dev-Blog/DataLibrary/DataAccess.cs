@@ -9,6 +9,7 @@ using Dropbox.Api;
 using Dropbox.Api.Files;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace DataLibrary
 {
@@ -53,14 +54,14 @@ namespace DataLibrary
             }
         }
 
-        public async Task<string> AddImgToDropBox<T>(T model, IFormFile stream, string fileName)
+        public async Task<string> AddImgToDropBox<T>(T model, FileStream stream, string fileName)
         {
             string url = "";
             string dest = _config["DestinationPath"] + fileName;
 
             using (var dbx = new DropboxClient(_config["DropboxToken"]))
             {
-                using (var fs = stream.OpenReadStream())
+                using (var fs = stream.Read())
                 {
                     var updated = await dbx.Files.UploadAsync(
                         dest,

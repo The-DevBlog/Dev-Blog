@@ -21,7 +21,8 @@
 @code {
     PostModel newPost;
     string name;
-    IFormFile file;
+    @*IFormFile file;*@
+    FileStream file;
     protected override async Task OnInitializedAsync()
     {
         newPost = new PostModel();
@@ -30,7 +31,7 @@
     private async Task InsertData()
     {
         // Add image to Dropbox
-        string ext = Path.GetExtension(file.FileName);
+        string ext = Path.GetExtension(file.Name);
         string fileName = $"{DateTime.Now.Ticks}{name}{ext}";
         string url = _data.AddImgToDropBox<PostModel>(newPost, file, name).Result;
 
