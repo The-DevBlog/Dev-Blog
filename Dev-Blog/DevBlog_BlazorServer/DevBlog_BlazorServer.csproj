@@ -6,11 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.Dapper" Version="1.0.1" />
     <PackageReference Include="Dapper" Version="2.0.78" />
-    <PackageReference Include="Dapper.EntityFramework" Version="2.0.78" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="MySql.Data" Version="8.0.23" />
-    <PackageReference Include="Slapper.AutoMapper" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
