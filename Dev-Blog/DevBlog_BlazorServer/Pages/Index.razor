@@ -1,9 +1,7 @@
 ﻿@page "/"
 
 @using DevBlog_BlazorServer.Models
-@using Microsoft.Extensions.Configuration
-@inject DataLibrary.Interfaces.IDataAccess _data
-@inject IConfiguration _config
+@inject DevBlog_BlazorServer.Interfaces.IPostService _posts
 <!-- LATEST POST -->
 <p>@latestPost.UpdateNum</p>
 <p>@latestPost.Date.ToShortDateString()</p>
@@ -38,6 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        latestPost = await _data.GetLatest<PostModel>("post", _config.GetConnectionString("DevBlogDB"));
+        var posts = await _posts.GetPosts();
+        latestPost = posts.First().Value;
     }
 }
