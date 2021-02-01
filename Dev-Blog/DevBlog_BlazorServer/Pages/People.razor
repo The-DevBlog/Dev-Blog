@@ -46,10 +46,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        newPerson = new PersonModel();
-        string sql = "SELECT * FROM people;";
+        @*newPerson = new PersonModel();
+            string sql = "SELECT * FROM people;";
 
-        people = await _data.LoadData<PersonModel, dynamic>("people", new { }, _config.GetConnectionString("default"));
+            people = await _data.LoadData<PersonModel, CommentModel, dynamic>(new { }, _config.GetConnectionString("default"));*@
     }
 
     private async Task InsertData()

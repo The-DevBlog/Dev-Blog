@@ -1,7 +1,9 @@
 using DataLibrary;
 using DataLibrary.Interfaces;
 using DevBlog_BlazorServer.Data;
+using DevBlog_BlazorServer.Interfaces;
 using DevBlog_BlazorServer.Models;
+using DevBlog_BlazorServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -32,9 +34,10 @@ namespace DevBlog_BlazorServer
             services.AddHttpContextAccessor();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
-            services.AddTransient<PostModel>();
+
+            //services.AddTransient<PostModel>();
             services.AddTransient<CommentModel>();
+            services.AddTransient<IPostService, PostService>();
             services.AddSingleton<IDataAccess, DataAccess>();
         }
 

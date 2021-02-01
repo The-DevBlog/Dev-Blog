@@ -23,35 +23,37 @@ namespace DataLibrary
             _config = config;
         }
 
-        public async Task<List<T>> LoadData<T, U>(string table, U parameters, string connectionStr)
+        public async Task<List<Post>> LoadData<Post, Comment, U>(U parameters, string cnnStr)
         {
-            string sql = $"SELECT * FROM {table};";
+            string sql = $"SELECT * FROM post " +
+                         $"LEFT JOIN comment " +
+                         $"ON post.Id = comment.PostId;";
 
-            using (IDbConnection connection = new MySqlConnection(connectionStr))
+            using (IDbConnection cnn = new MySqlConnection(cnnStr))
             {
-                var rows = await connection.QueryAsync<T>(sql, parameters);
+                var rows = await cnn.QueryAsync<Post>(sql, parameters);
                 return rows.ToList();
             }
         }
 
-        public async Task<T> GetLatest<T>(string table, string connectionStr)
+        public async Task<T> GetLatest<T>(string table, string cnnStr)
         {
             string sql = $"SELECT * FROM {table} " +
                          "ORDER BY Id " +
                          "DESC LIMIT 1";
 
-            using (IDbConnection connection = new MySqlConnection(connectionStr))
+            using (IDbConnection cnn = new MySqlConnection(cnnStr))
             {
-                var row = await connection.QueryAsync<T>(sql);
+                var row = await cnn.QueryAsync<T>(sql);
                 return row.FirstOrDefault();
             }
         }
 
-        public Task SaveData<T>(string sql, T parameters, string connectionStr)
+        public Task SaveData<T>(string sql, T parameters, string cnnStr)
         {
-            using (IDbConnection connection = new MySqlConnection(connectionStr))
+            using (IDbConnection cnn = new MySqlConnection(cnnStr))
             {
-                return connection.ExecuteAsync(sql, parameters);
+                return cnn.ExecuteAsync(sql, parameters);
             }
         }
 

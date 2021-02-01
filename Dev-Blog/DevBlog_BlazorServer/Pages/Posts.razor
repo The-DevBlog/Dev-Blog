@@ -2,8 +2,13 @@
 
 @using DevBlog_BlazorServer.Models
 @using Microsoft.Extensions.Configuration
+@using Dapper
+@using System.Data
+@using MySql.Data.MySqlClient
+@using Slapper
 @inject DataLibrary.Interfaces.IDataAccess _data
 @inject IConfiguration _config
+@inject DevBlog_BlazorServer.Interfaces.IPostService _posts
 
 @{
     foreach (var post in posts)
@@ -22,7 +27,7 @@
             <!-- Render Comments -->
             <div>
                 @{
-                    if (post.Comments != null)
+                    if (post.Comments[0] != null)
                     {
                         foreach (var comment in post.Comments)
                         {
@@ -40,15 +45,39 @@
 }
 
 @code {
+    @*List<PostModel> posts;*@
     List<PostModel> posts;
-    @*List<CommentModel> comments;*@
     protected override async Task OnInitializedAsync()
     {
-        // get all posts
-        posts = await _data.LoadData<PostModel, dynamic>("post", new { }, _config.GetConnectionString("DevBlogDB"));
-        posts.Reverse();
+        posts = _posts.GetPosts().Result;
+        @*string sql = $"SELECT * FROM post " +
+                 $"LEFT JOIN comment " +
+                 $"ON post.Id = comment.PostId;";
 
-        // get all comments
-        @*comments = await _data.LoadData<CommentModel, dynamic>("comment", new { }, _config.GetConnectionString("DevBlogDB"));*@
+            var dict = new Dictionary<int, PostModel>();
+            using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogDB")))
+            {
+                // TODO: I dont fully understand this
+                cnn.Query<PostModel, CommentModel, PostModel>(sql,
+                    (post, comment) =>
+                    {
+                        if (!dict.ContainsKey(post.Id))
+                            dict.Add(post.Id, post);
+
+                        var cach = dict[post.Id];
+
+                        if (cach.Comments == null)
+                            cach.Comments = new List<CommentModel>();
+
+                        cach.Comments.Add(comment);
+
+                        return null;
+                    }, splitOn: "PostId");
+            }
+
+            // get all posts
+            posts = await _data.LoadData<PostModel, CommentModel, dynamic>(new { }, _config.GetConnectionString("DevBlogDB"));
+
+            posts.Reverse();*@
     }
 }
