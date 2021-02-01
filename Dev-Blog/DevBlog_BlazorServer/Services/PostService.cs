@@ -30,7 +30,7 @@ namespace DevBlog_BlazorServer.Services
             using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogDB")))
             {
                 // TODO: I dont fully understand this
-                cnn.Query<PostModel, CommentModel, PostModel>(sql,
+                await cnn.QueryAsync<PostModel, CommentModel, PostModel>(sql,
                     (post, comment) =>
                     {
                         if (!posts.ContainsKey(post.Id))

@@ -45,39 +45,9 @@
 }
 
 @code {
-    @*List<PostModel> posts;*@
     Dictionary<int, PostModel> posts;
     protected override async Task OnInitializedAsync()
     {
-        posts = _posts.GetPosts().Result;
-        @*string sql = $"SELECT * FROM post " +
-                 $"LEFT JOIN comment " +
-                 $"ON post.Id = comment.PostId;";
-
-            var dict = new Dictionary<int, PostModel>();
-            using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogDB")))
-            {
-                // TODO: I dont fully understand this
-                cnn.Query<PostModel, CommentModel, PostModel>(sql,
-                    (post, comment) =>
-                    {
-                        if (!dict.ContainsKey(post.Id))
-                            dict.Add(post.Id, post);
-
-                        var cach = dict[post.Id];
-
-                        if (cach.Comments == null)
-                            cach.Comments = new List<CommentModel>();
-
-                        cach.Comments.Add(comment);
-
-                        return null;
-                    }, splitOn: "PostId");
-            }
-
-            // get all posts
-            posts = await _data.LoadData<PostModel, CommentModel, dynamic>(new { }, _config.GetConnectionString("DevBlogDB"));
-
-            posts.Reverse();*@
+        posts = await _posts.GetPosts();
     }
 }
