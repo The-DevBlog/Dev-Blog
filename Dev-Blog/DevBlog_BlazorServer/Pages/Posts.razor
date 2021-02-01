@@ -15,21 +15,21 @@
     {
         <!-- Render Posts -->
         <div style="margin-top: 20px; border: 2px solid red;">
-            <p>@post.UpdateNum</p>
-            <p>@post.Date.ToShortDateString()</p>
-            <img src=@post.ImgURL />
-            <p>@post.Description</p>
+            <p>@post.Value.UpdateNum</p>
+            <p>@post.Value.Date.ToShortDateString()</p>
+            <img src=@post.Value.ImgURL />
+            <p>@post.Value.Description</p>
             <button class="glyphicon glyphicon-thumbs-up"></button>
-            <span>@post.UpVotes</span>
+            <span>@post.Value.UpVotes</span>
             <button class="glyphicon glyphicon-thumbs-down"></button>
-            <span>@post.DownVotes</span>
+            <span>@post.Value.DownVotes</span>
 
             <!-- Render Comments -->
             <div>
                 @{
-                    if (post.Comments[0] != null)
+                    if (post.Value.Comments[0] != null)
                     {
-                        foreach (var comment in post.Comments)
+                        foreach (var comment in post.Value.Comments)
                         {
                             <span>@comment.UserName</span>
                             <span>
@@ -46,7 +46,7 @@
 
 @code {
     @*List<PostModel> posts;*@
-    List<PostModel> posts;
+    Dictionary<int, PostModel> posts;
     protected override async Task OnInitializedAsync()
     {
         posts = _posts.GetPosts().Result;

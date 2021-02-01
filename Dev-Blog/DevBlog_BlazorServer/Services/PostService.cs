@@ -19,36 +19,34 @@ namespace DevBlog_BlazorServer.Services
             _config = config;
         }
 
-        public async Task<List<PostModel>> GetPosts()
+        public async Task<Dictionary<int, PostModel>> GetPosts()
         {
-            string sql = $"SELECT * FROM post " +
-                         $"LEFT JOIN comment " +
-                         $"ON post.Id = comment.PostId;";
+            string sql = "SELECT * FROM post " +
+                         "LEFT JOIN comment " +
+                         "ON post.Id = comment.PostId " +
+                         "ORDER BY post.Date DESC;";
 
-            var postsDict = new Dictionary<int, PostModel>();
-            var posts = new List<PostModel>();
+            var posts = new Dictionary<int, PostModel>();
             using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogDB")))
             {
                 // TODO: I dont fully understand this
                 cnn.Query<PostModel, CommentModel, PostModel>(sql,
                     (post, comment) =>
                     {
-                        if (!postsDict.ContainsKey(post.Id))
-                            postsDict.Add(post.Id, post);
+                        if (!posts.ContainsKey(post.Id))
+                            posts.Add(post.Id, post);
 
-                        var cach = postsDict[post.Id];
+                        var cach = posts[post.Id];
 
                         if (cach.Comments == null)
                             cach.Comments = new List<CommentModel>();
 
                         cach.Comments.Add(comment);
-                        posts.Add(cach);
 
                         return cach;
                     }, splitOn: "PostId");
             }
 
-            posts.Reverse();
             return posts;
         }
     }

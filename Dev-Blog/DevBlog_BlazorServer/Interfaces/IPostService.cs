@@ -6,6 +6,6 @@ namespace DevBlog_BlazorServer.Interfaces
 {
     public interface IPostService
     {
-        Task<List<PostModel>> GetPosts();
+        Task<Dictionary<int, PostModel>> GetPosts();
     }
 }
