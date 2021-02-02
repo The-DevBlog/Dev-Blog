@@ -26,6 +26,16 @@
 
             @{
                 <!-- IF USER IS SIGNED IN -->
+                @*<AuthorizeView>
+                        <Authorized>
+                            <h4>Hello, @context.User.Identity.Name!</h4>
+                            <p>This content is only visible if user is authenticated.</p>
+                        </Authorized>
+                        <NotAuthorized>
+                            <p>Please signed in.</p>
+                        </NotAuthorized>
+                    </AuthorizeView>*@
+
                 if (authorized)
                 {
                     <!-- WELCOME USER -->
@@ -44,10 +54,13 @@
                 <!-- LOGIN / SIGN UP -->
                 else
                 {
-                    <li>
-                        @*@{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}*@
+                    <NavLink href="/login">
                         LOGIN
-                    </li>
+                    </NavLink>
+                    @*<li>*@
+                    @*@{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}*@
+                    @*LOGIN
+                        </li>*@
                     <li>
                         @*@{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}*@
                         SIGN UP

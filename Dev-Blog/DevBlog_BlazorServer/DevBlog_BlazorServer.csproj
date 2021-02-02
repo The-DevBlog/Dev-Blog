@@ -1,19 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>27977117-29ba-428e-9ce4-a8ac6b3166a3</UserSecretsId>
-  </PropertyGroup>
+	<Target Name="ChangeAliasesOfStrongNameAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
+		<ItemGroup>
+			<ReferencePath Condition="'%(FileName)' == 'MySqlConnector'">
+				<Aliases>MySqlConnectorAlias</Aliases>
+			</ReferencePath>
+		</ItemGroup>
+	</Target>
 
-  <ItemGroup>
-    <PackageReference Include="AspNetCore.Identity.Dapper" Version="1.0.1" />
-    <PackageReference Include="Dapper" Version="2.0.78" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.23" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<UserSecretsId>27977117-29ba-428e-9ce4-a8ac6b3166a3</UserSecretsId>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DataLibrary\DataLibrary.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.Identity.Dapper" Version="1.0.1" />
+		<PackageReference Include="Dapper" Version="2.0.78" />
+		<PackageReference Include="Identity.Dapper.MySQL" Version="0.9.5-alpha" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\DataLibrary\DataLibrary.csproj" />
+	</ItemGroup>
 </Project>

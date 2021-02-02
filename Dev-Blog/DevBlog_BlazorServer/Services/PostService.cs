@@ -1,10 +1,13 @@
 ﻿using Dapper;
 using DevBlog_BlazorServer.Interfaces;
 using DevBlog_BlazorServer.Models;
+using Identity.Dapper.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevBlog_BlazorServer.Services
@@ -16,6 +19,20 @@ namespace DevBlog_BlazorServer.Services
         public PostService(IConfiguration config)
         {
             _config = config;
+        }
+
+        //TODO: DELETE
+        public async Task<List<IdentityUser>> GetUsers()
+        {
+            string sql = "SELECT * FROM aspnetusers;";
+
+            var cnnStr = _config.GetConnectionString("DevBlogUserDB");
+
+            using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogUserDB")))
+            {
+                var users = await cnn.QueryAsync<IdentityUser>(sql);
+                return users.ToList();
+            }
         }
 
         public async Task<Dictionary<int, PostModel>> GetPosts()

@@ -2,7 +2,7 @@
 
 @using DevBlog_BlazorServer.Models
 @using Microsoft.Extensions.Configuration
-@inject DataLibrary.Interfaces.IDataAccess _data
+@*@inject DataLibrary.Interfaces.IDataAccess _data*@
 @inject IConfiguration _config
 
 <h3>People</h3>
@@ -54,38 +54,38 @@ else
 
     private async Task InsertData()
     {
-        string sql = "INSERT INTO people " +
-                     "(FirstName, LastName) " +
-                     "values (@FirstName, @LastName);";
+        @*string sql = "INSERT INTO people " +
+                         "(FirstName, LastName) " +
+                         "values (@FirstName, @LastName);";
 
-        await _data.SaveData(sql, new { FirstName = newPerson.FirstName, LastName = newPerson.LastName }, _config.GetConnectionString("default"));
+            await _data.SaveData(sql, new { FirstName = newPerson.FirstName, LastName = newPerson.LastName }, _config.GetConnectionString("default"));
 
-        newPerson = new PersonModel();
-        await OnInitializedAsync();
+            newPerson = new PersonModel();
+            await OnInitializedAsync();*@
     }
 
     private async Task UpdateData(int id)
     {
-        int num = newPerson.Id;
-        string sql = "UPDATE people SET " +
-                     "FirstName = @FirstName, " +
-                     "LastName = @LastName " +
-                     "WHERE Id = @Id;";
+        @*int num = newPerson.Id;
+            string sql = "UPDATE people SET " +
+                         "FirstName = @FirstName, " +
+                         "LastName = @LastName " +
+                         "WHERE Id = @Id;";
 
-        await _data.SaveData(sql, new { FirstName = newPerson.FirstName, LastName = newPerson.LastName, Id = id }, _config.GetConnectionString("default"));
+            await _data.SaveData(sql, new { FirstName = newPerson.FirstName, LastName = newPerson.LastName, Id = id }, _config.GetConnectionString("default"));
 
-        newPerson = new PersonModel();
-        await OnInitializedAsync();
+            newPerson = new PersonModel();
+            await OnInitializedAsync();*@
     }
 
     private async Task DeleteData(int id)
     {
-        string sql = "DELETE FROM people " +
-                     "WHERE Id = @Id;";
+        @*string sql = "DELETE FROM people " +
+                         "WHERE Id = @Id;";
 
-        await _data.SaveData(sql, new { Id = id }, _config.GetConnectionString("default"));
+            await _data.SaveData(sql, new { Id = id }, _config.GetConnectionString("default"));
 
-        await OnInitializedAsync();
+            await OnInitializedAsync();*@
     }
 
 }

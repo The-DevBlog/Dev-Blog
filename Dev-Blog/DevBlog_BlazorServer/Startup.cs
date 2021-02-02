@@ -12,6 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Dapper;
+using AspNetCore.Identity.Dapper;
+using Identity.Dapper;
+using Identity.Dapper.Entities;
+using System;
+using Identity.Dapper.MySQL.Connections;
+using Identity.Dapper.MySQL.Models;
+using Identity.Dapper.Models;
 
 namespace DevBlog_BlazorServer
 {
@@ -31,6 +38,32 @@ namespace DevBlog_BlazorServer
             services.AddHttpContextAccessor();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            // Identity / Dapper config
+            services.ConfigureDapperConnectionProvider<MySqlConnectionProvider>(Configuration.GetSection("DapperIdentity"))
+                .ConfigureDapperIdentityCryptography(Configuration.GetSection("DapperIdentityCryptography"))
+                .ConfigureDapperIdentityOptions(new DapperIdentityOptions { UseTransactionalBehavior = false });
+
+            services.AddIdentity<UserModel, Role>(x =>
+            {
+                x.Password.RequireDigit = false;
+                x.Password.RequiredLength = 1;
+                x.Password.RequireLowercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+                x.Password.RequireUppercase = false;
+            })
+            .AddDapperIdentityFor<MySqlConfiguration>()
+            .AddDefaultTokenProviders();
+
+            //services.AddIdentity<DapperIdentityUser<Guid>, DapperIdentityRole<Guid>>()
+            //        .AddDapperIdentityFor<MySqlConfiguration, Guid>();
+
+            // authentication config
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole
+                (Role.Admin));
+            });
 
             services.AddTransient<CommentModel>();
             services.AddTransient<IPostService, PostService>();
