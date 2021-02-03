@@ -9,7 +9,7 @@
 <h3>Login</h3>
 <EditForm Model=login OnValidSubmit=SignIn>
     <label>Email</label>
-    <InputText @bind-Value=login.Email />
+    <InputText @bind-Value=login.UserName />
 
     <label>Password</label>
     <InputText @bind-Value=login.Password type=password />
@@ -34,7 +34,7 @@
 
     private async void SignIn()
     {
-        var result = await signInMgr.PasswordSignInAsync(login.Email, login.Password, false, false);
+        var result = await signInMgr.PasswordSignInAsync(login.UserName, login.Password, false, false);
 
         if (result.Succeeded)
             navMgr.NavigateTo("/");
