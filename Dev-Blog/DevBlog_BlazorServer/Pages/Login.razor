@@ -3,7 +3,7 @@
 @using DevBlog_BlazorServer.Models
 @using  Microsoft.AspNetCore.Identity
 @inject NavigationManager navMgr
-@inject SignInManager<UserModel> signInMgr
+@*@inject SignInManager<UserModel> signInMgr*@
 @inject DevBlog_BlazorServer.Interfaces.IPostService _posts
 
 <h3>Login</h3>
@@ -34,9 +34,9 @@
 
     private async void SignIn()
     {
-        var result = await signInMgr.PasswordSignInAsync(login.UserName, login.Password, false, false);
-
-        if (result.Succeeded)
+        @*var result = await signInMgr.PasswordSignInAsync(login.UserName, login.Password, false, false);*@
+        var result = await _posts.Login(login);
+        if (result)
             navMgr.NavigateTo("/");
     }
 }

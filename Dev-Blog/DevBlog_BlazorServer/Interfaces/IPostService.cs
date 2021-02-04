@@ -11,5 +11,7 @@ namespace DevBlog_BlazorServer.Interfaces
         Task<Dictionary<int, PostModel>> GetPosts();
 
         Task<List<IdentityUser>> GetUsers();
+
+        Task<bool> Login(LoginModel model);
     }
 }

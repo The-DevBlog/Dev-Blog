@@ -44,19 +44,25 @@ namespace DevBlog_BlazorServer
                 .ConfigureDapperIdentityCryptography(Configuration.GetSection("DapperIdentityCryptography"))
                 .ConfigureDapperIdentityOptions(new DapperIdentityOptions { UseTransactionalBehavior = false });
 
-            services.AddIdentity<UserModel, Role>(x =>
-            {
-                x.Password.RequireDigit = false;
-                x.Password.RequiredLength = 1;
-                x.Password.RequireLowercase = false;
-                x.Password.RequireNonAlphanumeric = false;
-                x.Password.RequireUppercase = false;
-            })
-            .AddDapperIdentityFor<MySqlConfiguration>()
-            .AddDefaultTokenProviders();
+            services.AddIdentity<DapperIdentityUser, DapperIdentityRole<int>>()
+                    .AddDapperIdentityFor<MySqlConfiguration>()
+                    .AddDefaultTokenProviders();
 
             //services.AddIdentity<DapperIdentityUser<Guid>, DapperIdentityRole<Guid>>()
-            //        .AddDapperIdentityFor<MySqlConfiguration, Guid>();
+            //.AddDapperIdentityFor<MySqlConfiguration, Guid>();
+
+            //services.ConfigureDapperConnectionProvider<MySqlConnectionProvider>(Configuration.GetSection("ConnectionStrings"));
+
+            //services.AddIdentity<UserModel, Role>(x =>
+            //{
+            //    x.Password.RequireDigit = false;
+            //    x.Password.RequiredLength = 1;
+            //    x.Password.RequireLowercase = false;
+            //    x.Password.RequireNonAlphanumeric = false;
+            //    x.Password.RequireUppercase = false;
+            //})
+            //.AddDapperIdentityFor<MySqlConfiguration>()
+            //.AddDefaultTokenProviders();
 
             // authentication config
             services.AddAuthorization(options =>

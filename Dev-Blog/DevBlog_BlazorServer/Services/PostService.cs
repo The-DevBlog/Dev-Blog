@@ -2,6 +2,7 @@
 using DevBlog_BlazorServer.Interfaces;
 using DevBlog_BlazorServer.Models;
 using Identity.Dapper.Entities;
+using Identity.Dapper.Stores;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
@@ -15,10 +16,20 @@ namespace DevBlog_BlazorServer.Services
     public class PostService : IPostService
     {
         private IConfiguration _config;
+        private SignInManager<DapperIdentityUser> signInMgr;
+        private readonly DapperUserStore<UserModel, int, DapperIdentityUserRole<int>, DapperIdentityRoleClaim<int>, DapperIdentityUserClaim<int>, DapperIdentityUserLogin<int>, Role> _dapperStore;
 
-        public PostService(IConfiguration config)
+        public PostService(IConfiguration config, SignInManager<DapperIdentityUser> sm, IUserStore<UserModel> dapperStore)
         {
+            _dapperStore = dapperStore as DapperUserStore<UserModel, int, DapperIdentityUserRole<int>, DapperIdentityRoleClaim<int>, DapperIdentityUserClaim<int>, DapperIdentityUserLogin<int>, Role>;
+            signInMgr = sm;
             _config = config;
+        }
+
+        public async Task<bool> Login(LoginModel model)
+        {
+            var result = await signInMgr.PasswordSignInAsync(model.UserName, model.Password, false, false);
+            return result.Succeeded;
         }
 
         //TODO: DELETE
