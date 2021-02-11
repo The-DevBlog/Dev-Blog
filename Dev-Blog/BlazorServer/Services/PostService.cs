@@ -20,7 +20,8 @@ namespace BlazorServer.Services
 
         public async Task<List<PostModel>> GetPosts()
         {
-            return await _db.Post.Include(c => c.Comments).ToListAsync();
+            var posts = await _db.Post.ToListAsync();
+            return posts;
         }
     }
 }
