@@ -1,16 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorServer.Models
 {
-    public class UserModel
+    public class UserModel : IdentityUser
     {
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        public bool Subscribed { get; set; }
     }
 }
