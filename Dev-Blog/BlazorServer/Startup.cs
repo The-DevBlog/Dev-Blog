@@ -4,23 +4,27 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorServer.Models;
 
 namespace BlazorServer
 {
     public class Startup
     {
+        // TOTO: should this be private???
+        private IConfiguration _config { get; }
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _config = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -28,6 +32,26 @@ namespace BlazorServer
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseMySql(_config.GetConnectionString("DevBlogDB"));
+            });
+
+            services.AddDbContext<UserDbContext>(options =>
+            {
+                options.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
+            });
+
+            services.AddIdentity<UserModel, IdentityRole>()
+                    .AddEntityFrameworkStores<UserDbContext>()
+                    .AddDefaultTokenProviders();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
+            });
+
             services.AddSingleton<WeatherForecastService>();
         }
 
