@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>DevBlog_Sever_5._0</RootNamespace>
-  </PropertyGroup>
-
-</Project>
