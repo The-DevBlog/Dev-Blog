@@ -1,0 +1,43 @@
+﻿@page "/posts"
+
+@using BlazorServer.Models
+@inject BlazorServer.Interfaces.IPosts _posts
+
+@foreach (var post in posts)
+{
+    <!-- Render Posts -->
+    <div style="margin-top: 20px; border: 2px solid red;">
+        <p>@post.UpdateNum</p>
+        <p>@post.Date.ToShortDateString()</p>
+        <img src=@post.ImgURL />
+        <p>@post.Description</p>
+        <button class="glyphicon glyphicon-thumbs-up"></button>
+        <span>@post.UpVotes</span>
+        <button class="glyphicon glyphicon-thumbs-down"></button>
+        <span>@post.DownVotes</span>
+
+        <!-- Render Comments -->
+        <div>
+            @if (post.Comments[0] != null)
+            {
+                foreach (var comment in post.Comments)
+                {
+                    <span>@comment.UserName</span>
+                    <span>
+                        @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
+                    </span>
+                    <p>@comment.Content</p>
+                }
+            }
+        </div>
+    </div>
+}
+
+@code {
+    List<PostModel> posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await _posts.GetPosts();
+    }
+}

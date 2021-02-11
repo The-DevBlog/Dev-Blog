@@ -1,4 +1,5 @@
 ﻿using BlazorServer.Data;
+using BlazorServer.Interfaces;
 using BlazorServer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Services
 {
-    public class PostService
+    public class PostService : IPosts
     {
         private AppDbContext _db;
 

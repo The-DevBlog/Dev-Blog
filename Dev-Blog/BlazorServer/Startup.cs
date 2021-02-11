@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazorServer.Models;
+using BlazorServer.Interfaces;
+using BlazorServer.Services;
 
 namespace BlazorServer
 {
@@ -52,6 +54,7 @@ namespace BlazorServer
                 options.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
             });
 
+            services.AddTransient<IPosts, PostService>();
             services.AddSingleton<WeatherForecastService>();
         }
 
