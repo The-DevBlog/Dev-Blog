@@ -2,7 +2,7 @@
 
 namespace BlazorServer.Models
 {
-    public class LoginModel
+    public class SignInModel
     {
         [Required]
         [StringLength(25)]
