@@ -60,7 +60,6 @@ namespace BlazorServer
             services.AddTransient<CommentModel>();
             services.AddTransient<IImages, ImageService>();
             services.AddTransient<IPosts, PostService>();
-            services.AddSingleton<WeatherForecastService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

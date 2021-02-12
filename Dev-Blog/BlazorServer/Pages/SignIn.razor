@@ -1,25 +1,9 @@
 ﻿@page "/login"
 
-@using BlazorServer.Models
-@using  Microsoft.AspNetCore.Identity
-
-@inject NavigationManager navMgr
-@inject SignInManager<UserModel> signInMgr
-@inject UserManager<UserModel> userMgr
-@inject BlazorServer.Interfaces.IPosts _posts
-
 <h3>Login</h3>
-@*<EditForm Model=signIn OnValidSubmit=SignIn>
-        <label>UserName</label>
-        <InputText @bind-Value=signIn.UserName />
-
-        <label>Password</label>
-        <InputText @bind-Value=signIn.Password type=password />
-        <button type="submit">Login</button>
-    </EditForm>*@
 <form method="post" action="/signin">
-    <input type="text" name="username" />
-    <input type="password" name="password" />
+    <input type="text" name="username" required />
+    <input type="password" name="password" required />
     <input type="submit" value="Login" />
 </form>
 
@@ -29,5 +13,11 @@
     protected override async Task OnInitializedAsync()
     {
         signIn = new SignInModel();
+    }
+
+    private class SignInModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

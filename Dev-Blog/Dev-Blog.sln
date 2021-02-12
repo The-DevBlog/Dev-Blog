@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLibrary", "DataLibrary\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevBlog_BlazorServer", "DevBlog_BlazorServer\DevBlog_BlazorServer.csproj", "{8E43733A-768F-42F1-B58D-DBAAAE58255D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServer", "BlazorServer\BlazorServer.csproj", "{5F81E561-52E4-4EE0-8AAA-54470BEA792B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer", "BlazorServer\BlazorServer.csproj", "{5F81E561-52E4-4EE0-8AAA-54470BEA792B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
