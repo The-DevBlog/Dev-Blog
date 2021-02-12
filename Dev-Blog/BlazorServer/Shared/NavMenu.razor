@@ -1,37 +1,127 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">BlazorServer</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject AuthenticationStateProvider Auth
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+<nav>
+    <!-- LOGO -->
+    <img src="/Imgs/Logo.png" height="115" width="100" />
+
+    <!-- HOME LINK -->
+    <NavLink href="/">
+        The Dev Blog
+    </NavLink>
+
+    <div>
+        <ul>
+
+            <!-- PAGE LINKS -->
+            <NavLink href="/">
+                Home
             </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink href="/Posts">
+                Status
             </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink href="/About">
+                About
             </NavLink>
-        </li>
-    </ul>
-</div>
+
+            @{
+                <!-- IF USER IS SIGNED IN -->
+                @*<AuthorizeView>
+                        <Authorized>
+                            <h4>Hello, @context.User.Identity.Name!</h4>
+                            <p>This content is only visible if user is authenticated.</p>
+                        </Authorized>
+                        <NotAuthorized>
+                            <p>Please signed in.</p>
+                        </NotAuthorized>
+                    </AuthorizeView>*@
+
+                if (authorized)
+                {
+                    <!-- WELCOME USER -->
+                    <NavLink>
+                        @*<a class="nav-link disabled">Welcome @User.Claims.First(x => x.Type == "UserName").Value </a>*@
+                        <a>Welcome USER</a>
+                    </NavLink>
+
+                    <!-- LOGOUT -->
+                    <NavLink href="/Account/Logout">
+                        <EditForm asp-page="/Account/Logout" method="post">
+                            <button type="submit">Logout</button>
+                        </EditForm>
+                    </NavLink>
+                }
+                <!-- LOGIN / SIGN UP -->
+                else
+                {
+                    <NavLink href="/login">
+                        LOGIN
+                    </NavLink>
+                    @*<li>*@
+                    @*@{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}*@
+                    @*LOGIN
+                        </li>*@
+                    <li>
+                        @*@{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}*@
+                        SIGN UP
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</nav>
+
+@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">DevBlog_BlazorServer</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>*@
+
+@*<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="people">
+                    <span class="oi oi-person" aria-hidden="true"></span>People
+                </NavLink>
+            </li>
+        </ul>
+    </div>*@
 
 @code {
-    private bool collapseNavMenu = true;
+    @*private bool collapseNavMenu = true;*@
+    @*private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;*@
+    private bool authorized;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnInitializedAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+        authorized = GetAuthState().Result;
     }
+
+    public async Task<bool> GetAuthState()
+    {
+        var authState = await Auth.GetAuthenticationStateAsync();
+        var user = authState.User;
+        return user.Identity.IsAuthenticated ? true : false;
+    }
+
+    @*private void ToggleNavMenu()
+        {
+            collapseNavMenu = !collapseNavMenu;
+        }*@
 }
