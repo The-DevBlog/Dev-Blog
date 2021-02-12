@@ -1,5 +1,3 @@
-using DataLibrary;
-using DataLibrary.Interfaces;
 using DevBlog_BlazorServer.Interfaces;
 using DevBlog_BlazorServer.Models;
 using DevBlog_BlazorServer.Services;
@@ -73,7 +71,6 @@ namespace DevBlog_BlazorServer
 
             services.AddTransient<CommentModel>();
             services.AddTransient<IPostService, PostService>();
-            services.AddSingleton<IDataAccess, DataAccess>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

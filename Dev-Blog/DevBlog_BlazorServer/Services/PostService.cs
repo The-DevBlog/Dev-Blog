@@ -5,7 +5,6 @@ using Identity.Dapper.Entities;
 using Identity.Dapper.Stores;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -39,11 +38,11 @@ namespace DevBlog_BlazorServer.Services
 
             var cnnStr = _config.GetConnectionString("DevBlogUserDB");
 
-            using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogUserDB")))
-            {
-                var users = await cnn.QueryAsync<IdentityUser>(sql);
-                return users.ToList();
-            }
+            //using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogUserDB")))
+            //{
+            //    var users = await cnn.QueryAsync<IdentityUser>(sql);
+            //    return users.ToList();
+            //}
         }
 
         public async Task<Dictionary<int, PostModel>> GetPosts()
@@ -54,25 +53,25 @@ namespace DevBlog_BlazorServer.Services
                          "ORDER BY post.Date DESC;";
 
             var posts = new Dictionary<int, PostModel>();
-            using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogDB")))
-            {
-                // TODO: I dont fully understand this
-                await cnn.QueryAsync<PostModel, CommentModel, PostModel>(sql,
-                    (post, comment) =>
-                    {
-                        if (!posts.ContainsKey(post.Id))
-                            posts.Add(post.Id, post);
+            //using (IDbConnection cnn = new MySqlConnection(_config.GetConnectionString("DevBlogDB")))
+            //{
+            //    // TODO: I dont fully understand this
+            //    await cnn.QueryAsync<PostModel, CommentModel, PostModel>(sql,
+            //        (post, comment) =>
+            //        {
+            //            if (!posts.ContainsKey(post.Id))
+            //                posts.Add(post.Id, post);
 
-                        var cach = posts[post.Id];
+            //            var cach = posts[post.Id];
 
-                        if (cach.Comments == null)
-                            cach.Comments = new List<CommentModel>();
+            //            if (cach.Comments == null)
+            //                cach.Comments = new List<CommentModel>();
 
-                        cach.Comments.Add(comment);
+            //            cach.Comments.Add(comment);
 
-                        return cach;
-                    }, splitOn: "PostId");
-            }
+            //            return cach;
+            //        }, splitOn: "PostId");
+            //}
 
             return posts;
         }
