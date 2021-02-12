@@ -1,17 +1,15 @@
 ﻿@page "/addpost"
 
 @using BlazorServer.Models
-@using Microsoft.Extensions.Configuration
+@using BlazorServer.Interfaces
 @using System.IO
-@using Microsoft.AspNetCore.Http
-@using Dropbox.Api;
-@using Dropbox.Api.Files
 
-@inject IConfiguration _config
+@inject IPosts _posts
+@inject IImages _imgs
 
 <h3>AddPost</h3>
 
-<EditForm Model=@newPost OnValidSubmit=InsertData>
+<EditForm Model=@newPost OnValidSubmit=CreatePost>
     <InputText @bind-Value=newPost.UpdateNum />
     <InputTextArea @bind-Value=newPost.Description />
     <InputText @bind-Value=name />
@@ -30,33 +28,17 @@
         newPost = new PostModel();
     }
 
-    private async Task HandleFileInput(InputFileChangeEventArgs e)
+    private void HandleFileInput(InputFileChangeEventArgs e)
     {
         file = e.File;
         fs = file.OpenReadStream();
     }
 
-    private async Task InsertData()
+    private async Task CreatePost()
     {
-        // Add image to Dropbox
-        string url = await _data.AddImgToDropBox(fs, name);
+        string url = await _imgs.AddImgToDropBox(fs, name);
+        await _posts.Create(newPost, url);
 
-        string sql = "INSERT INTO post" +
-                     "(UpdateNum, Date, ImgURL, Description, DownVotes, UpVotes)" +
-                     "values (@UpdateNum, @Date, @ImgURL, @Description, @DownVotes, @UpVotes);";
-
-        // Post to DB
-        await _data.SaveData(sql, new
-        {
-            UpdateNum = newPost.UpdateNum,
-            Date = DateTime.Now,
-            ImgURL = url,
-            Description = newPost.Description,
-            DownVotes = 0,
-            UpVotes = 0
-        }, _config.GetConnectionString("DevBlogDB"));
-
-        newPost = new PostModel();
         await OnInitializedAsync();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Dropbox.Api;
+﻿using BlazorServer.Interfaces;
+using Dropbox.Api;
 using Dropbox.Api.Files;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Services
 {
-    public class ImageService
+    public class ImageService : IImages
     {
         private IConfiguration _config;
 

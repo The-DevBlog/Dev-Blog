@@ -54,8 +54,10 @@ namespace BlazorServer
                 opt.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
             });
 
+            //TODO: Understand differences between all of these
             services.AddTransient<VoteModel>();
             services.AddTransient<CommentModel>();
+            services.AddTransient<IImages, ImageService>();
             services.AddTransient<IPosts, PostService>();
             services.AddSingleton<WeatherForecastService>();
         }

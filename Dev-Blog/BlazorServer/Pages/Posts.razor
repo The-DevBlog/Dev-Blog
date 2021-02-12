@@ -46,6 +46,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await db.Post.ToListAsync();
+        posts = await db.Post.OrderByDescending(x => x.Date)
+                             .ToListAsync();
     }
 }

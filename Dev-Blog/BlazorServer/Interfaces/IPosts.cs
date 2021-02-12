@@ -6,6 +6,8 @@ namespace BlazorServer.Interfaces
 {
     internal interface IPosts
     {
+        Task<PostModel> Create(PostModel post, string url);
+
         Task<List<PostModel>> GetPosts();
     }
 }

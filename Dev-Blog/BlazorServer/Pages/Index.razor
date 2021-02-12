@@ -36,6 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        latestPost = db.Post.OrderBy(x => x.Date).FirstOrDefault();
+        latestPost = db.Post.OrderByDescending(x => x.Date)
+                            .FirstOrDefault();
     }
 }

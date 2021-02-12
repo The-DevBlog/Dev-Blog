@@ -18,6 +18,23 @@ namespace BlazorServer.Services
             _db = context;
         }
 
+        /// <summary>
+        /// Adds a new post to the database
+        /// </summary>
+        /// <param name="post">The new post</param>
+        /// <param name="url">The url of the image</param>
+        /// <returns>New post</returns>
+        public async Task<PostModel> Create(PostModel post, string url)
+        {
+            post.ImgURL = url;
+            post.Date = DateTime.Now;
+
+            _db.Entry(post).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+
+            return post;
+        }
+
         public async Task<List<PostModel>> GetPosts()
         {
             var posts = await _db.Post.ToListAsync();
