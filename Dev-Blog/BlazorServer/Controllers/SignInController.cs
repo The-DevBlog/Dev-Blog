@@ -22,8 +22,13 @@ namespace BlazorServer.Controllers
                 return Redirect("/");
 
             return Redirect("/signin/attempt");
+        }
 
-            //return Redirect("/");
+        [HttpPost("/signout")]
+        public async Task<IActionResult> LogOut()
+        {
+            await SignInMgr.SignOutAsync();
+            return Redirect("/");
         }
     }
 }
