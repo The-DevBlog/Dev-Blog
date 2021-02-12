@@ -4,7 +4,10 @@
 @using Microsoft.Extensions.Configuration
 @using System.IO
 @using Microsoft.AspNetCore.Http
+@using Dropbox.Api;
+@using Dropbox.Api.Files
 
+@inject DataLibrary.Interfaces.IDataAccess _data
 @inject IConfiguration _config
 
 <h3>AddPost</h3>
