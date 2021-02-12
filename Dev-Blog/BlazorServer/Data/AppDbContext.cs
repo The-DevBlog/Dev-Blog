@@ -7,10 +7,9 @@ namespace BlazorServer.Data
     {
         public DbSet<PostModel> Post { get; set; }
         public DbSet<CommentModel> Comment { get; set; }
-
         public DbSet<VoteModel> Vote { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
         }
 

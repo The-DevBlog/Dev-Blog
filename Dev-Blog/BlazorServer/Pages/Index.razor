@@ -1,7 +1,41 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using BlazorServer.Models
+@inject BlazorServer.Data.AppDbContext db
+<!-- LATEST POST -->
+<p>@latestPost.UpdateNum</p>
+<p>@latestPost.Date.ToShortDateString()</p>
+<img src=@latestPost.ImgURL />
+<p>@latestPost.Description</p>
+<button class="glyphicon glyphicon-thumbs-up"></button>
+<span>@latestPost.UpVotes</span>
+<button class="glyphicon glyphicon-thumbs-down"></button>
+<span>@latestPost.DownVotes</span>
 
-Welcome to your new app.
+<!-- YOUTUBE LINK -->
+<div>
+    @*<iframe src="#"></iframe>*@
+    <h2>
+        YouTube Channel
+        <br /><br />
+        Coming Soon
+    </h2>
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<!-- SUGGESTION BOX -->
+<div>
+    <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
+        <button>
+            <h4>Have a suggestion? Send an email!</h4>
+        </button>
+    </a>
+</div>
+
+@code {
+    PostModel latestPost;
+
+    protected override async Task OnInitializedAsync()
+    {
+        latestPost = db.Post.OrderBy(x => x.Date).FirstOrDefault();
+    }
+}

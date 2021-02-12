@@ -6,7 +6,7 @@ namespace BlazorServer.Data
 {
     public class UserDbContext : IdentityDbContext<UserModel>
     {
-        public UserDbContext(DbContextOptions options) : base(options)
+        public UserDbContext(DbContextOptions opt) : base(opt)
         {
         }
     }

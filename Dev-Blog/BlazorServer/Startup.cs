@@ -35,25 +35,27 @@ namespace BlazorServer
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<AppDbContext>(opt =>
             {
-                options.UseMySql(_config.GetConnectionString("DevBlogDB"));
+                opt.UseMySql(_config.GetConnectionString("DevBlogDB"));
             });
 
-            services.AddDbContext<UserDbContext>(options =>
+            services.AddDbContext<UserDbContext>(opt =>
             {
-                options.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
+                opt.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()
                     .AddEntityFrameworkStores<UserDbContext>()
                     .AddDefaultTokenProviders();
 
-            services.AddAuthorization(options =>
+            services.AddAuthorization(opt =>
             {
-                options.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
+                opt.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
             });
 
+            services.AddTransient<VoteModel>();
+            services.AddTransient<CommentModel>();
             services.AddTransient<IPosts, PostService>();
             services.AddSingleton<WeatherForecastService>();
         }
