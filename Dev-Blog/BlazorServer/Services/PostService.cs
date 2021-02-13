@@ -41,7 +41,6 @@ namespace BlazorServer.Services
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
-                                      //.Where(x => x.Id == x.)
                                       .ToListAsync();
             return posts;
         }
@@ -53,7 +52,9 @@ namespace BlazorServer.Services
         /// <returns>Specified post</returns>
         public async Task<PostModel> GetPost(int postId)
         {
-            var post = await _db.Post.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
+            var post = await _db.Post.Include(x => x.Comments)
+                                     .Where(p => p.Id == postId)
+                                     .FirstOrDefaultAsync();
 
             return post;
         }

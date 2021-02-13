@@ -22,23 +22,12 @@ else
         </AuthorizeView>
     }
 
-    <!-- Delete/Edit post form -->
-    @*@if (User.Identity.Name == Model.AdminUser)
-        {
-            <form method="post" class="delete-form">
-                <input hidden asp-for=@post.Id>
-                <button asp-page-handler="DeletePost" type="submit">
-                    @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
-                </button>
-                <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
-                    @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
-                </a>
-            </form>
-        }*@
     <!-- Render Posts -->
     @foreach (var post in posts)
     {
         <div style="margin-top: 20px;">
+
+            <!-- Delete/Edit Post -->
             @if (admin)
             {
                 string editUrl = $"/editpost/{post.Id}/";
@@ -65,9 +54,19 @@ else
                 {
                     foreach (var comment in post.Comments)
                     {
-                        <span>@comment.UserName</span>
-                        <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
-                        <p>@comment.Content</p>
+                        <div>
+                            @if (admin)
+                            {
+                                <AuthorizeView>
+                                    <button @onclick="() => DeleteComment(comment.Id)">
+                                        <TrashIcon />
+                                    </button>
+                                </AuthorizeView>
+                            }
+                            <span>@comment.UserName</span>
+                            <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
+                            <p>@comment.Content</p>
+                        </div>
                     }
                 }
             </div>
@@ -75,12 +74,15 @@ else
             <!-- Add Comment -->
             <div>
                 <AuthorizeView>
+                    <!-- if user is logged in -->
                     <Authorized Context="Auth">
                         <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
                             <InputTextArea @bind-Value=comment.Content DisplayName="Add a comment..." />
                             <button type="submit">Comment</button>
                         </EditForm>
                     </Authorized>
+
+                    <!-- if user is not logged in -->
                     <NotAuthorized>
                         <textarea placeholder="Login in to leave a comment..">
                         </textarea>
@@ -139,6 +141,12 @@ else
     public async Task DeletePost(int postId)
     {
         await _posts.Delete(postId);
+        posts = await _posts.GetPosts();
+    }
+
+    public async Task DeleteComment(int commentId)
+    {
+        await _comments.Delete(commentId);
         posts = await _posts.GetPosts();
     }
 

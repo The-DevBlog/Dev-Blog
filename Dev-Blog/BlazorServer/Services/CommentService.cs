@@ -22,7 +22,7 @@ namespace BlazorServer.Services
         /// Adds a comment to the database
         /// </summary>
         /// <param name="comment">The comment to add</param>
-        /// <returns>The new comment</returns>
+        /// <returns>CommentModel</returns>
         public async Task<CommentModel> Create(CommentVM comment)
         {
             CommentModel newComment = new CommentModel()
@@ -41,13 +41,28 @@ namespace BlazorServer.Services
         /// <summary>
         /// Retrieves all comments from database
         /// </summary>
-        /// <returns>Returns all comments</returns>
+        /// <returns>List<CommentModel></returns>
         public async Task<List<CommentModel>> GetComments()
         {
-            List<CommentModel> comments = await _db.Comment.OrderByDescending(x => x.Date)
-                .ToListAsync();
+            var comments = await _db.Comment.OrderByDescending(x => x.Date)
+                                            .ToListAsync();
 
             return comments;
+        }
+
+        public async Task<CommentModel> GetComment(int commentId)
+        {
+            var comment = await _db.Comment.Where(c => c.Id == commentId)
+                                           .FirstOrDefaultAsync();
+
+            return comment;
+        }
+
+        public async Task Delete(int commentId)
+        {
+            var comment = await GetComment(commentId);
+            _db.Entry(comment).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
         }
     }
 }
