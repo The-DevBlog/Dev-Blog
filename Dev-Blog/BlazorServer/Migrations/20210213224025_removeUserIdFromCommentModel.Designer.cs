@@ -3,14 +3,16 @@ using System;
 using BlazorServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210213224025_removeUserIdFromCommentModel")]
+    partial class removeUserIdFromCommentModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +31,10 @@ namespace BlazorServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("PostModelId")
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
@@ -75,7 +80,7 @@ namespace BlazorServer.Migrations
 
             modelBuilder.Entity("BlazorServer.Models.VoteModel", b =>
                 {
-                    b.Property<int>("PostModelId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -87,7 +92,7 @@ namespace BlazorServer.Migrations
                     b.Property<bool>("UpVote")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("PostModelId", "UserId");
+                    b.HasKey("PostId", "UserId");
 
                     b.ToTable("Vote");
                 });
@@ -96,16 +101,14 @@ namespace BlazorServer.Migrations
                 {
                     b.HasOne("BlazorServer.Models.PostModel", null)
                         .WithMany("Comments")
-                        .HasForeignKey("PostModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostModelId");
                 });
 
             modelBuilder.Entity("BlazorServer.Models.VoteModel", b =>
                 {
                     b.HasOne("BlazorServer.Models.PostModel", "Post")
                         .WithMany()
-                        .HasForeignKey("PostModelId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

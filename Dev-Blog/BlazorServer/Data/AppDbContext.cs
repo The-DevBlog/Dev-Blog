@@ -19,7 +19,7 @@ namespace BlazorServer.Data
 
             modelBuilder.Entity<VoteModel>(entity =>
             {
-                entity.HasKey(e => new { e.PostId, e.UserId });
+                entity.HasKey(e => new { e.PostModelId, e.UserId });
             });
         }
     }

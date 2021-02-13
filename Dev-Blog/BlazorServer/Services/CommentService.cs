@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static BlazorServer.Pages.Posts;
 
 namespace BlazorServer.Services
 {
@@ -22,11 +23,19 @@ namespace BlazorServer.Services
         /// </summary>
         /// <param name="comment">The comment to add</param>
         /// <returns>The new comment</returns>
-        public async Task<CommentModel> Create(CommentModel comment)
+        public async Task<CommentModel> Create(CommentVM comment)
         {
-            _db.Entry(comment).State = EntityState.Added;
+            CommentModel newComment = new CommentModel()
+            {
+                UserName = comment.UserName,
+                PostModelId = comment.PostModelId,
+                Content = comment.Content
+            };
+
+            _db.Entry(newComment).State = EntityState.Added;
             await _db.SaveChangesAsync();
-            return comment;
+
+            return newComment;
         }
 
         /// <summary>

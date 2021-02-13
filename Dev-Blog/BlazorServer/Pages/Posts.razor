@@ -1,11 +1,12 @@
 ﻿@page "/posts"
 
 @using BlazorServer.Models
-@using Microsoft.EntityFrameworkCore
 @using System.Security.Claims
 
+@inject Interfaces.IPosts _posts
+@inject Interfaces.IComments _comments
 @inject AuthenticationStateProvider Auth
-@inject BlazorServer.Data.AppDbContext DB
+@inject Data.AppDbContext DB
 
 @if (posts == null)
 {
@@ -13,26 +14,25 @@
 }
 else
 {
+    <!-- Add Post -->
     @if (admin)
     {
-        @*<a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>*@
-        <NavLink href="/addpost/">
-            Add Post
-        </NavLink>
+        <AuthorizeView>
+            <NavLink href="/addpost/"> Add Post </NavLink>
+        </AuthorizeView>
     }
 
+    <!-- Render Posts -->
     @foreach (var post in posts)
     {
-        <!-- Render Posts -->
         <div style="margin-top: 20px;">
 
             @if (admin)
             {
-                var editUrl = $"/editpost/{post.Id}/";
-                <NavLink href=@editUrl>
-                    <EditIcon></EditIcon>
-                    @*Edit Post*@
-                </NavLink>
+                string editUrl = $"/editpost/{post.Id}/";
+                <AuthorizeView>
+                    <NavLink href=@editUrl> <EditIcon /> </NavLink>
+                </AuthorizeView>
             }
 
             <p>@post.UpdateNum</p>
@@ -51,9 +51,7 @@ else
                     foreach (var comment in post.Comments)
                     {
                         <span>@comment.UserName</span>
-                        <span>
-                            @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
-                        </span>
+                        <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
                         <p>@comment.Content</p>
                     }
                 }
@@ -61,17 +59,18 @@ else
 
             <!-- Add Comment -->
             <div>
-                @if (authenticated)
-                {
-                    <EditForm Model=newComment OnValidSubmit=@AddComment>
-                        <InputTextArea @bind-Value=newComment.Content DisplayName="Add a comment..." />
-                        <button type="submit">Comment</button>
-                    </EditForm>
-                }
-                else
-                {
-                    <textarea placeholder="Login in to leave a comment.."></textarea>
-                }
+                <AuthorizeView>
+                    <Authorized Context="Auth">
+                        <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                            <InputTextArea @bind-Value=comment.Content DisplayName="Add a comment..." />
+                            <button type="submit">Comment</button>
+                        </EditForm>
+                    </Authorized>
+                    <NotAuthorized>
+                        <textarea placeholder="Login in to leave a comment..">
+                        </textarea>
+                    </NotAuthorized>
+                </AuthorizeView>
             </div>
         </div>
     }
@@ -92,18 +91,18 @@ else
     }*@
 
 @code {
-    CommentModel newComment;
+    CommentVM comment;
     List<PostModel> posts;
     bool admin;
     bool authenticated;
+    ClaimsPrincipal user;
 
     protected override async Task OnInitializedAsync()
     {
-        newComment = new CommentModel();
-        posts = await DB.Post.OrderByDescending(x => x.Date)
-                             .ToListAsync();
+        comment = new CommentVM();
+        posts = await _posts.GetPosts();
 
-        var user = await GetUser();
+        user = await GetUser();
         authenticated = IsAuthenticated(user);
 
         if (authenticated)
@@ -127,8 +126,21 @@ else
         return user.Claims.ToList()[6].Value == "Admin";
     }
 
-    public async Task AddComment()
+    public async Task AddComment(int postId)
     {
+        comment.UserName = user.Identity.Name;
+        comment.PostModelId = postId;
 
+        await _comments.Create(comment);
+        comment = new CommentVM();
+    }
+
+    public class CommentVM
+    {
+        public string UserName { get; set; }
+
+        public int PostModelId { get; set; }
+
+        public string Content { get; set; }
     }
 }
