@@ -6,6 +6,7 @@
 
 @inject IPosts _posts
 @inject IImages _imgs
+@inject NavigationManager NavMgr
 
 <h3>AddPost</h3>
 
@@ -39,6 +40,6 @@
         string url = await _imgs.AddImgToDropBox(fs, name);
         await _posts.Create(newPost, url);
 
-        await OnInitializedAsync();
+        NavMgr.NavigateTo("/posts");
     }
 }

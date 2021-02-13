@@ -2,7 +2,7 @@
 
 @using BlazorServer.Models
 @inject BlazorServer.Interfaces.IPosts _posts
-@inject NavigationManager navMgr
+@inject NavigationManager NavMgr
 
 <h3>EditPost</h3>
 
@@ -16,8 +16,6 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <p>@post.UpdateNum</p>
-        <p>@post.Description</p>
         <InputTextArea @bind-Value=post.Description />
         <InputText @bind-Value=post.UpdateNum />
         <button type="submit">Update</button>
@@ -37,6 +35,6 @@ else
     private async Task UpdatePost()
     {
         await _posts.UpdatePost(post);
-        navMgr.NavigateTo("/posts");
+        NavMgr.NavigateTo("/posts");
     }
 }
