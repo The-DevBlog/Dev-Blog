@@ -14,5 +14,7 @@ namespace BlazorServer.Interfaces
         Task<PostModel> GetPost(int postId);
 
         Task UpdatePost(PostModel post);
+
+        Task Delete(int postId);
     }
 }

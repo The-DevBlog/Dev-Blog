@@ -22,16 +22,31 @@ else
         </AuthorizeView>
     }
 
+    <!-- Delete/Edit post form -->
+    @*@if (User.Identity.Name == Model.AdminUser)
+        {
+            <form method="post" class="delete-form">
+                <input hidden asp-for=@post.Id>
+                <button asp-page-handler="DeletePost" type="submit">
+                    @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+                </button>
+                <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
+                    @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
+                </a>
+            </form>
+        }*@
     <!-- Render Posts -->
     @foreach (var post in posts)
     {
         <div style="margin-top: 20px;">
-
             @if (admin)
             {
                 string editUrl = $"/editpost/{post.Id}/";
                 <AuthorizeView>
                     <NavLink href=@editUrl> <EditIcon /> </NavLink>
+                    <button @onclick="() => DeletePost(post.Id)">
+                        <TrashIcon />
+                    </button>
                 </AuthorizeView>
             }
 
@@ -76,20 +91,6 @@ else
     }
 }
 
-<!-- Delete/Edit post form -->
-@*@if (User.Identity.Name == Model.AdminUser)
-    {
-        <form method="post" class="delete-form">
-            <input hidden asp-for=@post.Id>
-            <button asp-page-handler="DeletePost" type="submit">
-                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
-            </button>
-            <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
-                @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
-            </a>
-        </form>
-    }*@
-
 @code {
     CommentVM comment;
     List<PostModel> posts;
@@ -133,6 +134,12 @@ else
 
         await _comments.Create(comment);
         comment = new CommentVM();
+    }
+
+    public async Task DeletePost(int postId)
+    {
+        await _posts.Delete(postId);
+        posts = await _posts.GetPosts();
     }
 
     public class CommentVM

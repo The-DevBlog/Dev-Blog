@@ -63,5 +63,17 @@ namespace BlazorServer.Services
             var res = _db.Post.Update(post);
             await _db.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Removes a specified post from the database
+        /// </summary>
+        /// <param name="postId">Id of post to delete</param>
+        /// <returns>Successful completion of task</returns>
+        public async Task Delete(int postId)
+        {
+            var post = await GetPost(postId);
+            _db.Entry(post).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
     }
 }
