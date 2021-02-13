@@ -11,6 +11,8 @@ namespace BlazorServer.Services
 {
     public class PostService : IPosts
     {
+        //TODO: Summary comments
+
         private AppDbContext _db;
 
         public PostService(AppDbContext context)
@@ -39,6 +41,22 @@ namespace BlazorServer.Services
         {
             var posts = await _db.Post.ToListAsync();
             return posts;
+        }
+
+        /// <summary>
+        /// Retrieves a specified post
+        /// </summary>
+        /// <param name="postId">Id of specified post</param>
+        /// <returns>Specified post</returns>
+        public async Task<PostModel> GetPost(int postId)
+        {
+            return await _db.Post.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
+        }
+
+        public async Task UpdatePost(PostModel post)
+        {
+            var res = _db.Post.Update(post);
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿@page "/editpost/{Id}"
+
+@using BlazorServer.Models
+@inject BlazorServer.Interfaces.IPosts _posts
+@inject NavigationManager navMgr
+
+<h3>EditPost</h3>
+
+@if (post == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model=@post OnValidSubmit=@UpdatePost>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>@post.UpdateNum</p>
+        <p>@post.Description</p>
+        <InputTextArea @bind-Value=post.Description />
+        <InputText @bind-Value=post.UpdateNum />
+        <button type="submit">Update</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public String Id { get; set; }
+    private PostModel post;
+
+    protected override async Task OnInitializedAsync()
+    {
+        post = await _posts.GetPost(int.Parse(Id));
+    }
+
+    private async Task UpdatePost()
+    {
+        await _posts.UpdatePost(post);
+        navMgr.NavigateTo("/posts");
+    }
+}

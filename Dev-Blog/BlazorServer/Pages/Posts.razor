@@ -2,7 +2,9 @@
 
 @using BlazorServer.Models
 @using Microsoft.EntityFrameworkCore
-@inject BlazorServer.Data.AppDbContext db
+
+@inject AuthenticationStateProvider Auth
+@inject BlazorServer.Data.AppDbContext DB
 
 @if (posts == null)
 {
@@ -10,10 +12,27 @@
 }
 else
 {
+    @if (isAdmin)
+    {
+        @*<a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>*@
+        <NavLink href="/addpost/">
+            Add Post
+        </NavLink>
+    }
+
     @foreach (var post in posts)
     {
         <!-- Render Posts -->
-        <div style="margin-top: 20px; border: 2px solid red;">
+        <div style="margin-top: 20px;">
+
+            @if (isAdmin)
+            {
+                var editUrl = $"/editpost/{post.Id}/";
+                <NavLink href=@editUrl>
+                    Edit Post
+                </NavLink>
+            }
+
             <p>@post.UpdateNum</p>
             <p>@post.Date.ToShortDateString()</p>
             <img src=@post.ImgURL />
@@ -41,12 +60,37 @@ else
     }
 }
 
+<!-- Delete/Edit post form -->
+@*@if (User.Identity.Name == Model.AdminUser)
+    {
+        <form method="post" class="delete-form">
+            <input hidden asp-for=@post.Id>
+            <button asp-page-handler="DeletePost" type="submit">
+                @{ await Html.RenderPartialAsync("../Icons/_TrashIcon");}
+            </button>
+            <a edit class="nav-link" asp-route-id=@post.Id asp-page="Edit">
+                @{ await Html.RenderPartialAsync("../Icons/_EditIcon");}
+            </a>
+        </form>
+    }*@
+
 @code {
     List<PostModel> posts;
+    bool isAdmin;
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await db.Post.OrderByDescending(x => x.Date)
+        posts = await DB.Post.OrderByDescending(x => x.Date)
                              .ToListAsync();
+
+        isAdmin = await GetUser();
+    }
+
+    public async Task<bool> GetUser()
+    {
+        var authState = await Auth.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var res = user.Claims.ToList()[6].Value == "Admin";
+        return res;
     }
 }
