@@ -57,7 +57,7 @@ namespace BlazorServer
 
             //TODO: Understand differences between all of these
             services.AddTransient<VoteModel>();
-            services.AddTransient<CommentModel>();
+            services.AddTransient<IComments, CommentService>();
             services.AddTransient<IImages, ImageService>();
             services.AddTransient<IPosts, PostService>();
         }

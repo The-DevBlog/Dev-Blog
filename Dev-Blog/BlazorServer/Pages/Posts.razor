@@ -2,6 +2,7 @@
 
 @using BlazorServer.Models
 @using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
 
 @inject AuthenticationStateProvider Auth
 @inject BlazorServer.Data.AppDbContext DB
@@ -12,7 +13,7 @@
 }
 else
 {
-    @if (isAdmin)
+    @if (admin)
     {
         @*<a edit id="add-post" class="btn btn-secondary" asp-page="Add">Add Post</a>*@
         <NavLink href="/addpost/">
@@ -25,7 +26,7 @@ else
         <!-- Render Posts -->
         <div style="margin-top: 20px;">
 
-            @if (isAdmin)
+            @if (admin)
             {
                 var editUrl = $"/editpost/{post.Id}/";
                 <NavLink href=@editUrl>
@@ -57,6 +58,21 @@ else
                     }
                 }
             </div>
+
+            <!-- Add Comment -->
+            <div>
+                @if (authenticated)
+                {
+                    <EditForm Model=newComment OnValidSubmit=@AddComment>
+                        <InputTextArea @bind-Value=newComment.Content DisplayName="Add a comment..." />
+                        <button type="submit">Comment</button>
+                    </EditForm>
+                }
+                else
+                {
+                    <textarea placeholder="Login in to leave a comment.."></textarea>
+                }
+            </div>
         </div>
     }
 }
@@ -76,22 +92,43 @@ else
     }*@
 
 @code {
+    CommentModel newComment;
     List<PostModel> posts;
-    bool isAdmin;
+    bool admin;
+    bool authenticated;
 
     protected override async Task OnInitializedAsync()
     {
+        newComment = new CommentModel();
         posts = await DB.Post.OrderByDescending(x => x.Date)
                              .ToListAsync();
 
-        isAdmin = await GetUser();
+        var user = await GetUser();
+        authenticated = IsAuthenticated(user);
+
+        if (authenticated)
+            admin = IsAdmin(user);
     }
 
-    public async Task<bool> GetUser()
+    public async Task<ClaimsPrincipal> GetUser()
     {
         var authState = await Auth.GetAuthenticationStateAsync();
         var user = authState.User;
-        var res = user.Claims.ToList()[6].Value == "Admin";
-        return res;
+        return user;
+    }
+
+    public bool IsAuthenticated(ClaimsPrincipal user)
+    {
+        return user.Identity.IsAuthenticated ? true : false;
+    }
+
+    public bool IsAdmin(ClaimsPrincipal user)
+    {
+        return user.Claims.ToList()[6].Value == "Admin";
+    }
+
+    public async Task AddComment()
+    {
+
     }
 }
