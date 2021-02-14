@@ -5,6 +5,7 @@
 
 @inject Interfaces.IPosts _posts
 @inject Interfaces.IComments _comments
+@inject Interfaces.IVotes _votes
 @inject AuthenticationStateProvider Auth
 @inject Data.AppDbContext DB
 
@@ -43,10 +44,24 @@ else
             <p>@post.Date.ToShortDateString()</p>
             <img src=@post.ImgURL />
             <p>@post.Description</p>
-            <button class="glyphicon glyphicon-thumbs-up"></button>
-            <span>@post.UpVotes</span>
-            <button class="glyphicon glyphicon-thumbs-down"></button>
-            <span>@post.DownVotes</span>
+            <button @onclick="() => UpVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+            @if (post.UpVotes != null)
+            {
+                <span>@post.UpVotes.Count</span>
+            }
+            else
+            {
+                <span>0</span>
+            }
+            <button @onclick="() => DownVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+            @if (post.DownVotes != null)
+            {
+                <span>@post.DownVotes.Count</span>
+            }
+            else
+            {
+                <span>0</span>
+            }
 
             <!-- Render Comments -->
             <div>
@@ -151,14 +166,14 @@ else
         posts = await _posts.GetPosts();
     }
 
-    public async Task UpVote(int postId, int userId)
+    public async Task UpVote(int postId, string username)
     {
-
+        await _votes.UpVote(postId, username);
     }
 
-    public async Task DownVote(int postId, int userId)
+    public async Task DownVote(int postId, string username)
     {
-
+        await _votes.DownVote(postId, username);
     }
 
     public class CommentVM
@@ -168,10 +183,5 @@ else
         public int PostModelId { get; set; }
 
         public string Content { get; set; }
-    }
-
-    public class VoteVM
-    {
-
     }
 }

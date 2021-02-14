@@ -7,7 +7,8 @@ namespace BlazorServer.Data
     {
         public DbSet<PostModel> Post { get; set; }
         public DbSet<CommentModel> Comment { get; set; }
-        public DbSet<VoteModel> Vote { get; set; }
+        public DbSet<UpVoteModel> UpVote { get; set; }
+        public DbSet<DownVoteModel> DownVote { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
@@ -17,7 +18,12 @@ namespace BlazorServer.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<VoteModel>(entity =>
+            modelBuilder.Entity<UpVoteModel>(entity =>
+            {
+                entity.HasKey(e => new { e.PostModelId, e.UserName });
+            });
+
+            modelBuilder.Entity<DownVoteModel>(entity =>
             {
                 entity.HasKey(e => new { e.PostModelId, e.UserName });
             });

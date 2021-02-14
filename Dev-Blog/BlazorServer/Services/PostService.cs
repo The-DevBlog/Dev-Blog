@@ -41,6 +41,8 @@ namespace BlazorServer.Services
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
+                                      .Include(x => x.UpVotes)
+                                      .Include(x => x.DownVotes)
                                       .ToListAsync();
             return posts;
         }
@@ -53,6 +55,8 @@ namespace BlazorServer.Services
         public async Task<PostModel> GetPost(int postId)
         {
             var post = await _db.Post.Include(x => x.Comments)
+                                     .Include(x => x.UpVotes)
+                                     .Include(x => x.DownVotes)
                                      .Where(p => p.Id == postId)
                                      .FirstOrDefaultAsync();
 

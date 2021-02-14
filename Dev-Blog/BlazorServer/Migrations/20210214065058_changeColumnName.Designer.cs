@@ -3,14 +3,16 @@ using System;
 using BlazorServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210214065058_changeColumnName")]
+    partial class changeColumnName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,19 +44,6 @@ namespace BlazorServer.Migrations
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("BlazorServer.Models.DownVoteModel", b =>
-                {
-                    b.Property<int>("PostModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.HasKey("PostModelId", "UserName");
-
-                    b.ToTable("DownVote");
-                });
-
             modelBuilder.Entity("BlazorServer.Models.PostModel", b =>
                 {
                     b.Property<int>("Id")
@@ -68,8 +57,14 @@ namespace BlazorServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("DownVotes")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImgURL")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("int");
 
                     b.Property<string>("UpdateNum")
                         .IsRequired()
@@ -80,7 +75,7 @@ namespace BlazorServer.Migrations
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("BlazorServer.Models.UpVoteModel", b =>
+            modelBuilder.Entity("BlazorServer.Models.VoteModel", b =>
                 {
                     b.Property<int>("PostModelId")
                         .HasColumnType("int");
@@ -88,9 +83,15 @@ namespace BlazorServer.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
+                    b.Property<bool>("DownVote")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("UpVote")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("PostModelId", "UserName");
 
-                    b.ToTable("UpVote");
+                    b.ToTable("Vote");
                 });
 
             modelBuilder.Entity("BlazorServer.Models.CommentModel", b =>
@@ -102,21 +103,10 @@ namespace BlazorServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BlazorServer.Models.DownVoteModel", b =>
+            modelBuilder.Entity("BlazorServer.Models.VoteModel", b =>
                 {
                     b.HasOne("BlazorServer.Models.PostModel", "Post")
-                        .WithMany("DownVotes")
-                        .HasForeignKey("PostModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("BlazorServer.Models.UpVoteModel", b =>
-                {
-                    b.HasOne("BlazorServer.Models.PostModel", "Post")
-                        .WithMany("UpVotes")
+                        .WithMany()
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -127,10 +117,6 @@ namespace BlazorServer.Migrations
             modelBuilder.Entity("BlazorServer.Models.PostModel", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("DownVotes");
-
-                    b.Navigation("UpVotes");
                 });
 #pragma warning restore 612, 618
         }

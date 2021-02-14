@@ -7,5 +7,8 @@ namespace BlazorServer.Interfaces
 {
     public interface IVotes
     {
+        Task UpVote(int postId, string username);
+
+        Task DownVote(int postId, string username);
     }
 }
