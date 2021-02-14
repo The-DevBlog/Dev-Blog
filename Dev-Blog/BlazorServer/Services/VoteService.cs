@@ -25,21 +25,19 @@ namespace BlazorServer.Services
         /// <returns>Successful completion of task</returns>
         public async Task UpVote(int postId, string username)
         {
-            if (await HasDownVoted(postId, username))
-            {
-                var vote = await _db.DownVote.Where(v => v.PostModelId == postId &&
-                                          v.UserName == username)
-                                             .FirstOrDefaultAsync();
+            var downVote = await _db.DownVote.Where(x => x.PostModelId == postId &&
+                          x.UserName == username)
+                           .FirstOrDefaultAsync();
 
-                _db.Entry(vote).State = EntityState.Deleted;
-            }
-            else if (await HasUpVoted(postId, username))
-            {
-                var vote = await _db.UpVote.Where(v => v.PostModelId == postId &&
-                                          v.UserName == username)
-                                           .FirstOrDefaultAsync();
+            var upVote = await _db.UpVote.Where(v => v.PostModelId == postId &&
+                          v.UserName == username)
+                           .FirstOrDefaultAsync();
 
-                _db.Entry(vote).State = EntityState.Deleted;
+            if (downVote != null)
+                _db.Entry(downVote).State = EntityState.Deleted;
+            else if (upVote != null)
+            {
+                _db.Entry(upVote).State = EntityState.Deleted;
                 await _db.SaveChangesAsync();
                 return;
             }
@@ -61,21 +59,19 @@ namespace BlazorServer.Services
         /// <returns>Successful completion of task</returns>
         public async Task DownVote(int postId, string username)
         {
-            if (await HasUpVoted(postId, username))
-            {
-                var vote = await _db.UpVote.Where(v => v.PostModelId == postId &&
+            var downVote = await _db.DownVote.Where(x => x.PostModelId == postId &&
+                          x.UserName == username)
+                           .FirstOrDefaultAsync();
+
+            var upVote = await _db.UpVote.Where(v => v.PostModelId == postId &&
                           v.UserName == username)
-                                           .FirstOrDefaultAsync();
+                           .FirstOrDefaultAsync();
 
-                _db.Entry(vote).State = EntityState.Deleted;
-            }
-            else if (await HasDownVoted(postId, username))
+            if (upVote != null)
+                _db.Entry(upVote).State = EntityState.Deleted;
+            else if (downVote != null)
             {
-                var vote = await _db.DownVote.Where(v => v.PostModelId == postId &&
-                                          v.UserName == username)
-                                             .FirstOrDefaultAsync();
-
-                _db.Entry(vote).State = EntityState.Deleted;
+                _db.Entry(downVote).State = EntityState.Deleted;
                 await _db.SaveChangesAsync();
                 return;
             }
@@ -87,24 +83,6 @@ namespace BlazorServer.Services
 
             _db.Entry(newVote).State = EntityState.Added;
             await _db.SaveChangesAsync();
-        }
-
-        private async Task<bool> HasUpVoted(int postId, string username)
-        {
-            var vote = await _db.UpVote.Where(x => x.PostModelId == postId &&
-                                      x.UserName == username)
-                                       .FirstOrDefaultAsync();
-
-            return vote == null ? false : true;
-        }
-
-        private async Task<bool> HasDownVoted(int postId, string username)
-        {
-            var vote = await _db.DownVote.Where(x => x.PostModelId == postId &&
-                                      x.UserName == username)
-                                         .FirstOrDefaultAsync();
-
-            return vote == null ? false : true;
         }
     }
 }

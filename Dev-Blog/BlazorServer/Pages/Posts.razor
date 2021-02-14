@@ -27,37 +27,44 @@ else
     @foreach (var post in posts)
     {
         <div style="margin-top: 20px;">
+            <div>
+                <span>@post.UpdateNum</span>
+                <span>@post.Date.ToShortDateString()</span>
 
-            <!-- Delete / Edit Post -->
-            @if (admin)
-            {
-                string editUrl = $"/editpost/{post.Id}/";
-                <AuthorizeView>
-                    <NavLink href=@editUrl> <EditIcon /> </NavLink>
-                    <button @onclick="() => DeletePost(post.Id)">
-                        <TrashIcon />
-                    </button>
-                </AuthorizeView>
-            }
+                <!-- Delete / Edit Post -->
+                @if (admin)
+                {
+                    string editUrl = $"/editpost/{post.Id}/";
+                    <AuthorizeView>
+                        <NavLink href=@editUrl> <EditIcon /> </NavLink>
+                        <button @onclick="() => DeletePost(post.Id)">
+                            <TrashIcon />
+                        </button>
+                    </AuthorizeView>
+                }
+            </div>
 
-            <p>@post.UpdateNum</p>
-            <p>@post.Date.ToShortDateString()</p>
             <img src=@post.ImgURL />
             <p>@post.Description</p>
 
+            <!-- Voting System -->
             <AuthorizeView>
                 <Authorized>
-                    <button @onclick="() => UpVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
-                    <span>@post.UpVotes.Count</span>
-                    <button @onclick="() => DownVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
-                    <span>@post.DownVotes.Count</span>
+                    <div>
+                        <button @onclick="async () => await _votes.UpVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                        <span>@post.UpVotes.Count</span>
+                        <button @onclick="async () => await _votes.DownVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                        <span>@post.DownVotes.Count</span>
+                    </div>
                 </Authorized>
                 <NotAuthorized>
-                    <button class="glyphicon glyphicon-thumbs-up"></button>
-                    <span>@post.UpVotes.Count</span>
-                    <button class="glyphicon glyphicon-thumbs-down"></button>
-                    <span>@post.DownVotes.Count</span>
-                    <span>Login in to Like / Dislike</span>
+                    <div>
+                        <button class="glyphicon glyphicon-thumbs-up"></button>
+                        <span>@post.UpVotes.Count</span>
+                        <button class="glyphicon glyphicon-thumbs-down"></button>
+                        <span>@post.DownVotes.Count</span>
+                        <span>Login in to Like / Dislike</span>
+                    </div>
                 </NotAuthorized>
             </AuthorizeView>
 
@@ -68,17 +75,29 @@ else
                     foreach (var comment in post.Comments)
                     {
                         <div>
+                            <span>@comment.UserName</span>
+                            <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
+
                             <!-- Delete / Edit Comment -->
                             @if (admin)
                             {
                                 <AuthorizeView>
-                                    <button @onclick="() => DeleteComment(comment.Id)">
+                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
                                         <TrashIcon />
                                     </button>
                                 </AuthorizeView>
                             }
-                            <span>@comment.UserName</span>
-                            <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
+                            else
+                            {
+                                <AuthorizeView>
+                                    @if (comment.UserName == user.Identity.Name)
+                                    {
+                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                            <TrashIcon />
+                                        </button>
+                                    }
+                                </AuthorizeView>
+                            }
                             <p>@comment.Content</p>
                         </div>
                     }
@@ -88,7 +107,6 @@ else
             <!-- Add Comment -->
             <div>
                 <AuthorizeView>
-                    <!-- if user is logged in -->
                     <Authorized Context="Auth">
                         <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
                             <InputTextArea @bind-Value=comment.Content DisplayName="Add a comment..." />
@@ -96,7 +114,6 @@ else
                         </EditForm>
                     </Authorized>
 
-                    <!-- if user is not logged in -->
                     <NotAuthorized>
                         <textarea placeholder="Login in to leave a comment..">
                         </textarea>
@@ -111,7 +128,6 @@ else
     CommentVM comment;
     List<PostModel> posts;
     bool admin;
-    bool authenticated;
     ClaimsPrincipal user;
 
     protected override async Task OnInitializedAsync()
@@ -119,28 +135,11 @@ else
         comment = new CommentVM();
         posts = await _posts.GetPosts();
 
-        user = await GetUser();
-        authenticated = IsAuthenticated(user);
+        user = Auth.GetAuthenticationStateAsync().Result.User;
 
-        if (authenticated)
-            admin = IsAdmin(user);
-    }
-
-    public async Task<ClaimsPrincipal> GetUser()
-    {
-        var authState = await Auth.GetAuthenticationStateAsync();
-        var user = authState.User;
-        return user;
-    }
-
-    public bool IsAuthenticated(ClaimsPrincipal user)
-    {
-        return user.Identity.IsAuthenticated ? true : false;
-    }
-
-    public bool IsAdmin(ClaimsPrincipal user)
-    {
-        return user.Claims.ToList()[6].Value == "Admin";
+        // check if user is admin
+        if (user.Identity.IsAuthenticated)
+            admin = user.Claims.ToList()[6].Value == "Admin";
     }
 
     public async Task AddComment(int postId)
@@ -156,22 +155,6 @@ else
     {
         await _posts.Delete(postId);
         posts = await _posts.GetPosts();
-    }
-
-    public async Task DeleteComment(int commentId)
-    {
-        await _comments.Delete(commentId);
-        posts = await _posts.GetPosts();
-    }
-
-    public async Task UpVote(int postId, string username)
-    {
-        await _votes.UpVote(postId, username);
-    }
-
-    public async Task DownVote(int postId, string username)
-    {
-        await _votes.DownVote(postId, username);
     }
 
     public class CommentVM
