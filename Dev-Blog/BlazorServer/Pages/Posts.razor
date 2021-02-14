@@ -27,7 +27,7 @@ else
     {
         <div style="margin-top: 20px;">
 
-            <!-- Delete/Edit Post -->
+            <!-- Delete / Edit Post -->
             @if (admin)
             {
                 string editUrl = $"/editpost/{post.Id}/";
@@ -55,6 +55,7 @@ else
                     foreach (var comment in post.Comments)
                     {
                         <div>
+                            <!-- Delete / Edit Comment -->
                             @if (admin)
                             {
                                 <AuthorizeView>
@@ -150,6 +151,16 @@ else
         posts = await _posts.GetPosts();
     }
 
+    public async Task UpVote(int postId, int userId)
+    {
+
+    }
+
+    public async Task DownVote(int postId, int userId)
+    {
+
+    }
+
     public class CommentVM
     {
         public string UserName { get; set; }
@@ -157,5 +168,10 @@ else
         public int PostModelId { get; set; }
 
         public string Content { get; set; }
+    }
+
+    public class VoteVM
+    {
+
     }
 }
