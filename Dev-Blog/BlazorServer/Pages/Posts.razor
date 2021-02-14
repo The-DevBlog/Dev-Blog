@@ -44,24 +44,22 @@ else
             <p>@post.Date.ToShortDateString()</p>
             <img src=@post.ImgURL />
             <p>@post.Description</p>
-            <button @onclick="() => UpVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
-            @if (post.UpVotes != null)
-            {
-                <span>@post.UpVotes.Count</span>
-            }
-            else
-            {
-                <span>0</span>
-            }
-            <button @onclick="() => DownVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
-            @if (post.DownVotes != null)
-            {
-                <span>@post.DownVotes.Count</span>
-            }
-            else
-            {
-                <span>0</span>
-            }
+
+            <AuthorizeView>
+                <Authorized>
+                    <button @onclick="() => UpVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                    <span>@post.UpVotes.Count</span>
+                    <button @onclick="() => DownVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                    <span>@post.DownVotes.Count</span>
+                </Authorized>
+                <NotAuthorized>
+                    <button class="glyphicon glyphicon-thumbs-up"></button>
+                    <span>@post.UpVotes.Count</span>
+                    <button class="glyphicon glyphicon-thumbs-down"></button>
+                    <span>@post.DownVotes.Count</span>
+                    <span>Login in to Like / Dislike</span>
+                </NotAuthorized>
+            </AuthorizeView>
 
             <!-- Render Comments -->
             <div>
