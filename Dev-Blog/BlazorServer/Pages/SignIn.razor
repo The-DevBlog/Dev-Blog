@@ -1,11 +1,22 @@
 ﻿@page "/login"
 
+@using System.ComponentModel.DataAnnotations;
+
 <h3>Login</h3>
-<form method="post" action="/signin">
-    <input type="text" name="username" required />
-    <input type="password" name="password" required />
-    <input type="submit" value="Login" />
-</form>
+
+<EditForm Model=signIn>
+    <form method="post" action="/signin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value=signIn.UserName />
+        <InputText @bind-Value=signIn.Password type="password" />
+
+        <input type="text" name="username" value=@signIn.UserName hidden />
+        <input type="password" name="password" value=@signIn.Password hidden />
+
+        <input type="submit" value="Login" />
+    </form>
+</EditForm>
 
 @code {
     private SignInModel signIn;
@@ -17,7 +28,10 @@
 
     private class SignInModel
     {
+        [Required]
         public string UserName { get; set; }
+
+        [Required]
         public string Password { get; set; }
     }
 }

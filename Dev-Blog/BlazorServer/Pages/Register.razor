@@ -3,15 +3,32 @@
 @using System.ComponentModel.DataAnnotations;
 
 <h3>Register</h3>
-<form method="post" action="/signup">
-    <input type="text" name="username" required />
-    <input type="password" name="password" />
-    <input type="password" name="confirmpassword" />
-    <input type="email" name="email" />
-    <input type="submit" value="Sign Up" />
-</form>
+
+<EditForm Model=registerVM>
+    <form method="post" action="/signup">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value=registerVM.UserName />
+        <InputText @bind-Value=registerVM.Password type="password" />
+        <InputText @bind-Value=registerVM.ConfirmPassword type="password" />
+        <InputText @bind-Value=registerVM.Email type="email" />
+
+        <input type="text" name="username" value=@registerVM.UserName hidden />
+        <input type="password" name="password" value=@registerVM.Password hidden />
+        <input type="password" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
+        <input type="email" name="email" value=@registerVM.Email hidden />
+
+        <input type="submit" value="Sign Up" />
+    </form>
+</EditForm>
 
 @code {
+    RegisterVM registerVM;
+
+    protected override async Task OnInitializedAsync()
+    {
+        registerVM = new RegisterVM();
+    }
 
     public class RegisterVM
     {
