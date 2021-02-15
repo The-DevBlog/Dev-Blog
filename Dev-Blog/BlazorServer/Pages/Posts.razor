@@ -6,6 +6,7 @@
 @inject IVotes _votes
 @inject AuthenticationStateProvider Auth
 @inject Data.AppDbContext DB
+@inject IModalService _modal
 @inject IJSRuntime JS
 
 @if (posts == null)
@@ -28,9 +29,11 @@ else
                 <span>@post.Date.ToShortDateString()</span>
 
                 <!-- Delete / Edit Post -->
-                @{string editUrl = $"/editpost/{post.Id}/"; }
                 <AuthorizeView Policy="Admin">
-                    <NavLink href=@editUrl> <EditIcon /> </NavLink>
+                    <button @onclick="@(() => ShowEditPost(post.Id))">
+                        <EditIcon />
+                    </button>
+
                     <button @onclick="() => DeletePost(post.Id)">
                         <TrashIcon />
                     </button>
@@ -124,6 +127,16 @@ else
         comment = new CommentVM();
         posts = await _posts.GetPosts();
 
+    }
+
+    async Task ShowEditPost(int postId)
+    {
+        var param = new ModalParameters();
+        param.Add(nameof(BlazorServer.Pages.Modals.EditPost.Id), postId);
+        var form = _modal.Show<BlazorServer.Pages.Modals.EditPost>("Edit Post", param);
+
+        await form.Result;
+        posts = await _posts.GetPosts();
     }
 
     public async Task AddComment(int postId)

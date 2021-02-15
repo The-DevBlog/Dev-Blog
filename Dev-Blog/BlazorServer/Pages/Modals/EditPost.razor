@@ -1,8 +1,8 @@
-﻿@page "/editpost/{Id}"
-@attribute [Authorize(Roles = "Admin")]
+﻿@attribute [Authorize(Roles = "Admin")]
 
 @inject IPosts _posts
 @inject NavigationManager NavMgr
+@inject IModalService _modal
 
 <h3>EditPost</h3>
 
@@ -23,18 +23,20 @@ else
 }
 
 @code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+
     [Parameter]
-    public String Id { get; set; }
+    public int Id { get; set; }
     private PostModel post;
 
     protected override async Task OnInitializedAsync()
     {
-        post = await _posts.GetPost(int.Parse(Id));
+        post = await _posts.GetPost(Id);
     }
 
     private async Task UpdatePost()
     {
         await _posts.UpdatePost(post);
-        NavMgr.NavigateTo("/posts");
+        await ModalInstance.CloseAsync(ModalResult.Ok("Success"));
     }
 }

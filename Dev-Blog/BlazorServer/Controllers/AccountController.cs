@@ -3,7 +3,7 @@ using BlazorServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using static BlazorServer.Pages.Register;
+using static BlazorServer.Pages.Modals.Register;
 
 namespace BlazorServer.Controllers
 {
