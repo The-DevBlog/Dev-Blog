@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using BlazorServer.Models;
 using BlazorServer.Interfaces;
 using BlazorServer.Services;
+using Blazored.Modal;
 
 namespace BlazorServer
 {
@@ -31,6 +32,7 @@ namespace BlazorServer
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddHttpContextAccessor();
+            services.AddBlazoredModal();
 
             services.AddDbContext<AppDbContext>(opt =>
             {

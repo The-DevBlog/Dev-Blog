@@ -1,4 +1,7 @@
-﻿@inject IHttpContextAccessor _http
+﻿@using Pages.Modals
+
+@inject IHttpContextAccessor _http
+@inject IModalService _modal
 
 <nav>
     <!-- LOGO -->
@@ -39,12 +42,12 @@
 
                 <!-- LOGIN / REGISTER -->
                 <NotAuthorized>
-                    <NavLink href="/login">
+                    <button @onclick="@(() => _modal.Show<SignIn>("Login"))">
                         Login
-                    </NavLink>
-                    <NavLink href="/register">
+                    </button>
+                    <button @onclick="@(() => _modal.Show<Register>("Sign Up"))">
                         Sign Up
-                    </NavLink>
+                    </button>
                 </NotAuthorized>
             </AuthorizeView>
         </ul>
