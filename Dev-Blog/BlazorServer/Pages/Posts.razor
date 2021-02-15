@@ -1,5 +1,7 @@
 ﻿@page "/posts"
 
+@using Pages.Modals
+
 @inject IHttpContextAccessor _http
 @inject IPosts _posts
 @inject IComments _comments
@@ -17,7 +19,7 @@ else
 {
     <!-- Add Post -->
     <AuthorizeView Policy="Admin">
-        <NavLink href="/addpost/"> Add Post </NavLink>
+        <button @onclick=ShowAddPost>Add Post</button>
     </AuthorizeView>
 
     <!-- Render Posts -->
@@ -129,13 +131,17 @@ else
 
     }
 
+    async Task ShowAddPost()
+    {
+        await _modal.Show<AddPost>("Add Post").Result;
+        posts = await _posts.GetPosts();
+    }
+
     async Task ShowEditPost(int postId)
     {
         var param = new ModalParameters();
-        param.Add(nameof(BlazorServer.Pages.Modals.EditPost.Id), postId);
-        var form = _modal.Show<BlazorServer.Pages.Modals.EditPost>("Edit Post", param);
-
-        await form.Result;
+        param.Add(nameof(EditPost.Id), postId);
+        await _modal.Show<EditPost>("Edit Post", param).Result;
         posts = await _posts.GetPosts();
     }
 
