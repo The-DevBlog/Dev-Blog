@@ -1,11 +1,10 @@
 ﻿@page "/addpost"
 
-@using BlazorServer.Models
-@using BlazorServer.Interfaces
 @using System.IO
 
 @inject IPosts _posts
 @inject IImages _imgs
+@inject IEmails _emails
 @inject NavigationManager NavMgr
 
 <h3>AddPost</h3>
@@ -39,6 +38,7 @@
     {
         string url = await _imgs.AddImgToDropBox(fs, name);
         await _posts.Create(newPost, url);
+        await _emails.NewPost(url);
 
         NavMgr.NavigateTo("/posts");
     }

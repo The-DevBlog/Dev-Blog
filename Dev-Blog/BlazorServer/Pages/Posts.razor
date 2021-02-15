@@ -1,11 +1,9 @@
 ﻿@page "/posts"
 
-@using System.Security.Claims
-
 @inject IHttpContextAccessor _http
-@inject Interfaces.IPosts _posts
-@inject Interfaces.IComments _comments
-@inject Interfaces.IVotes _votes
+@inject IPosts _posts
+@inject IComments _comments
+@inject IVotes _votes
 @inject AuthenticationStateProvider Auth
 @inject Data.AppDbContext DB
 @inject IJSRuntime JS
