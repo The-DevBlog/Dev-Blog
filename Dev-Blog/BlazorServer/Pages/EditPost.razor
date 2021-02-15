@@ -1,4 +1,5 @@
 ﻿@page "/editpost/{Id}"
+@attribute [Authorize(Roles = "Admin")]
 
 @inject IPosts _posts
 @inject NavigationManager NavMgr
