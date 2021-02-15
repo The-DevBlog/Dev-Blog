@@ -1,8 +1,8 @@
 ﻿@page "/posts"
 
-@using BlazorServer.Models
 @using System.Security.Claims
 
+@inject IHttpContextAccessor _http
 @inject Interfaces.IPosts _posts
 @inject Interfaces.IComments _comments
 @inject Interfaces.IVotes _votes
@@ -46,9 +46,9 @@ else
             <AuthorizeView>
                 <Authorized>
                     <div>
-                        <button @onclick="async () => await _votes.UpVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                        <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
                         <span>@post.UpVotes.Count</span>
-                        <button @onclick="async () => await _votes.DownVote(post.Id, user.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                        <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
                         <span>@post.DownVotes.Count</span>
                     </div>
                 </Authorized>
@@ -82,7 +82,7 @@ else
                             @*@if (!admin)
                                 {*@
                             <AuthorizeView Policy="Visitor">
-                                @if (comment.UserName == user.Identity.Name)
+                                @if (comment.UserName == _http.HttpContext.User.Identity.Name)
                                 {
                                     <button @onclick="async () => await _comments.Delete(comment.Id)">
                                         <TrashIcon />
@@ -120,18 +120,17 @@ else
 @code {
     CommentVM comment;
     List<PostModel> posts;
-    ClaimsPrincipal user;
 
     protected override async Task OnInitializedAsync()
     {
         comment = new CommentVM();
         posts = await _posts.GetPosts();
-        user = Auth.GetAuthenticationStateAsync().Result.User;
+
     }
 
     public async Task AddComment(int postId)
     {
-        comment.UserName = user.Identity.Name;
+        comment.UserName = _http.HttpContext.User.Identity.Name;
         comment.PostModelId = postId;
 
         await _comments.Create(comment);
