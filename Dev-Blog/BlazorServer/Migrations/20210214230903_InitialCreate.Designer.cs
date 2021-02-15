@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210214182649_addUpVoteAndDownVote")]
-    partial class addUpVoteAndDownVote
+    [Migration("20210214230903_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,25 +95,6 @@ namespace BlazorServer.Migrations
                     b.ToTable("UpVote");
                 });
 
-            modelBuilder.Entity("BlazorServer.Models.VoteModel", b =>
-                {
-                    b.Property<int>("PostModelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("DownVote")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("UpVote")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("PostModelId", "UserName");
-
-                    b.ToTable("Vote");
-                });
-
             modelBuilder.Entity("BlazorServer.Models.CommentModel", b =>
                 {
                     b.HasOne("BlazorServer.Models.PostModel", null)
@@ -138,17 +119,6 @@ namespace BlazorServer.Migrations
                 {
                     b.HasOne("BlazorServer.Models.PostModel", "Post")
                         .WithMany("UpVotes")
-                        .HasForeignKey("PostModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("BlazorServer.Models.VoteModel", b =>
-                {
-                    b.HasOne("BlazorServer.Models.PostModel", "Post")
-                        .WithMany()
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

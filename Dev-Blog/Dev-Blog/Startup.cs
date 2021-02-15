@@ -87,7 +87,7 @@ namespace Dev_Blog
             app.UseAuthorization();
 
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            RoleInitializer.SeedData(serviceProvider, userManager, Configuration);
+            //RoleInitializer.SeedData(serviceProvider, userManager, Configuration);
 
             app.UseEndpoints(endpoints =>
             {

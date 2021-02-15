@@ -22,7 +22,7 @@ namespace Dev_Blog.Models
         {
             using (var dbContext = new UserDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDbContext>>()))
             {
-                dbContext.Database.EnsureCreated();
+                //dbContext.Database.EnsureCreated();
                 AddRoles(dbContext);
                 SeedUsers(userManager, _config);
             }

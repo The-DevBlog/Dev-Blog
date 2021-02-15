@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BlazorServer.Models;
 using BlazorServer.Interfaces;
 using BlazorServer.Services;
@@ -20,7 +16,6 @@ namespace BlazorServer
 {
     public class Startup
     {
-        // TOTO: should this be private???
         private IConfiguration _config { get; }
 
         public Startup(IConfiguration configuration)
@@ -35,6 +30,7 @@ namespace BlazorServer
             services.AddMvc();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddHttpContextAccessor();
 
             services.AddDbContext<AppDbContext>(opt =>
             {
@@ -53,6 +49,7 @@ namespace BlazorServer
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
+                opt.AddPolicy("Visitor", policy => policy.RequireRole(RoleModel.Visitor));
             });
 
             //TODO: Understand differences between all of these

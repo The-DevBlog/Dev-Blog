@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlazorServer.Migrations
 {
-    public partial class inital : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,12 +14,10 @@ namespace BlazorServer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UpdateNum = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    UpdateNum = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
+                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ImgURL = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    UpVotes = table.Column<int>(type: "int", nullable: false),
-                    DownVotes = table.Column<int>(type: "int", nullable: false)
+                    ImgURL = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,12 +30,10 @@ namespace BlazorServer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    PostModelId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    PostModelId = table.Column<int>(type: "int", nullable: true)
+                    UserName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,24 +43,40 @@ namespace BlazorServer.Migrations
                         column: x => x.PostModelId,
                         principalTable: "Post",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vote",
+                name: "DownVote",
                 columns: table => new
                 {
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
-                    UpVote = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DownVote = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    PostModelId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vote", x => new { x.PostId, x.UserId });
+                    table.PrimaryKey("PK_DownVote", x => new { x.PostModelId, x.UserName });
                     table.ForeignKey(
-                        name: "FK_Vote_Post_PostId",
-                        column: x => x.PostId,
+                        name: "FK_DownVote_Post_PostModelId",
+                        column: x => x.PostModelId,
+                        principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UpVote",
+                columns: table => new
+                {
+                    PostModelId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UpVote", x => new { x.PostModelId, x.UserName });
+                    table.ForeignKey(
+                        name: "FK_UpVote_Post_PostModelId",
+                        column: x => x.PostModelId,
                         principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -82,7 +94,10 @@ namespace BlazorServer.Migrations
                 name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "Vote");
+                name: "DownVote");
+
+            migrationBuilder.DropTable(
+                name: "UpVote");
 
             migrationBuilder.DropTable(
                 name: "Post");

@@ -1,5 +1,4 @@
-﻿@inject AuthenticationStateProvider Auth
-@inject NavigationManager navMgr
+﻿@inject IHttpContextAccessor _http
 
 <nav>
     <!-- LOGO -->
@@ -24,23 +23,11 @@
                 About
             </NavLink>
 
-            @{
-                <!-- IF USER IS SIGNED IN -->
-                @*<AuthorizeView>
-                        <Authorized>
-                            <h4>Hello, @context.User.Identity.Name!</h4>
-                            <p>This content is only visible if user is authenticated.</p>
-                        </Authorized>
-                        <NotAuthorized>
-                            <p>Please signed in.</p>
-                        </NotAuthorized>
-                    </AuthorizeView>*@
-
-                if (authenticated)
-                {
+            <AuthorizeView>
+                <Authorized>
                     <!-- WELCOME USER -->
                     <NavLink>
-                        <a>Welcome @username</a>
+                        <a>Welcome @_http.HttpContext.User.Identity.Name</a>
                     </NavLink>
 
                     <!-- LOGOUT -->
@@ -49,43 +36,22 @@
                             <input type="submit" value="sign out" />
                         </form>
                     </NavLink>
-                }
+                </Authorized>
 
-                <!-- LOGIN / SIGN UP -->
-                else
-                {
+                <!-- LOGIN / REGISTER -->
+                <NotAuthorized>
                     <NavLink href="/login">
-                        LOGIN
+                        Login
                     </NavLink>
-                    @*<li>*@
-                    @*@{ await Html.RenderPartialAsync("../Account/_Login", Model.Input);}*@
-                    @*LOGIN
-                        </li>*@
-                    <li>
-                        @*@{ await Html.RenderPartialAsync("../Account/_Register", Model.Input);}*@
-                        SIGN UP
-                    </li>
-                }
-            }
+                    <NavLink href="/register">
+                        Sign Up
+                    </NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
         </ul>
     </div>
 </nav>
 
 @code {
-    private bool authenticated;
-    private string username;
-
-    protected override async Task OnInitializedAsync()
-    {
-        authenticated = GetAuthState().Result;
-    }
-
-    public async Task<bool> GetAuthState()
-    {
-        var authState = await Auth.GetAuthenticationStateAsync();
-        var user = authState.User;
-        username = user.Identity.Name;
-        return user.Identity.IsAuthenticated ? true : false;
-    }
 
 }

@@ -1,0 +1,38 @@
+﻿@page "/register"
+
+@using System.ComponentModel.DataAnnotations;
+
+<h3>Register</h3>
+<form method="post" action="/signup">
+    <input type="text" name="username" required />
+    <input type="password" name="password" />
+    <input type="password" name="confirmpassword" />
+    <input type="email" name="email" />
+    <input type="submit" value="Sign Up" />
+</form>
+
+@code {
+
+    public class RegisterVM
+    {
+        [Required]
+        [StringLength(25)]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(35)]
+        public string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("Password")]
+        [StringLength(35)]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [RegularExpression("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", ErrorMessage = "Please enter a correct email address")]
+        public string Email { get; set; }
+    }
+}

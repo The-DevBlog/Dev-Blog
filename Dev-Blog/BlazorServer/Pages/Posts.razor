@@ -8,6 +8,7 @@
 @inject Interfaces.IVotes _votes
 @inject AuthenticationStateProvider Auth
 @inject Data.AppDbContext DB
+@inject IJSRuntime JS
 
 @if (posts == null)
 {
@@ -16,12 +17,9 @@
 else
 {
     <!-- Add Post -->
-    @if (admin)
-    {
-        <AuthorizeView>
-            <NavLink href="/addpost/"> Add Post </NavLink>
-        </AuthorizeView>
-    }
+    <AuthorizeView Policy="Admin">
+        <NavLink href="/addpost/"> Add Post </NavLink>
+    </AuthorizeView>
 
     <!-- Render Posts -->
     @foreach (var post in posts)
@@ -32,16 +30,13 @@ else
                 <span>@post.Date.ToShortDateString()</span>
 
                 <!-- Delete / Edit Post -->
-                @if (admin)
-                {
-                    string editUrl = $"/editpost/{post.Id}/";
-                    <AuthorizeView>
-                        <NavLink href=@editUrl> <EditIcon /> </NavLink>
-                        <button @onclick="() => DeletePost(post.Id)">
-                            <TrashIcon />
-                        </button>
-                    </AuthorizeView>
-                }
+                @{string editUrl = $"/editpost/{post.Id}/"; }
+                <AuthorizeView Policy="Admin">
+                    <NavLink href=@editUrl> <EditIcon /> </NavLink>
+                    <button @onclick="() => DeletePost(post.Id)">
+                        <TrashIcon />
+                    </button>
+                </AuthorizeView>
             </div>
 
             <img src=@post.ImgURL />
@@ -79,25 +74,23 @@ else
                             <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
 
                             <!-- Delete / Edit Comment -->
-                            @if (admin)
-                            {
-                                <AuthorizeView>
+                            <AuthorizeView Policy="Admin">
+                                <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                    <TrashIcon />
+                                </button>
+                            </AuthorizeView>
+                            @*@if (!admin)
+                                {*@
+                            <AuthorizeView Policy="Visitor">
+                                @if (comment.UserName == user.Identity.Name)
+                                {
                                     <button @onclick="async () => await _comments.Delete(comment.Id)">
                                         <TrashIcon />
                                     </button>
-                                </AuthorizeView>
-                            }
-                            else
-                            {
-                                <AuthorizeView>
-                                    @if (comment.UserName == user.Identity.Name)
-                                    {
-                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                            <TrashIcon />
-                                        </button>
-                                    }
-                                </AuthorizeView>
-                            }
+                                }
+                            </AuthorizeView>
+                            @*}*@
+
                             <p>@comment.Content</p>
                         </div>
                     }
@@ -127,19 +120,13 @@ else
 @code {
     CommentVM comment;
     List<PostModel> posts;
-    bool admin;
     ClaimsPrincipal user;
 
     protected override async Task OnInitializedAsync()
     {
         comment = new CommentVM();
         posts = await _posts.GetPosts();
-
         user = Auth.GetAuthenticationStateAsync().Result.User;
-
-        // check if user is admin
-        if (user.Identity.IsAuthenticated)
-            admin = user.Claims.ToList()[6].Value == "Admin";
     }
 
     public async Task AddComment(int postId)
