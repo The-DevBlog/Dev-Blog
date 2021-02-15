@@ -63,7 +63,7 @@ namespace BlazorServer.Controllers
                     return Redirect("/");
             }
 
-            return Redirect("/signin/attempt");
+            return Redirect("/error");
         }
     }
 }
