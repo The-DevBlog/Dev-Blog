@@ -1,12 +1,14 @@
-﻿img {
+﻿/* entire post */
+div[post] {
+    margin-top: 50px;
+}
+
+/* post info */
+img {
     display: block;
     height: 522px;
     margin: auto;
     width: 928px;
-}
-
-div[post] {
-    margin-top: 50px;
 }
 
 section[postInfo] > span:nth-child(2) {
@@ -22,6 +24,7 @@ section[postInfo] {
     width: 80%;
 }
 
+/* comments */
 section[comments] {
     margin: auto;
     width: 85%;

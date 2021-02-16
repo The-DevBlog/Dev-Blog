@@ -2,27 +2,29 @@
 
 @inject BlazorServer.Data.AppDbContext db
 <!-- LATEST POST -->
-<p>@latestPost.UpdateNum</p>
-<p>@latestPost.Date.ToShortDateString()</p>
-<img src=@latestPost.ImgURL />
-<p>@latestPost.Description</p>
+<section post>
+    <span>@latestPost.UpdateNum</span>
+    <span>@latestPost.Date.ToShortDateString()</span>
+    <img src=@latestPost.ImgURL />
+    <p>@latestPost.Description</p>
+</section>
 
 <!-- YOUTUBE LINK -->
-<div>
+<section youtube>
     @*<iframe src="#"></iframe>*@
     <h2>
         YouTube Channel
         <br /><br />
         Coming Soon
     </h2>
-</div>
+</section>
 
 <!-- SUGGESTION BOX -->
-<div>
+<section suggestion>
     <a href="mailto:devmaster@thedevblog.net?subject=Suggestion">
         <h4>Have a suggestion? Send an email!</h4>
     </a>
-</div>
+</section>
 
 @code {
     PostModel latestPost;
