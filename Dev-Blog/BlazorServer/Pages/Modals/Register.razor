@@ -1,22 +1,22 @@
 ﻿@using System.ComponentModel.DataAnnotations;
 
-@inherits NavMenu
+@inject IModalService _modal
 
 <EditForm Model=registerVM>
     <form method="post" action="/signup">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <InputText form @bind-Value=registerVM.UserName placeholder="username" />
-        <InputText form @bind-Value=registerVM.Password type="password" placeholder="password" />
-        <InputText form @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
-        <InputText form @bind-Value=registerVM.Email type="email" placeholder="email" />
+        <InputText modal @bind-Value=registerVM.UserName placeholder="username" />
+        <InputText modal @bind-Value=registerVM.Password type="password" placeholder="password" />
+        <InputText modal @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
+        <InputText modal @bind-Value=registerVM.Email type="email" placeholder="email" />
 
         <input type="text" name="username" value=@registerVM.UserName hidden />
         <input type="password" name="password" value=@registerVM.Password hidden />
         <input type="password" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
         <input type="email" name="email" value=@registerVM.Email hidden />
 
-        <input type="submit" value="Sign Up" />
+        <input type="submit" value="Submit" />
     </form>
 </EditForm>
 

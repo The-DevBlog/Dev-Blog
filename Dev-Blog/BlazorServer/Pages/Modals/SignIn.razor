@@ -4,13 +4,13 @@
     <form method="post" action="/signin">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <InputText form @bind-Value=signIn.UserName placeholder="username" />
-        <InputText form @bind-Value=signIn.Password type="password" placeholder="password" />
+        <InputText mdoal @bind-Value=signIn.UserName placeholder="username" />
+        <InputText modal @bind-Value=signIn.Password type="password" placeholder="password" />
 
         <input type="text" name="username" value=@signIn.UserName hidden />
         <input type="password" name="password" value=@signIn.Password hidden />
 
-        <input type="submit" value="Login" />
+        <input type="submit" value="Submit" />
     </form>
 </EditForm>
 
