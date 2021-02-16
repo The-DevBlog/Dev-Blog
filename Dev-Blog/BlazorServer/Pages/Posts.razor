@@ -11,7 +11,7 @@
 @inject IModalService _modal
 @inject IJSRuntime JS
 
-@if (posts == null)
+@if (AllPosts == null)
 {
     <p>Loading...</p>
 }
@@ -22,8 +22,23 @@ else
         <button @onclick=ShowAddPost>Add Post</button>
     </AuthorizeView>
 
+    <!-- Page left / right -->
+    @*<Paginate />*@
+
+    <div>
+        <button @onclick="@(e => NavTo("prev"))">PREV</button>
+        @for (int i = 0; i < TotalPgs; i++)
+        {
+            var pgNum = i;
+            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+                @(i + 1)
+            </button>
+        }
+        <button @onclick="@(e => NavTo("next"))">NEXT</button>
+    </div>
+
     <!-- Render Posts -->
-    @foreach (var post in posts)
+    @foreach (var post in PostsPage)
     {
         <div style="margin-top: 20px;">
             <div>
@@ -103,7 +118,7 @@ else
             <!-- Add Comment -->
             <div>
                 <AuthorizeView>
-                    <Authorized Context="Auth">
+                    <Authorized Context=" Auth">
                         <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
                             <InputTextArea @bind-Value=comment.Content DisplayName="Add a comment..." />
                             <button type="submit">Comment</button>
@@ -122,19 +137,29 @@ else
 
 @code {
     CommentVM comment;
-    List<PostModel> posts;
+
+    public List<PostModel> PostsPage { get; set; }
+
+    public List<PostModel> AllPosts { get; set; }
+
+    public int PgSize { get; set; }
+    public int TotalPgs { get; set; }
+    public int CurrentPg { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         comment = new CommentVM();
-        posts = await _posts.GetPosts();
+        AllPosts = await _posts.GetPosts();
 
+        PgSize = 5;
+        PostsPage = AllPosts.Take(PgSize).ToList();
+        TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
     }
 
     async Task ShowAddPost()
     {
         await _modal.Show<AddPost>("Add Post").Result;
-        posts = await _posts.GetPosts();
+        await OnInitializedAsync();
     }
 
     async Task ShowEditPost(int postId)
@@ -142,7 +167,7 @@ else
         var param = new ModalParameters();
         param.Add(nameof(EditPost.Id), postId);
         await _modal.Show<EditPost>("Edit Post", param).Result;
-        posts = await _posts.GetPosts();
+        await OnInitializedAsync();
     }
 
     public async Task AddComment(int postId)
@@ -157,7 +182,24 @@ else
     public async Task DeletePost(int postId)
     {
         await _posts.Delete(postId);
-        posts = await _posts.GetPosts();
+        await OnInitializedAsync();
+    }
+
+    public void UpdateList(int pgNum)
+    {
+        PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
+        CurrentPg = pgNum;
+    }
+
+    public async Task NavTo(string val)
+    {
+        if (val == "prev" && CurrentPg != 0)
+            CurrentPg--;
+
+        if (val == "next" && CurrentPg != TotalPgs - 1)
+            CurrentPg++;
+
+        UpdateList(CurrentPg);
     }
 
     public class CommentVM

@@ -1,5 +1,9 @@
 ﻿@using System.ComponentModel.DataAnnotations;
 
+@inherits NavMenu
+
+<link href="~/css/Modals.css" rel="stylesheet" />
+
 <EditForm Model=registerVM>
     <form method="post" action="/signup">
         <DataAnnotationsValidator />

@@ -1,0 +1,22 @@
+﻿@*@inject IPosts _posts
+    @inherits Posts
+
+    <div>
+        <button @onchange="OnChangeEvent" @onclick="@(e => NavTo("prev"))">Prev</button>
+        @for (int i = 0; i < TotalPgs; i++)
+        {
+            var pgNum = i;
+            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+                @(i + 1)
+            </button>
+        }
+        <button @onclick="@(e => NavTo("next"))">Next</button>
+    </div>
+
+    <div>
+    </div>
+
+    @code {
+        [Parameter]
+        public EventCallback<int> OnChangeEvent { get; set; }
+    }*@

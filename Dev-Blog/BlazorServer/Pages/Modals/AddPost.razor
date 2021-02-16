@@ -7,8 +7,6 @@
 @inject IEmails _emails
 @inject NavigationManager NavMgr
 
-<h3>AddPost</h3>
-
 <EditForm Model=@newPost OnValidSubmit=CreatePost>
     <InputText @bind-Value=newPost.UpdateNum />
     <InputTextArea @bind-Value=newPost.Description />
