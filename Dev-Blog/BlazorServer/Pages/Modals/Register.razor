@@ -2,16 +2,14 @@
 
 @inherits NavMenu
 
-<link href="~/css/Modals.css" rel="stylesheet" />
-
 <EditForm Model=registerVM>
     <form method="post" action="/signup">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <InputText @bind-Value=registerVM.UserName />
-        <InputText @bind-Value=registerVM.Password type="password" />
-        <InputText @bind-Value=registerVM.ConfirmPassword type="password" />
-        <InputText @bind-Value=registerVM.Email type="email" />
+        <InputText form @bind-Value=registerVM.UserName placeholder="username" />
+        <InputText form @bind-Value=registerVM.Password type="password" placeholder="password" />
+        <InputText form @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
+        <InputText form @bind-Value=registerVM.Email type="email" placeholder="email" />
 
         <input type="text" name="username" value=@registerVM.UserName hidden />
         <input type="password" name="password" value=@registerVM.Password hidden />

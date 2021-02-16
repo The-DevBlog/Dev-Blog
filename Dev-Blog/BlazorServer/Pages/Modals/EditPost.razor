@@ -4,8 +4,6 @@
 @inject NavigationManager NavMgr
 @inject IModalService _modal
 
-<h3>EditPost</h3>
-
 @if (post == null)
 {
     <p>Loading...</p>
@@ -16,8 +14,8 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <InputTextArea @bind-Value=post.Description />
-        <InputText @bind-Value=post.UpdateNum />
+        <InputTextArea @bind-Value=post.Description placeholder="description" />
+        <InputText form @bind-Value=post.UpdateNum placeholder="update number" />
         <button type="submit">Update</button>
     </EditForm>
 }

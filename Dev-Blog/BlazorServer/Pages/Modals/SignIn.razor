@@ -4,8 +4,8 @@
     <form method="post" action="/signin">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <InputText @bind-Value=signIn.UserName />
-        <InputText @bind-Value=signIn.Password type="password" />
+        <InputText form @bind-Value=signIn.UserName placeholder="username" />
+        <InputText form @bind-Value=signIn.Password type="password" placeholder="password" />
 
         <input type="text" name="username" value=@signIn.UserName hidden />
         <input type="password" name="password" value=@signIn.Password hidden />

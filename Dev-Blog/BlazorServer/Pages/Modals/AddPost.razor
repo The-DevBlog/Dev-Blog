@@ -8,10 +8,10 @@
 @inject NavigationManager NavMgr
 
 <EditForm Model=@newPost OnValidSubmit=CreatePost>
-    <InputText @bind-Value=newPost.UpdateNum />
-    <InputTextArea @bind-Value=newPost.Description />
-    <InputText @bind-Value=name />
-    <InputFile OnChange=HandleFileInput />
+    <InputText form @bind-Value=newPost.UpdateNum placeholder="update number" />
+    <InputTextArea @bind-Value=newPost.Description placeholder="description" />
+    <InputText form @bind-Value=name placeholder="file name" />
+    <InputFile form OnChange=HandleFileInput placeholder="file" />
     <button type="submit">Add Post</button>
 </EditForm>
 
