@@ -1,3 +1,13 @@
-﻿input[modal] {
+﻿input[modal],
+textarea[modal],
+button[modal] {
+    font-family: 'Fira Code', monospace;
+}
+
+h3 {
+    font-family: 'Fira Code', monospace;
+}
+
+input[modal] {
     display: block;
 }

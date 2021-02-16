@@ -25,7 +25,7 @@ section[postInfo] {
 }
 
 /* comments */
-section[comments] {
+div[comments] {
     margin: auto;
     width: 85%;
 }
@@ -35,15 +35,21 @@ section[comments] {
     width: 100%;
 }
 
-div[comment] {
+section[comment] {
     border: 1px solid grey;
     margin: 5px 0px;
 }
 
-    div[comment] span:nth-child(2) {
+    section[comment] span:nth-child(2) {
         float: right;
     }
 
-    div[comment] p {
-        margin-top: 7.5px;
+    section[comment] p {
+        padding: 7.5px;
     }
+
+section[addComment] button {
+    border: 1px solid grey;
+    padding: 5px;
+    margin-top: 5px;
+}

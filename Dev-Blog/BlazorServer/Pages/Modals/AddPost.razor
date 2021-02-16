@@ -9,10 +9,10 @@
 
 <EditForm Model=@newPost OnValidSubmit=CreatePost>
     <InputText modal @bind-Value=newPost.UpdateNum placeholder="update number" />
-    <InputTextArea @bind-Value=newPost.Description placeholder="description" />
+    <InputTextArea modal @bind-Value=newPost.Description placeholder="description" />
     <InputText modal @bind-Value=name placeholder="file name" />
     <InputFile modal OnChange=HandleFileInput placeholder="file" />
-    <button type="submit">Add Post</button>
+    <button modal type="submit">Add Post</button>
 </EditForm>
 
 @code {

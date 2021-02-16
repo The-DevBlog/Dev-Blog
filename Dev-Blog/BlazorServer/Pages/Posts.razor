@@ -61,7 +61,7 @@ else
             </section>
 
             <!-- Voting System -->
-            <section comments>
+            <div comments>
                 <div>
 
                     <AuthorizeView>
@@ -89,7 +89,7 @@ else
                 {
                     foreach (var comment in post.Comments)
                     {
-                        <div comment>
+                        <section comment>
                             <span>@comment.UserName</span>
                             <span>
                                 @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
@@ -110,25 +110,27 @@ else
                                 </AuthorizeView>
                             </span>
                             <p>@comment.Content</p>
-                        </div>
+                        </section>
                     }
                 }
 
                 <!-- Add Comment -->
-                <AuthorizeView>
-                    <Authorized Context=" Auth">
-                        <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                            <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
-                            <button type="submit">Comment</button>
-                        </EditForm>
-                    </Authorized>
+                <section addComment>
+                    <AuthorizeView>
+                        <Authorized Context=" Auth">
+                            <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                                <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
+                                <button type="submit">Comment</button>
+                            </EditForm>
+                        </Authorized>
 
-                    <NotAuthorized>
-                        <textarea placeholder="Login in to leave a comment..">
+                        <NotAuthorized>
+                            <textarea placeholder="Login in to leave a comment..">
                         </textarea>
-                    </NotAuthorized>
-                </AuthorizeView>
-            </section>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </section>
+            </div>
         </div>
     }
 }

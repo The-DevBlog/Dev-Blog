@@ -14,9 +14,9 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <InputTextArea @bind-Value=post.Description placeholder="description" />
+        <InputTextArea modal @bind-Value=post.Description placeholder="description" />
         <InputText modal @bind-Value=post.UpdateNum placeholder="update number" />
-        <button type="submit">Update</button>
+        <button modal type="submit">Update</button>
     </EditForm>
 }
 

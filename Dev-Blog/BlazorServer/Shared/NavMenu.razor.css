@@ -1,3 +1,22 @@
-﻿::deep input {
-    display: block;
+﻿* {
+    font-family: 'Press Start 2P', cursive;
+}
+
+nav {
+    border: 2px solid pink;
+}
+
+div {
+    border: 2px solid green;
+    display: inline;
+    /*    width: 100%;*/
+}
+
+::deep a:first-child {
+    border: 2px solid red;
+    /*    display: block;*/
+}
+
+section {
+    display: inline;
 }

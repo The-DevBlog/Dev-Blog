@@ -7,24 +7,14 @@
     <!-- LOGO -->
     <img src="/Imgs/Logo.png" height="115" width="100" />
 
-    <!-- HOME LINK -->
-    <NavLink href="/">
-        The Dev Blog
-    </NavLink>
-
     <div>
-        <ul>
-            <!-- PAGE LINKS -->
-            <NavLink href="/">
-                Home
-            </NavLink>
-            <NavLink href="/Posts">
-                Status
-            </NavLink>
-            <NavLink href="/About">
-                About
-            </NavLink>
+        <!-- PAGE LINKS -->
+        <NavLink href="/"> The Dev Blog </NavLink>
+        <NavLink href="/"> Home </NavLink>
+        <NavLink href="/Posts"> Status </NavLink>
+        <NavLink href="/About"> About </NavLink>
 
+        <section>
             <AuthorizeView>
                 <Authorized>
                     <!-- WELCOME USER -->
@@ -34,7 +24,7 @@
 
                     <!-- LOGOUT -->
                     <NavLink>
-                        <form style="display : inline;" method="post" action="/signout">
+                        <form method="post" action="/signout">
                             <input type="submit" value="sign out" />
                         </form>
                     </NavLink>
@@ -50,6 +40,6 @@
                     </button>
                 </NotAuthorized>
             </AuthorizeView>
-        </ul>
+        </section>
     </div>
 </nav>
