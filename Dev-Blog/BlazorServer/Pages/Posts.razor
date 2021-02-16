@@ -40,8 +40,8 @@ else
     <!-- Render Posts -->
     @foreach (var post in PostsPage)
     {
-        <div style="margin-top: 20px;">
-            <div>
+        <div post>
+            <section postInfo>
                 <span>@post.UpdateNum</span>
                 <span>@post.Date.ToShortDateString()</span>
 
@@ -55,72 +55,70 @@ else
                         <TrashIcon />
                     </button>
                 </AuthorizeView>
-            </div>
 
-            <img src=@post.ImgURL />
-            <p>@post.Description</p>
+                <img src=@post.ImgURL />
+                <p>@post.Description</p>
+            </section>
 
             <!-- Voting System -->
-            <AuthorizeView>
-                <Authorized>
-                    <div>
-                        <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
-                        <span>@post.UpVotes.Count</span>
-                        <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
-                        <span>@post.DownVotes.Count</span>
-                    </div>
-                </Authorized>
-                <NotAuthorized>
-                    <div>
-                        <button class="glyphicon glyphicon-thumbs-up"></button>
-                        <span>@post.UpVotes.Count</span>
-                        <button class="glyphicon glyphicon-thumbs-down"></button>
-                        <span>@post.DownVotes.Count</span>
-                        <span>Login in to Like / Dislike</span>
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>
+            <section comments>
+                <div>
 
-            <!-- Render Comments -->
-            <div>
+                    <AuthorizeView>
+                        <Authorized>
+                            <div>
+                                <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                                <span>@post.UpVotes.Count</span>
+                                <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                                <span>@post.DownVotes.Count</span>
+                            </div>
+                        </Authorized>
+                        <NotAuthorized>
+                            <div>
+                                <button class="glyphicon glyphicon-thumbs-up"></button>
+                                <span>@post.UpVotes.Count</span>
+                                <button class="glyphicon glyphicon-thumbs-down"></button>
+                                <span>@post.DownVotes.Count</span>
+                                <span>Login in to Like / Dislike</span>
+                            </div>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </div>
+                <!-- Render Comments -->
                 @if (post.Comments != null)
                 {
                     foreach (var comment in post.Comments)
                     {
-                        <div>
+                        <div comment>
                             <span>@comment.UserName</span>
-                            <span> @comment.Date.ToString("MM/dd/yyyy hh:mm tt") </span>
+                            <span>
+                                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
 
-                            <!-- Delete / Edit Comment -->
-                            <AuthorizeView Policy="Admin">
-                                <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                    <TrashIcon />
-                                </button>
-                            </AuthorizeView>
-                            @*@if (!admin)
-                                {*@
-                            <AuthorizeView Policy="Visitor">
-                                @if (comment.UserName == _http.HttpContext.User.Identity.Name)
-                                {
+                                <!-- Delete / Edit Comment -->
+                                <AuthorizeView Policy="Admin">
                                     <button @onclick="async () => await _comments.Delete(comment.Id)">
                                         <TrashIcon />
                                     </button>
-                                }
-                            </AuthorizeView>
-                            @*}*@
-
+                                </AuthorizeView>
+                                <AuthorizeView Policy="Visitor">
+                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                                    {
+                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                            <TrashIcon />
+                                        </button>
+                                    }
+                                </AuthorizeView>
+                            </span>
                             <p>@comment.Content</p>
                         </div>
                     }
                 }
-            </div>
 
-            <!-- Add Comment -->
-            <div>
+                <!-- Add Comment -->
                 <AuthorizeView>
                     <Authorized Context=" Auth">
                         <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                            <InputTextArea @bind-Value=comment.Content DisplayName="Add a comment..." />
+                            <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
                             <button type="submit">Comment</button>
                         </EditForm>
                     </Authorized>
@@ -130,7 +128,7 @@ else
                         </textarea>
                     </NotAuthorized>
                 </AuthorizeView>
-            </div>
+            </section>
         </div>
     }
 }

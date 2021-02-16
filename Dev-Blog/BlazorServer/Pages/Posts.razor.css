@@ -1,1 +1,46 @@
-﻿
+﻿img {
+    display: block;
+    height: 522px;
+    margin: auto;
+    width: 928px;
+}
+
+div[post] {
+    margin-top: 50px;
+}
+
+section[postInfo] > span:nth-child(2) {
+    float: right;
+}
+
+section[postInfo] p {
+    text-align: center;
+}
+
+section[postInfo] {
+    margin: auto;
+    width: 80%;
+}
+
+section[comments] {
+    margin: auto;
+    width: 85%;
+}
+
+::deep textarea {
+    display: block;
+    width: 100%;
+}
+
+div[comment] {
+    border: 1px solid grey;
+    margin: 5px 0px;
+}
+
+    div[comment] span:nth-child(2) {
+        float: right;
+    }
+
+    div[comment] p {
+        margin-top: 7.5px;
+    }
