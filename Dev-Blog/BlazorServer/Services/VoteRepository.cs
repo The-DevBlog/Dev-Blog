@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Services
 {
-    public class VoteService : IVotes
+    public class VoteRepository : IVoteRepository
     {
         private AppDbContext _db;
 
-        public VoteService(AppDbContext context)
+        public VoteRepository(AppDbContext context)
         {
             _db = context;
         }
@@ -23,7 +23,7 @@ namespace BlazorServer.Services
         /// </summary>
         /// <param name="vote">The vote to add</param>
         /// <returns>Successful completion of task</returns>
-        public async Task UpVote(int postId, string username)
+        public async Task<UpVoteModel> UpVote(int postId, string username)
         {
             var downVote = await _db.DownVote.Where(x => x.PostModelId == postId &&
                           x.UserName == username)
@@ -34,12 +34,15 @@ namespace BlazorServer.Services
                            .FirstOrDefaultAsync();
 
             if (downVote != null)
-                _db.Entry(downVote).State = EntityState.Deleted;
+            {
+                _db.Remove(downVote);
+                return null;
+            }
             else if (upVote != null)
             {
-                _db.Entry(upVote).State = EntityState.Deleted;
+                _db.Remove(upVote);
                 await _db.SaveChangesAsync();
-                return;
+                return null;
             }
 
             var newVote = new UpVoteModel()
@@ -48,8 +51,9 @@ namespace BlazorServer.Services
                 UserName = username
             };
 
-            _db.Entry(newVote).State = EntityState.Added;
+            _db.Add(newVote);
             await _db.SaveChangesAsync();
+            return newVote;
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace BlazorServer.Services
         /// </summary>
         /// <param name="vote">The vote to add</param>
         /// <returns>Successful completion of task</returns>
-        public async Task DownVote(int postId, string username)
+        public async Task<DownVoteModel> DownVote(int postId, string username)
         {
             var downVote = await _db.DownVote.Where(x => x.PostModelId == postId &&
                           x.UserName == username)
@@ -68,12 +72,15 @@ namespace BlazorServer.Services
                            .FirstOrDefaultAsync();
 
             if (upVote != null)
-                _db.Entry(upVote).State = EntityState.Deleted;
+            {
+                _db.Remove(upVote);
+                return null;
+            }
             else if (downVote != null)
             {
-                _db.Entry(downVote).State = EntityState.Deleted;
+                _db.Remove(downVote);
                 await _db.SaveChangesAsync();
-                return;
+                return null;
             }
             var newVote = new DownVoteModel()
             {
@@ -81,8 +88,27 @@ namespace BlazorServer.Services
                 UserName = username
             };
 
-            _db.Entry(newVote).State = EntityState.Added;
+            _db.Add(newVote);
             await _db.SaveChangesAsync();
+            return newVote;
+        }
+
+        public async Task<UpVoteModel> GetUpVote(int postId, string username)
+        {
+            var vote = await _db.UpVote.Where(v => v.PostModelId == postId &&
+                                                v.UserName == username)
+                                         .FirstOrDefaultAsync();
+
+            return vote;
+        }
+
+        public async Task<DownVoteModel> GetDownVote(int postId, string username)
+        {
+            var vote = await _db.DownVote.Where(v => v.PostModelId == postId &&
+                                                v.UserName == username)
+                                         .FirstOrDefaultAsync();
+
+            return vote;
         }
     }
 }

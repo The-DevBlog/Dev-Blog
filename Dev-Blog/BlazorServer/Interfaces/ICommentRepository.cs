@@ -5,7 +5,7 @@ using static BlazorServer.Pages.Posts;
 
 namespace BlazorServer.Interfaces
 {
-    public interface IComments
+    public interface ICommentRepository
     {
         Task<CommentModel> Create(CommentVM comment);
 

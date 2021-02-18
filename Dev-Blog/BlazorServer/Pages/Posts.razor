@@ -3,24 +3,24 @@
 @using Pages.Modals
 
 @inject IHttpContextAccessor _http
-@inject IPosts _posts
-@inject IComments _comments
-@inject IVotes _votes
+@inject IPostRepository _posts
+@inject ICommentRepository _comments
+@inject IVoteRepository _votes
 @inject AuthenticationStateProvider Auth
-@inject Data.AppDbContext DB
 @inject IModalService _modal
-@inject IJSRuntime JS
+@inject AppState appState
 
-@if (AllPosts == null)
+
+    <!-- Add Post -->
+    <AuthorizeView Policy="Admin">
+        <button @onclick=ShowAddPost>Add Post</button>
+    </AuthorizeView>
+@if (appState.Posts == null)
 {
     <p>Loading...</p>
 }
 else
 {
-    <!-- Add Post -->
-    <AuthorizeView Policy="Admin">
-        <button @onclick=ShowAddPost>Add Post</button>
-    </AuthorizeView>
 
     <!-- Page left / right -->
     @*<Paginate />*@
@@ -38,7 +38,7 @@ else
     </div>
 
     <!-- Render Posts -->
-    @foreach (var post in PostsPage)
+    @foreach (var post in appState.Posts)
     {
         <div post>
             <section postInfo>
@@ -67,17 +67,17 @@ else
                     <AuthorizeView>
                         <Authorized>
                             <div>
-                                <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                                <button @onclick="async () => await appState.AddUpVote(post.Id, _http.HttpContext.User.Identity.Name)">👍</button>
                                 <span>@post.UpVotes.Count</span>
-                                <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                                <button @onclick="async () => await appState.AddDownVote(post.Id, _http.HttpContext.User.Identity.Name)">🤢</button>
                                 <span>@post.DownVotes.Count</span>
                             </div>
                         </Authorized>
                         <NotAuthorized>
                             <div>
-                                <button class="glyphicon glyphicon-thumbs-up"></button>
+                                <button>👍</button>
                                 <span>@post.UpVotes.Count</span>
-                                <button class="glyphicon glyphicon-thumbs-down"></button>
+                                <button>🤢</button>
                                 <span>@post.DownVotes.Count</span>
                                 <span>Login in to Like / Dislike</span>
                             </div>
@@ -136,11 +136,11 @@ else
 }
 
 @code {
-    CommentVM comment;
+    CommentVM comment = new CommentVM();
 
-    public List<PostModel> PostsPage { get; set; }
+    //public List<PostModel> PostsPage { get; set; }
 
-    public List<PostModel> AllPosts { get; set; }
+    //public List<PostModel> AllPosts { get; set; }
 
     public int PgSize { get; set; }
     public int TotalPgs { get; set; }
@@ -148,18 +148,28 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        comment = new CommentVM();
-        AllPosts = await _posts.GetPosts();
+        //AllPosts = await _posts.GetPosts();
 
         PgSize = 5;
-        PostsPage = AllPosts.Take(PgSize).ToList();
-        TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
+        //PostsPage = AllPosts.Take(PgSize).ToList();
+        //TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
+
+
+        //if (appState.Posts == null)
+        //  appState.Posts = await _posts.GetPosts();
+
+        //await appState.Refresh();
+
+        appState.OnDownVoteChange += () => InvokeAsync(StateHasChanged);
+        appState.OnUpVoteChange += () => InvokeAsync(StateHasChanged);
+        appState.OnPostChange += () => InvokeAsync(StateHasChanged);
+        appState.OnCommentChange += () => InvokeAsync(StateHasChanged);
     }
 
     async Task ShowAddPost()
     {
         await _modal.Show<AddPost>("Add Post").Result;
-        await OnInitializedAsync();
+        //AllPosts = await _posts.GetPosts();
     }
 
     async Task ShowEditPost(int postId)
@@ -174,8 +184,8 @@ else
     {
         comment.UserName = _http.HttpContext.User.Identity.Name;
         comment.PostModelId = postId;
-
-        await _comments.Create(comment);
+        await appState.AddComment(comment);
+        //await _comments.Create(comment);
         comment = new CommentVM();
     }
 
@@ -187,7 +197,7 @@ else
 
     public void UpdateList(int pgNum)
     {
-        PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
+        //PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
         CurrentPg = pgNum;
     }
 

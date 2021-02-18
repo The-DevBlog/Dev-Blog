@@ -9,11 +9,11 @@ using static BlazorServer.Pages.Posts;
 
 namespace BlazorServer.Services
 {
-    public class CommentService : IComments
+    public class CommentRepository : ICommentRepository
     {
         private readonly AppDbContext _db;
 
-        public CommentService(AppDbContext db)
+        public CommentRepository(AppDbContext db)
         {
             _db = db;
         }
@@ -32,7 +32,7 @@ namespace BlazorServer.Services
                 Content = comment.Content
             };
 
-            _db.Entry(newComment).State = EntityState.Added;
+            _db.Add(newComment);
             await _db.SaveChangesAsync();
 
             return newComment;
@@ -61,7 +61,7 @@ namespace BlazorServer.Services
         public async Task Delete(int commentId)
         {
             var comment = await GetComment(commentId);
-            _db.Entry(comment).State = EntityState.Deleted;
+            _db.Remove(comment);
             await _db.SaveChangesAsync();
         }
     }

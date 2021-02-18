@@ -2,18 +2,21 @@
 
 @using System.IO
 
-@inject IPosts _posts
-@inject IImages _imgs
-@inject IEmails _emails
+@inject IPostRepository _posts
+@inject IImageRepository _imgs
+@inject IEmailRepository _emails
 @inject NavigationManager NavMgr
+@inject State.AppState appState
 
+<section modal>
 <EditForm Model=@newPost OnValidSubmit=CreatePost>
-    <InputText modal @bind-Value=newPost.UpdateNum placeholder="update number" />
-    <InputTextArea modal @bind-Value=newPost.Description placeholder="description" />
-    <InputText modal @bind-Value=name placeholder="file name" />
-    <InputFile modal OnChange=HandleFileInput placeholder="file" />
+    <InputText @bind-Value=newPost.UpdateNum placeholder="update number" />
+    <InputTextArea @bind-Value=newPost.Description placeholder="description" />
+    <InputText @bind-Value=name placeholder="file name" />
+    <InputFile OnChange=HandleFileInput placeholder="file" />
     <button modal type="submit">Add Post</button>
 </EditForm>
+</section>
 
 @code {
     PostModel newPost;
@@ -35,7 +38,8 @@
     private async Task CreatePost()
     {
         string url = await _imgs.AddImgToDropBox(fs, name);
-        await _posts.Create(newPost, url);
+        await appState.AddPost(newPost, url);
+        //await _posts.Create(newPost, url);
         await _emails.NewPost(url);
 
         NavMgr.NavigateTo("/posts");

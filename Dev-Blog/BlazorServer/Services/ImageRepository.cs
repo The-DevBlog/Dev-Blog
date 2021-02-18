@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Services
 {
-    public class ImageService : IImages
+    public class ImageRepository : IImageRepository
     {
         private IConfiguration _config;
 
-        public ImageService(IConfiguration config)
+        public ImageRepository(IConfiguration config)
         {
             _config = config;
         }

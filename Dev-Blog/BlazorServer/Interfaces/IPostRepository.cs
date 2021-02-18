@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Interfaces
 {
-    internal interface IPosts
+    public interface IPostRepository
     {
         //TODO: Summary comments
         Task<PostModel> Create(PostModel post, string url);

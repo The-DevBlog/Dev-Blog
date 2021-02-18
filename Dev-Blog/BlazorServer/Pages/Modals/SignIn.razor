@@ -1,18 +1,20 @@
 ﻿@using System.ComponentModel.DataAnnotations;
 
+<section modal>
 <EditForm Model=signIn>
     <form method="post" action="/signin">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <InputText modal @bind-Value=signIn.UserName placeholder="username" />
-        <InputText modal @bind-Value=signIn.Password type="password" placeholder="password" />
+        <InputText @bind-Value=signIn.UserName placeholder="username" />
+        <InputText @bind-Value=signIn.Password type="password" placeholder="password" />
 
-        <input type="text" name="username" value=@signIn.UserName hidden />
-        <input type="password" name="password" value=@signIn.Password hidden />
+        <input type="hidden" name="username" value=@signIn.UserName hidden />
+        <input type="hidden" name="password" value=@signIn.Password hidden />
 
         <input modal type="submit" value="Submit" />
     </form>
 </EditForm>
+</section>
 
 @code {
     private SignInModel signIn;

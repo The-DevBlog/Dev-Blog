@@ -1,6 +1,6 @@
 ﻿@attribute [Authorize(Roles = "Admin")]
 
-@inject IPosts _posts
+@inject IPostRepository _posts
 @inject NavigationManager NavMgr
 @inject IModalService _modal
 
@@ -10,14 +10,16 @@
 }
 else
 {
+    <section modal>
     <EditForm Model=@post OnValidSubmit=@UpdatePost>
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <InputTextArea modal @bind-Value=post.Description placeholder="description" />
-        <InputText modal @bind-Value=post.UpdateNum placeholder="update number" />
+        <InputTextArea @bind-Value=post.Description placeholder="description" />
+        <InputText @bind-Value=post.UpdateNum placeholder="update number" />
         <button modal type="submit">Update</button>
     </EditForm>
+    </section>
 }
 
 @code {

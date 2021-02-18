@@ -12,6 +12,7 @@ using BlazorServer.Models;
 using BlazorServer.Interfaces;
 using BlazorServer.Services;
 using Blazored.Modal;
+using BlazorServer.State;
 
 namespace BlazorServer
 {
@@ -55,11 +56,12 @@ namespace BlazorServer
             });
 
             //TODO: Understand differences between all of these
-            services.AddTransient<IEmails, EmailService>();
-            services.AddTransient<IVotes, VoteService>();
-            services.AddTransient<IComments, CommentService>();
-            services.AddTransient<IImages, ImageService>();
-            services.AddTransient<IPosts, PostService>();
+            //services.AddScoped<>
+            services.AddTransient<IEmailRepository, EmailRepository>();
+            services.AddTransient<IVoteRepository, VoteRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddTransient<IPostRepository, PostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

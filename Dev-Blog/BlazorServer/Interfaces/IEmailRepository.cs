@@ -2,7 +2,7 @@
 
 namespace BlazorServer.Interfaces
 {
-    public interface IEmails
+    public interface IEmailRepository
     {
         Task Welcome(string email);
 

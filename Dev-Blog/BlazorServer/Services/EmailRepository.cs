@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Services
 {
-    public class EmailService : IEmails
+    public class EmailRepository : IEmailRepository
     {
         private readonly IConfiguration _config;
         private readonly UserManager<UserModel> userMgr;
 
-        public EmailService(IConfiguration config, UserManager<UserModel> um)
+        public EmailRepository(IConfiguration config, UserManager<UserModel> um)
         {
             userMgr = um;
             _config = config;

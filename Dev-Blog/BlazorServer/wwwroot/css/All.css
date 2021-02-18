@@ -1,3 +1,4 @@
-﻿* {
+﻿:root {
     font-family: 'Fira Code', monospace;
+    --primary_color: #ff0000;
 }

@@ -12,9 +12,9 @@ namespace BlazorServer.Controllers
         public SignInManager<UserModel> SignInMgr { get; }
         public UserManager<UserModel> UserMgr { get; }
 
-        private readonly IEmails _email;
+        private readonly IEmailRepository _email;
 
-        public AccountController(SignInManager<UserModel> sm, UserManager<UserModel> um, IEmails email)
+        public AccountController(SignInManager<UserModel> sm, UserManager<UserModel> um, IEmailRepository email)
         {
             _email = email;
             UserMgr = um;

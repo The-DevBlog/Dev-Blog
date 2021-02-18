@@ -2,23 +2,25 @@
 
 @inject IModalService _modal
 
+<section modal>
     <EditForm Model=registerVM>
         <form method="post" action="/signup">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <InputText modal @bind-Value=registerVM.UserName placeholder="username" />
-            <InputText modal @bind-Value=registerVM.Password type="password" placeholder="password" />
-            <InputText modal @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
-            <InputText modal @bind-Value=registerVM.Email type="email" placeholder="email" />
+            <InputText @bind-Value=registerVM.UserName placeholder="username" />
+            <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
+            <InputText @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
+            <InputText @bind-Value=registerVM.Email type="email" placeholder="email" />
 
-            <input type="text" name="username" value=@registerVM.UserName hidden />
-            <input type="password" name="password" value=@registerVM.Password hidden />
-            <input type="password" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
-            <input type="email" name="email" value=@registerVM.Email hidden />
+            <input type="hidden" name="username" value=@registerVM.UserName hidden />
+            <input type="hidden" name="password" value=@registerVM.Password hidden />
+            <input type="hidden" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
+            <input type="hidden" name="email" value=@registerVM.Email hidden />
 
             <input modal type="submit" value="Submit" />
         </form>
     </EditForm>
+</section >
 
     @code {
         RegisterVM registerVM;

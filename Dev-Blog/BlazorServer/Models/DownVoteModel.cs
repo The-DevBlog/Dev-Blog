@@ -9,6 +9,5 @@ namespace BlazorServer.Models
     {
         public int PostModelId { get; set; }
         public string UserName { get; set; }
-        public PostModel Post { get; set; }
     }
 }

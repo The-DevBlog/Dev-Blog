@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Interfaces
 {
-    public interface IImages
+    public interface IImageRepository
     {
         Task<string> AddImgToDropBox(Stream fs, string name);
     }

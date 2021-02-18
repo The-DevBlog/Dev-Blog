@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace BlazorServer.Services
 {
-    public class PostService : IPosts
+    public class PostRepository : IPostRepository
     {
         //TODO: Summary comments
+        //TODO: change all Interfaces to 'IPostService'
+        //TODO: change PostService to 'PostRepository'
 
         private AppDbContext _db;
 
-        public PostService(AppDbContext context)
+        public PostRepository(AppDbContext context)
         {
             _db = context;
         }
@@ -29,12 +31,16 @@ namespace BlazorServer.Services
         public async Task<PostModel> Create(PostModel post, string url)
         {
             post.ImgURL = url;
+
+            //TODO: change to datetimeoffset.utcnow
+            //post.Date = DateTimeOffset.UtcNow;
+
             post.Date = DateTime.Now;
 
-            _db.Entry(post).State = EntityState.Added;
+            var newPost = _db.Post.Add(post).Entity;
             await _db.SaveChangesAsync();
 
-            return post;
+            return newPost;
         }
 
         public async Task<List<PostModel>> GetPosts()
@@ -65,7 +71,7 @@ namespace BlazorServer.Services
 
         public async Task UpdatePost(PostModel post)
         {
-            var res = _db.Post.Update(post);
+            _db.Post.Update(post);
             await _db.SaveChangesAsync();
         }
 
@@ -77,7 +83,7 @@ namespace BlazorServer.Services
         public async Task Delete(int postId)
         {
             var post = await GetPost(postId);
-            _db.Entry(post).State = EntityState.Deleted;
+            _db.Remove(post);
             await _db.SaveChangesAsync();
         }
     }
