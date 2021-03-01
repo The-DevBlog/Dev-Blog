@@ -13,76 +13,81 @@
 
 @if (AllPosts == null)
 {
-<p>Loading...</p> 
+<p>Loading...</p>
 }
 else
-{ 
-    <!-- Add Post -->
-    <AuthorizeView Policy="Admin">
-        <button @onclick=ShowAddPost>Add Post</button>
-    </AuthorizeView> <!-- Page left / right --> @*<Paginate />*@
+{
+<!-- Add Post -->
+<AuthorizeView Policy="Admin">
+    <button @onclick=ShowAddPost>Add Post</button>
+</AuthorizeView>
 
+<!-- Page left / right -->
+@*<Paginate />*@
+
+<div>
+    <button @onclick="@(e => NavTo("prev"))">PREV</button>
+    @for (int i = 0; i < TotalPgs; i++)
+        {
+            var pgNum = i;
+    <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+        @(i + 1)
+    </button>
+    }
+    <button @onclick="@(e => NavTo("next"))">NEXT</button>
+</div>
+<!-- Render Posts -->
+@foreach (var post in PostsPage)
+    {
+<div post>
+    <section postInfo>
+        <span>@post.UpdateNum</span>
+        <span>@post.Date.ToShortDateString()</span>
+
+        <!-- Delete / Edit Post -->
+        <AuthorizeView Policy="Admin">
+            <button @onclick="@(() => ShowEditPost(post.Id))">
+                <EditIcon />
+            </button>
+
+            <button @onclick="() => DeletePost(post.Id)">
+                <TrashIcon />
+            </button>
+        </AuthorizeView>
+
+        <img src=@post.ImgURL />
+        <p>@post.Description</p>
+    </section>
+
+    <!-- Voting System -->
+    <section comments>
+        <div>
+
+            <AuthorizeView>
+                <Authorized>
                     <div>
-                        <button @onclick="@(e => NavTo("prev"))">PREV</button>
-                        @for (int i = 0; i < TotalPgs; i++)
-                        {
-                            var pgNum = i;
-        <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-            @(i + 1)
-        </button>}
-                        <button @onclick="@(e => NavTo("next"))">NEXT</button>
-                    </div> <!-- Render Posts -->
-                                    @foreach (var post in PostsPage)
-                                    {
-                    <div post>
-                        <section postInfo>
-                            <span>@post.UpdateNum</span>
-                            <span>@post.Date.ToShortDateString()</span>
-
-                            <!-- Delete / Edit Post -->
-                            <AuthorizeView Policy="Admin">
-                                <button @onclick="@(() => ShowEditPost(post.Id))">
-                                    <EditIcon />
-                                </button>
-
-                                <button @onclick="() => DeletePost(post.Id)">
-                                    <TrashIcon />
-                                </button>
-                            </AuthorizeView>
-
-                            <img src=@post.ImgURL />
-                            <p>@post.Description</p>
-                        </section>
-
-                        <!-- Voting System -->
-                        <section comments>
-                            <div>
-
-                                <AuthorizeView>
-                                    <Authorized>
-                                        <div>
-                                            <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
-                                            <span>@post.UpVotes.Count</span>
-                                            <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
-                                            <span>@post.DownVotes.Count</span>
-                                        </div>
-                                    </Authorized>
-                                    <NotAuthorized>
-                                        <div>
-                                            <button class="glyphicon glyphicon-thumbs-up"></button>
-                                            <span>@post.UpVotes.Count</span>
-                                            <button class="glyphicon glyphicon-thumbs-down"></button>
-                                            <span>@post.DownVotes.Count</span>
-                                            <span>Login in to Like / Dislike</span>
-                                        </div>
-                                    </NotAuthorized>
-                                </AuthorizeView>
-                            </div>
-                            <!-- Render Comments -->
-                            @if (post.Comments != null)
-                            {
-                                foreach (var comment in post.Comments)
-                                {
+                        <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                        <span>@post.UpVotes.Count</span>
+                        <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                        <span>@post.DownVotes.Count</span>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div>
+                        <button class="glyphicon glyphicon-thumbs-up"></button>
+                        <span>@post.UpVotes.Count</span>
+                        <button class="glyphicon glyphicon-thumbs-down"></button>
+                        <span>@post.DownVotes.Count</span>
+                        <span>Login in to Like / Dislike</span>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+        <!-- Render Comments -->
+        @if (post.Comments != null)
+                {
+                    foreach (var comment in post.Comments)
+                    {
         <div comment>
             <span>@comment.UserName</span>
             <span>
@@ -96,36 +101,39 @@ else
                 </AuthorizeView>
                 <AuthorizeView Policy="Visitor">
                     @if (comment.UserName == _http.HttpContext.User.Identity.Name)
-                    {
-<button @onclick="async () => await _comments.Delete(comment.Id)">
-<TrashIcon />
-</button>}
+                        {
+                    <button @onclick="async () => await _comments.Delete(comment.Id)">
+                        <TrashIcon />
+                    </button>}
                 </AuthorizeView>
             </span>
             <p>@comment.Content</p>
-        </div>}
+        </div>
+        }
+                }
+
+        <!-- Add Comment -->
+        <AuthorizeView>
+            <Authorized Context=" Auth">
+                <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                    <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
+                    <button type="submit">Comment</button>
+                </EditForm>
+            </Authorized>
+
+            <NotAuthorized>
+                <textarea placeholder="Login in to leave a comment..">
+                </textarea>
+            </NotAuthorized>
+        </AuthorizeView>
+    </section>
+</div>
+}
 }
 
-                            <!-- Add Comment -->
-                            <AuthorizeView>
-                                <Authorized Context=" Auth">
-                                    <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                                        <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
-                                        <button type="submit">Comment</button>
-                                    </EditForm>
-                                </Authorized>
-
-                                <NotAuthorized>
-                                    <textarea placeholder="Login in to leave a comment..">
-            </textarea>
-                                </NotAuthorized>
-                            </AuthorizeView>
-                        </section>
-                    </div>
-                    }
-}
-
-@code { CommentVM comment;
+@code
+{
+    CommentVM comment;
 
     public List<PostModel> PostsPage { get; set; }
 
@@ -198,4 +206,5 @@ else
         public int PostModelId { get; set; }
 
         public string Content { get; set; }
-    } }
+    }
+}

@@ -2,10 +2,10 @@
 
 @inject BlazorServer.Data.AppDbContext db
 <!-- LATEST POST -->
-
 @if (latestPost == null)
 {
-<p>Loading...</p> }
+<p>Loading...</p>
+}
 else
 {
 <section post>
@@ -13,7 +13,8 @@ else
     <span>@latestPost.Date.ToShortDateString()</span>
     <img src=@latestPost.ImgURL />
     <p>@latestPost.Description</p>
-</section>}
+</section>
+}
 
 <!-- YOUTUBE LINK -->
 <section youtube>
@@ -32,10 +33,13 @@ else
     </a>
 </section>
 
-@code { PostModel latestPost;
+@code
+{
+    PostModel latestPost;
 
     protected override async Task OnInitializedAsync()
     {
         latestPost = db.Post.OrderByDescending(x => x.Date)
                             .FirstOrDefault();
-    } }
+    }
+}
