@@ -13,128 +13,119 @@
 
 @if (AllPosts == null)
 {
-    <p>Loading...</p>
+<p>Loading...</p> 
 }
 else
-{
+{ 
     <!-- Add Post -->
     <AuthorizeView Policy="Admin">
         <button @onclick=ShowAddPost>Add Post</button>
-    </AuthorizeView>
+    </AuthorizeView> <!-- Page left / right --> @*<Paginate />*@
 
-    <!-- Page left / right -->
-    @*<Paginate />*@
+                    <div>
+                        <button @onclick="@(e => NavTo("prev"))">PREV</button>
+                        @for (int i = 0; i < TotalPgs; i++)
+                        {
+                            var pgNum = i;
+        <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+            @(i + 1)
+        </button>}
+                        <button @onclick="@(e => NavTo("next"))">NEXT</button>
+                    </div> <!-- Render Posts -->
+                                    @foreach (var post in PostsPage)
+                                    {
+                    <div post>
+                        <section postInfo>
+                            <span>@post.UpdateNum</span>
+                            <span>@post.Date.ToShortDateString()</span>
 
-    <div>
-        <button @onclick="@(e => NavTo("prev"))">PREV</button>
-        @for (int i = 0; i < TotalPgs; i++)
-        {
-            var pgNum = i;
-            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-                @(i + 1)
-            </button>
-        }
-        <button @onclick="@(e => NavTo("next"))">NEXT</button>
-    </div>
+                            <!-- Delete / Edit Post -->
+                            <AuthorizeView Policy="Admin">
+                                <button @onclick="@(() => ShowEditPost(post.Id))">
+                                    <EditIcon />
+                                </button>
 
-    <!-- Render Posts -->
-    @foreach (var post in PostsPage)
-    {
-        <div post>
-            <section postInfo>
-                <span>@post.UpdateNum</span>
-                <span>@post.Date.ToShortDateString()</span>
+                                <button @onclick="() => DeletePost(post.Id)">
+                                    <TrashIcon />
+                                </button>
+                            </AuthorizeView>
 
-                <!-- Delete / Edit Post -->
+                            <img src=@post.ImgURL />
+                            <p>@post.Description</p>
+                        </section>
+
+                        <!-- Voting System -->
+                        <section comments>
+                            <div>
+
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <div>
+                                            <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
+                                            <span>@post.UpVotes.Count</span>
+                                            <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
+                                            <span>@post.DownVotes.Count</span>
+                                        </div>
+                                    </Authorized>
+                                    <NotAuthorized>
+                                        <div>
+                                            <button class="glyphicon glyphicon-thumbs-up"></button>
+                                            <span>@post.UpVotes.Count</span>
+                                            <button class="glyphicon glyphicon-thumbs-down"></button>
+                                            <span>@post.DownVotes.Count</span>
+                                            <span>Login in to Like / Dislike</span>
+                                        </div>
+                                    </NotAuthorized>
+                                </AuthorizeView>
+                            </div>
+                            <!-- Render Comments -->
+                            @if (post.Comments != null)
+                            {
+                                foreach (var comment in post.Comments)
+                                {
+        <div comment>
+            <span>@comment.UserName</span>
+            <span>
+                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
+
+                <!-- Delete / Edit Comment -->
                 <AuthorizeView Policy="Admin">
-                    <button @onclick="@(() => ShowEditPost(post.Id))">
-                        <EditIcon />
-                    </button>
-
-                    <button @onclick="() => DeletePost(post.Id)">
+                    <button @onclick="async () => await _comments.Delete(comment.Id)">
                         <TrashIcon />
                     </button>
                 </AuthorizeView>
-
-                <img src=@post.ImgURL />
-                <p>@post.Description</p>
-            </section>
-
-            <!-- Voting System -->
-            <section comments>
-                <div>
-
-                    <AuthorizeView>
-                        <Authorized>
-                            <div>
-                                <button @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-up"></button>
-                                <span>@post.UpVotes.Count</span>
-                                <button @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)" class="glyphicon glyphicon-thumbs-down"></button>
-                                <span>@post.DownVotes.Count</span>
-                            </div>
-                        </Authorized>
-                        <NotAuthorized>
-                            <div>
-                                <button class="glyphicon glyphicon-thumbs-up"></button>
-                                <span>@post.UpVotes.Count</span>
-                                <button class="glyphicon glyphicon-thumbs-down"></button>
-                                <span>@post.DownVotes.Count</span>
-                                <span>Login in to Like / Dislike</span>
-                            </div>
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </div>
-                <!-- Render Comments -->
-                @if (post.Comments != null)
-                {
-                    foreach (var comment in post.Comments)
+                <AuthorizeView Policy="Visitor">
+                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
                     {
-                        <div comment>
-                            <span>@comment.UserName</span>
-                            <span>
-                                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
-
-                                <!-- Delete / Edit Comment -->
-                                <AuthorizeView Policy="Admin">
-                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                        <TrashIcon />
-                                    </button>
-                                </AuthorizeView>
-                                <AuthorizeView Policy="Visitor">
-                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
-                                    {
-                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                            <TrashIcon />
-                                        </button>
-                                    }
-                                </AuthorizeView>
-                            </span>
-                            <p>@comment.Content</p>
-                        </div>
-                    }
-                }
-
-                <!-- Add Comment -->
-                <AuthorizeView>
-                    <Authorized Context=" Auth">
-                        <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                            <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
-                            <button type="submit">Comment</button>
-                        </EditForm>
-                    </Authorized>
-
-                    <NotAuthorized>
-                        <textarea placeholder="Login in to leave a comment..">
-                        </textarea>
-                    </NotAuthorized>
+<button @onclick="async () => await _comments.Delete(comment.Id)">
+<TrashIcon />
+</button>}
                 </AuthorizeView>
-            </section>
-        </div>
-    }
+            </span>
+            <p>@comment.Content</p>
+        </div>}
 }
 
-@code {
-    CommentVM comment;
+                            <!-- Add Comment -->
+                            <AuthorizeView>
+                                <Authorized Context=" Auth">
+                                    <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                                        <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
+                                        <button type="submit">Comment</button>
+                                    </EditForm>
+                                </Authorized>
+
+                                <NotAuthorized>
+                                    <textarea placeholder="Login in to leave a comment..">
+            </textarea>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </section>
+                    </div>
+                    }
+}
+
+@code { CommentVM comment;
 
     public List<PostModel> PostsPage { get; set; }
 
@@ -189,7 +180,7 @@ else
         CurrentPg = pgNum;
     }
 
-    public async Task NavTo(string val)
+    public void NavTo(string val)
     {
         if (val == "prev" && CurrentPg != 0)
             CurrentPg--;
@@ -207,5 +198,4 @@ else
         public int PostModelId { get; set; }
 
         public string Content { get; set; }
-    }
-}
+    } }
