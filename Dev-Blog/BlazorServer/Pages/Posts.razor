@@ -10,24 +10,23 @@
 @inject IModalService _modal
 @inject AppState appState
 
-
     <!-- Add Post -->
     <AuthorizeView Policy="Admin">
         <button @onclick=ShowAddPost>Add Post</button>
     </AuthorizeView>
 @if (appState.Posts == null)
 {
-    <p>Loading...</p>
+<p>Loading...</p>
 }
 else
 {
 
-    <!-- Page left / right -->
-    @*<Paginate />*@
+<!-- Page left / right -->
+@*<Paginate />*@
 
-    <div>
-        <button @onclick="@(e => NavTo("prev"))">PREV</button>
-        @for (int i = 0; i < TotalPgs; i++)
+<div>
+    <button @onclick="@(e => NavTo("prev"))">PREV</button>
+    @for (int i = 0; i < TotalPgs; i++)
         {
             var pgNum = i;
             <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
@@ -40,25 +39,25 @@ else
     <!-- Render Posts -->
     @foreach (var post in appState.Posts)
     {
-        <div post>
-            <section postInfo>
-                <span>@post.UpdateNum</span>
-                <span>@post.Date.ToShortDateString()</span>
+<div post>
+    <section postInfo>
+        <span>@post.UpdateNum</span>
+        <span>@post.Date.ToShortDateString()</span>
 
-                <!-- Delete / Edit Post -->
-                <AuthorizeView Policy="Admin">
-                    <button @onclick="@(() => ShowEditPost(post.Id))">
-                        <EditIcon />
-                    </button>
+        <!-- Delete / Edit Post -->
+        <AuthorizeView Policy="Admin">
+            <button @onclick="@(() => ShowEditPost(post.Id))">
+                <EditIcon />
+            </button>
 
-                    <button @onclick="() => DeletePost(post.Id)">
-                        <TrashIcon />
-                    </button>
-                </AuthorizeView>
+            <button @onclick="() => DeletePost(post.Id)">
+                <TrashIcon />
+            </button>
+        </AuthorizeView>
 
-                <img src=@post.ImgURL />
-                <p>@post.Description</p>
-            </section>
+        <img src=@post.ImgURL />
+        <p>@post.Description</p>
+    </section>
 
             <!-- Voting System -->
             <div comments>
@@ -154,7 +153,6 @@ else
         //PostsPage = AllPosts.Take(PgSize).ToList();
         //TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
 
-
         //if (appState.Posts == null)
         //  appState.Posts = await _posts.GetPosts();
 
@@ -201,7 +199,7 @@ else
         CurrentPg = pgNum;
     }
 
-    public async Task NavTo(string val)
+    public void NavTo(string val)
     {
         if (val == "prev" && CurrentPg != 0)
             CurrentPg--;

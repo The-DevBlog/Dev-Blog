@@ -2,12 +2,19 @@
 
 @inject BlazorServer.Data.AppDbContext db
 <!-- LATEST POST -->
+@if (latestPost == null)
+{
+<p>Loading...</p>
+}
+else
+{
 <section post>
     <span>@latestPost.UpdateNum</span>
     <span>@latestPost.Date.ToShortDateString()</span>
     <img src=@latestPost.ImgURL />
     <p>@latestPost.Description</p>
 </section>
+}
 
 <!-- YOUTUBE LINK -->
 <section youtube>
@@ -26,7 +33,8 @@
     </a>
 </section>
 
-@code {
+@code
+{
     PostModel latestPost;
 
     protected override async Task OnInitializedAsync()
