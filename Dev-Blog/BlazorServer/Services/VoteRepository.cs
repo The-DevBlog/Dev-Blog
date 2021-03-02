@@ -34,10 +34,7 @@ namespace BlazorServer.Services
                            .FirstOrDefaultAsync();
 
             if (downVote != null)
-            {
                 _db.Remove(downVote);
-                return null;
-            }
             else if (upVote != null)
             {
                 _db.Remove(upVote);
@@ -72,10 +69,7 @@ namespace BlazorServer.Services
                            .FirstOrDefaultAsync();
 
             if (upVote != null)
-            {
                 _db.Remove(upVote);
-                return null;
-            }
             else if (downVote != null)
             {
                 _db.Remove(downVote);

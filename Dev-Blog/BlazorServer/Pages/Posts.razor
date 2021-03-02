@@ -65,8 +65,8 @@ else
                         <button thumbIcon @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
                             <ThumbsUpIcon />
                         </button>
-
                         <span votes>@post.UpVotes.Count</span>
+
                         <button thumbIcon @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
                             <ThumbsDownIcon />
                         </button>
