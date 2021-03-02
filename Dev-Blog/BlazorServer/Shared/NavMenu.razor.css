@@ -2,17 +2,26 @@
     font-family: 'Press Start 2P', cursive;
 }
 
-div {
-    border: 2px solid green;
-    display: inline;
-    /*    width: 100%;*/
-}
-
 ::deep a:first-child {
-    border: 2px solid red;
+    /*    border: 2px solid red;*/
     /*    display: block;*/
 }
 
-section {
-    display: inline;
+nav {
+    display: inline-block;
+    width: 100%;
+}
+
+span {
+    display: block;
+}
+
+section:last-child {
+    float: right;
+    margin-top: 97px;
+}
+
+section,
+form[signout] {
+    display: inline-block;
 }

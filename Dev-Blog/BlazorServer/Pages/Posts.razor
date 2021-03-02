@@ -7,132 +7,132 @@
 @inject AuthenticationStateProvider Auth
 @inject IModalService _modal
 
-<!-- Add Post -->
+@* Add Post *@
 <AuthorizeView Policy="Admin">
     <button @onclick=ShowAddPost>Add Post</button>
 </AuthorizeView>
+
 @if (AllPosts == null)
 {
-<p>Loading...</p>
+    <p>Loading...</p>
 }
 else
 {
-
-<!-- Page left / right -->
-@*<Paginate />*@
-
-<div>
-    <button @onclick="@(e => NavTo("prev"))">PREV</button>
-    @for (int i = 0; i < TotalPgs; i++)
+    @* Page left / right *@
+    @*<Paginate />*@
+    <div>
+        <button @onclick="@(e => NavTo("prev"))">PREV</button>
+        @for (int i = 0; i < TotalPgs; i++)
         {
             var pgNum = i;
-    <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-        @(i + 1)
-    </button>
-    }
-    <button @onclick="@(e => NavTo("next"))">NEXT</button>
-</div>
-@*Render Posts *@
-@foreach (var post in AllPosts)
+            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+                @(i + 1)
+            </button>
+        }
+        <button @onclick="@(e => NavTo("next"))">NEXT</button>
+    </div>
+    @*Render Posts *@
+    @foreach (var post in AllPosts)
     {
-<div post>
-    <section postInfo>
-        <span>@post.UpdateNum</span>
-        <span>@post.Date.ToShortDateString()</span>
+        <div post>
+            <section postInfo>
+                <span>@post.UpdateNum</span>
+                <span>@post.Date.ToShortDateString()</span>
 
-        <!-- Delete / Edit Post -->
+                <!-- Delete / Edit Post -->
         <AuthorizeView Policy="Admin">
-            <button @onclick="@(() => ShowEditPost(post.Id))">
-                <EditIcon />
-            </button>
+                    <button @onclick="@(() => ShowEditPost(post.Id))">
+                        <EditIcon />
+                    </button>
 
-            <button @onclick="() => DeletePost(post.Id)">
-                <TrashIcon />
-            </button>
-        </AuthorizeView>
+                    <button @onclick="() => DeletePost(post.Id)">
+                        <TrashIcon />
+                    </button>
+                </AuthorizeView>
 
-        <img src=@post.ImgURL />
-        <p>@post.Description</p>
-    </section>
+                <img src=@post.ImgURL />
+                <p>@post.Description</p>
+            </section>
 
-    <!-- Voting System -->
-    <div comments>
-        <div>
+            @* Voting System *@
+            <div comments>
+                <div>
 
-            <AuthorizeView>
-                <Authorized>
-                    <div>
-                        <button thumbIcon @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
-                            <ThumbsUpIcon />
-                        </button>
-                        <span votes>@post.UpVotes.Count</span>
+                    <AuthorizeView>
+                        <Authorized>
+                            <div>
+                                <button thumbIcon @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                                    <ThumbsUpIcon />
+                                </button>
+                                <span votes>@post.UpVotes.Count</span>
 
-                        <button thumbIcon @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
-                            <ThumbsDownIcon />
-                        </button>
-                        <span votes>@post.DownVotes.Count</span>
-                    </div>
-                </Authorized>
-                <NotAuthorized>
-                    <div>
-                        <span thumbIcon><ThumbsUpIcon /></span>
-                        <span votes>@post.UpVotes.Count</span>
-                        <span thumbIcon><ThumbsDownIcon /></span>
-                        <span votes>@post.DownVotes.Count</span>
-                        <span>Login in to Like / Dislike</span>
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>
-        </div>
-        <!-- Render Comments -->
-        @if (post.Comments != null)
+                                <button thumbIcon @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                                    <ThumbsDownIcon />
+                                </button>
+                                <span votes>@post.DownVotes.Count</span>
+                            </div>
+                        </Authorized>
+                        <NotAuthorized>
+                            <div>
+                                <span thumbIcon><ThumbsUpIcon /></span>
+                                <span votes>@post.UpVotes.Count</span>
+                                <span thumbIcon><ThumbsDownIcon /></span>
+                                <span votes>@post.DownVotes.Count</span>
+                                <span>Login in to Like / Dislike</span>
+                            </div>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </div>
+
+                @* Render Comments *@
+                @if (post.Comments != null)
                 {
                     foreach (var comment in post.Comments)
                     {
-        <section comment>
-            <span>@comment.UserName</span>
-            <span>
-                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
 
-                <!-- Delete / Edit Comment -->
-                <AuthorizeView Policy="Admin">
-                    <button @onclick="async () => await _comments.Delete(comment.Id)">
-                        <TrashIcon />
-                    </button>
-                </AuthorizeView>
-                <AuthorizeView Policy="Visitor">
-                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
-                        {
-                    <button @onclick="async () => await _comments.Delete(comment.Id)">
-                        <TrashIcon />
-                    </button>
-                            }
-                </AuthorizeView>
-            </span>
-            <p>@comment.Content</p>
-        </section>
-        }
+                        <section comment>
+                            <span>@comment.UserName</span>
+                            <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+
+                            @* Delete / Edit Comment *@
+                            <AuthorizeView Policy="Admin">
+                                <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                    <TrashIcon />
+                                </button>
+                            </AuthorizeView>
+                            <AuthorizeView Policy="Visitor">
+                                @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                                {
+                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                        <TrashIcon />
+                                    </button>
+                                }
+                            </AuthorizeView>
+
+                            <p>@comment.Content</p>
+                        </section>
+                    }
                 }
 
-        <!-- Add Comment -->
-        <section addComment>
-            <AuthorizeView>
-                <Authorized Context=" Auth">
-                    <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                        <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
-                        <button type="submit">Comment</button>
-                    </EditForm>
-                </Authorized>
+                @* Add Comments *@
+                <section addComment>
+                    <AuthorizeView>
+                        <Authorized Context=" Auth">
+                            <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                                <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
+                                <button type="submit">Comment</button>
+                            </EditForm>
+                        </Authorized>
 
-                <NotAuthorized>
-                    <textarea placeholder="Login in to leave a comment..">
-                    </textarea>
-                </NotAuthorized>
-            </AuthorizeView>
-        </section>
-    </div>
-</div>
-}
+                        <NotAuthorized>
+                            <textarea placeholder="Login in to leave a comment..">
+                                            </textarea>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </section>
+            </div>
+        </div>
+    }
 }
 
 @code {
@@ -170,7 +170,6 @@ else
         var param = new ModalParameters();
         param.Add(nameof(EditPost.Id), postId);
         await _modal.Show<EditPost>("Edit Post", param).Result;
-        await OnInitializedAsync();
     }
 
     public async Task AddComment(int postId)

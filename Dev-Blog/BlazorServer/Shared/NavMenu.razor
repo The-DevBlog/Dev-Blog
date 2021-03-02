@@ -1,45 +1,46 @@
-﻿@using Pages.Modals
-
-@inject IHttpContextAccessor _http
+﻿@inject IHttpContextAccessor _http
 @inject IModalService _modal
 
 <nav>
     <!-- LOGO -->
     <img src="/Imgs/Logo.png" height="115" width="100" />
 
-    <div>
-        <!-- PAGE LINKS -->
-        <NavLink href="/"> The Dev Blog </NavLink>
+    <!-- PAGE LINKS -->
+    <section>
+        <span>
+            <NavLink href="/"> The Dev Blog </NavLink>
+        </span>
         <NavLink href="/"> Home </NavLink>
         <NavLink href="/Posts"> Status </NavLink>
         <NavLink href="/About"> About </NavLink>
+    </section>
 
-        <section>
-            <AuthorizeView>
-                <Authorized>
-                    <!-- WELCOME USER -->
-                    <NavLink>
-                        <a>Welcome @_http.HttpContext.User.Identity.Name</a>
-                    </NavLink>
+    <section>
+        <AuthorizeView>
+            <Authorized>
+                <!-- WELCOME USER -->
+                <NavLink>
+                    <a>Welcome @_http.HttpContext.User.Identity.Name</a>
+                </NavLink>
 
-                    <!-- LOGOUT -->
-                    <NavLink>
-                        <form method="post" action="/signout">
-                            <input type="submit" value="sign out" />
-                        </form>
-                    </NavLink>
-                </Authorized>
+                <!-- LOGOUT -->
+                <NavLink>
+                    <form signout method="post" action="/signout">
+                        <input type="submit" value="sign out" />
+                    </form>
+                </NavLink>
+            </Authorized>
 
-                <!-- LOGIN / REGISTER -->
-                <NotAuthorized>
-                    <button @onclick="@(() => _modal.Show<SignIn>("Login"))">
-                        Login
-                    </button>
-                    <button @onclick="@(() => _modal.Show<Register>("Sign Up"))">
-                        Sign Up
-                    </button>
-                </NotAuthorized>
-            </AuthorizeView>
-        </section>
-    </div>
+
+            <!-- LOGIN / REGISTER -->
+            <NotAuthorized>
+                <button @onclick="@(() => _modal.Show<SignIn>("Login"))">
+                    Login
+                </button>
+                <button @onclick="@(() => _modal.Show<Register>("Sign Up"))">
+                    Sign Up
+                </button>
+            </NotAuthorized>
+        </AuthorizeView>
+    </section>
 </nav>
