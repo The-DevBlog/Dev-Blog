@@ -1,20 +1,17 @@
 ﻿@page "/posts"
 
-@using Pages.Modals
-
 @inject IHttpContextAccessor _http
 @inject IPostRepository _posts
 @inject ICommentRepository _comments
 @inject IVoteRepository _votes
 @inject AuthenticationStateProvider Auth
 @inject IModalService _modal
-@inject AppState appState
 
-    <!-- Add Post -->
-    <AuthorizeView Policy="Admin">
-        <button @onclick=ShowAddPost>Add Post</button>
-    </AuthorizeView>
-@if (appState.Posts == null)
+<!-- Add Post -->
+<AuthorizeView Policy="Admin">
+    <button @onclick=ShowAddPost>Add Post</button>
+</AuthorizeView>
+@if (AllPosts == null)
 {
 <p>Loading...</p>
 }
@@ -29,15 +26,14 @@ else
     @for (int i = 0; i < TotalPgs; i++)
         {
             var pgNum = i;
-            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-                @(i + 1)
-            </button>
-        }
-        <button @onclick="@(e => NavTo("next"))">NEXT</button>
-    </div>
-
-    <!-- Render Posts -->
-    @foreach (var post in appState.Posts)
+    <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+        @(i + 1)
+    </button>
+    }
+    <button @onclick="@(e => NavTo("next"))">NEXT</button>
+</div>
+@*Render Posts *@
+@foreach (var post in AllPosts)
     {
 <div post>
     <section postInfo>
@@ -59,87 +55,91 @@ else
         <p>@post.Description</p>
     </section>
 
-            <!-- Voting System -->
-            <div comments>
-                <div>
+    <!-- Voting System -->
+    <div comments>
+        <div>
 
-                    <AuthorizeView>
-                        <Authorized>
-                            <div>
-                                <button @onclick="async () => await appState.AddUpVote(post.Id, _http.HttpContext.User.Identity.Name)">👍</button>
-                                <span>@post.UpVotes.Count</span>
-                                <button @onclick="async () => await appState.AddDownVote(post.Id, _http.HttpContext.User.Identity.Name)">🤢</button>
-                                <span>@post.DownVotes.Count</span>
-                            </div>
-                        </Authorized>
-                        <NotAuthorized>
-                            <div>
-                                <button>👍</button>
-                                <span>@post.UpVotes.Count</span>
-                                <button>🤢</button>
-                                <span>@post.DownVotes.Count</span>
-                                <span>Login in to Like / Dislike</span>
-                            </div>
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </div>
-                <!-- Render Comments -->
-                @if (post.Comments != null)
+            <AuthorizeView>
+                <Authorized>
+                    <div>
+                        <button thumbIcon @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                            <ThumbsUpIcon />
+                        </button>
+
+                        <span votes>@post.UpVotes.Count</span>
+                        <button thumbIcon @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                            <ThumbsDownIcon />
+                        </button>
+                        <span votes>@post.DownVotes.Count</span>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div>
+                        <span thumbIcon><ThumbsUpIcon /></span>
+                        <span votes>@post.UpVotes.Count</span>
+                        <span thumbIcon><ThumbsDownIcon /></span>
+                        <span votes>@post.DownVotes.Count</span>
+                        <span>Login in to Like / Dislike</span>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+        <!-- Render Comments -->
+        @if (post.Comments != null)
                 {
                     foreach (var comment in post.Comments)
                     {
-                        <section comment>
-                            <span>@comment.UserName</span>
-                            <span>
-                                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
+        <section comment>
+            <span>@comment.UserName</span>
+            <span>
+                @comment.Date.ToString("MM/dd/yyyy hh:mm tt")
 
-                                <!-- Delete / Edit Comment -->
-                                <AuthorizeView Policy="Admin">
-                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                        <TrashIcon />
-                                    </button>
-                                </AuthorizeView>
-                                <AuthorizeView Policy="Visitor">
-                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
-                                    {
-                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                            <TrashIcon />
-                                        </button>
-                                    }
-                                </AuthorizeView>
-                            </span>
-                            <p>@comment.Content</p>
-                        </section>
-                    }
+                <!-- Delete / Edit Comment -->
+                <AuthorizeView Policy="Admin">
+                    <button @onclick="async () => await _comments.Delete(comment.Id)">
+                        <TrashIcon />
+                    </button>
+                </AuthorizeView>
+                <AuthorizeView Policy="Visitor">
+                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                        {
+                    <button @onclick="async () => await _comments.Delete(comment.Id)">
+                        <TrashIcon />
+                    </button>
+                            }
+                </AuthorizeView>
+            </span>
+            <p>@comment.Content</p>
+        </section>
+        }
                 }
 
-                <!-- Add Comment -->
-                <section addComment>
-                    <AuthorizeView>
-                        <Authorized Context=" Auth">
-                            <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                                <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
-                                <button type="submit">Comment</button>
-                            </EditForm>
-                        </Authorized>
+        <!-- Add Comment -->
+        <section addComment>
+            <AuthorizeView>
+                <Authorized Context=" Auth">
+                    <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                        <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
+                        <button type="submit">Comment</button>
+                    </EditForm>
+                </Authorized>
 
-                        <NotAuthorized>
-                            <textarea placeholder="Login in to leave a comment..">
-                        </textarea>
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </section>
-            </div>
-        </div>
-    }
+                <NotAuthorized>
+                    <textarea placeholder="Login in to leave a comment..">
+                    </textarea>
+                </NotAuthorized>
+            </AuthorizeView>
+        </section>
+    </div>
+</div>
+}
 }
 
 @code {
     CommentVM comment = new CommentVM();
 
-    //public List<PostModel> PostsPage { get; set; }
-
-    //public List<PostModel> AllPosts { get; set; }
+    public List<PostModel> PostsPage { get; set; }
+    public List<PostModel> AllPosts { get; set; }
 
     public int PgSize { get; set; }
     public int TotalPgs { get; set; }
@@ -147,21 +147,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //AllPosts = await _posts.GetPosts();
-
+        AllPosts = await _posts.GetPosts();
         PgSize = 5;
-        //PostsPage = AllPosts.Take(PgSize).ToList();
-        //TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
-
-        //if (appState.Posts == null)
-        //  appState.Posts = await _posts.GetPosts();
+        PostsPage = AllPosts.Take(PgSize).ToList();
+        TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
 
         //await appState.Refresh();
-
-        appState.OnDownVoteChange += () => InvokeAsync(StateHasChanged);
-        appState.OnUpVoteChange += () => InvokeAsync(StateHasChanged);
-        appState.OnPostChange += () => InvokeAsync(StateHasChanged);
-        appState.OnCommentChange += () => InvokeAsync(StateHasChanged);
+        //appState.OnDownVoteChange += () => InvokeAsync(StateHasChanged);
+        //appState.OnUpVoteChange += () => InvokeAsync(StateHasChanged);
+        //appState.OnPostChange += () => InvokeAsync(StateHasChanged);
+        //appState.OnCommentChange += () => InvokeAsync(StateHasChanged);
     }
 
     async Task ShowAddPost()
@@ -182,20 +177,19 @@ else
     {
         comment.UserName = _http.HttpContext.User.Identity.Name;
         comment.PostModelId = postId;
-        await appState.AddComment(comment);
-        //await _comments.Create(comment);
+        await _comments.Create(comment);
+        //await appState.AddComment(comment);
         comment = new CommentVM();
     }
 
     public async Task DeletePost(int postId)
     {
         await _posts.Delete(postId);
-        await OnInitializedAsync();
     }
 
     public void UpdateList(int pgNum)
     {
-        //PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
+        PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
         CurrentPg = pgNum;
     }
 

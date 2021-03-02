@@ -24,6 +24,12 @@ section[postInfo] {
     width: 80%;
 }
 
+/* Voting */
+button[thumbIcon],
+span[thumbIcon] {
+    fill: grey;
+}
+
 /* comments */
 div[comments] {
     margin: auto;

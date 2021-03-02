@@ -8,12 +8,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />*@
-    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BlazorServer</title>
     <base href="~/" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="~/css/Reset.css" rel="stylesheet" />
@@ -26,5 +25,6 @@
     <component type="typeof(App)" render-mode="ServerPrerendered" />
     <script src="_content/Blazored.Modal/blazored.modal.js"></script>
     <script src="_framework/blazor.server.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
 </body>
 </html>
