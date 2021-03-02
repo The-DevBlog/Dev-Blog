@@ -21,6 +21,10 @@ section:last-child {
     margin-top: 97px;
 }
 
+    section:last-child a:first-child {
+        margin-right: 25px;
+    }
+
 section,
 form[signout] {
     display: inline-block;
