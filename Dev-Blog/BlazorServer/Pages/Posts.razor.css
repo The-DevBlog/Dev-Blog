@@ -1,23 +1,30 @@
 ﻿/* entire post */
 div[post] {
     margin-top: 50px;
-    border-radius: 3px;
+    border-radius: 5px;
     background-color: #414141;
     padding-bottom: 20px;
 }
 
 /* post info */
+section[postInfo] {
+    margin-bottom: 15px;
+    border-radius: inherit;
+}
+
 img {
     display: block;
     height: 522px;
     margin: auto;
     width: 928px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 section[postInfo] > div {
     background-color: #626262;
     padding: 5px;
     margin-bottom: 15px;
+    border-radius: 5px 5px 0px 0px;
 }
 
     section[postInfo] > div span:last-child {
@@ -39,13 +46,27 @@ section[postInfo] p {
     margin: auto;
     background-color: #626262;
     padding: 10px 0px;
+    border-radius: 0px 0px 5px 5px;
 }
 
 /* Voting */
 button[thumbIcon],
 span[thumbIcon] {
     fill: grey;
-    margin-top: 10px;
+}
+
+button[upvote]:hover {
+    fill: lightblue;
+    cursor: pointer;
+}
+
+button[downvote]:hover {
+    fill: indianred;
+    cursor: pointer;
+}
+
+section[votes] {
+    margin-bottom: 10px;
 }
 
 /* comments */
@@ -77,6 +98,7 @@ section[comment] > span {
 
 section[comment] div {
     float: right;
+    padding: 3px;
 }
 
 section[comment] p {

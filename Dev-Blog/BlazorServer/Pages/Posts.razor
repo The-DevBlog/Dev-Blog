@@ -59,17 +59,17 @@ else
 
             @* Voting System *@
             <div comments>
-                <div>
+                <section votes>
 
                     <AuthorizeView>
                         <Authorized>
                             <div>
-                                <button thumbIcon @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                                <button thumbIcon upvote @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
                                     <ThumbsUpIcon />
                                 </button>
                                 <span votes>@post.UpVotes.Count</span>
 
-                                <button thumbIcon @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                                <button thumbIcon downvote @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
                                     <ThumbsDownIcon />
                                 </button>
                                 <span votes>@post.DownVotes.Count</span>
@@ -85,7 +85,7 @@ else
                             </div>
                         </NotAuthorized>
                     </AuthorizeView>
-                </div>
+                </section>
 
                 @* Render Comments *@
                 @if (post.Comments != null)
