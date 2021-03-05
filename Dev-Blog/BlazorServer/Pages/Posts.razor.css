@@ -46,7 +46,7 @@ section[comment] {
     margin: 5px 0px;
 }
 
-    section[comment] span:nth-child(2) {
+    section[comment] div {
         float: right;
     }
 

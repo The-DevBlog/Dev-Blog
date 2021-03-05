@@ -39,8 +39,8 @@ else
                 <span>@post.UpdateNum</span>
                 <span>@post.Date.ToShortDateString()</span>
 
-                <!-- Delete / Edit Post -->
-        <AuthorizeView Policy="Admin">
+                @* Delete / Edit Post *@
+                <AuthorizeView Policy="Admin">
                     <button @onclick="@(() => ShowEditPost(post.Id))">
                         <EditIcon />
                     </button>
@@ -92,21 +92,24 @@ else
 
                         <section comment>
                             <span>@comment.UserName</span>
+
+                            <div>
                             <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+                            <AuthorizeView Policy="Visitor">
+                                @if(comment.UserName == _http.HttpContext.User.Identity.Name) 
+                                {
+                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                        <TrashIcon />
+                                    </button>
+                                }
+                                </AuthorizeView>
+                            </div>
 
                             @* Delete / Edit Comment *@
                             <AuthorizeView Policy="Admin">
                                 <button @onclick="async () => await _comments.Delete(comment.Id)">
                                     <TrashIcon />
                                 </button>
-                            </AuthorizeView>
-                            <AuthorizeView Policy="Visitor">
-                                @if (comment.UserName == _http.HttpContext.User.Identity.Name)
-                                {
-                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                        <TrashIcon />
-                                    </button>
-                                }
                             </AuthorizeView>
 
                             <p>@comment.Content</p>
@@ -125,8 +128,7 @@ else
                         </Authorized>
 
                         <NotAuthorized>
-                            <textarea placeholder="Login in to leave a comment..">
-                                                                            </textarea>
+                            <textarea placeholder="Login in to leave a comment.."></textarea>
                         </NotAuthorized>
                     </AuthorizeView>
                 </section>
