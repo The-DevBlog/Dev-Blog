@@ -1,4 +1,18 @@
 ﻿:root {
     font-family: 'Fira Code', monospace;
     --primary_color: #ff0000;
+    color: white;
+}
+
+/*Dark Theme*/
+header {
+    background-color: #414141;
+}
+
+body {
+    background-color: #313131;
+}
+
+main {
+    background-color: #414141;
 }

@@ -8,6 +8,10 @@ section[post] {
         float: right;
     }
 
+    section[post] p {
+        text-align: center;
+    }
+
 img {
     display: block;
     height: 522px;
@@ -15,6 +19,40 @@ img {
     width: 928px;
 }
 
-section[post] p {
-    text-align: center;
+/*YouTube*/
+section[youtube] {
+    width: 77%;
+    margin: auto;
+    color: white;
+    background-color: #1E1E1E;
+    height: 500px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5em;
+    display: grid;
+    align-content: center;
+    justify-content: center;
 }
+
+    section[youtube] h2 {
+        text-align: center;
+        margin: 15px;
+    }
+
+/*    Suggestion Box*/
+section[suggestion] {
+    text-align: center;
+    padding: 15px;
+    margin: 20px;
+}
+
+a {
+    background-color: grey;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 3.5px;
+    color: white;
+}
+
+    a:hover {
+        opacity: 80%;
+    }

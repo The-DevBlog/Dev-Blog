@@ -22,6 +22,7 @@ section[postInfo] p {
 section[postInfo] {
     margin: auto;
     width: 80%;
+    border: 2px solid red;
 }
 
 /* Voting */

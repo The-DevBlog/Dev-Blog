@@ -103,7 +103,6 @@ else
                                     </button>
                                 }
                                 </AuthorizeView>
-                            </div>
 
                             @* Delete / Edit Comment *@
                             <AuthorizeView Policy="Admin">
@@ -111,6 +110,7 @@ else
                                     <TrashIcon />
                                 </button>
                             </AuthorizeView>
+                            </div>
 
                             <p>@comment.Content</p>
                         </section>
@@ -120,7 +120,7 @@ else
                 @* Add Comments *@
                 <section addComment>
                     <AuthorizeView>
-                        <Authorized Context=" Auth">
+                        <Authorized Context="Auth">
                             <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
                                 <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
                                 <button type="submit">Comment</button>
