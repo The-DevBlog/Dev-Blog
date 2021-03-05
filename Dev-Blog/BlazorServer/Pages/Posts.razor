@@ -36,19 +36,22 @@ else
     {
         <div post>
             <section postInfo>
-                <span>@post.UpdateNum</span>
-                <span>@post.Date.ToShortDateString()</span>
+                <div>
+                    <span>@post.UpdateNum</span>
 
                 @* Delete / Edit Post *@
-                <AuthorizeView Policy="Admin">
-                    <button @onclick="@(() => ShowEditPost(post.Id))">
-                        <EditIcon />
-                    </button>
+                    <AuthorizeView Policy="Admin">
+                        <button @onclick="@(() => ShowEditPost(post.Id))">
+                            <EditIcon />
+                        </button>
 
-                    <button @onclick="() => DeletePost(post.Id)">
-                        <TrashIcon />
-                    </button>
-                </AuthorizeView>
+                        <button @onclick="() => DeletePost(post.Id)">
+                            <TrashIcon />
+                        </button>
+                    </AuthorizeView>
+
+                    <span>@post.Date.ToShortDateString()</span>
+                </div>
 
                 <img src=@post.ImgURL />
                 <p>@post.Description</p>
