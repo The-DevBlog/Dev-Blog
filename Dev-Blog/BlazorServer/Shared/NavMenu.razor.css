@@ -2,28 +2,43 @@
     font-family: 'Press Start 2P', cursive;
 }
 
-::deep a:first-child {
-    /*    border: 2px solid red;*/
-    /*    display: block;*/
+section {
+    margin-bottom: 5px;
 }
+
+::deep a,
+input,
+button {
+    color: #C1C1C1;
+}
+
+    ::deep a:hover,
+    input:hover,
+    button:hover {
+        cursor: pointer;
+        color: white;
+    }
 
 nav {
     display: inline-block;
     width: 100%;
 }
 
-span {
+section[navlinks] ::deep a:first-child {
     display: block;
+    position: relative;
+    bottom: 25px;
+    color: indianred;
 }
+
+    section[navlinks] ::deep a:first-child:hover {
+        color: #D67B7B;
+    }
 
 section:last-child {
     float: right;
     margin-top: 97px;
 }
-
-    section:last-child a:first-child {
-        margin-right: 25px;
-    }
 
 section,
 form[signout] {

@@ -120,14 +120,14 @@ section[comment] button {
 
 /* add comment */
 section[addComment] button {
-    border: 1px solid grey;
     padding: 5px;
     margin-top: 5px;
-    color: white;
+    color: #C1C1C1;
     background-color: #626262;
 }
 
     section[addComment] button:hover {
         cursor: pointer;
-        opacity: 80%;
+        color: white;
+        background-color: #A2A2A2;
     }

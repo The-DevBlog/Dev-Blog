@@ -2,13 +2,27 @@
 textarea[modal],
 button[modal] {
     font-family: 'Fira Code', monospace;
-}
-
-h3 {
-    font-family: 'Fira Code', monospace;
 }*/
 
+h3,
+input:last-child {
+    font-family: 'Press Start 2P', cursive;
+    /*    color: white;*/
+}
+
+/*div {
+    background-color: #414141;
+    border: none;
+}*/
+
+::deep BlazoredModal {
+    background-color: black;
+}
+
 section[modal] input {
+    color: white;
     display: block;
-    border: 2px solid var(--primary_color);
+    margin: 25px;
+    font-family: 'Fira Code', monospace;
+    /*    border: 2px solid var(--primary_color);*/
 }
