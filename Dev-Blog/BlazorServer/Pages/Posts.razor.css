@@ -106,7 +106,7 @@ section[comment] p {
     margin-top: 5px;
 }
 
-/* comment delete button */
+/* delete comment */
 section[comment] button {
     position: relative;
     color: white;
