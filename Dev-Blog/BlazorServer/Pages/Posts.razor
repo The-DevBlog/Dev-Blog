@@ -125,7 +125,7 @@ else
                     <AuthorizeView>
                         <Authorized Context="Auth">
                             <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
-                                <InputTextArea @bind-Value=comment.Content placeholder="Add a comment..." />
+                                <InputTextArea required @bind-Value=comment.Content placeholder="Add a comment..." />
                                 <button type="submit">Comment</button>
                             </EditForm>
                         </Authorized>
