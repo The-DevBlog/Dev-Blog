@@ -1,8 +1,19 @@
 ﻿/* post */
 section[post] {
     margin: 50px auto;
-    width: 80%;
+    border-radius: 5px;
+    background-color: #414141;
+    padding-bottom: 15px;
 }
+
+    section[post] div {
+        background-color: #626262;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 5px 5px 0px 0px;
+        display: flex;
+        justify-content: space-between;
+    }
 
     section[post] span:nth-child(2) {
         float: right;
@@ -10,6 +21,11 @@ section[post] {
 
     section[post] p {
         text-align: center;
+        width: 928px;
+        margin: auto;
+        background-color: #626262;
+        padding: 10px 0px;
+        border-radius: 0px 0px 5px 5px;
     }
 
 img {
@@ -46,13 +62,14 @@ section[suggestion] {
 }
 
 a {
-    background-color: grey;
+    background-color: #626262;
     display: inline-block;
     padding: 20px;
     border-radius: 3.5px;
-    color: white;
+    color: #C1C1C1;
 }
 
     a:hover {
-        opacity: 80%;
+        color: white;
+        background-color: #A2A2A2;
     }

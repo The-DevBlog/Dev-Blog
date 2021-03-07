@@ -9,8 +9,11 @@
 else
 {
 <section post>
-    <span>@latestPost.UpdateNum</span>
-    <span>@latestPost.Date.ToShortDateString()</span>
+    <div>
+        <span>@latestPost.UpdateNum</span>
+        <span>Latest Post</span>
+        <span>@latestPost.Date.ToShortDateString()</span>
+    </div>
     <img src=@latestPost.ImgURL />
     <p>@latestPost.Description</p>
 </section>

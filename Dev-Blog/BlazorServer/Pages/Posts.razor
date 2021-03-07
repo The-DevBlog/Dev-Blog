@@ -19,7 +19,7 @@
 else
 {
     @* Page left / right *@
-    @*<Paginate />*@
+    @*<Paginate />
     <div>
         <button @onclick="@(e => NavTo("prev"))">PREV</button>
         @for (int i = 0; i < TotalPgs; i++)
@@ -30,7 +30,7 @@ else
             </button>
         }
         <button @onclick="@(e => NavTo("next"))">NEXT</button>
-    </div>
+    </div> *@
     @*Render Posts *@
     @foreach (var post in AllPosts)
     {

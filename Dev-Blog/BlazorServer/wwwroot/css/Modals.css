@@ -15,10 +15,6 @@ input:last-child {
     border: none;
 }*/
 
-::deep BlazoredModal {
-    /*    background-color: black;*/
-}
-
 section[modal] input {
     color: black;
     display: block;
