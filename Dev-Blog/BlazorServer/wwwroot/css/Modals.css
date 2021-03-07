@@ -7,7 +7,7 @@ button[modal] {
 h3,
 input:last-child {
     font-family: 'Press Start 2P', cursive;
-    /*    color: white;*/
+    color: black;
 }
 
 /*div {
@@ -16,11 +16,11 @@ input:last-child {
 }*/
 
 ::deep BlazoredModal {
-    background-color: black;
+    /*    background-color: black;*/
 }
 
 section[modal] input {
-    color: white;
+    color: black;
     display: block;
     margin: 25px;
     font-family: 'Fira Code', monospace;

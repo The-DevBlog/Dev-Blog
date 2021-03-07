@@ -1,7 +1,9 @@
 ﻿using BlazorServer.Interfaces;
 using BlazorServer.Models;
+using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using static BlazorServer.Pages.Modals.Register;
 
@@ -19,6 +21,20 @@ namespace BlazorServer.Controllers
             _email = email;
             UserMgr = um;
             SignInMgr = sm;
+        }
+
+        [HttpPost("/deleteAccount")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            // get current user
+            var username = User.Identity.Name.ToUpper();
+            UserModel user = UserMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
+
+            // sign current user out and delete account
+            await SignInMgr.SignOutAsync();
+            await UserMgr.DeleteAsync(user);
+
+            return Redirect("/");
         }
 
         [HttpPost("/signin")]

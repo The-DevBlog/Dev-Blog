@@ -1,6 +1,14 @@
-﻿<footer>
-    <div>
+﻿@inject IModalService _modal
+
+<footer>
+    <AuthorizeView Policy="Visitor">
+        <button @onclick="@(() => _modal.Show<DeleteAccount>("Are you sure?"))">
+            Delete Account
+        </button>
+    </AuthorizeView>
+
+    <span>
         © 2020 Copyright: TheDevBlog
-    </div>
+    </span>
 </footer>
 

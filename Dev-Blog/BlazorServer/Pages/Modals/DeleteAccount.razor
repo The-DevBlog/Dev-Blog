@@ -1,0 +1,12 @@
+﻿<form method="post" action="/deleteAccount">
+    <button type="submit">Yes</button>
+</form>
+<button @onclick="Cancel">No</button>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+
+    private void Cancel() {
+        ModalInstance.CancelAsync();
+    }
+}
