@@ -1,8 +1,44 @@
-﻿section {
+﻿div[main] {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #414141;
+    border-radius: 5px;
+    margin: 25px;
+}
+
+section * {
+    padding: 5px;
+    font-family: 'Fira Code', monospace;
+}
+
+section {
     display: inline-block;
 }
+
+h3 {
+    font-size: 2em;
+}
+
+h4 {
+    font-size: 1.5rem;
+    margin-left: 15px;
+}
+
+ul {
+    margin-left: 30px;
+}
+
+a {
+    color: lightblue;
+}
+
+    a:hover {
+        color: white;
+    }
 
 img {
     height: 350px;
     width: 475px;
+    border-radius: 5px;
 }

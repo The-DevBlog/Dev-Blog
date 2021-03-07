@@ -29,6 +29,7 @@ section[post] {
     }
 
 img {
+    border-radius: 5px 5px 0px 0px;
     display: block;
     height: 522px;
     margin: auto;
