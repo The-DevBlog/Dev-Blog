@@ -4,6 +4,7 @@ section[post] {
     border-radius: 5px;
     background-color: #414141;
     padding-bottom: 15px;
+    width: 100%;
 }
 
     section[post] div {
@@ -74,3 +75,29 @@ a {
         color: white;
         background-color: #A2A2A2;
     }
+
+@media screen and (max-width: 992px) {
+    section[post] p {
+        width: 640px;
+    }
+
+    section[post],
+    section[post] div {
+        width: auto;
+    }
+
+    section[post] {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    section[post] p {
+        width: 448px;
+    }
+
+    section[youtube] {
+        height: 300px;
+    }
+}

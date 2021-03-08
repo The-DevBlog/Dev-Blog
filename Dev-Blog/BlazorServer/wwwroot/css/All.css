@@ -16,4 +16,29 @@ body {
 
 main {
     background-color: #313131;
+    display: grid;
+}
+
+@media screen and (max-width: 1225px) {
+    div[post],
+    section[postInfo] {
+        width: 928px;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    div[post] img,
+    section[post] img {
+        height: 360px;
+        width: 640px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    div[post] img,
+    section[post] img {
+        height: 252px;
+        width: 448px;
+    }
 }

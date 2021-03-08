@@ -22,9 +22,10 @@ img {
 
 section[postInfo] > div {
     background-color: #626262;
-    padding: 5px;
+    padding: 5px 0px;
     margin-bottom: 15px;
     border-radius: 5px 5px 0px 0px;
+    width: 100%;
 }
 
     section[postInfo] > div span:last-child {
@@ -131,3 +132,25 @@ section[addComment] button {
         color: white;
         background-color: #A2A2A2;
     }
+
+@media screen and (max-width: 992px) {
+    section[postInfo] p {
+        width: 640px;
+    }
+
+    section[postInfo],
+    div[post] {
+        width: auto;
+    }
+
+    div[post] {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    section[postInfo] p {
+        width: 448px;
+    }
+}
