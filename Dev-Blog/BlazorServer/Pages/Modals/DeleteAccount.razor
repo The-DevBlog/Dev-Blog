@@ -1,7 +1,11 @@
-﻿<form method="post" action="/deleteAccount">
-    <button type="submit">Yes</button>
-</form>
-<button @onclick="Cancel">No</button>
+﻿<section modal>
+    <form method="post" action="/deleteAccount">
+        <button type="submit">Yes</button>
+    </form>
+    <button @onclick="Cancel">No</button>
+</section>
+    
+
 
 @code {
     [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }

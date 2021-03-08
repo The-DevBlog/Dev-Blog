@@ -15,10 +15,19 @@ input:last-child {
     border: none;
 }*/
 
-section[modal] input {
-    color: black;
-    display: block;
-    margin: 25px;
-    font-family: 'Fira Code', monospace;
-    /*    border: 2px solid var(--primary_color);*/
+div {
+    background-color: #414141;
 }
+
+section[modal] {
+    background-color: #414141;
+    color: white;
+}
+
+    section[modal] input {
+        color: white;
+        display: block;
+        margin: 25px;
+        font-family: 'Fira Code', monospace;
+        /*    border: 2px solid var(--primary_color);*/
+    }
