@@ -41,4 +41,11 @@ main {
         height: 252px;
         width: 448px;
     }
+
+    @media screen and (max-width: 680px) {
+        div[post] img,
+        section[post] img {
+            width: 100%;
+        }
+    }
 }

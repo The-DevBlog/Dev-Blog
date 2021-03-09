@@ -46,7 +46,18 @@ img {
 @media screen and (max-width: 690px) {
     div[main] {
         display: block;
-        width: auto;
+        /*        width: auto;*/
         text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+    }
+
+    /*    section {
+        width: 90%;
+    }*/
+
+    img {
+        width: 100%;
     }
 }

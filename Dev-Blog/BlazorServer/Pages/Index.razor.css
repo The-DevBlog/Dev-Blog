@@ -100,4 +100,8 @@ a {
     section[youtube] {
         height: 300px;
     }
+
+    section[post] p {
+        width: 100%;
+    }
 }
