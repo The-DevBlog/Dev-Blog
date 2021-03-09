@@ -39,6 +39,14 @@ a {
 
 img {
     height: 350px;
-    width: 475px;
+    width: 425px;
     border-radius: 5px;
+}
+
+@media screen and (max-width: 690px) {
+    div[main] {
+        display: block;
+        width: auto;
+        text-align: center;
+    }
 }
