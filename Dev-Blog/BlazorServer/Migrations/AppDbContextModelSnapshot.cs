@@ -104,24 +104,20 @@ namespace BlazorServer.Migrations
 
             modelBuilder.Entity("BlazorServer.Models.DownVoteModel", b =>
                 {
-                    b.HasOne("BlazorServer.Models.PostModel", "Post")
+                    b.HasOne("BlazorServer.Models.PostModel", null)
                         .WithMany("DownVotes")
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BlazorServer.Models.UpVoteModel", b =>
                 {
-                    b.HasOne("BlazorServer.Models.PostModel", "Post")
+                    b.HasOne("BlazorServer.Models.PostModel", null)
                         .WithMany("UpVotes")
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BlazorServer.Models.PostModel", b =>

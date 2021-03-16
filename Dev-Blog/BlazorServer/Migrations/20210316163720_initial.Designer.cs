@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210214230903_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210316163720_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -106,24 +106,20 @@ namespace BlazorServer.Migrations
 
             modelBuilder.Entity("BlazorServer.Models.DownVoteModel", b =>
                 {
-                    b.HasOne("BlazorServer.Models.PostModel", "Post")
+                    b.HasOne("BlazorServer.Models.PostModel", null)
                         .WithMany("DownVotes")
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BlazorServer.Models.UpVoteModel", b =>
                 {
-                    b.HasOne("BlazorServer.Models.PostModel", "Post")
+                    b.HasOne("BlazorServer.Models.PostModel", null)
                         .WithMany("UpVotes")
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BlazorServer.Models.PostModel", b =>
