@@ -6,10 +6,9 @@
 @inject IVoteRepository _votes
 @inject AuthenticationStateProvider Auth
 @inject IModalService _modal
-
 @* Add Post *@
 <AuthorizeView Policy="Admin">
-    <button @onclick=ShowAddPost>Add Post</button>
+    <button @onclick=AddPost>Add Post</button>
 </AuthorizeView>
 
 @if (AllPosts == null)
@@ -20,17 +19,17 @@ else
 {
     @* Page left / right *@
     @*<Paginate />
-    <div>
-        <button @onclick="@(e => NavTo("prev"))">PREV</button>
-        @for (int i = 0; i < TotalPgs; i++)
-        {
-            var pgNum = i;
-            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-                @(i + 1)
-            </button>
-        }
-        <button @onclick="@(e => NavTo("next"))">NEXT</button>
-    </div> *@
+        <div>
+            <button @onclick="@(e => NavTo("prev"))">PREV</button>
+            @for (int i = 0; i < TotalPgs; i++)
+            {
+                var pgNum = i;
+                <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+                    @(i + 1)
+                </button>
+            }
+            <button @onclick="@(e => NavTo("next"))">NEXT</button>
+        </div> *@
     @*Render Posts *@
     @foreach (var post in AllPosts)
     {
@@ -39,7 +38,7 @@ else
                 <div>
                     <span>@post.UpdateNum</span>
 
-                @* Delete / Edit Post *@
+                    @* Delete / Edit Post *@
                     <AuthorizeView Policy="Admin">
                         <button @onclick="@(() => ShowEditPost(post.Id))">
                             <EditIcon />
@@ -97,22 +96,22 @@ else
                             <span>@comment.UserName</span>
 
                             <div>
-                            <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
-                            <AuthorizeView Policy="Visitor">
-                                @if(comment.UserName == _http.HttpContext.User.Identity.Name) 
-                                {
+                                <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+                                <AuthorizeView Policy="Visitor">
+                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                                    {
+                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                            <TrashIcon />
+                                        </button>
+                                    }
+                                </AuthorizeView>
+
+                                @* Delete / Edit Comment *@
+                                <AuthorizeView Policy="Admin">
                                     <button @onclick="async () => await _comments.Delete(comment.Id)">
                                         <TrashIcon />
                                     </button>
-                                }
                                 </AuthorizeView>
-
-                            @* Delete / Edit Comment *@
-                            <AuthorizeView Policy="Admin">
-                                <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                    <TrashIcon />
-                                </button>
-                            </AuthorizeView>
                             </div>
 
                             <p>@comment.Content</p>
@@ -142,6 +141,7 @@ else
 
 @code {
     CommentVM comment = new CommentVM();
+    private ModalOptions options;
 
     public List<PostModel> PostsPage { get; set; }
     public List<PostModel> AllPosts { get; set; }
@@ -152,6 +152,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        options = new ModalOptions()
+        {
+            Class = "custom-modal",
+            DisableBackgroundCancel = true
+        };
+
         AllPosts = await _posts.GetPosts();
         PgSize = 5;
         PostsPage = AllPosts.Take(PgSize).ToList();
@@ -164,9 +170,9 @@ else
         //appState.OnCommentChange += () => InvokeAsync(StateHasChanged);
     }
 
-    async Task ShowAddPost()
+    public void AddPost()
     {
-        await _modal.Show<AddPost>("Add Post").Result;
+        var modal = _modal.Show<AddPost>("Add Post", options);
         //AllPosts = await _posts.GetPosts();
     }
 

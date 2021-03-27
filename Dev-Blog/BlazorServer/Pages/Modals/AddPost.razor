@@ -6,16 +6,18 @@
 @inject IImageRepository _imgs
 @inject IEmailRepository _emails
 @inject NavigationManager NavMgr
-@inject State.AppState appState
+@*@inject State.AppState appState*@
 
 <section modal>
-<EditForm Model=@newPost OnValidSubmit=CreatePost>
-    <InputText @bind-Value=newPost.UpdateNum placeholder="update number" />
-    <InputTextArea @bind-Value=newPost.Description placeholder="description" />
-    <InputText @bind-Value=name placeholder="file name" />
-    <InputFile OnChange=HandleFileInput placeholder="file" />
-    <button modal type="submit">Add Post</button>
-</EditForm>
+    <EditForm Model=@newPost OnValidSubmit=CreatePost>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value=newPost.UpdateNum placeholder="update number" />
+        <InputTextArea @bind-Value=newPost.Description placeholder="description" />
+        <InputText @bind-Value=name placeholder="file name" />
+        <InputFile OnChange=HandleFileInput placeholder="file" />
+        <button modal type="submit">Add Post</button>
+    </EditForm>
 </section>
 
 @code {
@@ -24,7 +26,7 @@
     IBrowserFile file;
     Stream fs;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         newPost = new PostModel();
     }
@@ -38,8 +40,8 @@
     private async Task CreatePost()
     {
         string url = await _imgs.AddImgToDropBox(fs, name);
-        await appState.AddPost(newPost, url);
-        //await _posts.Create(newPost, url);
+        @*await appState.AddPost(newPost, url);*@
+        await _posts.Create(newPost, url);
         await _emails.NewPost(url);
 
         NavMgr.NavigateTo("/posts");

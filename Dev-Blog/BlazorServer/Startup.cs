@@ -1,8 +1,6 @@
 using BlazorServer.Data;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +55,6 @@ namespace BlazorServer
             });
 
             //TODO: Understand differences between all of these
-            //services.AddScoped<>
             services.AddTransient<IEmailRepository, EmailRepository>();
             services.AddTransient<IVoteRepository, VoteRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();

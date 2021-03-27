@@ -8,10 +8,10 @@ namespace BlazorServer.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "update number required")]
         public string UpdateNum { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "description required")]
         public string Description { get; set; }
 
         public DateTime Date { get; set; }

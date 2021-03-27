@@ -1,35 +1,35 @@
 ﻿@using System.ComponentModel.DataAnnotations;
 
 <section modal>
-<EditForm Model=signIn>
     <form method="post" action="/signin">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <InputText @bind-Value=signIn.UserName placeholder="username" />
-        <InputText @bind-Value=signIn.Password type="password" placeholder="password" />
+        <EditForm Model=signIn>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <InputText @bind-Value=signIn.UserName placeholder="username" />
+            <InputText @bind-Value=signIn.Password type="password" placeholder="password" />
 
-        <input type="hidden" name="username" value=@signIn.UserName hidden />
-        <input type="hidden" name="password" value=@signIn.Password hidden />
+            <input type="hidden" name="username" value=@signIn.UserName hidden />
+            <input type="hidden" name="password" value=@signIn.Password hidden />
 
-        <input modal type="submit" value="Submit" />
+            <input modal type="submit" value="Submit" />
+        </EditForm>
     </form>
-</EditForm>
 </section>
 
 @code {
     private SignInModel signIn;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         signIn = new SignInModel();
     }
 
     private class SignInModel
     {
-        [Required]
+        [Required(ErrorMessage = "username required")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "password required")]
         public string Password { get; set; }
     }
 }

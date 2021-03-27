@@ -30,13 +30,34 @@
 
             <!-- LOGIN / REGISTER -->
             <NotAuthorized>
-                <button @onclick="@(() => _modal.Show<SignIn>("Login"))">
-                    Login
-                </button>               
-                <button @onclick="@(() => _modal.Show<Register>("Sign Up"))">
-                    SignUp
-                </button>
+                <button @onclick=Login>Login</button>
+                <button @onclick=Register>SignUp</button>
             </NotAuthorized>
         </AuthorizeView>
     </section>
 </nav>
+
+@code {
+    [CascadingParameter]
+    public IModalService ModalService { get; set; }
+    private ModalOptions options;
+
+    protected override void OnInitialized()
+    {
+        options = new ModalOptions()
+        {
+            Class = "custom-modal",
+            DisableBackgroundCancel = true
+        };
+    }
+
+    private void Login()
+    {
+        var modal = ModalService.Show<SignIn>("Login", options);
+    }
+
+    private void Register()
+    {
+        var modal = ModalService.Show<Register>("Sign up", options);
+    }
+}

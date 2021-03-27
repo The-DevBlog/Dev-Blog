@@ -1,16 +1,15 @@
 ﻿<section modal>
     <form method="post" action="/deleteAccount">
-        <button type="submit">Yes</button>
+        <button modal type="submit">Yes</button>
     </form>
-    <button @onclick="Cancel">No</button>
+    <button modal @onclick="Cancel">No</button>
 </section>
-    
-
 
 @code {
     [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
 
-    private void Cancel() {
+    private void Cancel()
+    {
         ModalInstance.CancelAsync();
     }
 }

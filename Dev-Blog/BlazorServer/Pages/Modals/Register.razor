@@ -3,11 +3,12 @@
 @inject IModalService _modal
 
 <section modal>
-    <EditForm Model=registerVM>
-        <form method="post" action="/signup">
+    <form method="post" action="/signup">
+        <EditForm Model=registerVM>
             <DataAnnotationsValidator />
             <ValidationSummary />
             <InputText @bind-Value=registerVM.UserName placeholder="username" />
+
             <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
             <InputText @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
             <InputText @bind-Value=registerVM.Email type="email" placeholder="email" />
@@ -17,39 +18,38 @@
             <input type="hidden" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
             <input type="hidden" name="email" value=@registerVM.Email hidden />
 
-            <input type="submit" value="Submit" />
-        </form>
-    </EditForm>
-</section >
+            <input modal type="submit" value="Submit" />
+        </EditForm>
+    </form>
+</section>
 
-    @code {
-        RegisterVM registerVM;
+@code {
+    RegisterVM registerVM;
 
-        protected override async Task OnInitializedAsync()
-        {
-            registerVM = new RegisterVM();
-        }
-
-        public class RegisterVM
-        {
-            [Required]
-            [StringLength(25)]
-            public string UserName { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [StringLength(35)]
-            public string Password { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Compare("Password")]
-            [StringLength(35)]
-            public string ConfirmPassword { get; set; }
-
-            [Required]
-            [EmailAddress]
-            [RegularExpression("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", ErrorMessage = "Please enter a correct email address")]
-            public string Email { get; set; }
-        }
+    protected override void OnInitialized()
+    {
+        registerVM = new RegisterVM();
     }
+
+    public class RegisterVM
+    {
+        [Required(ErrorMessage = "username required")]
+        [StringLength(25, ErrorMessage = "username must be less than 25 characters")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "password required")]
+        [DataType(DataType.Password)]
+        [StringLength(35, ErrorMessage = "password must be less than 35 characters")]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "confirm password required")]
+        [DataType(DataType.Password)]
+        [Compare("Password")]
+        [StringLength(35, ErrorMessage = "passwords must match")]
+        public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "email required")]
+        [EmailAddress(ErrorMessage = "invalid email")]
+        public string Email { get; set; }
+    }
+}
