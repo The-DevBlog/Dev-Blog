@@ -1,23 +1,27 @@
 ﻿@using System.ComponentModel.DataAnnotations;
+@inject IJSRuntime JSRuntime
 
 <section modal>
-    <form method="post" action="/signin">
-        <EditForm Model=signIn>
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <InputText @bind-Value=signIn.UserName placeholder="username" />
-            <InputText @bind-Value=signIn.Password type="password" placeholder="password" />
-
-            <input type="hidden" name="username" value=@signIn.UserName hidden />
-            <input type="hidden" name="password" value=@signIn.Password hidden />
-
-            <input modal type="submit" value="Submit" />
-        </EditForm>
+    <EditForm Model=signIn OnValidSubmit=SubmitForm>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value=signIn.UserName placeholder="username" />
+        <InputText @bind-Value=signIn.Password type="password" placeholder="password" />
+        <input modal type="submit" value="Submit" />
+    </EditForm>
+    <form id="form" method="post" action="/signin">
+        <input type="hidden" name="username" value=@signIn.UserName hidden />
+        <input type="hidden" name="password" value=@signIn.Password hidden />
     </form>
 </section>
 
 @code {
     private SignInModel signIn;
+
+    async Task SubmitForm()
+    {
+        await JSRuntime.InvokeVoidAsync("SubmitForm", "form");
+    }
 
     protected override void OnInitialized()
     {

@@ -1,25 +1,24 @@
 ﻿@using System.ComponentModel.DataAnnotations;
 
 @inject IModalService _modal
+@inject IJSRuntime JSRuntime
 
 <section modal>
-    <form method="post" action="/signup">
-        <EditForm Model=registerVM>
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <InputText @bind-Value=registerVM.UserName placeholder="username" />
+    <EditForm Model=registerVM OnValidSubmit=SubmitForm>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value=registerVM.UserName placeholder="username" />
+        <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
+        <InputText @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
+        <InputText @bind-Value=registerVM.Email type="email" placeholder="email" />
 
-            <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
-            <InputText @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
-            <InputText @bind-Value=registerVM.Email type="email" placeholder="email" />
-
-            <input type="hidden" name="username" value=@registerVM.UserName hidden />
-            <input type="hidden" name="password" value=@registerVM.Password hidden />
-            <input type="hidden" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
-            <input type="hidden" name="email" value=@registerVM.Email hidden />
-
-            <input modal type="submit" value="Submit" />
-        </EditForm>
+        <input modal type="submit" value="Submit" />
+    </EditForm>
+    <form id="form" method="post" action="/signup">
+        <input type="hidden" name="username" value=@registerVM.UserName hidden />
+        <input type="hidden" name="password" value=@registerVM.Password hidden />
+        <input type="hidden" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
+        <input type="hidden" name="email" value=@registerVM.Email hidden />
     </form>
 </section>
 
@@ -29,6 +28,11 @@
     protected override void OnInitialized()
     {
         registerVM = new RegisterVM();
+    }
+
+    async Task SubmitForm()
+    {
+        await JSRuntime.InvokeVoidAsync("SubmitForm", "form");
     }
 
     public class RegisterVM
