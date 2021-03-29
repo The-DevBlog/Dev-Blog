@@ -1,9 +1,11 @@
 ﻿using BlazorServer.Data;
 using BlazorServer.Interfaces;
 using BlazorServer.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static BlazorServer.Pages.Posts;
@@ -12,123 +14,79 @@ namespace BlazorServer.State
 {
     public class AppState
     {
-        public event Action OnCommentChange;
+        public event Action<ComponentBase> StateChanged;
 
-        public event Action OnUpVoteChange;
+        public List<PostModel> Posts { get; private set; }
 
-        public event Action OnDownVoteChange;
+        public CommentVM Comment { get; private set; }
 
-        public event Action OnPostChange;
-
-        public List<PostModel> Posts { get; set; }
         private readonly ICommentRepository _comments;
         private readonly IPostRepository _posts;
         private readonly IVoteRepository _votes;
-        private readonly IDbContextFactory<AppDbContext> DbFactory;
+        private readonly IEmailRepository _email;
+        private readonly IImageRepository _image;
 
-        public AppState(IPostRepository posts, ICommentRepository comments, IVoteRepository votes, IDbContextFactory<AppDbContext> db)
+        public AppState(IImageRepository image, IEmailRepository email, IPostRepository posts, ICommentRepository comments, IVoteRepository votes)
         {
+            _image = image;
+            _email = email;
             _comments = comments;
             _votes = votes;
             _posts = posts;
-            DbFactory = db;
         }
 
-        //TODO: refreshAllPosts()
         public async Task Refresh()
         {
-            //Posts = await _posts.GetPosts();
+            Posts = await _posts.GetPosts();
         }
 
-        public async Task AddUpVote(int postId, string username)
+        public async Task UpVote(ComponentBase source, int postId, string username)
         {
-            var downVote = await _votes.GetDownVote(postId, username);
-            var upVote = await _votes.UpVote(postId, username);
-
-            if (downVote != null)
-            {
-                Posts.Where(p => p.Id == postId)
-                     .FirstOrDefault()
-                     .DownVotes.Remove(downVote);
-            }
-
-            if (upVote != null)
-            {
-                Posts.Where(p => p.Id == postId)
-                     .FirstOrDefault()
-                     .UpVotes.Remove(upVote);
-            }
-            else
-            {
-                Posts.Where(p => p.Id == postId)
-                     .FirstOrDefault()
-                     .UpVotes.Add(upVote);
-            }
-
-            OnUpVoteChange?.Invoke();
+            await _votes.UpVote(postId, username);
+            NotifyStateChanged(source);
         }
 
-        public async Task AddDownVote(int postId, string username)
+        public async Task DownVote(ComponentBase source, int postId, string username)
         {
-            var upVote = await _votes.GetUpVote(postId, username);
-            var downVote = await _votes.DownVote(postId, username);
-
-            if (upVote != null)
-            {
-                Posts.Where(p => p.Id == postId)
-                     .FirstOrDefault()
-                     .UpVotes.Remove(upVote);
-            }
-
-            if (downVote != null)
-            {
-                Posts.Where(p => p.Id == postId)
-                     .FirstOrDefault()
-                     .DownVotes.Remove(downVote);
-            }
-            else
-            {
-                Posts.Where(p => p.Id == postId)
-                     .FirstOrDefault()
-                     .DownVotes.Add(downVote);
-            }
-
-            OnDownVoteChange?.Invoke();
+            await _votes.DownVote(postId, username);
+            NotifyStateChanged(source);
         }
 
-        public async Task AddPost(PostModel post, string url)
+        public async Task DeleteComment(ComponentBase source, int id)
         {
-            //using var ctx = DbFactory.CreateDbContext();
-            //post.ImgURL = url;
-
-            //var newp = ctx.Post.Add(post).Entity;
-            //await ctx.SaveChangesAsync();
-
-            var newPost = await _posts.Create(post, url);
-            Posts.Add(newPost);
-            OnPostChange?.Invoke();
+            await _comments.Delete(id);
+            NotifyStateChanged(source);
         }
 
-        public async Task AddComment(CommentVM comment)
+        public async Task DeletePost(ComponentBase source, int id)
         {
-            //using var ctx = DbFactory.CreateDbContext();
+            await _posts.Delete(id);
+            NotifyStateChanged(source);
+        }
 
-            //var comm = new CommentModel()
-            //{
-            //    UserName = comment.UserName,
-            //    Content = comment.Content,
-            //    PostModelId = postId
-            //};
+        public async Task AddPost(ComponentBase source, PostModel post, string url)
+        {
+            await _posts.Create(post, url);
+            await _email.NewPost(url);
+            NotifyStateChanged(source);
+        }
 
-            //var newC = ctx.Comment.Add(comm).Entity;
+        public async Task<string> AddImgToDropBox(ComponentBase source, string name, Stream fs)
+        {
+            string url = await _image.AddImgToDropBox(fs, name);
+            NotifyStateChanged(source);
+            return url;
+        }
 
-            //await ctx.SaveChangesAsync();
+        public async Task AddComment(ComponentBase source, CommentVM comment)
+        {
+            this.Comment = comment;
             var newComment = await _comments.Create(comment);
-
-            Posts.Where(p => p.Id == comment.PostModelId).FirstOrDefault()
-                 .Comments.Add(newComment);
-
-            OnCommentChange?.Invoke();
+            //await Refresh();
+            NotifyStateChanged(source);
         }
+
+        private void NotifyStateChanged(ComponentBase source)
+            => StateChanged?.Invoke(source);
     }
 }

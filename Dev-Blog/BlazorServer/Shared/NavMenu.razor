@@ -30,16 +30,14 @@
 
             <!-- LOGIN / REGISTER -->
             <NotAuthorized>
-                <button @onclick=Login>Login</button>
-                <button @onclick=Register>SignUp</button>
+                <button @onclick="@(() => _modal.Show<SignIn>("Login", options))">Login</button>
+                <button @onclick="@(() => _modal.Show<Register>("Sign Up", options))">SignUp</button>
             </NotAuthorized>
         </AuthorizeView>
     </section>
 </nav>
 
 @code {
-    [CascadingParameter]
-    public IModalService ModalService { get; set; }
     private ModalOptions options;
 
     protected override void OnInitialized()
@@ -50,15 +48,5 @@
             FocusFirstElement = true,
             OverlayCustomClass = "modal-background"
         };
-    }
-
-    private void Login()
-    {
-        var modal = ModalService.Show<SignIn>("Login", options);
-    }
-
-    private void Register()
-    {
-        var modal = ModalService.Show<Register>("Sign up", options);
     }
 }

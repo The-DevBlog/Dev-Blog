@@ -1,38 +1,22 @@
 ﻿@page "/posts"
 
+@implements IDisposable
 @inject IHttpContextAccessor _http
-@inject IPostRepository _posts
-@inject ICommentRepository _comments
-@inject IVoteRepository _votes
-@inject AuthenticationStateProvider Auth
 @inject IModalService _modal
+@inject AppState AppState
 <!-- Add Post -->
 <AuthorizeView Policy="Admin">
-    <button @onclick=ShowAddPost>Add Post</button>
+    <button @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
 </AuthorizeView>
 
-@if (AllPosts == null)
+@if (AppState.Posts == null)
 {
     <p>Loading...</p>
 }
 else
 {
-    <!-- Page left / right -->
-    @*<Paginate />*@
-    <div>
-        <button @onclick="@(e => NavTo("prev"))">PREV</button>
-        @for (int i = 0; i < TotalPgs; i++)
-        {
-            var pgNum = i;
-            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-                @(i + 1)
-            </button>
-        }
-        <button @onclick="@(e => NavTo("next"))">NEXT</button>
-    </div>
-
     <!-- Render Posts -->
-    @foreach (var post in PostsPage)
+    @foreach (var post in AppState.Posts)
     {
         <div post>
             <section postInfo>
@@ -41,11 +25,11 @@ else
 
                     @* Delete / Edit Post *@
                     <AuthorizeView Policy="Admin">
-                        <button @onclick="@(() => ShowEditPost(post.Id))">
+                        <button @onclick="async () => await ShowEditPost(post.Id)">
                             <EditIcon />
                         </button>
 
-                        <button @onclick="() => DeletePost(post.Id)">
+                        <button @onclick="async () => await AppState.DeletePost(this, post.Id)">
                             <TrashIcon />
                         </button>
                     </AuthorizeView>
@@ -64,13 +48,12 @@ else
                     <AuthorizeView>
                         <Authorized>
                             <div>
-                                <button thumbIcon upvote @onclick="async () => await _votes.UpVote(post.Id, _http.HttpContext.User.Identity.Name)">
+                                <button thumbIcon upvote @onclick="async () => await AppState.UpVote(this, post.Id, username)">
                                     <ThumbsUpIcon />
                                 </button>
                                 <span votes>@post.UpVotes.Count</span>
-
-                                <button thumbIcon downvote @onclick="async () => await _votes.DownVote(post.Id, _http.HttpContext.User.Identity.Name)">
-                                    <ThumbsDownIcon />
+                                <button thumbIcon upvote @onclick="async () => await AppState.DownVote(this, post.Id, username)">
+                                    <ThumbsUpIcon />
                                 </button>
                                 <span votes>@post.DownVotes.Count</span>
                             </div>
@@ -100,27 +83,27 @@ else
                             <div>
                                 <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
                                 <AuthorizeView Policy="Visitor">
-                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                                    @if (comment.UserName == username)
                                     {
                                         <button @onclick="() => ShowEditComment(comment)">
                                             <EditIcon />
                                         </button>
-                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                        <button @onclick="async () => await AppState.DeleteComment(this, comment.Id)">
                                             <TrashIcon />
                                         </button>
                                     }
                                 </AuthorizeView>
 
                                 <AuthorizeView Policy="Admin">
-                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                                    @if (comment.UserName == username)
                                     {
                                         <button @onclick="() => ShowEditComment(comment)">
                                             <EditIcon />
                                         </button>
-                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                            <TrashIcon />
-                                        </button>
                                     }
+                                    <button @onclick="async () => await AppState.DeleteComment(this, comment.Id)">
+                                        <TrashIcon />
+                                    </button>
                                 </AuthorizeView>
                             </div>
 
@@ -152,13 +135,7 @@ else
 @code {
     CommentVM comment = new CommentVM();
     private ModalOptions options;
-
-    public List<PostModel> PostsPage { get; set; }
-    public List<PostModel> AllPosts { get; set; }
-
-    public int PgSize { get; set; }
-    public int TotalPgs { get; set; }
-    public int CurrentPg { get; set; }
+    private string username;
 
     protected override async Task OnInitializedAsync()
     {
@@ -169,23 +146,25 @@ else
             OverlayCustomClass = "modal-background"
         };
 
-        AllPosts = await _posts.GetPosts();
-        PgSize = 5;
-        PostsPage = AllPosts.Take(PgSize).ToList();
-        TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);
+        username = _http.HttpContext.User.Identity.Name;
 
-        //await appState.Refresh();
-        //appState.OnDownVoteChange += () => InvokeAsync(StateHasChanged);
-        //appState.OnUpVoteChange += () => InvokeAsync(StateHasChanged);
-        //appState.OnPostChange += () => InvokeAsync(StateHasChanged);
-        //appState.OnCommentChange += () => InvokeAsync(StateHasChanged);
+        await AppState.Refresh();
+        AppState.StateChanged += async (Source)
+            => await AppState_StateChanged(Source);
     }
 
-    public async Task ShowAddPost()
+    void IDisposable.Dispose()
     {
-        var modal = _modal.Show<AddPost>("Add Post", options);
-        AllPosts = await _posts.GetPosts();
-        UpdateList(CurrentPg);
+        AppState.StateChanged -= async (Source)
+            => await AppState_StateChanged(Source);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     public async Task ShowEditComment(CommentModel comment)
@@ -204,35 +183,10 @@ else
 
     public async Task AddComment(int postId)
     {
-        comment.UserName = _http.HttpContext.User.Identity.Name;
+        comment.UserName = username;
         comment.PostModelId = postId;
-        await _comments.Create(comment);
-        //await appState.AddComment(comment);
+        await AppState.AddComment(this, comment);
         comment = new CommentVM();
-    }
-
-    public async Task DeletePost(int postId)
-    {
-        await _posts.Delete(postId);
-        AllPosts = await _posts.GetPosts();
-        UpdateList(CurrentPg);
-    }
-
-    public void UpdateList(int pgNum)
-    {
-        PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
-        CurrentPg = pgNum;
-    }
-
-    public void NavTo(string val)
-    {
-        if (val == "prev" && CurrentPg != 0)
-            CurrentPg--;
-
-        if (val == "next" && CurrentPg != TotalPgs - 1)
-            CurrentPg++;
-
-        UpdateList(CurrentPg);
     }
 
     public class CommentVM

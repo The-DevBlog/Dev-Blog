@@ -57,9 +57,10 @@ namespace BlazorServer
             //TODO: Understand differences between all of these
             services.AddTransient<IEmailRepository, EmailRepository>();
             services.AddTransient<IVoteRepository, VoteRepository>();
-            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
-            services.AddTransient<IPostRepository, PostRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<AppState>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

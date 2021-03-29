@@ -2,10 +2,7 @@
 
 @using System.IO
 
-@inject IPostRepository _posts
-@inject IImageRepository _imgs
-@inject IEmailRepository _emails
-@*@inject State.AppState appState*@
+@inject State.AppState appState
 
 <section modal>
     <EditForm Model=@newPost OnValidSubmit=CreatePost>
@@ -39,12 +36,12 @@
 
     private async Task CreatePost()
     {
-        string url = await _imgs.AddImgToDropBox(fs, name);
-        @*await appState.AddPost(newPost, url);*@
-        await _posts.Create(newPost, url);
-        await _emails.NewPost(url);
+        @*string url = await _imgs.AddImgToDropBox(fs, name);*@
+        @*await _posts.Create(newPost, url);*@
+        @*await _emails.NewPost(url);*@
         @*var posts = await _posts.GetPosts();*@
+        string url = await appState.AddImgToDropBox(this, name, fs);
+        await appState.AddPost(this, newPost, url);
         await ModalInstance.CloseAsync();
-        @*NavMgr.NavigateTo("/posts");*@
     }
 }
