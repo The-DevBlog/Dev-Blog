@@ -38,6 +38,14 @@ namespace BlazorServer.Services
             return newComment;
         }
 
+        public async Task Update(CommentModel comment)
+        {
+            //var comment = await _db.Comment.Where(x => x.Id == id).FirstOrDefaultAsync();
+            //comment.Content = content;
+            _db.Comment.Update(comment);
+            await _db.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Retrieves all comments from database
         /// </summary>

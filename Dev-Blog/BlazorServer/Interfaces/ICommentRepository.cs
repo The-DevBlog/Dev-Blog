@@ -9,10 +9,12 @@ namespace BlazorServer.Interfaces
     {
         Task<CommentModel> Create(CommentVM comment);
 
+        Task Update(CommentModel comment);
+
         Task<List<CommentModel>> GetComments();
 
-        Task<CommentModel> GetComment(int commentId);
+        Task<CommentModel> GetComment(int id);
 
-        Task Delete(int commentId);
+        Task Delete(int id);
     }
 }

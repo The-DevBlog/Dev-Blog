@@ -1,0 +1,30 @@
+﻿@inject ICommentRepository _comments;
+
+<section modal>
+    <EditForm Model=@Comment OnValidSubmit=@UpdateComment>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputTextArea @bind-Value=Comment.Content placeholder=@Comment.Content />
+        <input modal type="submit" value="Submit" />
+    </EditForm>
+</section>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+
+    [Parameter]
+    public CommentModel Comment { get; set; }
+
+    @*CommentModel comment;*@
+
+    @*protected override async Task OnInitializedAsync()
+        {
+            comment = await _comments.GetComment(Id);
+        }*@
+
+    private async Task UpdateComment()
+    {
+        await _comments.Update(Comment);
+        await ModalInstance.CloseAsync();
+    }
+}

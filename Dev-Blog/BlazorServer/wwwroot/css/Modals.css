@@ -4,7 +4,12 @@
     padding: 15px;
 }
 
-section[modal] input {
+.modal-background {
+    background-color: #313131;
+}
+
+section[modal] input,
+section[modal] textarea {
     color: white;
     display: block;
     margin: 25px;

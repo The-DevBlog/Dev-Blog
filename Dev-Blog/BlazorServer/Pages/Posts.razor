@@ -6,9 +6,9 @@
 @inject IVoteRepository _votes
 @inject AuthenticationStateProvider Auth
 @inject IModalService _modal
-@* Add Post *@
+<!-- Add Post -->
 <AuthorizeView Policy="Admin">
-    <button @onclick=AddPost>Add Post</button>
+    <button @onclick=ShowAddPost>Add Post</button>
 </AuthorizeView>
 
 @if (AllPosts == null)
@@ -17,21 +17,22 @@
 }
 else
 {
-    @* Page left / right *@
-    @*<Paginate />
-        <div>
-            <button @onclick="@(e => NavTo("prev"))">PREV</button>
-            @for (int i = 0; i < TotalPgs; i++)
-            {
-                var pgNum = i;
-                <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-                    @(i + 1)
-                </button>
-            }
-            <button @onclick="@(e => NavTo("next"))">NEXT</button>
-        </div> *@
-    @*Render Posts *@
-    @foreach (var post in AllPosts)
+    <!-- Page left / right -->
+    @*<Paginate />*@
+    <div>
+        <button @onclick="@(e => NavTo("prev"))">PREV</button>
+        @for (int i = 0; i < TotalPgs; i++)
+        {
+            var pgNum = i;
+            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
+                @(i + 1)
+            </button>
+        }
+        <button @onclick="@(e => NavTo("next"))">NEXT</button>
+    </div>
+
+    <!-- Render Posts -->
+    @foreach (var post in PostsPage)
     {
         <div post>
             <section postInfo>
@@ -56,7 +57,7 @@ else
                 <p>@post.Description</p>
             </section>
 
-            @* Voting System *@
+            <!-- Voting System -->
             <div comments>
                 <section votes>
 
@@ -86,7 +87,7 @@ else
                     </AuthorizeView>
                 </section>
 
-                @* Render Comments *@
+                <!-- Render Comments -->
                 @if (post.Comments != null)
                 {
                     foreach (var comment in post.Comments)
@@ -95,22 +96,31 @@ else
                         <section comment>
                             <span>@comment.UserName</span>
 
+                            <!-- Delete / Edit Comment -->
                             <div>
                                 <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
                                 <AuthorizeView Policy="Visitor">
                                     @if (comment.UserName == _http.HttpContext.User.Identity.Name)
                                     {
+                                        <button @onclick="() => ShowEditComment(comment)">
+                                            <EditIcon />
+                                        </button>
                                         <button @onclick="async () => await _comments.Delete(comment.Id)">
                                             <TrashIcon />
                                         </button>
                                     }
                                 </AuthorizeView>
 
-                                @* Delete / Edit Comment *@
                                 <AuthorizeView Policy="Admin">
-                                    <button @onclick="async () => await _comments.Delete(comment.Id)">
-                                        <TrashIcon />
-                                    </button>
+                                    @if (comment.UserName == _http.HttpContext.User.Identity.Name)
+                                    {
+                                        <button @onclick="() => ShowEditComment(comment)">
+                                            <EditIcon />
+                                        </button>
+                                        <button @onclick="async () => await _comments.Delete(comment.Id)">
+                                            <TrashIcon />
+                                        </button>
+                                    }
                                 </AuthorizeView>
                             </div>
 
@@ -119,7 +129,7 @@ else
                     }
                 }
 
-                @* Add Comments *@
+                <!-- Add Comments -->
                 <section addComment>
                     <AuthorizeView>
                         <Authorized Context="Auth">
@@ -155,7 +165,8 @@ else
         options = new ModalOptions()
         {
             Class = "custom-modal",
-            DisableBackgroundCancel = true
+            FocusFirstElement = true,
+            OverlayCustomClass = "modal-background"
         };
 
         AllPosts = await _posts.GetPosts();
@@ -170,17 +181,25 @@ else
         //appState.OnCommentChange += () => InvokeAsync(StateHasChanged);
     }
 
-    public void AddPost()
+    public async Task ShowAddPost()
     {
         var modal = _modal.Show<AddPost>("Add Post", options);
-        //AllPosts = await _posts.GetPosts();
+        AllPosts = await _posts.GetPosts();
+        UpdateList(CurrentPg);
     }
 
-    async Task ShowEditPost(int postId)
+    public async Task ShowEditComment(CommentModel comment)
     {
         var param = new ModalParameters();
-        param.Add(nameof(EditPost.Id), postId);
-        await _modal.Show<EditPost>("Edit Post", param).Result;
+        param.Add(nameof(EditComment.Comment), comment);
+        await _modal.Show<EditComment>("Edit Comment", param, options).Result;
+    }
+
+    async Task ShowEditPost(int id)
+    {
+        var param = new ModalParameters();
+        param.Add(nameof(EditPost.Id), id);
+        await _modal.Show<EditPost>("Edit Post", param, options).Result;
     }
 
     public async Task AddComment(int postId)
@@ -195,6 +214,8 @@ else
     public async Task DeletePost(int postId)
     {
         await _posts.Delete(postId);
+        AllPosts = await _posts.GetPosts();
+        UpdateList(CurrentPg);
     }
 
     public void UpdateList(int pgNum)

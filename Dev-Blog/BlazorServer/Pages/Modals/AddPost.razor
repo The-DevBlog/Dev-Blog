@@ -5,7 +5,6 @@
 @inject IPostRepository _posts
 @inject IImageRepository _imgs
 @inject IEmailRepository _emails
-@inject NavigationManager NavMgr
 @*@inject State.AppState appState*@
 
 <section modal>
@@ -16,14 +15,16 @@
         <InputTextArea @bind-Value=newPost.Description placeholder="description" />
         <InputText @bind-Value=name placeholder="file name" />
         <InputFile OnChange=HandleFileInput placeholder="file" />
-        <button modal type="submit">Add Post</button>
+        <input modal type="submit" value="Submit" />
     </EditForm>
 </section>
 
 @code {
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+
     PostModel newPost;
     string name;
-    IBrowserFile file;
     Stream fs;
 
     protected override void OnInitialized()
@@ -33,8 +34,7 @@
 
     private void HandleFileInput(InputFileChangeEventArgs e)
     {
-        file = e.File;
-        fs = file.OpenReadStream();
+        fs = e.File.OpenReadStream(2000000);
     }
 
     private async Task CreatePost()
@@ -43,7 +43,8 @@
         @*await appState.AddPost(newPost, url);*@
         await _posts.Create(newPost, url);
         await _emails.NewPost(url);
-
-        NavMgr.NavigateTo("/posts");
+        @*var posts = await _posts.GetPosts();*@
+        await ModalInstance.CloseAsync();
+        @*NavMgr.NavigateTo("/posts");*@
     }
 }
