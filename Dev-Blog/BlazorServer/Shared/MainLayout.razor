@@ -9,3 +9,17 @@
 </main>
 
 <Footer />
+
+@code {
+    protected ModalOptions options;
+
+    protected override void OnInitialized()
+    {
+        options = new ModalOptions()
+        {
+            Class = "custom-modal",
+            FocusFirstElement = true,
+            OverlayCustomClass = "modal-background"
+        };
+    }
+}

@@ -1,8 +1,9 @@
-﻿@inject IModalService _modal
+﻿@inherits MainLayout
+@inject IModalService _modal
 
 <footer>
     <AuthorizeView Policy="Visitor">
-        <button @onclick="@(() => _modal.Show<DeleteAccount>("Are you sure?"))">
+        <button @onclick="@(() => _modal.Show<DeleteAccount>("Are you sure?", options))">
             Delete Account
         </button>
     </AuthorizeView>
@@ -11,4 +12,3 @@
         © 2020 Copyright: TheDevBlog
     </span>
 </footer>
-

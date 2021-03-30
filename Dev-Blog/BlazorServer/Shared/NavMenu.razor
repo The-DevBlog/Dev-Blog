@@ -1,4 +1,5 @@
-﻿@inject IHttpContextAccessor _http
+﻿@inherits MainLayout
+@inject IHttpContextAccessor _http
 @inject IModalService _modal
 
 <nav>
@@ -36,17 +37,3 @@
         </AuthorizeView>
     </section>
 </nav>
-
-@code {
-    private ModalOptions options;
-
-    protected override void OnInitialized()
-    {
-        options = new ModalOptions()
-        {
-            Class = "custom-modal",
-            FocusFirstElement = true,
-            OverlayCustomClass = "modal-background"
-        };
-    }
-}
