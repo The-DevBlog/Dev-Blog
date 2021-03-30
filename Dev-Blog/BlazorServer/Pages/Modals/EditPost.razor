@@ -1,41 +1,26 @@
 ﻿@attribute [Authorize(Roles = "Admin")]
 
-@inject IPostRepository _posts
-@inject NavigationManager NavMgr
-@inject IModalService _modal
+@inject AppState AppState
 
-@if (post == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <section modal>
-        <EditForm Model=@post OnValidSubmit=@UpdatePost>
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <InputTextArea @bind-Value=post.Description placeholder="description" />
-            <InputText @bind-Value=post.UpdateNum placeholder="update number" />
-            <input modal type="submit" value="Submit" />
-        </EditForm>
-    </section>
-}
+<section modal>
+    <EditForm Model=@Post OnValidSubmit=@UpdatePost>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputTextArea @bind-Value=Post.Description placeholder="description" />
+        <InputText @bind-Value=Post.UpdateNum placeholder="update number" />
+        <input modal type="submit" value="Submit" />
+    </EditForm>
+</section>
 
 @code {
     [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
 
     [Parameter]
-    public int Id { get; set; }
-    private PostModel post;
-
-    protected override async Task OnInitializedAsync()
-    {
-        post = await _posts.GetPost(Id);
-    }
+    public PostModel Post { get; set; }
 
     private async Task UpdatePost()
     {
-        await _posts.UpdatePost(post);
+        await AppState.UpdatePost(this, Post);
         await ModalInstance.CloseAsync();
     }
 }

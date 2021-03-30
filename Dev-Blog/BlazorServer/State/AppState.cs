@@ -52,15 +52,34 @@ namespace BlazorServer.State
             NotifyStateChanged(source);
         }
 
+        public async Task AddComment(ComponentBase source, CommentVM comment)
+        {
+            this.Comment = comment;
+            var newComment = await _comments.Create(comment);
+            NotifyStateChanged(source);
+        }
+
         public async Task DeleteComment(ComponentBase source, int id)
         {
             await _comments.Delete(id);
             NotifyStateChanged(source);
         }
 
+        public async Task UpdateComment(ComponentBase source, CommentModel comment)
+        {
+            await _comments.Update(comment);
+            NotifyStateChanged(source);
+        }
+
         public async Task DeletePost(ComponentBase source, int id)
         {
             await _posts.Delete(id);
+            NotifyStateChanged(source);
+        }
+
+        public async Task UpdatePost(ComponentBase source, PostModel post)
+        {
+            await _posts.UpdatePost(post);
             NotifyStateChanged(source);
         }
 
@@ -76,14 +95,6 @@ namespace BlazorServer.State
             string url = await _image.AddImgToDropBox(fs, name);
             NotifyStateChanged(source);
             return url;
-        }
-
-        public async Task AddComment(ComponentBase source, CommentVM comment)
-        {
-            this.Comment = comment;
-            var newComment = await _comments.Create(comment);
-            //await Refresh();
-            NotifyStateChanged(source);
         }
 
         private void NotifyStateChanged(ComponentBase source)

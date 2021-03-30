@@ -55,10 +55,10 @@ namespace BlazorServer
             });
 
             //TODO: Understand differences between all of these
-            services.AddTransient<IEmailRepository, EmailRepository>();
-            services.AddTransient<IVoteRepository, VoteRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
+            services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<AppState>();
         }

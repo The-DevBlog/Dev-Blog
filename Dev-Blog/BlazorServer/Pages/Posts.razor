@@ -25,7 +25,7 @@ else
 
                     @* Delete / Edit Post *@
                     <AuthorizeView Policy="Admin">
-                        <button @onclick="async () => await ShowEditPost(post.Id)">
+                        <button @onclick="async () => await ShowEditPost(post)">
                             <EditIcon />
                         </button>
 
@@ -174,10 +174,10 @@ else
         await _modal.Show<EditComment>("Edit Comment", param, options).Result;
     }
 
-    async Task ShowEditPost(int id)
+    async Task ShowEditPost(PostModel post)
     {
         var param = new ModalParameters();
-        param.Add(nameof(EditPost.Id), id);
+        param.Add(nameof(EditPost.Post), post);
         await _modal.Show<EditPost>("Edit Post", param, options).Result;
     }
 
