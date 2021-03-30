@@ -1,4 +1,5 @@
-﻿using BlazorServer.Interfaces;
+﻿using BlazorServer.Data;
+using BlazorServer.Interfaces;
 using BlazorServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -14,9 +15,11 @@ namespace BlazorServer.Services
     {
         private readonly IConfiguration _config;
         private readonly UserManager<UserModel> userMgr;
+        private readonly UserDbContext _userDb;
 
-        public EmailRepository(IConfiguration config, UserManager<UserModel> um)
+        public EmailRepository(UserDbContext userdb, IConfiguration config, UserManager<UserModel> um)
         {
+            _userDb = userdb;
             userMgr = um;
             _config = config;
         }
@@ -68,6 +71,18 @@ namespace BlazorServer.Services
                 msg.AddTos(emails);
                 await client.SendEmailAsync(msg);
             }
+        }
+
+        public async Task<bool> CheckEmail(string email)
+        {
+            var emails = _userDb.Users.Select(x => x.NormalizedEmail).ToList();
+            return emails.Contains(email.ToUpper()) ? true : false;
+        }
+
+        public async Task<bool> CheckUsername(string username)
+        {
+            var users = _userDb.Users.Select(x => x.NormalizedUserName).ToList();
+            return users.Contains(username.ToUpper()) ? true : false;
         }
     }
 }

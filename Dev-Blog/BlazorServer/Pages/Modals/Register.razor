@@ -1,7 +1,6 @@
-﻿@using System.ComponentModel.DataAnnotations;
-
-@inject IModalService _modal
+﻿@inject IModalService _modal
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
 <section modal>
     <EditForm Model=registerVM OnValidSubmit=SubmitForm>
@@ -24,16 +23,36 @@
 
 @code {
     RegisterVM registerVM;
+    bool username;
+    bool email;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         registerVM = new RegisterVM();
     }
 
     async Task SubmitForm()
     {
+        username = await AppState.CheckUsername(registerVM.UserName);
+        email = await AppState.CheckEmail(registerVM.Email);
         await JSRuntime.InvokeVoidAsync("SubmitForm", "form");
     }
+
+    @*public class ExistingUsername : ValidationAttribute
+        {
+            public string Username { get; set; }
+
+            public ExistingUsername(string username)
+            {
+                Username = username;
+            }
+
+            public override bool IsValid(object value)
+                {
+
+                }
+
+        }*@
 
     public class RegisterVM
     {

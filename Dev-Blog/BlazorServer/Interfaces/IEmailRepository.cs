@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazorServer.Interfaces
 {
@@ -7,5 +8,9 @@ namespace BlazorServer.Interfaces
         Task Welcome(string email);
 
         Task NewPost(string img = null);
+
+        Task<bool> CheckUsername(string username);
+
+        Task<bool> CheckEmail(string email);
     }
 }

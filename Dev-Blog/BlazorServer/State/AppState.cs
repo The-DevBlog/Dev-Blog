@@ -97,6 +97,18 @@ namespace BlazorServer.State
             return url;
         }
 
+        public async Task<bool> CheckEmail(string email)
+        {
+            bool exists = await _email.CheckEmail(email);
+            return exists;
+        }
+
+        public async Task<bool> CheckUsername(string username)
+        {
+            bool exists = await _email.CheckUsername(username);
+            return exists;
+        }
+
         private void NotifyStateChanged(ComponentBase source)
             => StateChanged?.Invoke(source);
     }
