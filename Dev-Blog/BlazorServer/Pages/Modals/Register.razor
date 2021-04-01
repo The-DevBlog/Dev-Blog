@@ -3,9 +3,12 @@
 @inject AppState AppState
 
 <section modal>
-    <EditForm Model=registerVM OnValidSubmit=SubmitForm>
+    <EditForm Model=registerVM OnValidSubmit=Validate>
         <DataAnnotationsValidator />
         <ValidationSummary />
+        <li id="existingUser" style="display: none">username already exists</li>
+        <li id="existingEmail" style="display: none">email already exists</li>
+
         <InputText @bind-Value=registerVM.UserName placeholder="username" />
         <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
         <InputText @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
@@ -23,8 +26,6 @@
 
 @code {
     RegisterVM registerVM;
-    bool username;
-    bool email;
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,26 +34,27 @@
 
     async Task SubmitForm()
     {
-        username = await AppState.CheckUsername(registerVM.UserName);
-        email = await AppState.CheckEmail(registerVM.Email);
         await JSRuntime.InvokeVoidAsync("SubmitForm", "form");
     }
 
-    @*public class ExistingUsername : ValidationAttribute
-        {
-            public string Username { get; set; }
+    async Task Validate()
+    {
+        bool usernameExists = AppState.CheckUsername(registerVM.UserName);
+        bool emailExists = AppState.CheckEmail(registerVM.Email);
 
-            public ExistingUsername(string username)
-            {
-                Username = username;
-            }
+        if (usernameExists)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "existingUser");
+        else
+            await JSRuntime.InvokeVoidAsync("HideTag", "existingUser");
 
-            public override bool IsValid(object value)
-                {
+        if (emailExists)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "existingEmail");
+        else
+            await JSRuntime.InvokeVoidAsync("HideTag", "existingEmail");
 
-                }
-
-        }*@
+        if (!usernameExists && !emailExists)
+            await SubmitForm();
+    }
 
     public class RegisterVM
     {

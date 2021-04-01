@@ -12,7 +12,7 @@ using static BlazorServer.Pages.Posts;
 
 namespace BlazorServer.State
 {
-    public class AppState
+    public class AppState : IAppState
     {
         public event Action<ComponentBase> StateChanged;
 
@@ -97,15 +97,20 @@ namespace BlazorServer.State
             return url;
         }
 
-        public async Task<bool> CheckEmail(string email)
+        public bool CheckEmail(string email)
         {
-            bool exists = await _email.CheckEmail(email);
+            bool exists = _email.CheckEmail(email);
             return exists;
         }
 
-        public async Task<bool> CheckUsername(string username)
+        public string[] GetUsers()
         {
-            bool exists = await _email.CheckUsername(username);
+            return _email.GetUsernames();
+        }
+
+        public bool CheckUsername(string username)
+        {
+            bool exists = _email.CheckUsername(username);
             return exists;
         }
 

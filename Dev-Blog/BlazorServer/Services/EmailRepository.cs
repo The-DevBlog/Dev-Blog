@@ -73,13 +73,19 @@ namespace BlazorServer.Services
             }
         }
 
-        public async Task<bool> CheckEmail(string email)
+        public string[] GetUsernames()
+        {
+            var usernames = _userDb.Users.Select(x => x.NormalizedUserName).ToArray();
+            return usernames;
+        }
+
+        public bool CheckEmail(string email)
         {
             var emails = _userDb.Users.Select(x => x.NormalizedEmail).ToList();
             return emails.Contains(email.ToUpper()) ? true : false;
         }
 
-        public async Task<bool> CheckUsername(string username)
+        public bool CheckUsername(string username)
         {
             var users = _userDb.Users.Select(x => x.NormalizedUserName).ToList();
             return users.Contains(username.ToUpper()) ? true : false;
