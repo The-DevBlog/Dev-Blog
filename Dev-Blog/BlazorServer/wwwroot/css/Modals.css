@@ -21,6 +21,7 @@ section[modal] textarea {
 button[modal],
 input[modal] {
     padding: 5px;
+    color: white;
 }
 
     button[modal]:hover,
@@ -28,4 +29,14 @@ input[modal] {
         cursor: pointer;
         color: white;
         background-color: #A2A2A2;
+    }
+
+/* Delete Modal */
+section[delete] {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+    section[delete] button {
+        background-color: #313131;
     }
