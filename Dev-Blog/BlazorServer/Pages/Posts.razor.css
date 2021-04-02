@@ -1,6 +1,5 @@
 ﻿/* entire post */
 div[post] {
-    margin-top: 50px;
     border-radius: 5px;
     background-color: #414141;
     padding-bottom: 20px;
@@ -49,6 +48,16 @@ section[postInfo] p {
     padding: 10px 0px;
     border-radius: 0px 0px 5px 5px;
 }
+
+/* Paginate */
+div[paginate] {
+    text-align: center;
+}
+
+    div[paginate] span {
+        position: relative;
+        bottom: 6px;
+    }
 
 /* Voting */
 button[thumbIcon],

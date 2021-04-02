@@ -6,8 +6,8 @@
     <EditForm Model=registerVM OnValidSubmit=Validate>
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <li id="existingUser" style="display: none">username already exists</li>
-        <li id="existingEmail" style="display: none">email already exists</li>
+        <li existingUser style="display: none">username already exists</li>
+        <li existingEmail style="display: none">email already exists</li>
 
         <InputText @bind-Value=registerVM.UserName placeholder="username" />
         <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
@@ -43,14 +43,14 @@
         bool emailExists = AppState.CheckEmail(registerVM.Email);
 
         if (usernameExists)
-            await JSRuntime.InvokeVoidAsync("ShowTag", "existingUser");
+            await JSRuntime.InvokeVoidAsync("ShowTag", "li[existingUser]");
         else
-            await JSRuntime.InvokeVoidAsync("HideTag", "existingUser");
+            await JSRuntime.InvokeVoidAsync("HideTag", "li[existingUser]");
 
         if (emailExists)
-            await JSRuntime.InvokeVoidAsync("ShowTag", "existingEmail");
+            await JSRuntime.InvokeVoidAsync("ShowTag", "li[existingEmail]");
         else
-            await JSRuntime.InvokeVoidAsync("HideTag", "existingEmail");
+            await JSRuntime.InvokeVoidAsync("HideTag", "li[existingEmail]");
 
         if (!usernameExists && !emailExists)
             await SubmitForm();

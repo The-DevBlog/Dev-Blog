@@ -1,49 +1,6 @@
-﻿@*@inherits Posts
+﻿@inherits Posts
 
-    <div>
-        <button @onclick="@(e => NavTo("prev"))">PREV</button>
-        @for (int i = 0; i < TotalPgs; i++)
-        {
-            var pgNum = i;
-            <button style="background-color: @(CurrentPg == pgNum ? "#382424" : "#845555")" @onclick="@(e => UpdateList(pgNum))">
-                @(i + 1)
-            </button>
-        }
-        <button @onclick="@(e => NavTo("next"))">NEXT</button>
-    </div>*@
-
-@*public async Task DeletePost(int postId)
-    {
-        await _posts.Delete(postId);
-        AllPosts = await _posts.GetPosts();
-        UpdateList(CurrentPg);
-    }*@
-
-@*public void UpdateList(int pgNum)
-    {
-        PostsPage = AllPosts.Skip(pgNum * PgSize).Take(PgSize).ToList();
-        CurrentPg = pgNum;
-    }*@
-
-@*public void NavTo(string val)
-    {
-        if (val == "prev" && CurrentPg != 0)
-            CurrentPg--;
-
-        if (val == "next" && CurrentPg != TotalPgs - 1)
-            CurrentPg++;
-
-        UpdateList(CurrentPg);
-    }*@
-
-@*AllPosts = await _posts.GetPosts();
-    PgSize = 5;
-    PostsPage = AllPosts.Take(PgSize).ToList();
-    TotalPgs = (int)Math.Ceiling(AllPosts.Count() / (decimal)PgSize);*@
-
-@*public List<PostModel> PostsPage { get; set; }
-        public List<PostModel> AllPosts { get; set; }
-
-    public int PgSize { get; set; }
-        public int TotalPgs { get; set; }
-        public int CurrentPg { get; set; }*@
+<div paginate>
+    <button @onclick="@(e => SwitchPage("prev"))">Prev</button>
+    <button @onclick="@(e => SwitchPage("next"))">Next</button>
+</div>

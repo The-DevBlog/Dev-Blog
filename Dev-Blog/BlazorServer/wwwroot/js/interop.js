@@ -2,10 +2,10 @@
     document.getElementById(button).submit();
 }
 
-function ShowTag(id) {
-    document.getElementById(id).style.display = "block";
+function ShowTag(element) {
+    document.querySelector(element).style.display = "block";
 }
 
-function HideTag(id) {
-    document.getElementById(id).style.display = "none";
+function HideTag(element) {
+    document.querySelector(element).style.display = "none";
 }

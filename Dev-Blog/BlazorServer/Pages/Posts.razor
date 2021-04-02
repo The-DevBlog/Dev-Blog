@@ -1,6 +1,7 @@
 ﻿@page "/posts"
 
 @implements IDisposable
+@inject IJSRuntime JSRuntime
 @inject IHttpContextAccessor _http
 @inject IModalService _modal
 @inject AppState AppState
@@ -9,21 +10,28 @@
     <button @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
 </AuthorizeView>
 
-@if (AppState.Posts == null)
+@if (page == null)
 {
     <p>Loading...</p>
 }
 else
 {
+    <!-- Paginate -->
+    <div paginate>
+        <button pageLeft @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
+        <span>@currentPg</span>
+        <button @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
+    </div>
+
     <!-- Render Posts -->
-    @foreach (var post in AppState.Posts)
+    @foreach (var post in page)
     {
         <div post>
             <section postInfo>
                 <div>
                     <span>@post.UpdateNum</span>
 
-                    @* Delete / Edit Post *@
+                    <!-- Delete / Edit Post -->
                     <AuthorizeView Policy="Admin">
                         <button @onclick="async () => await ShowEditPost(post)">
                             <EditIcon />
@@ -130,12 +138,45 @@ else
             </div>
         </div>
     }
+
+    <!-- Paginate -->
+    <div paginate>
+        <button pageLeft @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
+        <span>@currentPg</span>
+        <button @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
+    </div>
 }
 
 @code {
     CommentVM comment = new CommentVM();
     private ModalOptions options;
     private string username;
+    private protected int currentPg = 1;
+    List<PostModel> page;
+    bool pageLeft, pageRight;
+
+    void Populate()
+    {
+        int from = (currentPg - 1) * 5;
+        int to = currentPg * 5;
+        page = AppState.Posts.Skip(from).Take(to).ToList();
+    }
+
+    protected async Task SwitchPage(string direction)
+    {
+        int maxPg = (int)Math.Ceiling((double)AppState.Posts.Count / 5);
+        if (direction == "next" && currentPg < maxPg)
+            currentPg++;
+        else if (direction == "prev" && currentPg > 1)
+            currentPg--;
+        else
+            return;
+
+        pageLeft = currentPg > 1 ? true : false;
+        pageRight = currentPg < maxPg ? true : false;
+
+        Populate();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -150,6 +191,9 @@ else
         username = _http.HttpContext.User.Identity.Name;
 
         await AppState.Refresh();
+
+        Populate();
+
         AppState.StateChanged += async (Source)
             => await AppState_StateChanged(Source);
     }
@@ -172,9 +216,8 @@ else
     {
         var param = new ModalParameters();
         param.Add(nameof(EditComment.Comment), comment);
-        await _modal.Show<EditComment>("Edit Comment", param, options).Result;
+        await _modal.Show<EditComment>(" Edit Comment", param, options).Result;
     }
-
     async Task ShowEditPost(PostModel post)
     {
         var param = new ModalParameters();
