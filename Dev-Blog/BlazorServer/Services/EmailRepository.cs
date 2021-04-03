@@ -73,18 +73,22 @@ namespace BlazorServer.Services
             }
         }
 
-        public string[] GetUsernames()
-        {
-            var usernames = _userDb.Users.Select(x => x.NormalizedUserName).ToArray();
-            return usernames;
-        }
-
+        /// <summary>
+        /// Checks whether an email already exists
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>bool</returns>
         public bool CheckEmail(string email)
         {
             var emails = _userDb.Users.Select(x => x.NormalizedEmail).ToList();
             return emails.Contains(email.ToUpper()) ? true : false;
         }
 
+        /// <summary>
+        /// Checks whether a username already exists
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>bool</returns>
         public bool CheckUsername(string username)
         {
             var users = _userDb.Users.Select(x => x.NormalizedUserName).ToList();

@@ -19,7 +19,7 @@ namespace BlazorServer.Services
         }
 
         /// <summary>
-        /// Adds a comment to the database
+        /// Adds a comment
         /// </summary>
         /// <param name="comment">The comment to add</param>
         /// <returns>CommentModel</returns>
@@ -38,34 +38,45 @@ namespace BlazorServer.Services
             return newComment;
         }
 
+        /// <summary>
+        /// Updates a specified comment
+        /// </summary>
+        /// <param name="comment">Comment Model</param>
+        /// <returns>Successful completion of task</returns>
         public async Task Update(CommentModel comment)
         {
-            //var comment = await _db.Comment.Where(x => x.Id == id).FirstOrDefaultAsync();
-            //comment.Content = content;
             _db.Comment.Update(comment);
             await _db.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Retrieves all comments from database
+        /// Retrieves all comments
         /// </summary>
         /// <returns>List<CommentModel></returns>
         public async Task<List<CommentModel>> GetComments()
         {
             var comments = await _db.Comment.OrderByDescending(x => x.Date)
                                             .ToListAsync();
-
             return comments;
         }
 
+        /// <summary>
+        /// Retrieves a specified comment
+        /// </summary>
+        /// <param name="commentId">Comment Id</param>
+        /// <returns>CommentModel</returns>
         public async Task<CommentModel> GetComment(int commentId)
         {
             var comment = await _db.Comment.Where(c => c.Id == commentId)
                                            .FirstOrDefaultAsync();
-
             return comment;
         }
 
+        /// <summary>
+        /// Deletes a specified comment
+        /// </summary>
+        /// <param name="commentId">Comment Id</param>
+        /// <returns>Successful completion of task</returns>
         public async Task Delete(int commentId)
         {
             var comment = await GetComment(commentId);

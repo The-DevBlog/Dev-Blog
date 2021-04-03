@@ -12,7 +12,7 @@ using static BlazorServer.Pages.Posts;
 
 namespace BlazorServer.State
 {
-    public class AppState : IAppState
+    public class AppState
     {
         public event Action<ComponentBase> StateChanged;
 
@@ -101,11 +101,6 @@ namespace BlazorServer.State
         {
             bool exists = _email.CheckEmail(email);
             return exists;
-        }
-
-        public string[] GetUsers()
-        {
-            return _email.GetUsernames();
         }
 
         public bool CheckUsername(string username)

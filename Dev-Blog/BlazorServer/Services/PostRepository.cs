@@ -11,10 +11,6 @@ namespace BlazorServer.Services
 {
     public class PostRepository : IPostRepository
     {
-        //TODO: Summary comments
-        //TODO: change all Interfaces to 'IPostService'
-        //TODO: change PostService to 'PostRepository'
-
         private AppDbContext _db;
 
         public PostRepository(AppDbContext context)
@@ -23,11 +19,11 @@ namespace BlazorServer.Services
         }
 
         /// <summary>
-        /// Adds a new post to the database
+        /// Adds a new post
         /// </summary>
-        /// <param name="post">The new post</param>
-        /// <param name="url">The url of the image</param>
-        /// <returns>New post</returns>
+        /// <param name="post"></param>
+        /// <param name="url">The url of the post's image</param>
+        /// <returns>PostModel</returns>
         public async Task<PostModel> Create(PostModel post, string url)
         {
             post.ImgURL = url;
@@ -43,6 +39,10 @@ namespace BlazorServer.Services
             return newPost;
         }
 
+        /// <summary>
+        /// Retrieves all posts
+        /// </summary>
+        /// <returns>List<PostModel></returns>
         public async Task<List<PostModel>> GetPosts()
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
@@ -56,8 +56,8 @@ namespace BlazorServer.Services
         /// <summary>
         /// Retrieves a specified post
         /// </summary>
-        /// <param name="postId">Id of specified post</param>
-        /// <returns>Specified post</returns>
+        /// <param name="postId">Post Id</param>
+        /// <returns>PostModel</returns>
         public async Task<PostModel> GetPost(int postId)
         {
             var post = await _db.Post.Include(x => x.Comments)
@@ -65,10 +65,14 @@ namespace BlazorServer.Services
                                      .Include(x => x.DownVotes)
                                      .Where(p => p.Id == postId)
                                      .FirstOrDefaultAsync();
-
             return post;
         }
 
+        /// <summary>
+        /// Updates a post
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns>Successful completion of task</returns>
         public async Task UpdatePost(PostModel post)
         {
             _db.Post.Update(post);
@@ -76,9 +80,9 @@ namespace BlazorServer.Services
         }
 
         /// <summary>
-        /// Removes a specified post from the database
+        /// Removes a specified post
         /// </summary>
-        /// <param name="postId">Id of post to delete</param>
+        /// <param name="postId">Post Id</param>
         /// <returns>Successful completion of task</returns>
         public async Task Delete(int postId)
         {

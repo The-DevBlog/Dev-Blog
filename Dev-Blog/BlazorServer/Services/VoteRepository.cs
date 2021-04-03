@@ -19,9 +19,9 @@ namespace BlazorServer.Services
         }
 
         /// <summary>
-        /// Adds a vote to the database
+        /// Adds an up vote
         /// </summary>
-        /// <param name="vote">The vote to add</param>
+        /// <param name="vote"></param>
         /// <returns>Successful completion of task</returns>
         public async Task<UpVoteModel> UpVote(int postId, string username)
         {
@@ -54,9 +54,9 @@ namespace BlazorServer.Services
         }
 
         /// <summary>
-        /// Adds a vote to the database
+        /// Adds a down vote
         /// </summary>
-        /// <param name="vote">The vote to add</param>
+        /// <param name="vote"></param>
         /// <returns>Successful completion of task</returns>
         public async Task<DownVoteModel> DownVote(int postId, string username)
         {
@@ -85,24 +85,6 @@ namespace BlazorServer.Services
             _db.Add(newVote);
             await _db.SaveChangesAsync();
             return newVote;
-        }
-
-        public async Task<UpVoteModel> GetUpVote(int postId, string username)
-        {
-            var vote = await _db.UpVote.Where(v => v.PostModelId == postId &&
-                                                v.UserName == username)
-                                         .FirstOrDefaultAsync();
-
-            return vote;
-        }
-
-        public async Task<DownVoteModel> GetDownVote(int postId, string username)
-        {
-            var vote = await _db.DownVote.Where(v => v.PostModelId == postId &&
-                                                v.UserName == username)
-                                         .FirstOrDefaultAsync();
-
-            return vote;
         }
     }
 }

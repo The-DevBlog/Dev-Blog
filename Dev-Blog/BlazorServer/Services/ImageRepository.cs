@@ -17,6 +17,12 @@ namespace BlazorServer.Services
             _config = config;
         }
 
+        /// <summary>
+        /// Uploads an image to Dropbox account
+        /// </summary>
+        /// <param name="fs">Image file stream</param>
+        /// <param name="name">Name of image</param>
+        /// <returns>Dropbox url to image</returns>
         public async Task<string> AddImgToDropBox(Stream fs, string name)
         {
             // create unique file name

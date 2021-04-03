@@ -31,12 +31,13 @@ else
                 <div>
                     <span>@post.UpdateNum</span>
 
-                    <!-- Delete / Edit Post -->
                     <AuthorizeView Policy="Admin">
+                        <!-- Edit Post -->
                         <button @onclick="async () => await ShowEditPost(post)">
                             <EditIcon />
                         </button>
 
+                        <!-- Delete Post -->
                         <button @onclick="async () => await AppState.DeletePost(this, post.Id)">
                             <TrashIcon />
                         </button>
