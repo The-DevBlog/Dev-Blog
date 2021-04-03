@@ -43,14 +43,14 @@
         bool emailExists = AppState.CheckEmail(registerVM.Email);
 
         if (usernameExists)
-            await JSRuntime.InvokeVoidAsync("ShowTag", "li[existingUser]", "block");
+            await JSRuntime.InvokeVoidAsync("AddDisplay", "li[existingUser]", "block");
         else
-            await JSRuntime.InvokeVoidAsync("HideTag", "li[existingUser]");
+            await JSRuntime.InvokeVoidAsync("RemoveDisplay", "li[existingUser]");
 
         if (emailExists)
-            await JSRuntime.InvokeVoidAsync("ShowTag", "li[existingEmail]", "block");
+            await JSRuntime.InvokeVoidAsync("AddDisplay", "li[existingEmail]", "block");
         else
-            await JSRuntime.InvokeVoidAsync("HideTag", "li[existingEmail]");
+            await JSRuntime.InvokeVoidAsync("RemoveDisplay", "li[existingEmail]");
 
         if (!usernameExists && !emailExists)
             await SubmitForm();

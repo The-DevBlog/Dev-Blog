@@ -2,12 +2,22 @@
     document.getElementById(button).submit();
 }
 
-function ShowTag(elements, dis) {
+function AddDisplay(elements, dis) {
     var tags = document.querySelectorAll(elements);
     tags.forEach(x => x.style.display = dis);
 }
 
-function HideTag(elements) {
+function RemoveDisplay(elements) {
     var tags = document.querySelectorAll(elements);
     tags.forEach(x => x.style.display = "none");
+}
+
+function HideTag(elements) {
+    var tags = document.querySelectorAll(elements);
+    tags.forEach(x => x.style.visibility = "hidden");
+}
+
+function ShowTag(elements) {
+    var tags = document.querySelectorAll(elements);
+    tags.forEach(x => x.style.visibility = "visible");
 }

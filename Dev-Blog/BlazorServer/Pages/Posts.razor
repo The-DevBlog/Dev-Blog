@@ -156,40 +156,6 @@ else
     int maxPg;
     List<PostModel> page;
 
-    void Populate()
-    {
-        int from = (currentPg - 1) * 5;
-        int to = currentPg * 5;
-        page = AppState.Posts.Skip(from).Take(to).ToList();
-    }
-
-    async Task PagerVisibility()
-    {
-        if (currentPg == 1)
-            await JSRuntime.InvokeVoidAsync("HideTag", "button[prev]");
-        else if (currentPg == maxPg)
-            await JSRuntime.InvokeVoidAsync("HideTag", "button[next]");
-
-        if (currentPg > 1)
-            await JSRuntime.InvokeVoidAsync("ShowTag", "button[prev]", "inline");
-
-        if (currentPg < maxPg)
-            await JSRuntime.InvokeVoidAsync("ShowTag", "button[next]", "inline");
-    }
-
-    protected async Task SwitchPage(string direction)
-    {
-        if (direction == "next" && currentPg < maxPg)
-            currentPg++;
-        else if (direction == "prev" && currentPg > 1)
-            currentPg--;
-        else
-            return;
-
-        await PagerVisibility();
-        Populate();
-    }
-
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
         PagerVisibility();
@@ -200,6 +166,7 @@ else
     {
         username = _http.HttpContext.User.Identity.Name;
 
+        // custom blazored modal
         options = new ModalOptions()
         {
             Class = "custom-modal",
@@ -216,6 +183,89 @@ else
         => await AppState_StateChanged(Source);
     }
 
+    /// <summary>
+    /// Populates the page with posts
+    /// </summary>
+    void Populate()
+    {
+        int from = (currentPg - 1) * 5;
+        int to = currentPg * 5;
+        page = AppState.Posts.Skip(from).Take(to).ToList();
+    }
+
+    /// <summary>
+    /// Hides and shows the pager buttons
+    /// </summary>
+    /// <returns>Successful completion of task</returns>
+    async Task PagerVisibility()
+    {
+        if (currentPg == 1)
+            await JSRuntime.InvokeVoidAsync("HideTag", "button[prev]");
+        else if (currentPg == maxPg)
+            await JSRuntime.InvokeVoidAsync("HideTag", "button[next]");
+
+        if (currentPg > 1)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "button[prev]", "inline");
+
+        if (currentPg < maxPg)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "button[next]", "inline");
+    }
+
+    /// <summary>
+    /// Pages left or right
+    /// </summary>
+    /// <param name="direction">"next" or "prev"</param>
+    /// <returns>Succesful completion of task</returns>
+    protected async Task SwitchPage(string direction)
+    {
+        if (direction == "next" && currentPg < maxPg)
+            currentPg++;
+        else if (direction == "prev" && currentPg > 1)
+            currentPg--;
+        else
+            return;
+
+        await PagerVisibility();
+        Populate();
+    }
+
+    /// <summary>
+    /// Displays the edit comment modal
+    /// </summary>
+    /// <param name="comment">CommentModel</param>
+    /// <returns>Successful completion of task</returns>
+    public async Task ShowEditComment(CommentModel comment)
+    {
+        var param = new ModalParameters();
+        param.Add(nameof(EditComment.Comment), comment);
+        await _modal.Show<EditComment>(" Edit Comment", param, options).Result;
+    }
+
+    /// <summary>
+    /// Displays the edit post modal
+    /// </summary>
+    /// <param name="post">PostModel</param>
+    /// <returns>Successful completion of task</returns>
+    async Task ShowEditPost(PostModel post)
+    {
+        var param = new ModalParameters();
+        param.Add(nameof(EditPost.Post), post);
+        await _modal.Show<EditPost>("Edit Post", param, options).Result;
+    }
+
+    /// <summary>
+    /// Adds a comment
+    /// </summary>
+    /// <param name="postId">PostId</param>
+    /// <returns>Successful completion of task</returns>
+    public async Task AddComment(int postId)
+    {
+        comment.UserName = username;
+        comment.PostModelId = postId;
+        await AppState.AddComment(this, comment);
+        comment = new CommentVM();
+    }
+
     void IDisposable.Dispose()
     {
         AppState.StateChanged -= async (Source)
@@ -228,27 +278,6 @@ else
         {
             await InvokeAsync(StateHasChanged);
         }
-    }
-
-    public async Task ShowEditComment(CommentModel comment)
-    {
-        var param = new ModalParameters();
-        param.Add(nameof(EditComment.Comment), comment);
-        await _modal.Show<EditComment>(" Edit Comment", param, options).Result;
-    }
-    async Task ShowEditPost(PostModel post)
-    {
-        var param = new ModalParameters();
-        param.Add(nameof(EditPost.Post), post);
-        await _modal.Show<EditPost>("Edit Post", param, options).Result;
-    }
-
-    public async Task AddComment(int postId)
-    {
-        comment.UserName = username;
-        comment.PostModelId = postId;
-        await AppState.AddComment(this, comment);
-        comment = new CommentVM();
     }
 
     public class CommentVM
