@@ -2,10 +2,12 @@
     document.getElementById(button).submit();
 }
 
-function ShowTag(element) {
-    document.querySelector(element).style.display = "block";
+function ShowTag(elements, dis) {
+    var tags = document.querySelectorAll(elements);
+    tags.forEach(x => x.style.display = dis);
 }
 
-function HideTag(element) {
-    document.querySelector(element).style.display = "none";
+function HideTag(elements) {
+    var tags = document.querySelectorAll(elements);
+    tags.forEach(x => x.style.display = "none");
 }

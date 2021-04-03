@@ -18,9 +18,9 @@ else
 {
     <!-- Paginate -->
     <div paginate>
-        <button pageLeft @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
+        <button prev @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
         <span>@currentPg</span>
-        <button @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
+        <button next @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
     </div>
 
     <!-- Render Posts -->
@@ -141,19 +141,19 @@ else
 
     <!-- Paginate -->
     <div paginate>
-        <button pageLeft @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
+        <button prev @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
         <span>@currentPg</span>
-        <button @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
+        <button next @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
     </div>
 }
 
 @code {
     CommentVM comment = new CommentVM();
-    private ModalOptions options;
-    private string username;
+    ModalOptions options;
+    string username;
     private protected int currentPg = 1;
+    int maxPg;
     List<PostModel> page;
-    bool pageLeft, pageRight;
 
     void Populate()
     {
@@ -162,9 +162,22 @@ else
         page = AppState.Posts.Skip(from).Take(to).ToList();
     }
 
+    async Task PagerVisibility()
+    {
+        if (currentPg == 1)
+            await JSRuntime.InvokeVoidAsync("HideTag", "button[prev]");
+        else if (currentPg == maxPg)
+            await JSRuntime.InvokeVoidAsync("HideTag", "button[next]");
+
+        if (currentPg > 1)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "button[prev]", "inline");
+
+        if (currentPg < maxPg)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "button[next]", "inline");
+    }
+
     protected async Task SwitchPage(string direction)
     {
-        int maxPg = (int)Math.Ceiling((double)AppState.Posts.Count / 5);
         if (direction == "next" && currentPg < maxPg)
             currentPg++;
         else if (direction == "prev" && currentPg > 1)
@@ -172,14 +185,20 @@ else
         else
             return;
 
-        pageLeft = currentPg > 1 ? true : false;
-        pageRight = currentPg < maxPg ? true : false;
-
+        await PagerVisibility();
         Populate();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        PagerVisibility();
+        return base.OnAfterRenderAsync(firstRender);
     }
 
     protected override async Task OnInitializedAsync()
     {
+        username = _http.HttpContext.User.Identity.Name;
+
         options = new ModalOptions()
         {
             Class = "custom-modal",
@@ -188,14 +207,12 @@ else
             DisableBackgroundCancel = true
         };
 
-        username = _http.HttpContext.User.Identity.Name;
-
         await AppState.Refresh();
-
+        maxPg = (int)Math.Ceiling((double)AppState.Posts.Count / 5);
         Populate();
 
         AppState.StateChanged += async (Source)
-            => await AppState_StateChanged(Source);
+        => await AppState_StateChanged(Source);
     }
 
     void IDisposable.Dispose()
