@@ -201,7 +201,8 @@ else
     {
         if (currentPg == 1)
             await JSRuntime.InvokeVoidAsync("HideTag", "button[prev]");
-        else if (currentPg == maxPg)
+
+        if (currentPg == maxPg)
             await JSRuntime.InvokeVoidAsync("HideTag", "button[next]");
 
         if (currentPg > 1)
