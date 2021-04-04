@@ -1,4 +1,5 @@
-﻿using Dev_Blog.Data;
+﻿using BlazorServer.Data;
+using BlazorServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,16 +10,17 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Dev_Blog.Models
+namespace BlazorServer
 {
-    public class RoleInitializer
+
+    public class RoleInit
     {
         private static readonly List<IdentityRole> Roles = new List<IdentityRole>()
         {
-            new IdentityRole{Name = Role.Admin, NormalizedName = Role.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()},
+            new IdentityRole{Name = RoleModel.Admin, NormalizedName = RoleModel.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()},
         };
 
-        public static async Task SeedData(IServiceProvider serviceProvider, UserManager<User> userManager, IConfiguration _config)
+        public static async Task SeedData(IServiceProvider serviceProvider, UserManager<UserModel> userManager, IConfiguration _config)
         {
             using (var dbContext = new UserDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDbContext>>()))
             {
@@ -38,11 +40,11 @@ namespace Dev_Blog.Models
             }
         }
 
-        public static void SeedUsers(UserManager<User> userManager, IConfiguration _config)
+        public static void SeedUsers(UserManager<UserModel> userManager, IConfiguration _config)
         {
             if (userManager.FindByNameAsync(_config["AdminEmail"]).Result == null)
             {
-                User user = new User()
+                UserModel user = new UserModel()
                 {
                     Email = _config["AdminEmail"],
                     UserName = _config["AdminUserName"]
@@ -51,12 +53,12 @@ namespace Dev_Blog.Models
                 IdentityResult result = userManager.CreateAsync(user, _config["AdminPassword"]).Result;
                 if (result.Succeeded)
                 {
-                    Claim userName = new Claim("UserName", user.UserName);
-                    Claim email = new Claim("Email", user.Email);
+                    //Claim userName = new Claim("UserName", user.UserName);
+                    //Claim email = new Claim("Email", user.Email);
 
-                    var e = userManager.AddClaimAsync(user, email).Result;
-                    var u = userManager.AddClaimAsync(user, userName).Result;
-                    userManager.AddToRoleAsync(user, Role.Admin).Wait();
+                    //var e = userManager.AddClaimAsync(user, email).Result;
+                    //var u = userManager.AddClaimAsync(user, userName).Result;
+                    userManager.AddToRoleAsync(user, RoleModel.Admin).Wait();
                 }
             }
         }

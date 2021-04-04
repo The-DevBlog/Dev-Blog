@@ -1,0 +1,24 @@
+﻿@inject State.AppState AppState
+
+<section modal>
+    <EditForm Model=@Comment OnValidSubmit=@UpdateComment>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputTextArea @bind-Value=Comment.Content placeholder=@Comment.Content />
+        <input modal type="submit" value="Update" />
+    </EditForm>
+</section>
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+
+    [Parameter]
+    public CommentModel Comment { get; set; }
+
+    private async Task UpdateComment()
+    {
+        await AppState.UpdateComment(this, Comment);
+        await ModalInstance.CloseAsync();
+    }
+}

@@ -1,0 +1,173 @@
+﻿/* entire post */
+div[post] {
+    border-radius: 5px;
+    background-color: #414141;
+    padding-bottom: 20px;
+    margin: 15px 0px;
+}
+
+/* post info */
+section[postInfo] {
+    margin-bottom: 15px;
+    border-radius: inherit;
+}
+
+img {
+    display: block;
+    height: 522px;
+    margin: auto;
+    width: 928px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+section[postInfo] > div {
+    background-color: #626262;
+    padding: 5px 0px;
+    margin-bottom: 15px;
+    border-radius: 5px 5px 0px 0px;
+    width: 100%;
+}
+
+    section[postInfo] > div span:last-child {
+        float: right;
+    }
+
+section[postInfo] button {
+    color: white;
+}
+
+section[postInfo] > div button:hover {
+    color: indianred;
+    cursor: pointer;
+}
+
+section[postInfo] p {
+    text-align: center;
+    width: 928px;
+    margin: auto;
+    background-color: #626262;
+    padding: 10px 0px;
+    border-radius: 0px 0px 5px 5px;
+}
+
+/* Paginate */
+div[paginate] {
+    text-align: center;
+}
+
+    div[paginate] span {
+        position: relative;
+        bottom: 6px;
+    }
+
+/* Voting */
+button[thumbIcon],
+span[thumbIcon] {
+    fill: grey;
+}
+
+button[upvote]:hover {
+    fill: lightblue;
+    cursor: pointer;
+}
+
+button[downvote]:hover {
+    fill: indianred;
+    cursor: pointer;
+}
+
+section[votes] {
+    margin-bottom: 10px;
+}
+
+/* comments */
+div[comments] {
+    margin: auto;
+    width: 85%;
+}
+
+section[comment] {
+    border: 1px solid grey;
+    margin: 12px 0px;
+    background-color: #313131;
+}
+
+::deep textarea {
+    display: block;
+    background-color: #313131;
+    color: white;
+    width: 100%;
+}
+
+section[comment] > span {
+    position: relative;
+    top: -8px;
+    left: 10px;
+    padding: -0px 5px;
+    background-image: linear-gradient(#414141 50%, #313131 50%);
+}
+
+section[comment] div {
+    float: right;
+    padding: 3px;
+}
+
+section[comment] p {
+    padding: 7.5px;
+    margin-top: 5px;
+    margin-left: 7px;
+}
+
+/* delete comment */
+section[comment] button {
+    position: relative;
+    color: white;
+    top: 3px;
+}
+
+    section[comment] button:hover {
+        color: indianred;
+        cursor: pointer;
+    }
+
+/* add comment */
+section[addComment] button {
+    padding: 5px;
+    margin-top: 5px;
+    color: #C1C1C1;
+    background-color: #626262;
+}
+
+    section[addComment] button:hover {
+        cursor: pointer;
+        color: white;
+        background-color: #A2A2A2;
+    }
+
+@media screen and (max-width: 992px) {
+    section[postInfo] p {
+        width: 640px;
+    }
+
+    section[postInfo],
+    div[post] {
+        width: auto;
+    }
+
+    div[post] {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    section[postInfo] p {
+        width: 448px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    section[postInfo] p {
+        width: 100%;
+    }
+}

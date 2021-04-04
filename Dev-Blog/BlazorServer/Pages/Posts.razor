@@ -1,0 +1,292 @@
+﻿@page "/posts"
+
+@implements IDisposable
+@inject IJSRuntime JSRuntime
+@inject IHttpContextAccessor _http
+@inject IModalService _modal
+@inject AppState AppState
+<!-- Add Post -->
+<AuthorizeView Policy="Admin">
+    <button addPost @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
+</AuthorizeView>
+
+@if (page == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <!-- Paginate -->
+    <div paginate>
+        <button prev @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
+        <span>@currentPg</span>
+        <button next @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
+    </div>
+
+    <!-- Render Posts -->
+    @foreach (var post in page)
+    {
+        <div post>
+            <section postInfo>
+                <div>
+                    <span>@post.UpdateNum</span>
+
+                    <AuthorizeView Policy="Admin">
+                        <!-- Edit Post -->
+                        <button @onclick="async () => await ShowEditPost(post)">
+                            <EditIcon />
+                        </button>
+
+                        <!-- Delete Post -->
+                        <button @onclick="async () => await AppState.DeletePost(this, post.Id)">
+                            <TrashIcon />
+                        </button>
+                    </AuthorizeView>
+
+                    <span>@post.Date.ToShortDateString()</span>
+                </div>
+
+                <img src=@post.ImgURL />
+                <p>@post.Description</p>
+            </section>
+
+            <!-- Voting System -->
+            <div comments>
+                <section votes>
+
+                    <AuthorizeView>
+                        <Authorized>
+                            <div>
+                                <button thumbIcon upvote @onclick="async () => await AppState.UpVote(this, post.Id, username)">
+                                    <ThumbsUpIcon />
+                                </button>
+                                <span votes>@post.UpVotes.Count</span>
+                                <button thumbIcon upvote @onclick="async () => await AppState.DownVote(this, post.Id, username)">
+                                    <ThumbsUpIcon />
+                                </button>
+                                <span votes>@post.DownVotes.Count</span>
+                            </div>
+                        </Authorized>
+                        <NotAuthorized>
+                            <div>
+                                <span thumbIcon><ThumbsUpIcon /></span>
+                                <span votes>@post.UpVotes.Count</span>
+                                <span thumbIcon><ThumbsDownIcon /></span>
+                                <span votes>@post.DownVotes.Count</span>
+                                <span>Login in to Like / Dislike</span>
+                            </div>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </section>
+
+                <!-- Render Comments -->
+                @if (post.Comments != null)
+                {
+                    foreach (var comment in post.Comments)
+                    {
+
+                        <section comment>
+                            <span>@comment.UserName</span>
+
+                            <!-- Delete / Edit Comment -->
+                            <div>
+                                <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+                                <AuthorizeView Policy="Visitor">
+                                    @if (comment.UserName == username)
+                                    {
+                                        <button @onclick="() => ShowEditComment(comment)">
+                                            <EditIcon />
+                                        </button>
+                                        <button @onclick="async () => await AppState.DeleteComment(this, comment.Id)">
+                                            <TrashIcon />
+                                        </button>
+                                    }
+                                </AuthorizeView>
+
+                                <AuthorizeView Policy="Admin">
+                                    @if (comment.UserName == username)
+                                    {
+                                        <button @onclick="() => ShowEditComment(comment)">
+                                            <EditIcon />
+                                        </button>
+                                    }
+                                    <button @onclick="async () => await AppState.DeleteComment(this, comment.Id)">
+                                        <TrashIcon />
+                                    </button>
+                                </AuthorizeView>
+                            </div>
+
+                            <p>@comment.Content</p>
+                        </section>
+                    }
+                }
+
+                <!-- Add Comments -->
+                <section addComment>
+                    <AuthorizeView>
+                        <Authorized Context="Auth">
+                            <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
+                                <InputTextArea required @bind-Value=comment.Content placeholder="Add a comment..." />
+                                <button type="submit">Comment</button>
+                            </EditForm>
+                        </Authorized>
+
+                        <NotAuthorized>
+                            <textarea placeholder="Login in to leave a comment.."></textarea>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </section>
+            </div>
+        </div>
+    }
+
+    <!-- Paginate -->
+    <div paginate>
+        <button prev @onclick="@(e => SwitchPage("prev"))"><PageLeft /></button>
+        <span>@currentPg</span>
+        <button next @onclick="@(e => SwitchPage("next"))"><PageRight /></button>
+    </div>
+}
+
+@code {
+    CommentVM comment = new CommentVM();
+    ModalOptions options;
+    string username;
+    private protected int currentPg = 1;
+    int maxPg;
+    List<PostModel> page;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        PagerVisibility();
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        username = _http.HttpContext.User.Identity.Name;
+
+        // custom blazored modal
+        options = new ModalOptions()
+        {
+            Class = "custom-modal",
+            FocusFirstElement = true,
+            OverlayCustomClass = "modal-background",
+            DisableBackgroundCancel = true
+        };
+
+        await AppState.Refresh();
+        maxPg = (int)Math.Ceiling((double)AppState.Posts.Count / 5);
+        Populate();
+
+        AppState.StateChanged += async (Source)
+        => await AppState_StateChanged(Source);
+    }
+
+    /// <summary>
+    /// Populates the page with posts
+    /// </summary>
+    void Populate()
+    {
+        int from = (currentPg - 1) * 5;
+        int to = currentPg * 5;
+        page = AppState.Posts.Skip(from).Take(to).ToList();
+    }
+
+    /// <summary>
+    /// Hides and shows the pager buttons
+    /// </summary>
+    /// <returns>Successful completion of task</returns>
+    async Task PagerVisibility()
+    {
+        if (currentPg == 1)
+            await JSRuntime.InvokeVoidAsync("HideTag", "button[prev]");
+
+        if (currentPg == maxPg)
+            await JSRuntime.InvokeVoidAsync("HideTag", "button[next]");
+
+        if (currentPg > 1)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "button[prev]", "inline");
+
+        if (currentPg < maxPg)
+            await JSRuntime.InvokeVoidAsync("ShowTag", "button[next]", "inline");
+    }
+
+    /// <summary>
+    /// Pages left or right
+    /// </summary>
+    /// <param name="direction">"next" or "prev"</param>
+    /// <returns>Succesful completion of task</returns>
+    protected async Task SwitchPage(string direction)
+    {
+        if (direction == "next" && currentPg < maxPg)
+            currentPg++;
+        else if (direction == "prev" && currentPg > 1)
+            currentPg--;
+        else
+            return;
+
+        await PagerVisibility();
+        Populate();
+    }
+
+    /// <summary>
+    /// Displays the edit comment modal
+    /// </summary>
+    /// <param name="comment">CommentModel</param>
+    /// <returns>Successful completion of task</returns>
+    public async Task ShowEditComment(CommentModel comment)
+    {
+        var param = new ModalParameters();
+        param.Add(nameof(EditComment.Comment), comment);
+        await _modal.Show<EditComment>(" Edit Comment", param, options).Result;
+    }
+
+    /// <summary>
+    /// Displays the edit post modal
+    /// </summary>
+    /// <param name="post">PostModel</param>
+    /// <returns>Successful completion of task</returns>
+    async Task ShowEditPost(PostModel post)
+    {
+        var param = new ModalParameters();
+        param.Add(nameof(EditPost.Post), post);
+        await _modal.Show<EditPost>("Edit Post", param, options).Result;
+    }
+
+    /// <summary>
+    /// Adds a comment
+    /// </summary>
+    /// <param name="postId">PostId</param>
+    /// <returns>Successful completion of task</returns>
+    public async Task AddComment(int postId)
+    {
+        comment.UserName = username;
+        comment.PostModelId = postId;
+        await AppState.AddComment(this, comment);
+        comment = new CommentVM();
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (Source)
+            => await AppState_StateChanged(Source);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public class CommentVM
+    {
+        public string UserName { get; set; }
+
+        public int PostModelId { get; set; }
+
+        public string Content { get; set; }
+    }
+}

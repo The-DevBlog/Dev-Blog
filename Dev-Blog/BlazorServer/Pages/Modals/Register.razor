@@ -1,0 +1,80 @@
+﻿@inject IModalService _modal
+@inject IJSRuntime JSRuntime
+@inject AppState AppState
+
+<section modal>
+    <EditForm Model=registerVM OnValidSubmit=Validate>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <li existingUser style="display: none">username already exists</li>
+        <li existingEmail style="display: none">email already exists</li>
+
+        <InputText @bind-Value=registerVM.UserName placeholder="username" />
+        <InputText @bind-Value=registerVM.Password type="password" placeholder="password" />
+        <InputText @bind-Value=registerVM.ConfirmPassword type="password" placeholder="confirm password" />
+        <InputText @bind-Value=registerVM.Email type="email" placeholder="email" />
+
+        <input modal type="submit" value="Submit" />
+    </EditForm>
+    <form id="form" method="post" action="/signup">
+        <input type="hidden" name="username" value=@registerVM.UserName hidden />
+        <input type="hidden" name="password" value=@registerVM.Password hidden />
+        <input type="hidden" name="confirmpassword" value=@registerVM.ConfirmPassword hidden />
+        <input type="hidden" name="email" value=@registerVM.Email hidden />
+    </form>
+</section>
+
+@code {
+    RegisterVM registerVM;
+
+    protected override async Task OnInitializedAsync()
+    {
+        registerVM = new RegisterVM();
+    }
+
+    async Task SubmitForm()
+    {
+        await JSRuntime.InvokeVoidAsync("SubmitForm", "form");
+    }
+
+    async Task Validate()
+    {
+        bool usernameExists = AppState.CheckUsername(registerVM.UserName);
+        bool emailExists = AppState.CheckEmail(registerVM.Email);
+
+        if (usernameExists)
+            await JSRuntime.InvokeVoidAsync("AddDisplay", "li[existingUser]", "block");
+        else
+            await JSRuntime.InvokeVoidAsync("RemoveDisplay", "li[existingUser]");
+
+        if (emailExists)
+            await JSRuntime.InvokeVoidAsync("AddDisplay", "li[existingEmail]", "block");
+        else
+            await JSRuntime.InvokeVoidAsync("RemoveDisplay", "li[existingEmail]");
+
+        if (!usernameExists && !emailExists)
+            await SubmitForm();
+    }
+
+    public class RegisterVM
+    {
+        [Required(ErrorMessage = "username required")]
+        [StringLength(25, ErrorMessage = "username must be less than 25 characters")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "password required")]
+        [DataType(DataType.Password)]
+        [StringLength(35, ErrorMessage = "password must be less than 35 characters")]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "confirm password required")]
+        [DataType(DataType.Password)]
+        [Compare("Password")]
+        [StringLength(35, ErrorMessage = "passwords must match")]
+        public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "email required")]
+        [EmailAddress(ErrorMessage = "invalid email")]
+        public string Email { get; set; }
+    }
+}

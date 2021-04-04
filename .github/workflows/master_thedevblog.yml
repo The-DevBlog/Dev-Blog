@@ -18,15 +18,15 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.102'
+        dotnet-version: '5.0'
 
     - name: Build with dotnet
-      working-directory: 'Dev-Blog/Dev-Blog'
+      working-directory: 'Dev-Blog/BlazorServer'
       run: dotnet build --configuration Release
 
     - name: dotnet publish
-      working-directory: 'Dev-Blog/Dev-Blog'
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Dev-Blog
+      working-directory: 'Dev-Blog/BlazorServer'
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/BlazorServer
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -34,4 +34,4 @@ jobs:
         app-name: 'thedevblog'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_a27835ee2e1b44158e18d43945373a3b }}
-        package: ${{env.DOTNET_ROOT}}/Dev-Blog 
+        package: ${{env.DOTNET_ROOT}}/BlazorServer

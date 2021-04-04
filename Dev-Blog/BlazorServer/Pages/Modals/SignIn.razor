@@ -1,0 +1,38 @@
+﻿@inject IJSRuntime JSRuntime
+
+<section modal>
+    <EditForm Model=signIn OnValidSubmit=SubmitForm>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value=signIn.UserName placeholder="username" />
+        <InputText @bind-Value=signIn.Password type="password" placeholder="password" />
+        <input modal type="submit" value="Submit" />
+    </EditForm>
+    <form id="form" method="post" action="/signin">
+        <input type="hidden" name="username" value=@signIn.UserName hidden />
+        <input type="hidden" name="password" value=@signIn.Password hidden />
+    </form>
+</section>
+
+@code {
+    private SignInModel signIn;
+
+    async Task SubmitForm()
+    {
+        await JSRuntime.InvokeVoidAsync("SubmitForm", "form");
+    }
+
+    protected override void OnInitialized()
+    {
+        signIn = new SignInModel();
+    }
+
+    private class SignInModel
+    {
+        [Required(ErrorMessage = "username required")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "password required")]
+        public string Password { get; set; }
+    }
+}

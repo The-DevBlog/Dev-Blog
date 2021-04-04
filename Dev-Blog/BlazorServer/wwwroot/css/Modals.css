@@ -1,0 +1,42 @@
+﻿.custom-modal {
+    background-color: #414141;
+    z-index: 999999;
+    padding: 15px;
+}
+
+.modal-background {
+    background-color: #313131;
+}
+
+section[modal] input,
+section[modal] textarea {
+    color: white;
+    display: block;
+    margin: 25px;
+    font-family: 'Fira Code', monospace;
+    background-color: #313131;
+    padding: 7.5px;
+}
+
+button[modal],
+input[modal] {
+    padding: 5px;
+    color: white;
+}
+
+    button[modal]:hover,
+    input[modal]:hover {
+        cursor: pointer;
+        color: white;
+        background-color: #A2A2A2;
+    }
+
+/* Delete Modal */
+section[delete] {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+    section[delete] button {
+        background-color: #313131;
+    }

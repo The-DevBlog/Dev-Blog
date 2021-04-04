@@ -37,6 +37,7 @@ namespace Dev_Blog
         {
             services.AddMvc();
             services.AddRazorPages();
+            services.AddServerSideBlazor();
 
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -86,10 +87,11 @@ namespace Dev_Blog
             app.UseAuthorization();
 
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            RoleInitializer.SeedData(serviceProvider, userManager, Configuration);
+            //RoleInitializer.SeedData(serviceProvider, userManager, Configuration);
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapBlazorHub();
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });

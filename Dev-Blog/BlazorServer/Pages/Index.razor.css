@@ -1,0 +1,107 @@
+﻿/* post */
+section[post] {
+    margin: 50px auto;
+    border-radius: 5px;
+    background-color: #414141;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+    section[post] div {
+        background-color: #626262;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 5px 5px 0px 0px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    section[post] span:nth-child(2) {
+        float: right;
+    }
+
+    section[post] p {
+        text-align: center;
+        width: 928px;
+        margin: auto;
+        background-color: #626262;
+        padding: 10px 0px;
+        border-radius: 0px 0px 5px 5px;
+    }
+
+img {
+    border-radius: 5px 5px 0px 0px;
+    display: block;
+    height: 522px;
+    margin: auto;
+    width: 928px;
+}
+
+/*YouTube*/
+section[youtube] {
+    width: 77%;
+    margin: auto;
+    color: white;
+    background-color: #1E1E1E;
+    height: 500px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5em;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+    section[youtube] h2 {
+        text-align: center;
+        margin: 15px;
+    }
+
+/*    Suggestion Box*/
+section[suggestion] {
+    text-align: center;
+    padding: 15px;
+    margin: 20px;
+}
+
+a {
+    background-color: #626262;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 3.5px;
+    color: #C1C1C1;
+}
+
+    a:hover {
+        color: white;
+        background-color: #A2A2A2;
+    }
+
+@media screen and (max-width: 992px) {
+    section[post] p {
+        width: 640px;
+    }
+
+    section[post],
+    section[post] div {
+        width: auto;
+    }
+
+    section[post] {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    section[post] p {
+        width: 448px;
+    }
+
+    section[youtube] {
+        height: 300px;
+    }
+
+    section[post] p {
+        width: 100%;
+    }
+}
