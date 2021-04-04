@@ -14,8 +14,8 @@ namespace BlazorServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.3");
+                .HasAnnotation("ProductVersion", "3.1.13")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("BlazorServer.Models.CommentModel", b =>
                 {
@@ -118,15 +118,6 @@ namespace BlazorServer.Migrations
                         .HasForeignKey("PostModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BlazorServer.Models.PostModel", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("DownVotes");
-
-                    b.Navigation("UpVotes");
                 });
 #pragma warning restore 612, 618
         }

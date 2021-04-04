@@ -12,12 +12,12 @@ namespace BlazorServer.Migrations
                 name: "Post",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UpdateNum = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ImgURL = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    UpdateNum = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    ImgURL = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,12 +28,12 @@ namespace BlazorServer.Migrations
                 name: "Comment",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PostModelId = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    PostModelId = table.Column<int>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,8 +50,8 @@ namespace BlazorServer.Migrations
                 name: "DownVote",
                 columns: table => new
                 {
-                    PostModelId = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false)
+                    PostModelId = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,8 +68,8 @@ namespace BlazorServer.Migrations
                 name: "UpVote",
                 columns: table => new
                 {
-                    PostModelId = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false)
+                    PostModelId = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
