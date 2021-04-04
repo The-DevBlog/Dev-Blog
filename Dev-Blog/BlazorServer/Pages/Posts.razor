@@ -7,7 +7,7 @@
 @inject AppState AppState
 <!-- Add Post -->
 <AuthorizeView Policy="Admin">
-    <button @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
+    <button addPost @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
 </AuthorizeView>
 
 @if (page == null)

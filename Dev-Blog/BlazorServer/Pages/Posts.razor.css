@@ -3,6 +3,7 @@ div[post] {
     border-radius: 5px;
     background-color: #414141;
     padding-bottom: 20px;
+    margin: 15px 0px;
 }
 
 /* post info */
@@ -114,6 +115,7 @@ section[comment] div {
 section[comment] p {
     padding: 7.5px;
     margin-top: 5px;
+    margin-left: 7px;
 }
 
 /* delete comment */
