@@ -20,6 +20,9 @@ jobs:
       with:
         dotnet-version: '5.0'
 
+    - name: Clean
+      run: dotnet clean ./Dev-Blog/Dev-Blog.sln --configuration Release && dotnet nuget locals all --clear
+
     - name: Build with dotnet
       working-directory: 'Dev-Blog/BlazorServer'
       run: dotnet build --configuration Release
