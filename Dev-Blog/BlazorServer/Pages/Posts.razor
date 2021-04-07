@@ -164,8 +164,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        username = _http.HttpContext.User.Identity.Name;
-
         // custom blazored modal
         options = new ModalOptions()
         {
@@ -289,4 +287,5 @@ else
 
         public string Content { get; set; }
     }
+    // test
 }
