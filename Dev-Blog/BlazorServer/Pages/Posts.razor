@@ -10,7 +10,7 @@
     <button addPost @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
 </AuthorizeView>
 
-@if (AppState.Posts == null)
+@if (page == null)
 {
     <p>Loading...</p>
 }
@@ -164,8 +164,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        username = _http.HttpContext.User.Identity.Name;
-
         // custom blazored modal
         options = new ModalOptions()
         {

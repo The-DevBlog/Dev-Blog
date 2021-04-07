@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorServer.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210316163737_initial2")]
-    partial class initial2
+    [Migration("20210407155929_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
