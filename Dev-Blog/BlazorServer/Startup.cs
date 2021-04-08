@@ -54,6 +54,7 @@ namespace BlazorServer
                 options.AddPolicy("Visitor", policy => policy.RequireRole(RoleModel.Visitor));
             });
 
+            //TODO: Understand differences between all of these
             services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
