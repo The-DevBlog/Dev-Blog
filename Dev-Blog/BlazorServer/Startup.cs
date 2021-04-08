@@ -34,27 +34,26 @@ namespace BlazorServer
             services.AddHttpContextAccessor();
             services.AddBlazoredModal();
 
-            services.AddDbContext<AppDbContext>(opt =>
+            services.AddDbContext<AppDbContext>(options =>
             {
-                opt.UseMySql(_config.GetConnectionString("DevBlogDB"));
+                options.UseMySql(_config.GetConnectionString("DevBlogDB"));
             });
 
-            services.AddDbContext<UserDbContext>(opt =>
+            services.AddDbContext<UserDbContext>(options =>
             {
-                opt.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
+                options.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()
                     .AddEntityFrameworkStores<UserDbContext>()
                     .AddDefaultTokenProviders();
 
-            services.AddAuthorization(opt =>
+            services.AddAuthorization(options =>
             {
-                opt.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
-                opt.AddPolicy("Visitor", policy => policy.RequireRole(RoleModel.Visitor));
+                options.AddPolicy("Admin", policy => policy.RequireRole(RoleModel.Admin));
+                options.AddPolicy("Visitor", policy => policy.RequireRole(RoleModel.Visitor));
             });
 
-            //TODO: Understand differences between all of these
             services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
