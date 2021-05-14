@@ -62,7 +62,7 @@ else
                                 </button>
                                 <span votes>@post.UpVotes.Count</span>
                                 <button thumbIcon upvote @onclick="async () => await AppState.DownVote(this, post.Id, username)">
-                                    <ThumbsUpIcon />
+                                    <ThumbsDownIcon />
                                 </button>
                                 <span votes>@post.DownVotes.Count</span>
                             </div>
@@ -164,6 +164,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        username = _http.HttpContext.User.Identity.Name;
+
         // custom blazored modal
         options = new ModalOptions()
         {
