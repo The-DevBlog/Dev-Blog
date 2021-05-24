@@ -12,7 +12,7 @@ namespace BlazorServer.Models
 
         public CommentModel()
         {
-            Date = DateTime.Now;
+            Date = DateTime.UtcNow;
         }
     }
 }

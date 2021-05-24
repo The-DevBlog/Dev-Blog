@@ -90,7 +90,7 @@ else
 
                             <!-- Delete / Edit Comment -->
                             <div>
-                                <span>@comment.Date.ToString("MM/dd/yyyy hh:mm tt")</span>
+                                <span>@comment.Date.ToLocalTime().ToString("MM/dd/yyyy hh:mm tt")</span>
                                 <AuthorizeView Policy="Visitor">
                                     @if (comment.UserName == username)
                                     {
