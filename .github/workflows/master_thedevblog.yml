@@ -21,15 +21,15 @@ jobs:
         dotnet-version: '5.0'
 
     - name: Clean
-      run: dotnet clean ./Dev-Blog/Dev-Blog.sln --configuration Release && dotnet nuget locals all --clear
+      run: dotnet clean ./Dev_Blog/Dev_Blog.sln --configuration Release && dotnet nuget locals all --clear
 
     - name: Build with dotnet
-      working-directory: 'Dev-Blog/BlazorServer'
+      working-directory: 'Dev_Blog/Dev_Blog'
       run: dotnet build --configuration Release
 
     - name: dotnet publish
-      working-directory: 'Dev-Blog/BlazorServer'
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/BlazorServer
+      working-directory: 'Dev_Blog/Dev_Blog'
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Dev_Blog
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -37,4 +37,4 @@ jobs:
         app-name: 'thedevblog'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_a27835ee2e1b44158e18d43945373a3b }}
-        package: ${{env.DOTNET_ROOT}}/BlazorServer
+        package: ${{env.DOTNET_ROOT}}/Dev_Blog
