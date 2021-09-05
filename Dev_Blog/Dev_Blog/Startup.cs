@@ -34,12 +34,12 @@ namespace Dev_Blog
             services.AddHttpContextAccessor();
             services.AddBlazoredModal();
 
-            string con = Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.Process);
+            string con = Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.Machine);
 
             services.AddDbContext<AppDbContext>(options =>
             {
                 //options.UseMySql(_config.GetConnectionString("DevBlogDB"));
-                options.UseMySql(_config.GetConnectionString(con));
+                options.UseMySql(con);
             });
 
             services.AddDbContext<UserDbContext>(options =>
