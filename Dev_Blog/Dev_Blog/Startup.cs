@@ -34,12 +34,9 @@ namespace Dev_Blog
             services.AddHttpContextAccessor();
             services.AddBlazoredModal();
 
-            string con = Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.User);
-
             services.AddDbContext<AppDbContext>(options =>
             {
-                //options.UseMySql(_config.GetConnectionString("DevBlogDB"));
-                options.UseMySql(con);
+                options.UseMySql(_config.GetConnectionString("DevBlogDB"));
             });
 
             services.AddDbContext<UserDbContext>(options =>
