@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,13 +32,13 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task Welcome(string email)
         {
-            var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY", EnvironmentVariableTarget.User);
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = _config.GetSection("WELCOME_EMAIL").Value,
-                From = new EmailAddress(_config.GetSection("AdminEmail").Value),
+                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_WELCOME_TEMPLATE", EnvironmentVariableTarget.User),
+                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL", EnvironmentVariableTarget.User))
             };
 
             msg.AddTo(email);
@@ -52,17 +53,18 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task NewPost(string img = null)
         {
-            var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY", EnvironmentVariableTarget.User);
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = _config.GetSection("NEW_POST_EMAIL").Value,
-                From = new EmailAddress(_config.GetSection("AdminEmail").Value)
+                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_NEW_POST_TEMPLATE", EnvironmentVariableTarget.User),
+                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL", EnvironmentVariableTarget.User))
             };
 
             // get all users who are subscribed
-            List<UserModel> users = userMgr.Users.Where(x => x.UserName != _config.GetSection("AdminUserName").Value && x.Subscribed).ToList();
+            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME", EnvironmentVariableTarget.User);
+            List<UserModel> users = userMgr.Users.Where(x => x.UserName != username && x.Subscribed).ToList();
 
             if (users.Count > 0)
             {

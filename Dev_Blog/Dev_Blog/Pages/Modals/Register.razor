@@ -27,9 +27,10 @@
 @code {
     RegisterVM registerVM;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         registerVM = new RegisterVM();
+
     }
 
     async Task SubmitForm()

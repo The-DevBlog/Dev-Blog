@@ -17,13 +17,6 @@ namespace Dev_Blog
 {
     public class Startup
     {
-        private IConfiguration _config { get; }
-
-        public Startup(IConfiguration configuration)
-        {
-            _config = configuration;
-        }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -36,12 +29,12 @@ namespace Dev_Blog
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseMySql(_config.GetConnectionString("DevBlogDB"));
+                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.User));
             });
 
             services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
+                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_USER_DB_CON_STR", EnvironmentVariableTarget.User));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()
@@ -54,7 +47,6 @@ namespace Dev_Blog
                 options.AddPolicy("Visitor", policy => policy.RequireRole(RoleModel.Visitor));
             });
 
-            //TODO: Understand differences between all of these
             services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
@@ -64,7 +56,7 @@ namespace Dev_Blog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
