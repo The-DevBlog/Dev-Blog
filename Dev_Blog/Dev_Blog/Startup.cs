@@ -34,7 +34,7 @@ namespace Dev_Blog
             services.AddHttpContextAccessor();
             services.AddBlazoredModal();
 
-            string con = Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.Machine);
+            string con = Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.Process);
 
             services.AddDbContext<AppDbContext>(options =>
             {
