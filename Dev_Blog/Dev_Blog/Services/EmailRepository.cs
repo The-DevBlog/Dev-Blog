@@ -32,13 +32,13 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task Welcome(string email)
         {
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY", EnvironmentVariableTarget.User);
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_WELCOME_TEMPLATE", EnvironmentVariableTarget.User),
-                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL", EnvironmentVariableTarget.User))
+                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_WELCOME_TEMPLATE"),
+                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL"))
             };
 
             msg.AddTo(email);
@@ -53,17 +53,17 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task NewPost(string img = null)
         {
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY", EnvironmentVariableTarget.User);
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_NEW_POST_TEMPLATE", EnvironmentVariableTarget.User),
-                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL", EnvironmentVariableTarget.User))
+                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_NEW_POST_TEMPLATE"),
+                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL"))
             };
 
             // get all users who are subscribed
-            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME", EnvironmentVariableTarget.User);
+            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME");
             List<UserModel> users = userMgr.Users.Where(x => x.UserName != username && x.Subscribed).ToList();
 
             if (users.Count > 0)

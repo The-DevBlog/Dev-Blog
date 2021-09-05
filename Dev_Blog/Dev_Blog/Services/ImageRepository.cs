@@ -24,10 +24,10 @@ namespace Dev_Blog.Services
 
 
             string url = "";
-            string destinationPath = Environment.GetEnvironmentVariable("DESTINATION_PATH", EnvironmentVariableTarget.User);
+            string destinationPath = Environment.GetEnvironmentVariable("DESTINATION_PATH");
             string dest = destinationPath + fileName;
 
-            string dropboxToken = Environment.GetEnvironmentVariable("DROPBOX_TOKEN", EnvironmentVariableTarget.User);
+            string dropboxToken = Environment.GetEnvironmentVariable("DROPBOX_TOKEN");
             using (var dbx = new DropboxClient(dropboxToken))
             {
                 // upload file to dbx

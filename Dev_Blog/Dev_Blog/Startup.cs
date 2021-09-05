@@ -36,12 +36,12 @@ namespace Dev_Blog
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR", EnvironmentVariableTarget.User));
+                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR"));
             });
 
             services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_USER_DB_CON_STR", EnvironmentVariableTarget.User));
+                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_USER_DB_CON_STR"));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()

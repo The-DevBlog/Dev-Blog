@@ -1,3 +1,5 @@
+// file used from https://dusted.codes/dotenv-in-dotnet
+// minor modifications
 namespace Dev_Blog
 {
     using System;
@@ -14,10 +16,8 @@ namespace Dev_Blog
             {
                 var parts = line.Split(
                     '=',
+                    2,
                     StringSplitOptions.RemoveEmptyEntries);
-
-                if (parts.Length != 2)
-                    continue;
 
                 Environment.SetEnvironmentVariable(parts[0], parts[1]);
             }

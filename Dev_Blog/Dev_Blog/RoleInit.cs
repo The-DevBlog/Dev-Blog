@@ -42,16 +42,16 @@ namespace Dev_Blog
 
         public static void SeedUsers(UserManager<UserModel> userManager, IConfiguration _config)
         {
-            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME", EnvironmentVariableTarget.User);
+            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME");
             if (userManager.FindByNameAsync(username).Result == null)
             {
                 UserModel user = new UserModel()
                 {
-                    Email = Environment.GetEnvironmentVariable("ADMIN_EMAIL", EnvironmentVariableTarget.User),
+                    Email = Environment.GetEnvironmentVariable("ADMIN_EMAIL"),
                     UserName = username
                 };
 
-                string password = Environment.GetEnvironmentVariable("ADMIN_PASSWORD", EnvironmentVariableTarget.User);
+                string password = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
                 IdentityResult result = userManager.CreateAsync(user, password).Result;
                 if (result.Succeeded)
                 {
