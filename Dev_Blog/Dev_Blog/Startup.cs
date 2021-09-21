@@ -27,13 +27,6 @@ namespace Dev_Blog
             services.AddHttpContextAccessor();
             services.AddBlazoredModal();
 
-            // load environmental variables
-            DotEnv.Load(".env");
-            var config =
-                new ConfigurationBuilder()
-                    .AddEnvironmentVariables()
-                    .Build();
-
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR"));
