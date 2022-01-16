@@ -1,7 +1,6 @@
 using Dev_Blog.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +11,11 @@ using Dev_Blog.Services;
 using Blazored.Modal;
 using Dev_Blog.State;
 using System;
+using VaultSharp.V1.AuthMethods;
+using VaultSharp.V1.AuthMethods.Token;
+using VaultSharp;
+using VaultSharp.V1.Commons;
+using VaultSharp.V1.SecretsEngines.Consul;
 
 namespace Dev_Blog
 {
@@ -19,8 +23,18 @@ namespace Dev_Blog
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
+            var authMethod = new TokenAuthMethodInfo("");
+
+            var vaultClientSettings = new VaultClientSettings("", authMethod);
+
+            IVaultClient vaultClient = new VaultClient(vaultClientSettings);
+            Secret<SecretData> kv2Secret = await vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(path: "devblog", mountPoint: "ADMIN_EMAIL");
+
+            //Secret<ConsulCredentials> consulCreds = await vaultClient.V1.Secrets.Consul.GetCredentialsAsync("devblog");
+            //string consulToken = consulCreds.Data.Token;
+
             services.AddMvc();
             services.AddRazorPages();
             services.AddServerSideBlazor();
