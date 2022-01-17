@@ -29,12 +29,12 @@ namespace Dev_Blog
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR"));
+                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR"), new MySqlServerVersion(new Version(8, 0, 11)));
             });
 
             services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_USER_DB_CON_STR"));
+                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_USER_DB_CON_STR"), new MySqlServerVersion(new Version(8, 0, 11)));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()
