@@ -11,13 +11,20 @@ using Dev_Blog.Services;
 using Blazored.Modal;
 using Dev_Blog.State;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace Dev_Blog
 {
+
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        private IConfiguration _config;
+
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
@@ -28,12 +35,12 @@ namespace Dev_Blog
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_DB_CON_STR"), new MySqlServerVersion(new Version(8, 0, 11)));
+                options.UseMySql(_config.GetConnectionString("DB"), new MySqlServerVersion(new Version(8, 0, 11)));
             });
 
             services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseMySql(Environment.GetEnvironmentVariable("DEVBLOG_USER_DB_CON_STR"), new MySqlServerVersion(new Version(8, 0, 11)));
+                options.UseMySql(_config.GetConnectionString("UserDB"), new MySqlServerVersion(new Version(8, 0, 11)));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()

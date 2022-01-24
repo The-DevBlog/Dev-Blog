@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +16,7 @@ namespace Dev_Blog.Services
         private readonly IConfiguration _config;
         private readonly UserManager<UserModel> userMgr;
         private readonly UserDbContext _userDb;
+        private readonly EmailAddress _email = new EmailAddress("devmaster@thedevblog.net");
 
         public EmailRepository(UserDbContext userdb, IConfiguration config, UserManager<UserModel> um)
         {
@@ -32,13 +32,13 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task Welcome(string email)
         {
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var apiKey = _config["SendgridApiKey"];
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_WELCOME_TEMPLATE"),
-                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL"))
+                TemplateId = _config["SendgridWelcomeTemplate"],
+                From = _email,
             };
 
             msg.AddTo(email);
@@ -53,18 +53,18 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task NewPost(string img = null)
         {
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var apiKey = _config["SendgridApiKey"];
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = Environment.GetEnvironmentVariable("SENDGRID_NEW_POST_TEMPLATE"),
-                From = new EmailAddress(Environment.GetEnvironmentVariable("ADMIN_EMAIL"))
+                TemplateId = _config["SendgridNewPostTemplate"],
+                From = _email
             };
 
             // get all users who are subscribed
-            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME");
-            List<UserModel> users = userMgr.Users.Where(x => x.UserName != username && x.Subscribed).ToList();
+            string adminUser = _config["AdminUsername"];
+            List<UserModel> users = userMgr.Users.Where(x => x.UserName != adminUser && x.Subscribed).ToList();
 
             if (users.Count > 0)
             {

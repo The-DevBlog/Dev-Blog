@@ -10,6 +10,13 @@ namespace Dev_Blog.Services
 {
     public class ImageRepository : IImageRepository
     {
+        private readonly IConfiguration _config;
+
+        public ImageRepository(IConfiguration config)
+        {
+            _config = config;
+        }
+
         /// <summary>
         /// Uploads an image to Dropbox account
         /// </summary>
@@ -23,12 +30,12 @@ namespace Dev_Blog.Services
             string fileName = $"{DateTime.Now.Ticks}{name}{ext}";
 
 
+            var destinationPath = _config["DropboxDestinationPath"];
+
             string url = "";
-            string destinationPath = Environment.GetEnvironmentVariable("DESTINATION_PATH");
             string dest = destinationPath + fileName;
 
-            string dropboxToken = Environment.GetEnvironmentVariable("DROPBOX_TOKEN");
-            using (var dbx = new DropboxClient(dropboxToken))
+            using (var dbx = new DropboxClient(_config["DropboxToken"]))
             {
                 // upload file to dbx
                 var updated = await dbx.Files.UploadAsync(
@@ -47,6 +54,7 @@ namespace Dev_Blog.Services
                 // remove id and replace with raw=1
                 url = url.Substring(0, url.Length - 4) + "raw=1";
             }
+
             return url;
         }
     }
