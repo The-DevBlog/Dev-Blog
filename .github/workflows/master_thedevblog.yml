@@ -15,10 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Set up .NET Core
+    - name: Set up .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0'
+        dotnet-version: '6.0'
 
     - name: Clean
       run: dotnet clean ./Dev_Blog/Dev_Blog.sln --configuration Release && dotnet nuget locals all --clear
