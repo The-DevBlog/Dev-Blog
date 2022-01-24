@@ -10,7 +10,7 @@ namespace Dev_Blog.Services
 {
     public class ImageRepository : IImageRepository
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
         public ImageRepository(IConfiguration config)
         {
@@ -29,8 +29,11 @@ namespace Dev_Blog.Services
             string ext = Path.GetExtension(name);
             string fileName = $"{DateTime.Now.Ticks}{name}{ext}";
 
+
+            var destinationPath = _config["DropboxDestinationPath"];
+
             string url = "";
-            string dest = _config["DestinationPath"] + fileName;
+            string dest = destinationPath + fileName;
 
             using (var dbx = new DropboxClient(_config["DropboxToken"]))
             {
@@ -51,6 +54,7 @@ namespace Dev_Blog.Services
                 // remove id and replace with raw=1
                 url = url.Substring(0, url.Length - 4) + "raw=1";
             }
+
             return url;
         }
     }

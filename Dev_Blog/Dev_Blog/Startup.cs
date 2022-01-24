@@ -1,7 +1,6 @@
 using Dev_Blog.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,20 +11,20 @@ using Dev_Blog.Services;
 using Blazored.Modal;
 using Dev_Blog.State;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace Dev_Blog
 {
+
     public class Startup
     {
-        private IConfiguration _config { get; }
+        private IConfiguration _config;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration config)
         {
-            _config = configuration;
+            _config = config;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
@@ -36,12 +35,12 @@ namespace Dev_Blog
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseMySql(_config.GetConnectionString("DevBlogDB"));
+                options.UseMySql(_config.GetConnectionString("DB"), new MySqlServerVersion(new Version(8, 0, 11)));
             });
 
             services.AddDbContext<UserDbContext>(options =>
             {
-                options.UseMySql(_config.GetConnectionString("DevBlogUserDB"));
+                options.UseMySql(_config.GetConnectionString("UserDB"), new MySqlServerVersion(new Version(8, 0, 11)));
             });
 
             services.AddIdentity<UserModel, IdentityRole>()
@@ -54,7 +53,6 @@ namespace Dev_Blog
                 options.AddPolicy("Visitor", policy => policy.RequireRole(RoleModel.Visitor));
             });
 
-            //TODO: Understand differences between all of these
             services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
@@ -64,7 +62,7 @@ namespace Dev_Blog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

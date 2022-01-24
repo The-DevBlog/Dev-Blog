@@ -16,6 +16,7 @@ namespace Dev_Blog.Services
         private readonly IConfiguration _config;
         private readonly UserManager<UserModel> userMgr;
         private readonly UserDbContext _userDb;
+        private readonly EmailAddress _email = new EmailAddress("devmaster@thedevblog.net");
 
         public EmailRepository(UserDbContext userdb, IConfiguration config, UserManager<UserModel> um)
         {
@@ -31,13 +32,13 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task Welcome(string email)
         {
-            var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
+            var apiKey = _config["SendgridApiKey"];
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = _config.GetSection("WELCOME_EMAIL").Value,
-                From = new EmailAddress(_config.GetSection("AdminEmail").Value),
+                TemplateId = _config["SendgridWelcomeTemplate"],
+                From = _email,
             };
 
             msg.AddTo(email);
@@ -52,17 +53,18 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task NewPost(string img = null)
         {
-            var apiKey = _config.GetSection("SENDGRID_APIKEY").Value;
+            var apiKey = _config["SendgridApiKey"];
             var client = new SendGridClient(apiKey);
 
             var msg = new SendGridMessage()
             {
-                TemplateId = _config.GetSection("NEW_POST_EMAIL").Value,
-                From = new EmailAddress(_config.GetSection("AdminEmail").Value)
+                TemplateId = _config["SendgridNewPostTemplate"],
+                From = _email
             };
 
             // get all users who are subscribed
-            List<UserModel> users = userMgr.Users.Where(x => x.UserName != _config.GetSection("AdminUserName").Value && x.Subscribed).ToList();
+            string adminUser = _config["AdminUsername"];
+            List<UserModel> users = userMgr.Users.Where(x => x.UserName != adminUser && x.Subscribed).ToList();
 
             if (users.Count > 0)
             {

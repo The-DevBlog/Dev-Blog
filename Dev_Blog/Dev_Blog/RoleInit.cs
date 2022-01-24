@@ -20,7 +20,7 @@ namespace Dev_Blog
             new IdentityRole{Name = RoleModel.Admin, NormalizedName = RoleModel.Admin.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()},
         };
 
-        public static async Task SeedData(IServiceProvider serviceProvider, UserManager<UserModel> userManager, IConfiguration _config)
+        public static void SeedData(IServiceProvider serviceProvider, UserManager<UserModel> userManager, IConfiguration _config)
         {
             using (var dbContext = new UserDbContext(serviceProvider.GetRequiredService<DbContextOptions<UserDbContext>>()))
             {
@@ -42,15 +42,17 @@ namespace Dev_Blog
 
         public static void SeedUsers(UserManager<UserModel> userManager, IConfiguration _config)
         {
-            if (userManager.FindByNameAsync(_config["AdminEmail"]).Result == null)
+            string username = Environment.GetEnvironmentVariable("ADMIN_USERNAME");
+            if (userManager.FindByNameAsync(username).Result == null)
             {
                 UserModel user = new UserModel()
                 {
-                    Email = _config["AdminEmail"],
-                    UserName = _config["AdminUserName"]
+                    Email = Environment.GetEnvironmentVariable("ADMIN_EMAIL"),
+                    UserName = username
                 };
 
-                IdentityResult result = userManager.CreateAsync(user, _config["AdminPassword"]).Result;
+                string password = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+                IdentityResult result = userManager.CreateAsync(user, password).Result;
                 if (result.Succeeded)
                 {
                     //Claim userName = new Claim("UserName", user.UserName);
