@@ -11,7 +11,6 @@ using Dev_Blog.Services;
 using Blazored.Modal;
 using Dev_Blog.State;
 using System;
-using VaultSharp;
 
 namespace Dev_Blog
 {
