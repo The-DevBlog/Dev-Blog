@@ -1,5 +1,7 @@
 ﻿@inject IModalService _modal
 @inject IJSRuntime JSRuntime
+@inject IEmailRepository _email
+
 
 <section modal>
     <EditForm Model=registerVM OnValidSubmit=Validate>
@@ -39,8 +41,8 @@
 
     async Task Validate()
     {
-        bool usernameExists = AppState.CheckUsername(registerVM.UserName);
-        bool emailExists = AppState.CheckEmail(registerVM.Email);
+        bool usernameExists = _email.CheckUsername(registerVM.UserName);
+        bool emailExists = _email.CheckEmail(registerVM.Email);
 
         if (usernameExists)
             await JSRuntime.InvokeVoidAsync("AddDisplay", "li[existingUser]", "block");
