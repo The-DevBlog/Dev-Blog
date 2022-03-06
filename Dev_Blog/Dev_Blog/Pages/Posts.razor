@@ -1,10 +1,12 @@
 ﻿@page "/posts"
 
-@implements IDisposable
 @inject IJSRuntime JSRuntime
 @inject IHttpContextAccessor _http
 @inject IModalService _modal
-@inject AppState AppState
+@inject ICommentRepository _comment
+@inject IPostRepository _post
+@inject IVoteRepository _vote
+
 <!-- Add Post -->
 <AuthorizeView Policy="Admin">
     <button addPost @onclick="@(() => _modal.Show<AddPost>("Add Post", options))">Add Post</button>
@@ -33,12 +35,12 @@ else
 
                     <AuthorizeView Policy="Admin">
                         <!-- Edit Post -->
-                        <button @onclick="async () => await ShowEditPost(post)">
+                <button @onclick="async () => await ShowEditPost(post)">
                             <EditIcon />
                         </button>
 
                         <!-- Delete Post -->
-                        <button @onclick="async () => await AppState.DeletePost(this, post.Id)">
+                <button @onclick="async () => await _post.Delete(post.Id)">
                             <TrashIcon />
                         </button>
                     </AuthorizeView>
@@ -51,17 +53,17 @@ else
             </section>
 
             <!-- Voting System -->
-            <div comments>
+    <div comments>
                 <section votes>
 
                     <AuthorizeView>
                         <Authorized>
                             <div>
-                                <button thumbIcon upvote @onclick="async () => await AppState.UpVote(this, post.Id, username)">
+                                <button thumbIcon upvote @onclick="async () => await _vote.UpVote(post.Id, username)">
                                     <ThumbsUpIcon />
                                 </button>
                                 <span votes>@post.UpVotes.Count</span>
-                                <button thumbIcon upvote @onclick="async () => await AppState.DownVote(this, post.Id, username)">
+                                <button thumbIcon upvote @onclick="async () => await _vote.DownVote(post.Id, username)">
                                     <ThumbsDownIcon />
                                 </button>
                                 <span votes>@post.DownVotes.Count</span>
@@ -89,7 +91,7 @@ else
                             <span>@comment.UserName</span>
 
                             <!-- Delete / Edit Comment -->
-                            <div>
+            <div>
                                 <span>@comment.Date.ToLocalTime().ToString("MM/dd/yyyy hh:mm tt")</span>
                                 <AuthorizeView Policy="Visitor">
                                     @if (comment.UserName == username)
@@ -97,7 +99,7 @@ else
                                         <button @onclick="() => ShowEditComment(comment)">
                                             <EditIcon />
                                         </button>
-                                        <button @onclick="async () => await AppState.DeleteComment(this, comment.Id)">
+                                        <button @onclick="async () => await _comment.Delete(comment.Id)">
                                             <TrashIcon />
                                         </button>
                                     }
@@ -110,7 +112,7 @@ else
                                             <EditIcon />
                                         </button>
                                     }
-                                    <button @onclick="async () => await AppState.DeleteComment(this, comment.Id)">
+                                    <button @onclick="async () => await _comment.Delete(comment.Id)">
                                         <TrashIcon />
                                     </button>
                                 </AuthorizeView>
@@ -122,7 +124,7 @@ else
                 }
 
                 <!-- Add Comments -->
-                <section addComment>
+        <section addComment>
                     <AuthorizeView>
                         <Authorized Context="Auth">
                             <EditForm Model=@comment OnValidSubmit="() => AddComment(post.Id)">
@@ -168,29 +170,26 @@ else
 
         // custom blazored modal
         options = new ModalOptions()
-        {
-            Class = "custom-modal",
-            FocusFirstElement = true,
-            OverlayCustomClass = "modal-background",
-            DisableBackgroundCancel = true
-        };
+            {
+                Class = "custom-modal",
+                FocusFirstElement = true,
+                OverlayCustomClass = "modal-background",
+                DisableBackgroundCancel = true
+            };
 
-        await AppState.Refresh();
-        maxPg = (int)Math.Ceiling((double)AppState.Posts.Count / 5);
-        Populate();
-
-        AppState.StateChanged += async (Source)
-        => await AppState_StateChanged(Source);
+        await Populate();
     }
 
     /// <summary>
     /// Populates the page with posts
     /// </summary>
-    void Populate()
+    async Task Populate()
     {
         int from = (currentPg - 1) * 5;
         int to = currentPg * 5;
-        page = AppState.Posts.Skip(from).Take(to).ToList();
+        var posts = await _post.GetAll();
+        maxPg = (int)Math.Ceiling((double)posts.Count / 5);
+        page = posts.Skip(from).Take(to).ToList();
     }
 
     /// <summary>
@@ -227,7 +226,7 @@ else
             return;
 
         await PagerVisibility();
-        Populate();
+        await Populate();
     }
 
     /// <summary>
@@ -263,22 +262,8 @@ else
     {
         comment.UserName = username;
         comment.PostModelId = postId;
-        await AppState.AddComment(this, comment);
+        await _comment.Create(comment);
         comment = new CommentVM();
-    }
-
-    void IDisposable.Dispose()
-    {
-        AppState.StateChanged -= async (Source)
-            => await AppState_StateChanged(Source);
-    }
-
-    private async Task AppState_StateChanged(ComponentBase source)
-    {
-        if (source != this)
-        {
-            await InvokeAsync(StateHasChanged);
-        }
     }
 
     public class CommentVM

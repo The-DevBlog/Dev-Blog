@@ -1,6 +1,6 @@
 ﻿@attribute [Authorize(Roles = "Admin")]
 
-@inject AppState AppState
+@inject IPostRepository _post
 
 <section modal>
     <EditForm Model=@Post OnValidSubmit=@UpdatePost>
@@ -20,7 +20,7 @@
 
     private async Task UpdatePost()
     {
-        await AppState.UpdatePost(this, Post);
+        await _post.Update(Post);
         await ModalInstance.CloseAsync();
     }
 }

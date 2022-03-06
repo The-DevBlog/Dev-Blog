@@ -43,13 +43,14 @@ namespace Dev_Blog.Services
         /// Retrieves all posts
         /// </summary>
         /// <returns>List<PostModel></returns>
-        public async Task<List<PostModel>> GetPosts()
+        public async Task<List<PostModel>> GetAll()
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
                                       .Include(x => x.UpVotes)
                                       .Include(x => x.DownVotes)
                                       .ToListAsync();
+
             return posts;
         }
 
@@ -58,7 +59,7 @@ namespace Dev_Blog.Services
         /// </summary>
         /// <param name="postId">Post Id</param>
         /// <returns>PostModel</returns>
-        public async Task<PostModel> GetPost(int postId)
+        public async Task<PostModel> Get(int postId)
         {
             var post = await _db.Post.Include(x => x.Comments)
                                      .Include(x => x.UpVotes)
@@ -73,7 +74,7 @@ namespace Dev_Blog.Services
         /// </summary>
         /// <param name="post"></param>
         /// <returns>Successful completion of task</returns>
-        public async Task UpdatePost(PostModel post)
+        public async Task Update(PostModel post)
         {
             _db.Post.Update(post);
             await _db.SaveChangesAsync();
@@ -86,7 +87,7 @@ namespace Dev_Blog.Services
         /// <returns>Successful completion of task</returns>
         public async Task Delete(int postId)
         {
-            var post = await GetPost(postId);
+            var post = await Get(postId);
             _db.Remove(post);
             await _db.SaveChangesAsync();
         }
