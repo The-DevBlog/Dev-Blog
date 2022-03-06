@@ -9,7 +9,6 @@ using Dev_Blog.Models;
 using Dev_Blog.Interfaces;
 using Dev_Blog.Services;
 using Blazored.Modal;
-using Dev_Blog.State;
 using System;
 using Microsoft.Extensions.Configuration;
 
@@ -58,7 +57,6 @@ namespace Dev_Blog
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<AppState>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

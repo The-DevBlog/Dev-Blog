@@ -40,6 +40,6 @@ else
     protected override void OnInitialized()
     {
         latestPost = db.Post.OrderByDescending(x => x.Date)
-                            .FirstOrDefault();
+                            .Take(1).ToList().FirstOrDefault();
     }
 }

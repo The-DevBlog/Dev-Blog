@@ -1,4 +1,4 @@
-﻿@inject State.AppState AppState
+﻿@inject ICommentRepository _comment
 
 <section modal>
     <EditForm Model=@Comment OnValidSubmit=@UpdateComment>
@@ -18,7 +18,7 @@
 
     private async Task UpdateComment()
     {
-        await AppState.UpdateComment(this, Comment);
+        await _comment.Update(Comment);
         await ModalInstance.CloseAsync();
     }
 }

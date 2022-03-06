@@ -2,7 +2,8 @@
 
 @using System.IO
 
-@inject State.AppState appState
+@inject IPostRepository _post
+@inject IImageRepository _image
 
 <section modal>
     <EditForm Model=@newPost OnValidSubmit=CreatePost>
@@ -36,8 +37,8 @@
 
     private async Task CreatePost()
     {
-        string url = await appState.AddImgToDropBox(this, name, fs);
-        await appState.AddPost(this, newPost, url);
+        string url = await _image.AddImgToDropBox(fs, name);
+        await _post.Create(newPost, url);
         await ModalInstance.CloseAsync();
     }
 }
