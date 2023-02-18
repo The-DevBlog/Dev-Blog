@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Dev_Blog.Models
+﻿namespace Dev_Blog.Models
 {
     public class CommentModel
     {

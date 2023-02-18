@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Dev_Blog.Models
+﻿namespace Dev_Blog.Models
 {
     public class PostModel
     {
