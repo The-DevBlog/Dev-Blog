@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { IPostProps } from "../components/Post";
+import IPost from "../interfaces/IPost";
 import Post from "../components/Post";
 
 const Posts = () => {
-    const [posts, setPosts] = useState<IPostProps[]>([]);
+    const [posts, setPosts] = useState<IPost[]>([]);
 
     useEffect(() => {
         fetch("http://localhost:8000/posts")

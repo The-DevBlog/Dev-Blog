@@ -1,12 +1,6 @@
-export interface IPostProps {
-    Id: number;
-    UpdateNum: string;
-    Description: string;
-    Date: string;
-    ImgURL: string;
-}
+import IPost from "../interfaces/IPost";
 
-const Post = (props: IPostProps) => {
+const Post = (props: IPost) => {
     return (
         <div>
             <span>{props.UpdateNum}</span>
