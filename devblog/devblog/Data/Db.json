@@ -1,72 +1,74 @@
-[
-    {
-        "Id": 1,
-        "UpdateNum": "Update 1",
-        "Description": "This is the first post.",
-        "Date": "2023-02-18T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 2,
-        "UpdateNum": "Update 2",
-        "Description": "This is the second post.",
-        "Date": "2023-02-17T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 3,
-        "UpdateNum": "Update 3",
-        "Description": "This is the third post.",
-        "Date": "2023-02-16T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 4,
-        "UpdateNum": "Update 4",
-        "Description": "This is the fourth post.",
-        "Date": "2023-02-15T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 5,
-        "UpdateNum": "Update 5",
-        "Description": "This is the fifth post.",
-        "Date": "2023-02-14T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 6,
-        "UpdateNum": "Update 6",
-        "Description": "This is the sixth post.",
-        "Date": "2023-02-13T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 7,
-        "UpdateNum": "Update 7",
-        "Description": "This is the seventh post.",
-        "Date": "2023-02-12T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 8,
-        "UpdateNum": "Update 8",
-        "Description": "This is the eighth post.",
-        "Date": "2023-02-11T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 9,
-        "UpdateNum": "Update 9",
-        "Description": "This is the ninth post.",
-        "Date": "2023-02-10T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500"
-    },
-    {
-        "Id": 10,
-        "UpdateNum": "Update 10",
-        "Description": "This is the tenth post.",
-        "Date": "2023-02-09T00:00:00",
-        "ImgURL": "https://place-hold.it/300x500g"
-    }
-]
+{
+    "posts": [
+        {
+            "Id": 1,
+            "UpdateNum": "Update 1",
+            "Description": "This is the first post.",
+            "Date": "2023-02-18T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 2,
+            "UpdateNum": "Update 2",
+            "Description": "This is the second post.",
+            "Date": "2023-02-17T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 3,
+            "UpdateNum": "Update 3",
+            "Description": "This is the third post.",
+            "Date": "2023-02-16T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 4,
+            "UpdateNum": "Update 4",
+            "Description": "This is the fourth post.",
+            "Date": "2023-02-15T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 5,
+            "UpdateNum": "Update 5",
+            "Description": "This is the fifth post.",
+            "Date": "2023-02-14T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 6,
+            "UpdateNum": "Update 6",
+            "Description": "This is the sixth post.",
+            "Date": "2023-02-13T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 7,
+            "UpdateNum": "Update 7",
+            "Description": "This is the seventh post.",
+            "Date": "2023-02-12T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 8,
+            "UpdateNum": "Update 8",
+            "Description": "This is the eighth post.",
+            "Date": "2023-02-11T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 9,
+            "UpdateNum": "Update 9",
+            "Description": "This is the ninth post.",
+            "Date": "2023-02-10T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500"
+        },
+        {
+            "Id": 10,
+            "UpdateNum": "Update 10",
+            "Description": "This is the tenth post.",
+            "Date": "2023-02-09T00:00:00",
+            "ImgURL": "https://place-hold.it/300x500g"
+        }
+    ]
+}
