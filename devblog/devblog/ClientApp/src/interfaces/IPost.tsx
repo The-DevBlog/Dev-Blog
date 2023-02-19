@@ -1,7 +1,7 @@
 export default interface IPostProps {
-    Id: number;
-    UpdateNum: string;
-    Description: string;
-    Date: string;
-    ImgURL: string;
+    id: number;
+    updateNum: string;
+    description: string;
+    date: string;
+    imgURL: string;
 }
