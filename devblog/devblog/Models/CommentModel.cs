@@ -1,4 +1,4 @@
-﻿namespace Dev_Blog.Models
+﻿namespace devblog.Models
 {
     public class CommentModel
     {

@@ -1,8 +1,19 @@
+using devblog.Data;
+using devblog.Interfaces;
+using devblog.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseMySql(builder.Configuration.GetConnectionString("devblogdb"), new MySqlServerVersion(new Version(8, 0, 11)));
+});
+
+builder.Services.AddScoped<IPostService, PostService>();
 
 var app = builder.Build();
 
