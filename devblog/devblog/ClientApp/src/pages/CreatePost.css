@@ -1,0 +1,14 @@
+.create-post {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-post form div {
+    margin: 1em 0 1em 0;
+}
+
+.create-post label,
+button {
+    display: block;
+}

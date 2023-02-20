@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./CreatePost.css";
 
 const CreatePost = () => {
     const [updateNum, setUpdateNum] = useState("");
@@ -22,30 +23,36 @@ const CreatePost = () => {
     }
 
     return (
-        <div>
+        <div className="create-post">
             <form onSubmit={handleSubmit}>
-                <label>Update Number</label>
-                <input
-                    type="text"
-                    required
-                    value={updateNum}
-                    onChange={(e) => setUpdateNum(e.target.value)}
-                />
+                <div>
+                    <label>Update Number</label>
+                    <input
+                        type="text"
+                        required
+                        value={updateNum}
+                        onChange={(e) => setUpdateNum(e.target.value)}
+                    />
+                </div>
 
-                <label>Description</label>
-                <input type="text"
-                    required
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+                <div>
+                    <label>Description</label>
+                    <input type="text"
+                        required
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
 
-                <label>Image</label>
-                <input
-                    type="text"
-                    required
-                    value={imgURL}
-                    onChange={(e) => setImgURL(e.target.value)}
-                />
+                <div>
+                    <label>Image</label>
+                    <input
+                        type="text"
+                        required
+                        value={imgURL}
+                        onChange={(e) => setImgURL(e.target.value)}
+                    />
+                </div>
 
                 <button>Create Post</button>
             </form>
