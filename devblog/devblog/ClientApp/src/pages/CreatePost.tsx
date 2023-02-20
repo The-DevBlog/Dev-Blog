@@ -1,11 +1,11 @@
 import { FormEvent, useState } from "react";
-import IPost from "../interfaces/IPost";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
-    // const [newPost, setNewPost] = useState<IPost>();
     const [updateNum, setUpdateNum] = useState("");
     const [description, setDescription] = useState("");
     const [imgURL, setImgURL] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -16,9 +16,9 @@ const CreatePost = () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newPost)
+        }).then(() => {
+            navigate("/posts");
         });
-
-        // console.log(newPost);
     }
 
     return (
