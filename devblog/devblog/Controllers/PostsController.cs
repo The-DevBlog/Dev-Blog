@@ -48,6 +48,17 @@ namespace devblog.Controllers
             var newPost = await _posts.Create(post.Description, post.ImgURL, post.UpdateNum);
             return newPost;
         }
+
+        /// <summary>
+        /// Removes a specified post
+        /// </summary>
+        /// <param name="postId">Post Id</param>
+        /// <returns>Successful completion of task</returns>
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _posts.Delete(id);
+        }
     }
 }
 

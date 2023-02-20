@@ -3,8 +3,16 @@ import Comment from "./Comment";
 import "./Post.css";
 
 const Post = (props: IPost) => {
+    const handleDelete = () => {
+        fetch(`api/posts/${props.id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        });
+    };
+
     return (
         <div className="post">
+            <button onClick={handleDelete}>Delete</button>
             <div className="post-info">
                 <span>{props.updateNum}</span>
                 <span>{props.date}</span>

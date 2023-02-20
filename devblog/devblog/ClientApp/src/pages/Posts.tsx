@@ -17,7 +17,7 @@ const Posts = () => {
             .then((data) => {
                 setPosts(data);
             })
-    }, []);
+    }, [posts]);
 
     return (
         <section className="posts-container">
