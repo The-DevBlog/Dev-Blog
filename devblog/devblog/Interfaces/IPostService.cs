@@ -5,12 +5,13 @@ namespace devblog.Interfaces
     public interface IPostService
     {
         /// <summary>
-        /// Adds a new post
+        /// Creates a new post
         /// </summary>
-        /// <param name="post"></param>
-        /// <param name="url">The url of the post's image</param>
+        /// <param name="description">Description of post</param>
+        /// <param name="imgURL">Img URL of post</param>
+        /// <param name="updateNum">Update number of post</param>
         /// <returns>PostModel</returns>
-        Task<PostModel> Create(PostModel post, string url);
+        Task<PostModel> Create(string description, string imgURL, string updateNum);
 
         /// <summary>
         /// Retrieves all posts

@@ -15,24 +15,29 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Adds a new post
+        /// Creates a new post
         /// </summary>
-        /// <param name="post"></param>
-        /// <param name="url">The url of the post's image</param>
+        /// <param name="description">Description of post</param>
+        /// <param name="imgURL">Img URL of post</param>
+        /// <param name="updateNum">Update number of post</param>
         /// <returns>PostModel</returns>
-        public async Task<PostModel> Create(PostModel post, string url)
+        public async Task<PostModel> Create(string description, string imgURL, string updateNum)
         {
-            post.ImgURL = url;
-
             //TODO: change to datetimeoffset.utcnow
             //post.Date = DateTimeOffset.UtcNow;
 
-            post.Date = DateTime.Now;
+            var newPost = new PostModel()
+            {
+                Date = DateTime.Now,
+                Description = description,
+                ImgURL = imgURL,
+                UpdateNum = updateNum
+            };
 
-            var newPost = _db.Post.Add(post).Entity;
+            var res = _db.Post.Add(newPost).Entity;
             await _db.SaveChangesAsync();
 
-            return newPost;
+            return res;
         }
 
         /// <summary>

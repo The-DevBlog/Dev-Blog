@@ -40,13 +40,12 @@ namespace devblog.Controllers
         /// <summary>
         /// Adds a new post
         /// </summary>
-        /// <param name="post"></param>
-        /// <param name="url">The url of the post's image</param>
+        /// <param name="post">New post model</param>
         /// <returns>PostModel</returns>
         [HttpPost]
-        public async Task<PostModel> Create(PostModel post, string url)
+        public async Task<PostModel> Create(PostModel post)
         {
-            var newPost = await _posts.Create(post, url);
+            var newPost = await _posts.Create(post.Description, post.ImgURL, post.UpdateNum);
             return newPost;
         }
     }
