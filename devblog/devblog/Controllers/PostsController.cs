@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace devblog.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _posts;
@@ -19,10 +19,21 @@ namespace devblog.Controllers
         /// Retrieves all posts
         /// </summary>
         /// <returns>List<PostModel></returns>
-        [HttpGet("get")]
+        [HttpGet]
         public async Task<List<PostModel>> Get()
         {
             var posts = await _posts.Get();
+            return posts;
+        }
+
+        /// <summary>
+        /// Retrieves all posts
+        /// </summary>
+        /// <returns>List<PostModel></returns>
+        [HttpGet("{id}")]
+        public async Task<PostModel> Get(int id)
+        {
+            var posts = await _posts.Get(id);
             return posts;
         }
     }

@@ -6,21 +6,9 @@ import "./Posts.css";
 const Posts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);
 
-    // USING JSON SERVER
-    // fetch posts data from local json server
-    // useEffect(() => {
-    //     fetch("http://localhost:8000/posts")
-    //         .then(res => {
-    //             return res.json();
-    //         })
-    //         .then((data) => {
-    //             console.log(data);
-    //             setPosts(data);
-    //         });
-    // }, []);
-
+    // fetch posts from server
     useEffect(() => {
-        fetch(`/posts/get`)
+        fetch(`api/posts`)
             .then((res) => {
                 return res.json();
             })
@@ -33,7 +21,7 @@ const Posts = () => {
         <section className="posts-container">
             <h1>POSTS</h1>
             {posts.map((p) => {
-                return <Post id={p.id} updateNum={p.updateNum} date={p.date} description={p.description} imgURL={p.imgURL} />
+                return <Post id={p?.id} updateNum={p?.updateNum} date={p?.date} description={p?.description} imgURL={p?.imgURL} />
             })}
         </section>
     );

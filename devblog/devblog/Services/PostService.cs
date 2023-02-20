@@ -57,11 +57,26 @@ namespace devblog.Services
         /// <returns>PostModel</returns>
         public async Task<PostModel> Get(int postId)
         {
-            var post = await _db.Post.Include(x => x.Comments)
-                                     .Include(x => x.UpVotes)
-                                     .Include(x => x.DownVotes)
-                                     .Where(p => p.Id == postId)
-                                     .FirstOrDefaultAsync();
+            PostModel post;
+
+            // if id is -1, get latest post, else get specified post
+            if (postId == -1)
+            {
+                post = await _db.Post.OrderByDescending(x => x.Date)
+                                         //.Include(x => x.Comments)
+                                         //.Include(x => x.UpVotes)
+                                         //.Include(x => x.DownVotes)
+                                         .FirstOrDefaultAsync();
+            }
+            else
+            {
+                post = await _db.Post.Include(x => x.Comments)
+                                         //.Include(x => x.UpVotes)
+                                         //.Include(x => x.DownVotes)
+                                         .Where(p => p.Id == postId)
+                                         .FirstOrDefaultAsync();
+            }
+
             return post;
         }
 
