@@ -36,6 +36,19 @@ namespace devblog.Controllers
             var posts = await _posts.Get(id);
             return posts;
         }
+
+        /// <summary>
+        /// Adds a new post
+        /// </summary>
+        /// <param name="post"></param>
+        /// <param name="url">The url of the post's image</param>
+        /// <returns>PostModel</returns>
+        [HttpPost]
+        public async Task<PostModel> Create(PostModel post, string url)
+        {
+            var newPost = await _posts.Create(post, url);
+            return newPost;
+        }
     }
 }
 
