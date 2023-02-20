@@ -1,4 +1,5 @@
 import IPost from "../interfaces/IPost";
+import Comment from "./Comment";
 import "./Post.css";
 
 const Post = (props: IPost) => {
@@ -10,6 +11,12 @@ const Post = (props: IPost) => {
             </div>
             <img style={{ display: "block" }} src={props.imgURL} alt="image of post" />
             <p>{props.description}</p>
+            <div>
+                { }
+                {props.comments?.map((c) => {
+                    return <Comment content={c?.content} date={c?.date} userName={c?.userName} />
+                })}
+            </div>
         </div>
     );
 };

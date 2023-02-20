@@ -19,7 +19,7 @@ const Home = () => {
     return (
         <section className="posts-container">
             <h1>HOME</h1>
-            <Post id={latestPost?.id} updateNum={latestPost?.updateNum} date={latestPost?.date} description={latestPost?.description} imgURL={latestPost?.imgURL} />
+            <Post id={latestPost?.id} updateNum={latestPost?.updateNum} date={latestPost?.date} description={latestPost?.description} imgURL={latestPost?.imgURL} comments={latestPost?.comments} />
         </section>
     )
 }

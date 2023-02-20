@@ -42,7 +42,7 @@ namespace devblog.Services
         public async Task<List<PostModel>> Get()
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
-                                      //.Include(x => x.Comments)
+                                      .Include(x => x.Comments)
                                       //.Include(x => x.UpVotes)
                                       //.Include(x => x.DownVotes)
                                       .ToListAsync();
@@ -63,7 +63,7 @@ namespace devblog.Services
             if (postId == -1)
             {
                 post = await _db.Post.OrderByDescending(x => x.Date)
-                                         //.Include(x => x.Comments)
+                                         .Include(x => x.Comments)
                                          //.Include(x => x.UpVotes)
                                          //.Include(x => x.DownVotes)
                                          .FirstOrDefaultAsync();

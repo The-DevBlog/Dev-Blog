@@ -21,7 +21,7 @@ const Posts = () => {
         <section className="posts-container">
             <h1>POSTS</h1>
             {posts.map((p) => {
-                return <Post id={p?.id} updateNum={p?.updateNum} date={p?.date} description={p?.description} imgURL={p?.imgURL} />
+                return <Post id={p?.id} updateNum={p?.updateNum} date={p?.date} description={p?.description} imgURL={p?.imgURL} comments={p?.comments} />
             })}
         </section>
     );
