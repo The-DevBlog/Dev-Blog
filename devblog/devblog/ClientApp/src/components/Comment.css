@@ -1,0 +1,15 @@
+.comment {
+    margin-bottom: .25em;
+    border: .15em solid rgb(70, 68, 60);
+    border-radius: .75em;
+    padding: .3em;
+}
+
+.comment-info {
+    display: flex;
+    align-items: center;
+}
+
+.comment-info span:last-child {
+    margin-left: auto;
+}

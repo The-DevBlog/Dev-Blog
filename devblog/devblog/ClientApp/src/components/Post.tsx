@@ -9,10 +9,9 @@ const Post = (props: IPost) => {
                 <span>{props.updateNum}</span>
                 <span>{props.date}</span>
             </div>
-            <img style={{ display: "block" }} src={props.imgURL} alt="image of post" />
+            <img src={props.imgURL} alt="image of post" />
             <p>{props.description}</p>
             <div>
-                { }
                 {props.comments?.map((c) => {
                     return <Comment content={c?.content} date={c?.date} userName={c?.userName} />
                 })}
