@@ -1,6 +1,8 @@
+import "./Login.css";
+
 const Login = () => {
     return (
-        <div>
+        <div className="login">
             <form>
                 <label>UserName</label>
                 <input
@@ -13,6 +15,8 @@ const Login = () => {
                     type="password"
                     required
                 />
+
+                <button>Login</button>
             </form>
         </div>
     )

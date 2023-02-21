@@ -1,0 +1,14 @@
+.sign-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-up form input {
+    margin-bottom: 1em;
+}
+
+.sign-up label,
+button {
+    display: block;
+}
