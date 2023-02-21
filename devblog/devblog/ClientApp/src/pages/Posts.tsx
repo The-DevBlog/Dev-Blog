@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPost";
 import Post from "../components/Post";
 import "./Posts.css";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Posts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);

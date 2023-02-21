@@ -1,4 +1,5 @@
 import IPost from "../interfaces/IPost";
+import { MdDelete as Trash } from "react-icons/md";
 
 const DeletePost = (props: IPost) => {
     const handleDelete = () => {
@@ -9,7 +10,7 @@ const DeletePost = (props: IPost) => {
     };
 
     return (
-        <button onClick={handleDelete}>Delete</button>
+        <Trash onClick={handleDelete} />
     )
 }
 

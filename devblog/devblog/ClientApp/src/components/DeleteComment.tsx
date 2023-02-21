@@ -1,4 +1,5 @@
 import IComment from "../interfaces/IComment";
+import { MdDelete as Trash } from "react-icons/md";
 
 const DeleteComment = (props: IComment) => {
     const handleDelete = () => {
@@ -10,9 +11,8 @@ const DeleteComment = (props: IComment) => {
         });
     };
 
-    return (
-        <button onClick={handleDelete}>Delete</button>
-    )
+    return <Trash onClick={handleDelete} />
+
 }
 
 export default DeleteComment;
