@@ -1,5 +1,21 @@
 const Login = () => {
-    return <h1>LOGIN</h1>
+    return (
+        <div>
+            <form>
+                <label>UserName</label>
+                <input
+                    type="text"
+                    required
+                />
+
+                <label>Password</label>
+                <input
+                    type="password"
+                    required
+                />
+            </form>
+        </div>
+    )
 }
 
 export default Login;

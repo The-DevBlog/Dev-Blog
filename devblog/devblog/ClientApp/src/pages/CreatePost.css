@@ -4,8 +4,8 @@
     justify-content: center;
 }
 
-.create-post form div {
-    margin: 1em 0 1em 0;
+.create-post form input {
+    margin-bottom: 1em;
 }
 
 .create-post label,
