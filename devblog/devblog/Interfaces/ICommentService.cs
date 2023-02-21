@@ -25,13 +25,13 @@ namespace devblog.Interfaces
         /// </summary>
         /// <param name="commentId">Comment Id</param>
         /// <returns>Comment</returns>
-        // Task<Comment> GetComment(int id);
+        Task<Comment> Get(int id);
 
         /// <summary>
         /// Deletes a specified comment
         /// </summary>
         /// <param name="commentId">Comment Id</param>
         /// <returns>Successful completion of task</returns>
-        // Task Delete(int id);
+        Task Delete(int id);
     }
 }

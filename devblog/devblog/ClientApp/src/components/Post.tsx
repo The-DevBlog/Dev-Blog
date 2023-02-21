@@ -16,7 +16,7 @@ const Post = (props: IPost) => {
             <p>{props.description}</p>
             <div>
                 {props.comments?.map((c) => {
-                    return <Comment content={c?.content} date={c?.date} userName={c?.userName} />
+                    return <Comment id={c.id} content={c?.content} date={c?.date} userName={c?.userName} />
                 })}
             </div>
             <CreateComment id={props.id} />

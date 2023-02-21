@@ -47,28 +47,28 @@ namespace devblog.Services
             await _db.SaveChangesAsync();
         }
 
-        // /// <summary>
-        // /// Retrieves a specified comment
-        // /// </summary>
-        // /// <param name="commentId">Comment Id</param>
-        // /// <returns>Comment</returns>
-        // public async Task<Comment> GetComment(int commentId)
-        // {
-        //     var comment = await _db.Comment.Where(c => c.Id == commentId)
-        //                                    .FirstOrDefaultAsync();
-        //     return comment;
-        // }
+        /// <summary>
+        /// Retrieves a specified comment
+        /// </summary>
+        /// <param name="commentId">Comment Id</param>
+        /// <returns>Comment</returns>
+        public async Task<Comment> Get(int commentId)
+        {
+            var comment = await _db.Comment.Where(c => c.Id == commentId)
+                                           .FirstOrDefaultAsync();
+            return comment;
+        }
 
         /// <summary>
         /// Deletes a specified comment
         /// </summary>
         /// <param name="commentId">Comment Id</param>
         /// <returns>Successful completion of task</returns>
-        // public async Task Delete(int commentId)
-        // {
-        //     var comment = await GetComment(commentId);
-        //     _db.Remove(comment);
-        //     await _db.SaveChangesAsync();
-        // }
+        public async Task Delete(int commentId)
+        {
+            var comment = await Get(commentId);
+            _db.Remove(comment);
+            await _db.SaveChangesAsync();
+        }
     }
 }

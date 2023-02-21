@@ -26,6 +26,17 @@ namespace devblog.Controllers
             var newComment = await _comments.Create(comment.Content, comment.UserName, comment.PostId);
             return newComment;
         }
+
+        /// <summary>
+        /// Removes a specified comment
+        /// </summary>
+        /// <param name="id">comment Id</param>
+        /// <returns>Successful completion of task</returns>
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _comments.Delete(id);
+        }
     }
 }
 
