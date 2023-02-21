@@ -1,0 +1,9 @@
+.create-comment form {
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.create-comment textarea {
+    width: auto;
+}

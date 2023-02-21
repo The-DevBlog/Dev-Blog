@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPost";
 import Post from "../components/Post";
-import CreatePost from "./CreatePost";
 import "./Posts.css";
 import { Link, Route, Routes } from "react-router-dom";
 

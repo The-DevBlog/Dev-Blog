@@ -14,6 +14,18 @@ namespace devblog.Controllers
         {
             _comments = comments;
         }
+
+        /// <summary>
+        /// Adds a comment
+        /// </summary>
+        /// <param name="comment">The comment to add</param>
+        /// <returns>Comment</returns>
+        [HttpPost]
+        public async Task<Comment> Create(Comment comment)
+        {
+            var newComment = await _comments.Create(comment.Content, comment.UserName, comment.PostId);
+            return newComment;
+        }
     }
 }
 

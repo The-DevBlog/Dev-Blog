@@ -1,8 +1,8 @@
 ﻿namespace devblog.Models
 {
-    public class DownVoteModel
+    public class DownVote
     {
-        public int PostModelId { get; set; }
+        public int PostId { get; set; }
         public string UserName { get; set; }
     }
 }

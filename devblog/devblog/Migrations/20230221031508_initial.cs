@@ -21,12 +21,12 @@ namespace devblog.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UpdateNum = table.Column<string>(type: "longtext", nullable: false)
+                    UpdateNum = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: false)
+                    Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ImgURL = table.Column<string>(type: "longtext", nullable: false)
+                    ImgURL = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -41,7 +41,7 @@ namespace devblog.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PostModelId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -52,8 +52,8 @@ namespace devblog.Migrations
                 {
                     table.PrimaryKey("PK_Comment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comment_Post_PostModelId",
-                        column: x => x.PostModelId,
+                        name: "FK_Comment_Post_PostId",
+                        column: x => x.PostId,
                         principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -64,16 +64,16 @@ namespace devblog.Migrations
                 name: "DownVote",
                 columns: table => new
                 {
-                    PostModelId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DownVote", x => new { x.PostModelId, x.UserName });
+                    table.PrimaryKey("PK_DownVote", x => new { x.PostId, x.UserName });
                     table.ForeignKey(
-                        name: "FK_DownVote_Post_PostModelId",
-                        column: x => x.PostModelId,
+                        name: "FK_DownVote_Post_PostId",
+                        column: x => x.PostId,
                         principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -84,16 +84,16 @@ namespace devblog.Migrations
                 name: "UpVote",
                 columns: table => new
                 {
-                    PostModelId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UpVote", x => new { x.PostModelId, x.UserName });
+                    table.PrimaryKey("PK_UpVote", x => new { x.PostId, x.UserName });
                     table.ForeignKey(
-                        name: "FK_UpVote_Post_PostModelId",
-                        column: x => x.PostModelId,
+                        name: "FK_UpVote_Post_PostId",
+                        column: x => x.PostId,
                         principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -101,9 +101,9 @@ namespace devblog.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_PostModelId",
+                name: "IX_Comment_PostId",
                 table: "Comment",
-                column: "PostModelId");
+                column: "PostId");
         }
 
         /// <inheritdoc />

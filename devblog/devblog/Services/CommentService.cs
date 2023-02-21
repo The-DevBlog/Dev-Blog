@@ -15,31 +15,33 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Adds a comment
+        /// Creates a new comment
         /// </summary>
-        /// <param name="comment">The comment to add</param>
-        /// <returns>CommentModel</returns>
-        //public async Task<CommentModel> Create(CommentVM comment)
-        //{
-        //    CommentModel newComment = new CommentModel()
-        //    {
-        //        UserName = comment.UserName,
-        //        PostModelId = comment.PostModelId,
-        //        Content = comment.Content
-        //    };
+        /// <param name="content">The content of the comment</param>
+        /// <param name="username">username of comment</param>
+        /// <param name="postId">postId of comment</param>
+        /// <returns>Comment</returns>
+        public async Task<Comment> Create(string content, string username, int postId)
+        {
+            Comment newComment = new Comment()
+            {
+                UserName = username,
+                PostId = postId,
+                Content = content
+            };
 
-        //    _db.Add(newComment);
-        //    await _db.SaveChangesAsync();
+            _db.Comment.Add(newComment);
+            await _db.SaveChangesAsync();
 
-        //    return newComment;
-        //}
+            return newComment;
+        }
 
         /// <summary>
         /// Updates a specified comment
         /// </summary>
         /// <param name="comment">Comment Model</param>
         /// <returns>Successful completion of task</returns>
-        public async Task Update(CommentModel comment)
+        public async Task Update(Comment comment)
         {
             _db.Comment.Update(comment);
             await _db.SaveChangesAsync();
@@ -49,8 +51,8 @@ namespace devblog.Services
         // /// Retrieves a specified comment
         // /// </summary>
         // /// <param name="commentId">Comment Id</param>
-        // /// <returns>CommentModel</returns>
-        // public async Task<CommentModel> GetComment(int commentId)
+        // /// <returns>Comment</returns>
+        // public async Task<Comment> GetComment(int commentId)
         // {
         //     var comment = await _db.Comment.Where(c => c.Id == commentId)
         //                                    .FirstOrDefaultAsync();

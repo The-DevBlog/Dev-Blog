@@ -1,5 +1,6 @@
 import IPost from "../interfaces/IPost";
 import Comment from "./Comment";
+import CreateComment from "./CreateComment";
 import "./Post.css";
 
 const Post = (props: IPost) => {
@@ -24,6 +25,7 @@ const Post = (props: IPost) => {
                     return <Comment content={c?.content} date={c?.date} userName={c?.userName} />
                 })}
             </div>
+            <CreateComment id={props.id} />
         </div>
     );
 };

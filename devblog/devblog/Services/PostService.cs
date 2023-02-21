@@ -20,13 +20,13 @@ namespace devblog.Services
         /// <param name="description">Description of post</param>
         /// <param name="imgURL">Img URL of post</param>
         /// <param name="updateNum">Update number of post</param>
-        /// <returns>PostModel</returns>
-        public async Task<PostModel> Create(string description, string imgURL, string updateNum)
+        /// <returns>Post</returns>
+        public async Task<Post> Create(string description, string imgURL, string updateNum)
         {
             //TODO: change to datetimeoffset.utcnow
             //post.Date = DateTimeOffset.UtcNow;
 
-            var newPost = new PostModel()
+            var newPost = new Post()
             {
                 Date = DateTime.Now,
                 Description = description,
@@ -43,8 +43,8 @@ namespace devblog.Services
         /// <summary>
         /// Retrieves all posts
         /// </summary>
-        /// <returns>List<PostModel></returns>
-        public async Task<List<PostModel>> Get()
+        /// <returns>List<Post></returns>
+        public async Task<List<Post>> Get()
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
@@ -59,10 +59,10 @@ namespace devblog.Services
         /// Retrieves a specified post
         /// </summary>
         /// <param name="postId">Post Id</param>
-        /// <returns>PostModel</returns>
-        public async Task<PostModel> Get(int postId)
+        /// <returns>Post</returns>
+        public async Task<Post> Get(int postId)
         {
-            PostModel post;
+            Post post;
 
             // if id is -1, get latest post, else get specified post
             if (postId == -1)
@@ -90,7 +90,7 @@ namespace devblog.Services
         /// </summary>
         /// <param name="post"></param>
         /// <returns>Successful completion of task</returns>
-        public async Task Update(PostModel post)
+        public async Task Update(Post post)
         {
             _db.Post.Update(post);
             await _db.SaveChangesAsync();

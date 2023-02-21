@@ -2,7 +2,7 @@
 
 namespace devblog.Models
 {
-    public class UserModel : IdentityUser
+    public class User : IdentityUser
     {
         public bool Subscribed { get; set; }
     }

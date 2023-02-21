@@ -1,6 +1,6 @@
 ﻿namespace devblog.Models
 {
-    public class PostModel
+    public class Post
     {
         public int Id { get; set; }
 
@@ -12,10 +12,10 @@
 
         public string? ImgURL { get; set; }
 
-        public List<UpVoteModel>? UpVotes { get; set; }
+        public List<UpVote>? UpVotes { get; set; }
 
-        public List<DownVoteModel>? DownVotes { get; set; }
+        public List<DownVote>? DownVotes { get; set; }
 
-        public List<CommentModel>? Comments { get; set; }
+        public List<Comment>? Comments { get; set; }
     }
 }

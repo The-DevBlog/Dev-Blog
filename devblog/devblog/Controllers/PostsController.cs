@@ -18,9 +18,9 @@ namespace devblog.Controllers
         /// <summary>
         /// Retrieves all posts
         /// </summary>
-        /// <returns>List<PostModel></returns>
+        /// <returns>List<Post></returns>
         [HttpGet]
-        public async Task<List<PostModel>> Get()
+        public async Task<List<Post>> Get()
         {
             var posts = await _posts.Get();
             return posts;
@@ -29,9 +29,9 @@ namespace devblog.Controllers
         /// <summary>
         /// Retrieves all posts
         /// </summary>
-        /// <returns>List<PostModel></returns>
+        /// <returns>List<Post></returns>
         [HttpGet("{id}")]
-        public async Task<PostModel> Get(int id)
+        public async Task<Post> Get(int id)
         {
             var posts = await _posts.Get(id);
             return posts;
@@ -41,9 +41,9 @@ namespace devblog.Controllers
         /// Adds a new post
         /// </summary>
         /// <param name="post">New post model</param>
-        /// <returns>PostModel</returns>
+        /// <returns>Post</returns>
         [HttpPost]
-        public async Task<PostModel> Create(PostModel post)
+        public async Task<Post> Create(Post post)
         {
             var newPost = await _posts.Create(post.Description, post.ImgURL, post.UpdateNum);
             return newPost;

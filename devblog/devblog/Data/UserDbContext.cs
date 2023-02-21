@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Data
 {
-    public class UserDbContext : IdentityDbContext<UserModel>
+    public class UserDbContext : IdentityDbContext<User>
     {
         public UserDbContext(DbContextOptions opt) : base(opt)
         {

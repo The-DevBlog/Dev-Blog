@@ -19,7 +19,7 @@ namespace devblog.Migrations
                 .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("devblog.Models.CommentModel", b =>
+            modelBuilder.Entity("devblog.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,7 +32,7 @@ namespace devblog.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("PostModelId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
@@ -41,25 +41,25 @@ namespace devblog.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostModelId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Comment");
                 });
 
-            modelBuilder.Entity("devblog.Models.DownVoteModel", b =>
+            modelBuilder.Entity("devblog.Models.DownVote", b =>
                 {
-                    b.Property<int>("PostModelId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("PostModelId", "UserName");
+                    b.HasKey("PostId", "UserName");
 
                     b.ToTable("DownVote");
                 });
 
-            modelBuilder.Entity("devblog.Models.PostModel", b =>
+            modelBuilder.Entity("devblog.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,15 +69,12 @@ namespace devblog.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ImgURL")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("UpdateNum")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -85,47 +82,47 @@ namespace devblog.Migrations
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("devblog.Models.UpVoteModel", b =>
+            modelBuilder.Entity("devblog.Models.UpVote", b =>
                 {
-                    b.Property<int>("PostModelId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("varchar(255)");
 
-                    b.HasKey("PostModelId", "UserName");
+                    b.HasKey("PostId", "UserName");
 
                     b.ToTable("UpVote");
                 });
 
-            modelBuilder.Entity("devblog.Models.CommentModel", b =>
+            modelBuilder.Entity("devblog.Models.Comment", b =>
                 {
-                    b.HasOne("devblog.Models.PostModel", null)
+                    b.HasOne("devblog.Models.Post", null)
                         .WithMany("Comments")
-                        .HasForeignKey("PostModelId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("devblog.Models.DownVoteModel", b =>
+            modelBuilder.Entity("devblog.Models.DownVote", b =>
                 {
-                    b.HasOne("devblog.Models.PostModel", null)
+                    b.HasOne("devblog.Models.Post", null)
                         .WithMany("DownVotes")
-                        .HasForeignKey("PostModelId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("devblog.Models.UpVoteModel", b =>
+            modelBuilder.Entity("devblog.Models.UpVote", b =>
                 {
-                    b.HasOne("devblog.Models.PostModel", null)
+                    b.HasOne("devblog.Models.Post", null)
                         .WithMany("UpVotes")
-                        .HasForeignKey("PostModelId")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("devblog.Models.PostModel", b =>
+            modelBuilder.Entity("devblog.Models.Post", b =>
                 {
                     b.Navigation("Comments");
 

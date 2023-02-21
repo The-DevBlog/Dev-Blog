@@ -1,8 +1,8 @@
 ﻿namespace devblog.Models
 {
-    public class UpVoteModel
+    public class UpVote
     {
-        public int PostModelId { get; set; }
+        public int PostId { get; set; }
         public string UserName { get; set; }
     }
 }

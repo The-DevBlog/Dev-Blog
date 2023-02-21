@@ -5,10 +5,10 @@ namespace devblog.Data
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<PostModel> Post { get; set; }
-        public DbSet<CommentModel> Comment { get; set; }
-        public DbSet<UpVoteModel> UpVote { get; set; }
-        public DbSet<DownVoteModel> DownVote { get; set; }
+        public DbSet<Post> Post { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+        public DbSet<UpVote> UpVote { get; set; }
+        public DbSet<DownVote> DownVote { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
@@ -18,14 +18,14 @@ namespace devblog.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UpVoteModel>(entity =>
+            modelBuilder.Entity<UpVote>(entity =>
             {
-                entity.HasKey(e => new { e.PostModelId, e.UserName });
+                entity.HasKey(e => new { e.PostId, e.UserName });
             });
 
-            modelBuilder.Entity<DownVoteModel>(entity =>
+            modelBuilder.Entity<DownVote>(entity =>
             {
-                entity.HasKey(e => new { e.PostModelId, e.UserName });
+                entity.HasKey(e => new { e.PostId, e.UserName });
             });
         }
     }
