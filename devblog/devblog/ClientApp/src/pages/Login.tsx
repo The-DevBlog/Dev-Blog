@@ -1,18 +1,19 @@
 import "./Login.css";
+import { TextField } from "@fluentui/react/lib/TextField";
 
 const Login = () => {
     return (
         <div className="login">
             <form>
-                <label>UserName</label>
-                <input
-                    type="text"
+                <TextField
+                    label="UserName"
+                    validateOnFocusOut
                     required
                 />
 
-                <label>Password</label>
-                <input
-                    type="password"
+                <TextField
+                    label="Password"
+                    validateOnFocusOut
                     required
                 />
 

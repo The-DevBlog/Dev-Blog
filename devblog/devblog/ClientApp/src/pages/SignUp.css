@@ -4,11 +4,6 @@
     justify-content: center;
 }
 
-.sign-up form input {
-    margin-bottom: 1em;
-}
-
-.sign-up label,
-button {
-    display: block;
+.sign-up button {
+    margin-top: 1em;
 }

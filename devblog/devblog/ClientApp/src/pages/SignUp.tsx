@@ -1,30 +1,39 @@
 import "./SignUp.css";
+import { TextField } from "@fluentui/react/lib/TextField";
 
 const SignUp = () => {
+    const handleErrorMessage = (value: string) => {
+        if (value.length <= 8) {
+            return "Length must be at least 8 characters long"
+        }
+    }
+
     return (
         <div className="sign-up">
             <form>
-                <label>UserName</label>
-                <input
-                    type="text"
+                <TextField
+                    label="UserName"
+                    onGetErrorMessage={handleErrorMessage}
+                    validateOnLoad={false}
+                    validateOnFocusOut
                     required
                 />
 
-                <label>Email</label>
-                <input
-                    type="email"
+                <TextField
+                    label="Email"
+                    validateOnFocusOut
                     required
                 />
 
-                <label>Password</label>
-                <input
-                    type="password"
+                <TextField
+                    label="Password"
+                    validateOnFocusOut
                     required
                 />
 
-                <label>Confirm Password</label>
-                <input
-                    type="password"
+                <TextField
+                    label="Confirm Password"
+                    validateOnFocusOut
                     required
                 />
 
