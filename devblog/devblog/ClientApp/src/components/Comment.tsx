@@ -6,11 +6,11 @@ const Comment = (props: IComment) => {
     return (
         <div className="comment">
             <div className="comment-info">
+                <DeleteComment id={props.id} />
                 <span>{props.userName}</span>
                 <span>{props.date}</span>
             </div>
             <p>{props.content}</p>
-            <DeleteComment id={props.id} />
         </div>
     );
 };

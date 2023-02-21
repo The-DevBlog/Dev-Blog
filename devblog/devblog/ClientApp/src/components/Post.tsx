@@ -7,8 +7,8 @@ import "./Post.css";
 const Post = (props: IPost) => {
     return (
         <div className="post">
-            <DeletePost id={props.id} />
             <div className="post-info">
+                <DeletePost id={props.id} />
                 <span>{props.updateNum}</span>
                 <span>{props.date}</span>
             </div>
