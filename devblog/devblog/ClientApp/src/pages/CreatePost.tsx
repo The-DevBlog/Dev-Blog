@@ -37,7 +37,8 @@ const CreatePost = () => {
 
                 <div>
                     <label>Description</label>
-                    <input type="text"
+                    <input
+                        type="text"
                         required
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
