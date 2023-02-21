@@ -1,3 +1,7 @@
+.create-post-btn {
+    margin-bottom: 1em;
+}
+
 .post {
     margin-bottom: 5em;
     border: .15em solid rgb(70, 68, 60);
