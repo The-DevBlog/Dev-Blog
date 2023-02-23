@@ -1,39 +1,68 @@
 import "./SignUp.css";
 import { TextField } from "@fluentui/react/lib/TextField";
+import { FormEvent, useEffect, useState } from "react";
+import { Hash, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-    const handleErrorMessage = (value: string) => {
-        if (value.length <= 8) {
-            return "Length must be at least 8 characters long"
-        }
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [passwordHash, setPassword] = useState<Hash>("");
+    const [confirmPasswordHash, setConfirmPassword] = useState<Hash>("");
+    const navigate = useNavigate();
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const newUser = { userName, email, passwordHash, confirmPasswordHash };
+
+        fetch("api/accounts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newUser)
+        }).then(() => {
+            navigate("/");
+        });
     }
 
     return (
         <div className="sign-up">
-            <form>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     label="UserName"
-                    onGetErrorMessage={handleErrorMessage}
-                    validateOnLoad={false}
+                    value={userName}
+                    type="text"
+                    onChange={(e) => setUserName(e.currentTarget.value)}
                     validateOnFocusOut
+                    validateOnLoad={false}
                     required
                 />
 
                 <TextField
                     label="Email"
+                    value={email}
+                    type="text"
+                    onChange={(e) => setEmail(e.currentTarget.value)}
                     validateOnFocusOut
                     required
                 />
 
                 <TextField
                     label="Password"
+                    value={passwordHash}
+                    type="password"
+                    onChange={(e) => setPassword(e.currentTarget.value)}
                     validateOnFocusOut
+                    canRevealPassword
                     required
                 />
 
                 <TextField
                     label="Confirm Password"
+                    value={confirmPasswordHash}
+                    type="password"
+                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}
                     validateOnFocusOut
+                    canRevealPassword
                     required
                 />
 

@@ -1,6 +1,8 @@
 using devblog.Data;
 using devblog.Interfaces;
+using devblog.Models;
 using devblog.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+// ----------------------- DATABASES -------------------------------
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("devblogdb"), new MySqlServerVersion(new Version(8, 0, 11)));
@@ -20,6 +24,37 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+// ----------------------- IDENTITY -------------------------------
+builder.Services.AddIdentity<User, IdentityRole>()
+        .AddEntityFrameworkStores<UserDbContext>()
+        .AddDefaultTokenProviders();
+
+// password requirements
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+!#$%&";
+    options.User.RequireUniqueEmail = false;
+});
+
+// ----------------------- AUTHORIZATION ----------------------------
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole(Role.Admin));
+    options.AddPolicy("Visitor", policy => policy.RequireRole(Role.Visitor));
+});
 
 var app = builder.Build();
 
@@ -30,6 +65,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// ----------------------- ROUTING -------------------------------
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
