@@ -36,6 +36,12 @@ namespace devblog.Controllers
         //    return Redirect("/");
         //}
 
+        [HttpGet]
+        public async Task<User> Get(User user)
+        {
+            var res = UserMgr.GetUserNameAsync(user);
+        }
+
         //[HttpPost("/signin")]
         //public async Task<IActionResult> SignIn([FromForm] string username, [FromForm] string password)
         //{
