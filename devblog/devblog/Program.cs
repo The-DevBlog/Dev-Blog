@@ -24,7 +24,6 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
 
 // ----------------------- IDENTITY -------------------------------
 builder.Services.AddIdentity<User, IdentityRole>()

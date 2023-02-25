@@ -1,6 +1,6 @@
 import "./SignUp.css";
 import { TextField } from "@fluentui/react/lib/TextField";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Hash, useNavigate } from "react-router-dom";
 
 const SignUp = () => {

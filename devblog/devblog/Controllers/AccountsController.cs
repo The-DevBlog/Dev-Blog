@@ -12,14 +12,12 @@ namespace devblog.Controllers
         public SignInManager<User> SignInMgr { get; }
         public UserManager<User> UserMgr { get; }
 
-        private readonly IAccountService _accounts;
         //private readonly IEmailRepository _email;
 
-        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IAccountService accounts)
+        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr)
         {
             UserMgr = usermgr;
             SignInMgr = signInMgr;
-            _accounts = accounts;
         }
 
         //[HttpPost("/deleteAccount")]
@@ -36,21 +34,24 @@ namespace devblog.Controllers
         //    return Redirect("/");
         //}
 
-        [HttpGet]
-        public async Task<User> Get(User user)
-        {
-            var res = UserMgr.GetUserNameAsync(user);
-        }
-
-        //[HttpPost("/signin")]
-        //public async Task<IActionResult> SignIn([FromForm] string username, [FromForm] string password)
+        //[HttpGet("{user}")]
+        //public async Task<string> GetUserName(User user)
         //{
-        //    var res = await SignInMgr.PasswordSignInAsync(username, password, true, lockoutOnFailure: true);
-        //    if (res.Succeeded)
-        //        return Redirect("/");
-
-        //    return Redirect("/signin/attempt");
+        //    var res = await UserMgr.GetUserNameAsync(user);
+        //    return res;
         //}
+
+        [HttpPost("signin")]
+        public async Task<Microsoft.AspNetCore.Identity.SignInResult> SignIn([FromForm] string username, [FromForm] string password)
+        {
+            var res = await SignInMgr.PasswordSignInAsync(password, username, true, false);
+            return res;
+            //var res = await SignInMgr.PasswordSignInAsync(username, password, true, lockoutOnFailure: true);
+            //if (res.Succeeded)
+            //    return Redirect("/");
+
+            //return Redirect("/signin/attempt");
+        }
 
         //[HttpPost("/signout")]
         //public async Task<IActionResult> LogOut()
@@ -67,8 +68,16 @@ namespace devblog.Controllers
         [HttpPost]
         public async Task<IdentityResult> Create(User user)
         {
-            var newUser = await _accounts.Create(user);
-            return newUser;
+            var res = await UserMgr.CreateAsync(user, user.PasswordHash);
+            if (res.Succeeded)
+            {
+                //await _email.Welcome(registerVM.Email);
+                var currentUser = await UserMgr.FindByNameAsync(user.UserName);
+                var roleResult = await UserMgr.AddToRoleAsync(currentUser, "Visitor");
+                var signInRes = await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, lockoutOnFailure: true);
+            }
+
+            return res;
         }
     }
 }
