@@ -10,12 +10,11 @@ const CreateComment = (post: IPost) => {
         e.preventDefault();
 
         let postId = post.id;
-        const newPost = { content, userName, postId };
 
         fetch("api/comments", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newPost)
+            body: JSON.stringify({ content, userName, postId })
         }).then(() => {
             setUserName("");
             setContent("");

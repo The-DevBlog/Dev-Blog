@@ -6,20 +6,20 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const signInContent = {username, password}
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         fetch(`api/accounts/signin`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body:JSON.stringify(signInContent)
-        }).then((res) => {
+            body: JSON.stringify({ username, password })
+        }).then(async (res) => {
             console.log(res.body);
+            const data = await res.json();
+            localStorage.setItem("token", data.token)
         });
     }
-    
+
     return (
         <div className="login">
             <form onSubmit={handleSubmit}>

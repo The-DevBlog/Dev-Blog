@@ -11,12 +11,10 @@ const CreatePost = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newPost = { updateNum, description, imgURL };
-
         fetch("api/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newPost)
+            body: JSON.stringify({ updateNum, description, imgURL })
         }).then(() => {
             navigate("/posts");
         });

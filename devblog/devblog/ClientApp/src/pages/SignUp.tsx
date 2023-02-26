@@ -13,12 +13,10 @@ const SignUp = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newUser = { userName, email, passwordHash, confirmPasswordHash };
-
         fetch("api/accounts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newUser)
+            body: JSON.stringify({ userName, email, passwordHash, confirmPasswordHash })
         }).then(() => {
             navigate("/");
         });
