@@ -49,6 +49,15 @@ namespace devblog.Controllers
         //    return res;
         //}
 
+        private byte[] GenerateKey()
+        {
+            var key = new byte[32];
+            using (var rsa = new RSACryptoServiceProvider())
+                rsa.Encrypt(key, false);
+
+            return key;
+        }
+
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignIn signIn)
         {
