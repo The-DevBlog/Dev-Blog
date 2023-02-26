@@ -49,13 +49,31 @@ namespace devblog.Controllers
         //    return res;
         //}
 
-        private byte[] GenerateKey()
+        private SymmetricSecurityKey GenerateKey()
         {
             var key = new byte[32];
             using (var rsa = new RSACryptoServiceProvider())
                 rsa.Encrypt(key, false);
 
-            return key;
+            string keyStr = Convert.ToBase64String(key);
+            var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyStr));
+
+            return authKey;
+        }
+
+        private JwtSecurityToken GenerateToken(List<Claim> claims)
+        {
+            var key = GenerateKey();
+
+            var token = new JwtSecurityToken(
+                issuer: "https://localhost:44482/",
+                audience: "https://localhost:44482/api/",
+                expires: DateTime.Now.AddHours(3),
+                claims: claims,
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            );
+
+            return token;
         }
 
         [HttpPost("signin")]
@@ -70,7 +88,7 @@ namespace devblog.Controllers
             else
             {
                 //var res = await SignInMgr.PasswordSignInAsync(signIn.Password, signIn.Username, true, false);
-                var res = await SignInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
+                await SignInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
                 var userRoles = await UserMgr.GetRolesAsync(user);
 
                 var claims = new List<Claim>
@@ -83,26 +101,7 @@ namespace devblog.Controllers
                     claims.Add(new Claim(ClaimTypes.Role, userRole));
 
 
-                // Generate a secure random key
-                var key = new byte[32];
-                using (var generator = new RSACryptoServiceProvider())
-                {
-                    //generator.GetBytes(key);
-                    //generator.
-                }
-
-                // Convert the key to a base64-encoded string
-                var base64Key = Convert.ToBase64String(key);
-
-                var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(base64Key));
-
-                var token = new JwtSecurityToken(
-                    issuer: "https://localhost:44482/",
-                    audience: "https://localhost:44482/api/",
-                    expires: DateTime.Now.AddHours(3),
-                    claims: claims,
-                    signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha256)
-                );
+                var token = GenerateToken(claims);
 
                 return Ok(new
                 {
@@ -132,8 +131,8 @@ namespace devblog.Controllers
             {
                 //await _email.Welcome(registerVM.Email);
                 var currentUser = await UserMgr.FindByNameAsync(user.UserName);
-                var roleResult = await UserMgr.AddToRoleAsync(currentUser, "Visitor");
-                var signInRes = await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
+                await UserMgr.AddToRoleAsync(currentUser, "Visitor");
+                await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
             }
 
             return res;

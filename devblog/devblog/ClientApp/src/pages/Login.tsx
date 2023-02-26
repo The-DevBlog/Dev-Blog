@@ -14,8 +14,8 @@ const Login = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
         }).then(async (res) => {
-            console.log(res.body);
             const data = await res.json();
+            console.log(data);
             localStorage.setItem("token", data.token)
         });
     }
