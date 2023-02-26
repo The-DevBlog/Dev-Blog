@@ -1,10 +1,20 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import IPost from "../interfaces/IPost";
 import "./CreateComment.css";
 
 const CreateComment = (post: IPost) => {
+    const [loggedIn, setLoggedIn] = useState(false);
     const [content, setContent] = useState("");
-    const [userName, setUserName] = useState("");
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+        const token = localStorage.getItem("token")!;
+
+        if (token) {
+            setLoggedIn(true);
+            setUsername(localStorage.getItem("username")!);
+        }
+    }, []);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -17,9 +27,9 @@ const CreateComment = (post: IPost) => {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({ content, userName, postId })
+            body: JSON.stringify({ content, username, postId })
         }).then(() => {
-            setUserName("");
+            setUsername("");
             setContent("");
         });
     }
@@ -27,21 +37,23 @@ const CreateComment = (post: IPost) => {
     return (
         <div className="create-comment">
             <form onSubmit={handleSubmit}>
-                <input
-                    placeholder="username"
-                    required
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                />
 
-                <textarea
-                    placeholder="your comment here..."
-                    required
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}>
-                </textarea>
-
-                <button>Add Comment</button>
+                {loggedIn ? (
+                    <>
+                        <textarea
+                            placeholder="your comment here..."
+                            required
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}>
+                        </textarea>
+                        <button>Add Comment</button>
+                    </>
+                ) : (
+                    <textarea
+                        placeholder="sign in to comment..."
+                        disabled>
+                    </textarea>
+                )}
             </form>
         </div>
     )

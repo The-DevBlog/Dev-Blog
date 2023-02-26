@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace devblog.Controllers
@@ -49,6 +48,7 @@ namespace devblog.Controllers
         //    return res;
         //}
 
+        [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignIn signIn)
         {
@@ -78,6 +78,7 @@ namespace devblog.Controllers
         /// Signs out the currently sign in user
         /// </summary>
         /// <returns>Task<IActionResult></returns>
+        [Authorize]
         [HttpPost("signout")]
         public async Task<IActionResult> LogOut()
         {
@@ -90,6 +91,7 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="user">New user to add</param>
         /// <returns>Task<IActionResult></returns>
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> SignUp(User user)
         {

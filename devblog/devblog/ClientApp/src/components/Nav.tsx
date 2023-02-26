@@ -9,11 +9,10 @@ const Nav = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("token")!;
-        const username = localStorage.getItem("username")!;
 
         if (token) {
             setLoggedIn(true);
-            setUsername(username);
+            setUsername(localStorage.getItem("username")!);
         }
     }, []);
 

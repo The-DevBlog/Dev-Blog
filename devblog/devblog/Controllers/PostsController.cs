@@ -1,5 +1,6 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace devblog.Controllers
@@ -42,6 +43,7 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="post">New post model</param>
         /// <returns>Post</returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<Post> Create(Post post)
         {
@@ -54,6 +56,7 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="postId">Post Id</param>
         /// <returns>Successful completion of task</returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
