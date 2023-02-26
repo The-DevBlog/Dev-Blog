@@ -2,6 +2,8 @@ import "./SignUp.css";
 import { TextField } from "@fluentui/react/lib/TextField";
 import { FormEvent, useState } from "react";
 import { Hash, useNavigate } from "react-router-dom";
+import IToken from "../interfaces/IToken";
+import jwtDecode from "jwt-decode";
 
 const SignUp = () => {
     const [userName, setUserName] = useState("");
@@ -17,7 +19,14 @@ const SignUp = () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userName, email, passwordHash, confirmPasswordHash })
-        }).then(() => {
+        }).then(async (res) => {
+            const data = await res.json();
+            const decodedToken: IToken = jwtDecode(data.token);
+
+            localStorage.setItem("token", data.token)
+            localStorage.setItem("username", decodedToken.username);
+            localStorage.setItem("email", decodedToken.email);
+
             navigate("/");
         });
     }

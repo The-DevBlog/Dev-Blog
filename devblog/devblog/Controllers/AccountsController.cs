@@ -1,7 +1,6 @@
 ﻿using devblog.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -49,6 +48,70 @@ namespace devblog.Controllers
         //    return res;
         //}
 
+
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn(SignIn signIn)
+        {
+            var user = await UserMgr.FindByNameAsync(signIn.Username);
+
+            if (user == null || !await UserMgr.CheckPasswordAsync(user, signIn.Password))
+            {
+                return BadRequest(new { error = "Invalid username or password" });
+            }
+            else
+            {
+                //var res = await SignInMgr.PasswordSignInAsync(signIn.Password, signIn.Username, true, false);
+                await SignInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
+
+                var claims = await GenerateClaims(user);
+                var token = GenerateToken(claims);
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+            }
+        }
+
+        //[HttpPost("/signout")]
+        //public async Task<IActionResult> LogOut()
+        //{
+        //    await SignInMgr.SignOutAsync();
+        //    return Redirect("/");
+        //}
+
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="user">New user to add</param>
+        /// <returns>Task<IdentityResult></returns>
+        [HttpPost]
+        public async Task<IActionResult> Create(User user)
+        {
+            var res = await UserMgr.CreateAsync(user, user.PasswordHash);
+            if (res.Succeeded)
+            {
+                //await _email.Welcome(registerVM.Email);
+                var currentUser = await UserMgr.FindByNameAsync(user.UserName);
+                await UserMgr.AddToRoleAsync(currentUser, "Visitor");
+                await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
+
+                var claims = await GenerateClaims(user);
+                var token = GenerateToken(claims);
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+            }
+            else
+            {
+                return BadRequest(new { error = "There was an error creating your account" });
+            }
+        }
+
         private SymmetricSecurityKey GenerateKey()
         {
             var key = new byte[32];
@@ -76,66 +139,20 @@ namespace devblog.Controllers
             return token;
         }
 
-        [HttpPost("signin")]
-        public async Task<IActionResult> SignIn(SignIn signIn)
+        private async Task<List<Claim>> GenerateClaims(User user)
         {
-            var user = await UserMgr.FindByNameAsync(signIn.Username);
-
-            if (user == null || !await UserMgr.CheckPasswordAsync(user, signIn.Password))
+            var claims = new List<Claim>
             {
-                return BadRequest(new { error = "Invalid username or password" });
-            }
-            else
-            {
-                //var res = await SignInMgr.PasswordSignInAsync(signIn.Password, signIn.Username, true, false);
-                await SignInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
-                var userRoles = await UserMgr.GetRolesAsync(user);
+                new Claim("username", user.UserName),
+                new Claim("email",  user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, signIn.Username),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+            var userRoles = await UserMgr.GetRolesAsync(user);
+            foreach (var userRole in userRoles)
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
 
-                foreach (var userRole in userRoles)
-                    claims.Add(new Claim(ClaimTypes.Role, userRole));
-
-
-                var token = GenerateToken(claims);
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
-            }
-        }
-
-        //[HttpPost("/signout")]
-        //public async Task<IActionResult> LogOut()
-        //{
-        //    await SignInMgr.SignOutAsync();
-        //    return Redirect("/");
-        //}
-
-        /// <summary>
-        /// Creates a new user
-        /// </summary>
-        /// <param name="user">New user to add</param>
-        /// <returns>Task<IdentityResult></returns>
-        [HttpPost]
-        public async Task<IdentityResult> Create(User user)
-        {
-            var res = await UserMgr.CreateAsync(user, user.PasswordHash);
-            if (res.Succeeded)
-            {
-                //await _email.Welcome(registerVM.Email);
-                var currentUser = await UserMgr.FindByNameAsync(user.UserName);
-                await UserMgr.AddToRoleAsync(currentUser, "Visitor");
-                await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
-            }
-
-            return res;
+            return claims;
         }
     }
 }

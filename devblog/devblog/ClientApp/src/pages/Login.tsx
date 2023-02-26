@@ -1,10 +1,14 @@
 import "./Login.css";
 import { TextField } from "@fluentui/react/lib/TextField";
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import jwtDecode, { JwtPayload } from "jwt-decode";
+import IToken from "../interfaces/IToken";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -15,8 +19,14 @@ const Login = () => {
             body: JSON.stringify({ username, password })
         }).then(async (res) => {
             const data = await res.json();
-            console.log(data);
+            const decodedToken: IToken = jwtDecode(data.token);
+
+            console.log(decodedToken.sub);
             localStorage.setItem("token", data.token)
+            localStorage.setItem("username", decodedToken.username);
+            localStorage.setItem("email", decodedToken.email);
+
+            navigate("/");
         });
     }
 

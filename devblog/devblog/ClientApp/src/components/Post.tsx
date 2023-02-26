@@ -12,7 +12,7 @@ const Post = (props: IPost) => {
                 <span>{props.updateNum}</span>
                 <span>{props.date}</span>
             </div>
-            <img src={props.imgURL} alt="image of post" />
+            <img src={props.imgURL} alt="development update" />
             <p>{props.description}</p>
             <div>
                 {props.comments?.map((c) => {
