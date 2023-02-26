@@ -28,6 +28,7 @@ const SignUp = () => {
             localStorage.setItem("email", decodedToken.email);
 
             navigate("/");
+            window.location.reload();
         });
     }
 

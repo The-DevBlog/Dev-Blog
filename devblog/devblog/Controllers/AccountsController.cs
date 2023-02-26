@@ -1,4 +1,5 @@
 ﻿using devblog.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -48,7 +49,6 @@ namespace devblog.Controllers
         //    return res;
         //}
 
-
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignIn signIn)
         {
@@ -74,20 +74,24 @@ namespace devblog.Controllers
             }
         }
 
-        //[HttpPost("/signout")]
-        //public async Task<IActionResult> LogOut()
-        //{
-        //    await SignInMgr.SignOutAsync();
-        //    return Redirect("/");
-        //}
+        /// <summary>
+        /// Signs out the currently sign in user
+        /// </summary>
+        /// <returns>Task<IActionResult></returns>
+        [HttpPost("signout")]
+        public async Task<IActionResult> LogOut()
+        {
+            await SignInMgr.SignOutAsync();
+            return Ok();
+        }
 
         /// <summary>
         /// Creates a new user
         /// </summary>
         /// <param name="user">New user to add</param>
-        /// <returns>Task<IdentityResult></returns>
+        /// <returns>Task<IActionResult></returns>
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> SignUp(User user)
         {
             var res = await UserMgr.CreateAsync(user, user.PasswordHash);
             if (res.Succeeded)
@@ -112,21 +116,10 @@ namespace devblog.Controllers
             }
         }
 
-        private SymmetricSecurityKey GenerateKey()
-        {
-            var key = new byte[32];
-            using (var rsa = new RSACryptoServiceProvider())
-                rsa.Encrypt(key, false);
-
-            string keyStr = Convert.ToBase64String(key);
-            var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyStr));
-
-            return authKey;
-        }
 
         private JwtSecurityToken GenerateToken(List<Claim> claims)
         {
-            var key = GenerateKey();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("JWT:Key")));
 
             var token = new JwtSecurityToken(
                 issuer: "https://localhost:44482/",

@@ -1,11 +1,11 @@
-import "./Login.css";
+import "./SignIn.css";
 import { TextField } from "@fluentui/react/lib/TextField";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jwtDecode, { JwtPayload } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import IToken from "../interfaces/IToken";
 
-const Login = () => {
+const SignIn = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -21,17 +21,17 @@ const Login = () => {
             const data = await res.json();
             const decodedToken: IToken = jwtDecode(data.token);
 
-            console.log(decodedToken.sub);
             localStorage.setItem("token", data.token)
             localStorage.setItem("username", decodedToken.username);
             localStorage.setItem("email", decodedToken.email);
 
             navigate("/");
+            window.location.reload();
         });
     }
 
     return (
-        <div className="login">
+        <div className="signIn">
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Username"
@@ -57,4 +57,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default SignIn;

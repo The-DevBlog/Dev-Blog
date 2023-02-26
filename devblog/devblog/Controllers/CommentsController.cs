@@ -1,5 +1,6 @@
 using devblog.Interfaces;
 using devblog.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace devblog.Controllers
@@ -20,6 +21,7 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="comment">The comment to add</param>
         /// <returns>Comment</returns>
+        [Authorize]
         [HttpPost]
         public async Task<Comment> Create(Comment comment)
         {
