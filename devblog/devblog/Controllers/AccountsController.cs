@@ -70,8 +70,6 @@ namespace devblog.Controllers
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo,
-                    //role = claims[""]
-
                 });
             }
         }
@@ -148,7 +146,7 @@ namespace devblog.Controllers
             var userRoles = await UserMgr.GetRolesAsync(user);
             foreach (var userRole in userRoles)
                 claims.Add(new Claim("role", userRole));
-                //claims.Add(new Claim(ClaimTypes.Role, userRole));
+            //claims.Add(new Claim(ClaimTypes.Role, userRole));
 
             return claims;
         }

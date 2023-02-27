@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SignOut from "../pages/SignOut";
+import { IsLoggedIn } from "../components/AuthenticationService";
 import "./Nav.css";
 
 const Nav = () => {
@@ -8,12 +9,8 @@ const Nav = () => {
     const [username, setUsername] = useState("");
 
     useEffect(() => {
-        const token = localStorage.getItem("token")!;
-
-        if (token) {
-            setLoggedIn(true);
-            setUsername(localStorage.getItem("username")!);
-        }
+        setLoggedIn(IsLoggedIn);
+        setUsername(localStorage.getItem("username")!);
     }, []);
 
     return (

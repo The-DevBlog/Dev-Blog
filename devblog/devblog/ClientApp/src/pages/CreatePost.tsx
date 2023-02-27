@@ -1,11 +1,13 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { IsAdmin } from "../components/AuthenticationService";
 import "./CreatePost.css";
 
 const CreatePost = () => {
     const [updateNum, setUpdateNum] = useState("");
     const [description, setDescription] = useState("");
     const [imgURL, setImgURL] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -23,36 +25,42 @@ const CreatePost = () => {
         });
     }
 
+    useEffect(() => {
+        setIsAdmin(IsAdmin)
+    }, []);
+
     return (
-        <div className="create-post">
-            <form onSubmit={handleSubmit}>
-                <label>Update Number</label>
-                <input
-                    type="text"
-                    required
-                    value={updateNum}
-                    onChange={(e) => setUpdateNum(e.target.value)}
-                />
+        < div className="create-post" >
+            {isAdmin &&
+                <form onSubmit={handleSubmit}>
+                    <label>Update Number</label>
+                    <input
+                        type="text"
+                        required
+                        value={updateNum}
+                        onChange={(e) => setUpdateNum(e.target.value)}
+                    />
 
-                <label>Description</label>
-                <input
-                    type="text"
-                    required
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+                    <label>Description</label>
+                    <input
+                        type="text"
+                        required
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
 
-                <label>Image</label>
-                <input
-                    type="text"
-                    required
-                    value={imgURL}
-                    onChange={(e) => setImgURL(e.target.value)}
-                />
+                    <label>Image</label>
+                    <input
+                        type="text"
+                        required
+                        value={imgURL}
+                        onChange={(e) => setImgURL(e.target.value)}
+                    />
 
-                <button>Create Post</button>
-            </form>
-        </div>
+                    <button>Create Post</button>
+                </form>
+            }
+        </div >
     )
 }
 
