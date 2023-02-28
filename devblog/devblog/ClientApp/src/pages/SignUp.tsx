@@ -6,7 +6,7 @@ import IToken from "../interfaces/IToken";
 import jwtDecode from "jwt-decode";
 
 const SignUp = () => {
-    const [userName, setUserName] = useState("");
+    const [userName, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [passwordHash, setPassword] = useState<Hash>("");
     const [confirmPasswordHash, setConfirmPassword] = useState<Hash>("");
@@ -18,13 +18,13 @@ const SignUp = () => {
         fetch("api/accounts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userName, email, passwordHash, confirmPasswordHash })
+            body: JSON.stringify({ userName: userName, email, passwordHash, confirmPasswordHash })
         }).then(async (res) => {
             const data = await res.json();
             const decodedToken: IToken = jwtDecode(data.token);
 
             localStorage.setItem("token", data.token)
-            localStorage.setItem("username", decodedToken.username);
+            localStorage.setItem("userName", decodedToken.userName);
             localStorage.setItem("email", decodedToken.email);
 
             navigate("/");
@@ -39,7 +39,7 @@ const SignUp = () => {
                     label="UserName"
                     value={userName}
                     type="text"
-                    onChange={(e) => setUserName(e.currentTarget.value)}
+                    onChange={(e) => setUsername(e.currentTarget.value)}
                     validateOnFocusOut
                     validateOnLoad={false}
                     required

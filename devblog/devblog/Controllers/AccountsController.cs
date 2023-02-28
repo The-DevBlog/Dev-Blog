@@ -31,8 +31,8 @@ namespace devblog.Controllers
         //public async Task<IActionResult> DeleteAccount()
         //{
         //    // get current user
-        //    var username = User.Identity.Name.ToUpper();
-        //    User user = UserMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
+        //    var userName = User.Identity.Name.ToUpper();
+        //    User user = UserMgr.Users.Where(x => x.NormalizedUserName == userName).FirstOrDefault();
 
         //    // sign current user out and delete account
         //    await SignInMgr.SignOutAsync();
@@ -55,7 +55,7 @@ namespace devblog.Controllers
 
             if (user == null || !await UserMgr.CheckPasswordAsync(user, signIn.Password))
             {
-                return BadRequest(new { error = "Invalid username or password" });
+                return BadRequest(new { error = "Invalid userName or password" });
             }
             else
             {
@@ -136,7 +136,7 @@ namespace devblog.Controllers
         {
             var claims = new List<Claim>
             {
-                new Claim("username", user.UserName),
+                new Claim("userName", user.UserName),
                 new Claim("email",  user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

@@ -16,4 +16,13 @@ const IsLoggedIn = () => {
     return token != null;
 }
 
-export { IsAdmin, IsLoggedIn };
+const GetUsername = () => {
+    if (token) {
+        const decodedToken: IToken = jwtDecode(token);
+        return decodedToken.userName || "";
+    }
+
+    return "";
+}
+
+export { IsAdmin, IsLoggedIn, GetUsername as GetUsername };

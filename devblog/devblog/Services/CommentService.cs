@@ -18,14 +18,14 @@ namespace devblog.Services
         /// Creates a new comment
         /// </summary>
         /// <param name="content">The content of the comment</param>
-        /// <param name="username">username of comment</param>
+        /// <param name="userName">userName of comment</param>
         /// <param name="postId">postId of comment</param>
         /// <returns>Comment</returns>
-        public async Task<Comment> Create(string content, string username, int postId)
+        public async Task<Comment> Create(string content, string userName, int postId)
         {
             Comment newComment = new Comment()
             {
-                UserName = username,
+                UserName = userName,
                 PostId = postId,
                 Content = content
             };

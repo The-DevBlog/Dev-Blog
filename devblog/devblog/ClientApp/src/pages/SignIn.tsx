@@ -6,7 +6,7 @@ import jwtDecode from "jwt-decode";
 import IToken from "../interfaces/IToken";
 
 const SignIn = () => {
-    const [username, setUsername] = useState("");
+    const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
@@ -16,13 +16,13 @@ const SignIn = () => {
         fetch(`api/accounts/signin`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ userName, password })
         }).then(async (res) => {
             const data = await res.json();
             const decodedToken: IToken = jwtDecode(data.token);
 
             localStorage.setItem("token", data.token)
-            localStorage.setItem("username", decodedToken.username);
+            localStorage.setItem("userName", decodedToken.userName);
             localStorage.setItem("email", decodedToken.email);
 
             navigate("/");
@@ -35,7 +35,7 @@ const SignIn = () => {
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Username"
-                    value={username}
+                    value={userName}
                     type="text"
                     onChange={(e) => setUsername(e.currentTarget.value)}
                     validateOnFocusOut

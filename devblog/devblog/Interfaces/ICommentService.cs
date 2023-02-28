@@ -8,10 +8,10 @@ namespace devblog.Interfaces
         /// Creates a new comment
         /// </summary>
         /// <param name="content">The content of the comment</param>
-        /// <param name="username">username of comment</param>
+        /// <param name="userName">userName of comment</param>
         /// <param name="postId">postId of comment</param>
         /// <returns>Comment</returns>
-        Task<Comment> Create(string content, string username, int postId);
+        Task<Comment> Create(string content, string userName, int postId);
 
         /// <summary>
         /// Updates a specified comment

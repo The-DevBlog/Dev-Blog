@@ -6,11 +6,11 @@ import "./Nav.css";
 
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [username, setUsername] = useState("");
+    const [userName, setUsername] = useState("");
 
     useEffect(() => {
         setLoggedIn(IsLoggedIn);
-        setUsername(localStorage.getItem("username")!);
+        setUsername(localStorage.getItem("userName")!);
     }, []);
 
     return (
@@ -22,7 +22,7 @@ const Nav = () => {
 
             {loggedIn ? (
                 <span className="accounts">
-                    <span>Welcome {username}</span>
+                    <span>Welcome {userName}</span>
                     <SignOut />
                 </span>
             ) : (

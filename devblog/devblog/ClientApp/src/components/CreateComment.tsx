@@ -5,14 +5,14 @@ import "./CreateComment.css";
 const CreateComment = (post: IPost) => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [content, setContent] = useState("");
-    const [username, setUsername] = useState("");
+    const [userName, setUsername] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem("token")!;
 
         if (token) {
             setLoggedIn(true);
-            setUsername(localStorage.getItem("username")!);
+            setUsername(localStorage.getItem("userName")!);
         }
     }, []);
 
@@ -27,7 +27,7 @@ const CreateComment = (post: IPost) => {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({ content, username, postId })
+            body: JSON.stringify({ content, userName, postId })
         }).then(() => {
             setUsername("");
             setContent("");

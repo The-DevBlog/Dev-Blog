@@ -13,9 +13,7 @@ const DeletePost = (props: IPost) => {
         });
     };
 
-    useEffect(() => {
-        setIsAdmin(IsAdmin)
-    }, []);
+    useEffect(() => setIsAdmin(isAdmin));
 
     return (
         <>
