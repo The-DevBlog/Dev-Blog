@@ -48,7 +48,6 @@ namespace devblog.Controllers
         //    return res;
         //}
 
-        [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignIn signIn)
         {
@@ -91,7 +90,6 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="user">New user to add</param>
         /// <returns>Task<IActionResult></returns>
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> SignUp(User user)
         {

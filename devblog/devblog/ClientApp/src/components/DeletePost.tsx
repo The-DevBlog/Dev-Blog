@@ -1,7 +1,11 @@
 import IPost from "../interfaces/IPost";
 import { MdDelete as Trash } from "react-icons/md";
+import { IsAdmin } from "../components/AuthenticationService";
+import { useEffect, useState } from "react";
 
 const DeletePost = (props: IPost) => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const handleDelete = () => {
         fetch(`api/posts/${props.id}`, {
             method: "DELETE",
@@ -9,8 +13,16 @@ const DeletePost = (props: IPost) => {
         });
     };
 
+    useEffect(() => {
+        setIsAdmin(IsAdmin)
+    }, []);
+
     return (
-        <Trash onClick={handleDelete} />
+        <>
+            {isAdmin &&
+                <Trash onClick={handleDelete} />
+            }
+        </>
     )
 }
 
