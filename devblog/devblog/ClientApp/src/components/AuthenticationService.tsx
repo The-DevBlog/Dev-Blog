@@ -16,13 +16,15 @@ const IsLoggedIn = () => {
     return token != null;
 }
 
-const GetUsername = () => {
+const GetUserName = () => {
     if (token) {
         const decodedToken: IToken = jwtDecode(token);
+        // console.log(decodedToken);
+        // console.log("TOKEN " + decodedToken.userName);
         return decodedToken.userName || "";
     }
 
     return "";
 }
 
-export { IsAdmin, IsLoggedIn, GetUsername as GetUsername };
+export { IsAdmin, IsLoggedIn, GetUserName };

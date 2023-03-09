@@ -5,7 +5,10 @@ const DeleteComment = (props: IComment) => {
     const handleDelete = () => {
         fetch(`api/comments/${props.id}`, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
         });
     };
 

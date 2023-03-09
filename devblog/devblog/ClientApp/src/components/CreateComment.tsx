@@ -1,25 +1,23 @@
 import { FormEvent, useState, useEffect } from "react";
 import IPost from "../interfaces/IPost";
 import "./CreateComment.css";
+import { GetUserName, IsLoggedIn } from "../components/AuthenticationService";
 
-const CreateComment = (post: IPost) => {
+const CreateComment = (props: { postId: number; addComment: (comment: any) => void }) => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [content, setContent] = useState("");
     const [userName, setUsername] = useState("");
 
     useEffect(() => {
-        const token = localStorage.getItem("token")!;
-
-        if (token) {
-            setLoggedIn(true);
-            setUsername(localStorage.getItem("userName")!);
-        }
+        setLoggedIn(IsLoggedIn);
+        setUsername(GetUserName);
     }, []);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        let postId = post.id;
+        // let postId = post.id;
+        let postId = props.postId;;
 
         fetch("api/comments", {
             method: "POST",
@@ -29,8 +27,8 @@ const CreateComment = (post: IPost) => {
             },
             body: JSON.stringify({ content, userName, postId })
         }).then(() => {
-            setUsername("");
             setContent("");
+            props.addComment({ content, userName, postId })
         });
     }
 
