@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPost";
 import Post from "../components/Post";
 import "./Posts.css";
-import { IsAdmin } from "../components/AuthenticationService";
+import { GetIsAdmin } from "../components/AuthenticationService";
 import { Link } from "react-router-dom";
 
 const Posts = () => {
@@ -11,8 +11,7 @@ const Posts = () => {
 
     // fetch posts from server
     useEffect(() => {
-        setIsAdmin(IsAdmin);
-
+        setIsAdmin(GetIsAdmin);
         fetch(`api/posts`)
             .then((res) => {
                 return res.json();

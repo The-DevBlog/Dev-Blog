@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IsAdmin } from "../components/AuthenticationService";
+import { GetIsAdmin } from "../components/AuthenticationService";
 import "./CreatePost.css";
 
 const CreatePost = () => {
@@ -26,7 +26,7 @@ const CreatePost = () => {
     }
 
     useEffect(() => {
-        setIsAdmin(IsAdmin)
+        setIsAdmin(GetIsAdmin)
     }, []);
 
     return (

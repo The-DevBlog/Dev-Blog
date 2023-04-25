@@ -1,6 +1,6 @@
 import IPost from "../interfaces/IPost";
 import { MdDelete as Trash } from "react-icons/md";
-import { IsAdmin } from "../components/AuthenticationService";
+import { GetIsAdmin } from "../components/AuthenticationService";
 import { useEffect, useState } from "react";
 
 const DeletePost = (props: IPost) => {
@@ -13,7 +13,7 @@ const DeletePost = (props: IPost) => {
         });
     };
 
-    useEffect(() => setIsAdmin(IsAdmin), []);
+    useEffect(() => setIsAdmin(GetIsAdmin), []);
 
     return (
         <>
