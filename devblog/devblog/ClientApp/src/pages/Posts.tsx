@@ -13,23 +13,15 @@ const Posts = () => {
     useEffect(() => {
         setIsAdmin(GetIsAdmin);
         fetch(`api/posts`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setPosts(data);
-            })
+            .then((res) => { return res.json(); })
+            .then((data) => setPosts(data));
     }, []);
 
     return (
         <section className="posts-container">
             <h1>POSTS</h1>
-            {isAdmin &&
-                <Link className="create-post-btn" to="/posts/create">Create Post</Link>
-            }
-            {posts.map((p) => {
-                return <Post id={p?.id} updateNum={p?.updateNum} date={p?.date} description={p?.description} imgURL={p?.imgURL} comments={p?.comments} />
-            })}
+            {isAdmin && <Link className="create-post-btn" to="/posts/create">Create Post</Link>}
+            {posts.map((p) => <Post {...p} />)}
         </section>
     );
 

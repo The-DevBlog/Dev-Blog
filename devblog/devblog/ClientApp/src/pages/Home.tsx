@@ -8,18 +8,14 @@ const Home = () => {
     // fetch latest post from server
     useEffect(() => {
         fetch(`api/posts/${-1}`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setLatestPost(data);
-            })
+            .then((res) => { return res.json(); })
+            .then((data) => setLatestPost(data));
     }, []);
 
     return (
         <section className="posts-container">
             <h1>HOME</h1>
-            <Post id={latestPost?.id} updateNum={latestPost?.updateNum} date={latestPost?.date} description={latestPost?.description} imgURL={latestPost?.imgURL} comments={latestPost?.comments} />
+            <Post {...latestPost} />
         </section>
     )
 }

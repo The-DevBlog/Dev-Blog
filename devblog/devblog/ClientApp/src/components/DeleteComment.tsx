@@ -13,7 +13,6 @@ const DeleteComment = (props: IComment) => {
     };
 
     return <Trash onClick={handleDelete} />
-
 }
 
 export default DeleteComment;

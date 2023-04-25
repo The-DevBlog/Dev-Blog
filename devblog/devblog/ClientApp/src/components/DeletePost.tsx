@@ -15,13 +15,7 @@ const DeletePost = (props: IPost) => {
 
     useEffect(() => setIsAdmin(GetIsAdmin), []);
 
-    return (
-        <>
-            {isAdmin &&
-                <Trash onClick={handleDelete} />
-            }
-        </>
-    )
+    return <>{isAdmin && <Trash onClick={handleDelete} />}</>
 }
 
 export default DeletePost;

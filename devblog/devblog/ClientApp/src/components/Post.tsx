@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import IPost from "../interfaces/IPost";
 import Comment from "./Comment";
 import AddComment from "./AddComment";
@@ -22,9 +22,7 @@ const Post = (props: IPost) => {
             <img src={props.imgURL} alt="development update" />
             <p>{props.description}</p>
             <div>
-                {comments?.map((c) => {
-                    return <Comment id={c.id} content={c?.content} date={c?.date} userName={c?.userName} />
-                })}
+                {comments?.map((c) => <Comment {...c} />)}
             </div>
             <AddComment postId={props.id!} addComment={addComment} />
         </div>

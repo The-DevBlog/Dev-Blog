@@ -1,6 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
-import "./AddComment.css";
 import { GetUserName, IsLoggedIn } from "./AuthenticationService";
+import "./AddComment.css";
 
 const AddComment = (props: { postId: number; addComment: (comment: any) => void }) => {
     const [loggedIn, setLoggedIn] = useState(false);
