@@ -1,4 +1,4 @@
-import IComment from "./IComment";
+import IComment from "./ICommentProps";
 
 export default interface IPostProps {
     id?: number;

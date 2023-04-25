@@ -2,7 +2,12 @@ import { FormEvent, useState, useEffect } from "react";
 import { GetUserName, IsLoggedIn } from "./AuthenticationService";
 import "./AddComment.css";
 
-const AddComment = (props: { postId: number; addComment: (comment: any) => void }) => {
+interface IAddCommentProps {
+    postId?: number;
+    onCommentAdd: () => void;
+}
+
+const AddComment = (props: IAddCommentProps) => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [content, setContent] = useState("");
     const [userName, setUsername] = useState("");
@@ -26,7 +31,7 @@ const AddComment = (props: { postId: number; addComment: (comment: any) => void 
             body: JSON.stringify({ content, userName, postId })
         }).then(() => {
             setContent("");
-            props.addComment({ content, userName, postId })
+            props.onCommentAdd();
         });
     }
 

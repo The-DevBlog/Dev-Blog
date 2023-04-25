@@ -10,10 +10,12 @@ namespace devblog.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly ICommentService _comments;
+        private readonly IPostService _posts;
 
-        public CommentsController(ICommentService comments)
+        public CommentsController(ICommentService comments, IPostService posts)
         {
             _comments = comments;
+            _posts = posts;
         }
 
         /// <summary>
@@ -27,6 +29,19 @@ namespace devblog.Controllers
         {
             var newComment = await _comments.Create(comment.Content, comment.UserName, comment.PostId);
             return newComment;
+        }
+
+        /// <summary>
+        /// Gets all comment from a specified post
+        /// </summary>
+        /// <param name="postId">Post id to retrieve comments for</param>
+        /// <returns>List<Comment></returns>
+        //[Authorize]
+        [HttpGet("posts/{postId}")]
+        public async Task<List<Comment>> Get(int postId)
+        {
+            var posts = await _posts.Get(postId);
+            return posts.Comments;
         }
 
         /// <summary>
