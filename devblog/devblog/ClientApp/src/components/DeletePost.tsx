@@ -1,4 +1,4 @@
-import IPost from "../interfaces/IPost";
+import IPost from "../interfaces/IPostProps";
 import { MdDelete as Trash } from "react-icons/md";
 import { GetIsAdmin } from "../components/AuthenticationService";
 import { useEffect, useState } from "react";

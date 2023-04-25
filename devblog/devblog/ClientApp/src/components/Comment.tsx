@@ -1,10 +1,10 @@
 import "./Comment.css";
-import IComment from "../interfaces/IComment";
+import ICommentProps from "../interfaces/ICommentProps";
 import { GetUserName, GetIsAdmin } from "../components/AuthenticationService";
 import DeleteComment from "./DeleteComment";
 import { useEffect, useState } from "react";
 
-const Comment = (props: IComment) => {
+const Comment = (props: { comment: ICommentProps, handleCommentChange: () => void }) => {
     const [userName, setUserName] = useState("");
     const [isAdmin, setIsAdmin] = useState<boolean>();
 
@@ -16,13 +16,12 @@ const Comment = (props: IComment) => {
     return (
         <div className="comment">
             <div className="comment-info">
+                {(userName === props.comment.userName || isAdmin) && < DeleteComment id={props.comment.id} onCommentDelete={props.handleCommentChange} />}
 
-                {(userName === props.userName || isAdmin) && < DeleteComment id={props.id} />}
-
-                <span>{props.userName}</span>
-                <span>{props.date}</span>
+                <span>{props.comment.userName}</span>
+                <span>{props.comment.date}</span>
             </div>
-            <p>{props.content}</p>
+            <p>{props.comment.content}</p>
         </div>
     );
 };

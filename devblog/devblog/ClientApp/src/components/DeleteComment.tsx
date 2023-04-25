@@ -1,15 +1,21 @@
-import IComment from "../interfaces/IComment";
 import { MdDelete as Trash } from "react-icons/md";
 
-const DeleteComment = (props: IComment) => {
-    const handleDelete = () => {
-        fetch(`api/comments/${props.id}`, {
+interface IDeleteCommentProps {
+    id?: number;
+    onCommentDelete: () => void;
+}
+
+const DeleteComment = (props: IDeleteCommentProps) => {
+    const handleDelete = async () => {
+        await fetch(`api/comments/${props.id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         });
+
+        props.onCommentDelete();
     };
 
     return <Trash onClick={handleDelete} />

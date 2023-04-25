@@ -7,10 +7,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -94,6 +101,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevBlog");
+});
 
 app.MapControllerRoute(
     name: "default",

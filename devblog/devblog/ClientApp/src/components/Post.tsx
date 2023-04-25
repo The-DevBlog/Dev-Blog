@@ -1,16 +1,28 @@
-import { useState } from "react";
-import IPost from "../interfaces/IPost";
+import { useEffect, useState } from "react";
+import IPost from "../interfaces/IPostProps";
 import Comment from "./Comment";
 import AddComment from "./AddComment";
 import DeletePost from "./DeletePost";
+import ICommentProps from "../interfaces/ICommentProps";
 import "./Post.css";
 
 const Post = (props: IPost) => {
-    const [comments, setComments] = useState(props.comments);
+    const [comments, setComments] = useState<ICommentProps[]>();
 
-    const addComment = (comment: any) => {
-        setComments([...comments!, comment]);
+    const getComments = async () => {
+        console.log(props);
+        const response = await fetch(`/api/comments/posts/${props.id}`);
+        const data = await response.json();
+        setComments(data);
     };
+
+    const handleCommentChange = async () => {
+        getComments();
+    };
+
+    useEffect(() => {
+        getComments();
+    }, []);
 
     return (
         <div className="post">
@@ -22,9 +34,9 @@ const Post = (props: IPost) => {
             <img src={props.imgURL} alt="development update" />
             <p>{props.description}</p>
             <div>
-                {comments?.map((c) => <Comment {...c} />)}
+                {comments?.map((c) => <Comment key={c.id} comment={c} handleCommentChange={handleCommentChange} />)}
             </div>
-            <AddComment postId={props.id!} addComment={addComment} />
+            <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
         </div>
     );
 };

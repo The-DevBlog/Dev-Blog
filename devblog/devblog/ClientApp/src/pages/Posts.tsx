@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import IPost from "../interfaces/IPost";
+import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
 import "./Posts.css";
 import { GetIsAdmin } from "../components/AuthenticationService";

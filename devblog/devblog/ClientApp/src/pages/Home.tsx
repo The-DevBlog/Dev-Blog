@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
-import IPost from "../interfaces/IPost";
+import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
 
 const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
 
-    // fetch latest post from server
-    useEffect(() => {
-        fetch(`api/posts/${-1}`)
+    const getLatestPost = async () => {
+        await fetch(`api/posts/${-1}`)
             .then((res) => { return res.json(); })
-            .then((data) => setLatestPost(data));
+            .then((data) => {
+                setLatestPost(data);
+                console.log(data);
+            });
+    }
+
+    useEffect(() => {
+        getLatestPost();
     }, []);
 
     return (
         <section className="posts-container">
             <h1>HOME</h1>
-            <Post {...latestPost} />
+            {latestPost && <Post {...latestPost} />}
         </section>
     )
 }
