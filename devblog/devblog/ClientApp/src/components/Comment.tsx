@@ -8,10 +8,25 @@ import EditComment from "./EditComment";
 const Comment = (props: ICommentProps) => {
     const [userName, setUserName] = useState("");
     const [isAdmin, setIsAdmin] = useState<boolean>();
+    const [date, setDate] = useState<string>();
 
     useEffect(() => {
         setUserName(GetUserName);
         setIsAdmin(GetIsAdmin);
+
+        // convert UTC time to user local time
+        let newDate = new Date(props.date);
+        let newDate2 = new Date(newDate.getTime() - newDate.getTimezoneOffset() * 60000)
+
+        const formattedDate = newDate2?.toLocaleString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
+        });
+
+        setDate(formattedDate.toLocaleString())
     }, []);
 
     return (
@@ -22,7 +37,7 @@ const Comment = (props: ICommentProps) => {
                 {(userName === props.userName || isAdmin) && <DeleteComment id={props.id} onCommentDelete={props.handleCommentChange} />}
                 {(userName === props.userName && <EditComment {...props} handleCommentEdit={props.handleCommentChange} />)}
 
-                <span>{props.date}</span>
+                <span>{date}</span>
             </div>
 
             <p>{props.content}</p>
