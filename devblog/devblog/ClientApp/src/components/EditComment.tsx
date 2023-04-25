@@ -4,19 +4,20 @@ import { MdModeEditOutline as Edit } from "react-icons/md";
 interface IEditCommentProps {
     id?: number;
     content?: string;
+    isEditing: boolean;
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
     handleCommentEdit: () => void;
 }
 
 const EditComment = (props: IEditCommentProps) => {
     const [content, setContent] = useState(props.content);
-    const [isEditing, setIsEditing] = useState(false);
 
     const handleEdit = () => {
-        setIsEditing(true);
+        props.setIsEditing(true);
     };
 
     const handleSave = async () => {
-        setIsEditing(false);
+        props.setIsEditing(false);
 
         await fetch(`api/comments/${props.id}`, {
             method: "PUT",
@@ -30,18 +31,22 @@ const EditComment = (props: IEditCommentProps) => {
     };
 
     const handleCancel = () => {
-        setIsEditing(false);
+        props.setIsEditing(false);
         setContent(props.content);
     };
 
     return (
         <>
-            {!isEditing && <button onClick={handleEdit}><Edit /></button>}
-            {isEditing && (
-                <div>
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} />
-                    <button onClick={handleSave}>Save</button>
-                    <button onClick={handleCancel}>Cancel</button>
+            {!props.isEditing && <Edit onClick={handleEdit} />}
+
+            {props.isEditing && (
+                <div style={{}}>
+                    <textarea value={content} onChange={(e) => setContent(e.target.value)} style={{ width: "80%", height: "30px" }} />
+
+                    <div style={{ display: "flex" }}>
+                        <button onClick={handleSave}>Save</button>
+                        <button onClick={handleCancel}>Cancel</button>
+                    </div>
                 </div>
             )}
         </>

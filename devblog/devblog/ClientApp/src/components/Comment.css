@@ -1,4 +1,5 @@
 .comment {
+    display: "flex";
     margin-bottom: .25em;
     border: .15em solid rgb(70, 68, 60);
     border-radius: .75em;
@@ -8,6 +9,10 @@
 .comment-info {
     display: flex;
     align-items: center;
+}
+
+.comment p {
+    width: 85%;
 }
 
 .comment-info span:last-child {

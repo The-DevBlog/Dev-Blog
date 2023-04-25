@@ -9,6 +9,7 @@ const Comment = (props: ICommentProps) => {
     const [userName, setUserName] = useState("");
     const [isAdmin, setIsAdmin] = useState<boolean>();
     const [date, setDate] = useState<string>();
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         setUserName(GetUserName);
@@ -33,14 +34,23 @@ const Comment = (props: ICommentProps) => {
         <div className="comment">
             <div className="comment-info">
                 <span>{props.userName}</span>
-
                 {(userName === props.userName || isAdmin) && <DeleteComment id={props.id} onCommentDelete={props.handleCommentChange} />}
-                {(userName === props.userName && <EditComment {...props} handleCommentEdit={props.handleCommentChange} />)}
 
+                {(!isEditing && userName === props.userName) &&
+                    <EditComment {...props}
+                        handleCommentEdit={props.handleCommentChange}
+                        isEditing={isEditing} setIsEditing={setIsEditing} />
+                }
                 <span>{date}</span>
-            </div>
 
-            <p>{props.content}</p>
+            </div>
+            {(isEditing && userName === props.userName) &&
+                <EditComment {...props}
+                    handleCommentEdit={props.handleCommentChange}
+                    isEditing={isEditing} setIsEditing={setIsEditing} />
+            }
+
+            {!isEditing && <p>{props.content}</p>}
         </div>
     );
 };
