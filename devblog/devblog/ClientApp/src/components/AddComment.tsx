@@ -1,9 +1,8 @@
 import { FormEvent, useState, useEffect } from "react";
-import IPost from "../interfaces/IPost";
-import "./CreateComment.css";
-import { GetUserName, IsLoggedIn } from "../components/AuthenticationService";
+import "./AddComment.css";
+import { GetUserName, IsLoggedIn } from "./AuthenticationService";
 
-const CreateComment = (props: { postId: number; addComment: (comment: any) => void }) => {
+const AddComment = (props: { postId: number; addComment: (comment: any) => void }) => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [content, setContent] = useState("");
     const [userName, setUsername] = useState("");
@@ -16,7 +15,6 @@ const CreateComment = (props: { postId: number; addComment: (comment: any) => vo
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // let postId = post.id;
         let postId = props.postId;;
 
         fetch("api/comments", {
@@ -57,4 +55,4 @@ const CreateComment = (props: { postId: number; addComment: (comment: any) => vo
     )
 }
 
-export default CreateComment;
+export default AddComment;

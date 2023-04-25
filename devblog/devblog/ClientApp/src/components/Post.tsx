@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPost";
 import Comment from "./Comment";
-import CreateComment from "./CreateComment";
+import AddComment from "./AddComment";
 import DeletePost from "./DeletePost";
 import "./Post.css";
 
@@ -26,7 +26,7 @@ const Post = (props: IPost) => {
                     return <Comment id={c.id} content={c?.content} date={c?.date} userName={c?.userName} />
                 })}
             </div>
-            <CreateComment postId={props.id!} addComment={addComment} />
+            <AddComment postId={props.id!} addComment={addComment} />
         </div>
     );
 };

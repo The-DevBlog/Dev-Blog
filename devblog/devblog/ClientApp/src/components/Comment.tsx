@@ -17,9 +17,7 @@ const Comment = (props: IComment) => {
         <div className="comment">
             <div className="comment-info">
 
-                {(userName === props.userName || isAdmin) &&
-                    < DeleteComment id={props.id} />
-                }
+                {(userName === props.userName || isAdmin) && < DeleteComment id={props.id} />}
 
                 <span>{props.userName}</span>
                 <span>{props.date}</span>

@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GetIsAdmin } from "../components/AuthenticationService";
-import "./CreatePost.css";
+import "./AddPost.css";
 
-const CreatePost = () => {
+const AddPost = () => {
     const [updateNum, setUpdateNum] = useState("");
     const [description, setDescription] = useState("");
     const [imgURL, setImgURL] = useState("");
@@ -64,4 +64,4 @@ const CreatePost = () => {
     )
 }
 
-export default CreatePost;
+export default AddPost;
