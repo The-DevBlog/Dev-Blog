@@ -17,12 +17,12 @@ const AddComment = (props: IAddCommentProps) => {
         setUsername(GetUserName);
     }, []);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         let postId = props.postId;;
 
-        fetch("api/comments", {
+        await fetch("api/comments", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

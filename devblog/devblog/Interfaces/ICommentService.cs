@@ -14,11 +14,12 @@ namespace devblog.Interfaces
         Task<Comment> Create(string content, string userName, int postId);
 
         /// <summary>
-        /// Updates a specified comment
+        /// Update a comment
         /// </summary>
-        /// <param name="comment">Comment Model</param>
-        /// <returns>Successful completion of task</returns>
-        Task Update(Comment comment);
+        /// <param name="id">id of comment to update</param>
+        /// <param name="content">new content of comment</param>
+        /// <returns></returns>
+        Task<Comment> Update(int id, string content);
 
         /// <summary>
         /// Retrieves a specified comment

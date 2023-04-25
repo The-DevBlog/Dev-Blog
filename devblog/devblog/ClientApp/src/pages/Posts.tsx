@@ -21,7 +21,7 @@ const Posts = () => {
         <section className="posts-container">
             <h1>POSTS</h1>
             {isAdmin && <Link className="create-post-btn" to="/posts/create">Create Post</Link>}
-            {posts.map((p) => <Post {...p} />)}
+            {posts.map((p) => <Post key={p.id} {...p} />)}
         </section>
     );
 

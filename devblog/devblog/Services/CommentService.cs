@@ -37,14 +37,19 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Updates a specified comment
+        /// Update a comment
         /// </summary>
-        /// <param name="comment">Comment Model</param>
-        /// <returns>Successful completion of task</returns>
-        public async Task Update(Comment comment)
+        /// <param name="id">id of comment to update</param>
+        /// <param name="content">new content of comment</param>
+        /// <returns></returns>
+        public async Task<Comment> Update(int id, string content)
         {
+            var comment = await Get(id);
+            comment.Content = content;
             _db.Comment.Update(comment);
             await _db.SaveChangesAsync();
+
+            return comment;
         }
 
         /// <summary>

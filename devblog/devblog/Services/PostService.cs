@@ -40,6 +40,7 @@ namespace devblog.Services
             return res;
         }
 
+
         /// <summary>
         /// Retrieves all posts
         /// </summary>

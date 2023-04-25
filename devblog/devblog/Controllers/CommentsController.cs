@@ -32,6 +32,20 @@ namespace devblog.Controllers
         }
 
         /// <summary>
+        /// Update a comment
+        /// </summary>
+        /// <param name="id">id of comment to update</param>
+        /// <param name="content">new content of comment</param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<Comment> Update(int id, [FromBody] string content)
+        {
+            var newComment = await _comments.Update(id, content);
+            return newComment;
+        }
+
+        /// <summary>
         /// Gets all comment from a specified post
         /// </summary>
         /// <param name="postId">Post id to retrieve comments for</param>

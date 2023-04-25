@@ -33,7 +33,7 @@ const Post = (props: IPost) => {
             <img src={props.imgURL} alt="development update" />
             <p>{props.description}</p>
             <div>
-                {comments?.map((c) => <Comment key={c.id} comment={c} handleCommentChange={handleCommentChange} />)}
+                {comments?.map((c) => <Comment key={c.id} {...c} handleCommentChange={handleCommentChange} />)}
             </div>
             <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
         </div>
