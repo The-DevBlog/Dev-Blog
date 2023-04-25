@@ -10,7 +10,6 @@ const Post = (props: IPost) => {
     const [comments, setComments] = useState<ICommentProps[]>();
 
     const getComments = async () => {
-        console.log(props);
         const response = await fetch(`/api/comments/posts/${props.id}`);
         const data = await response.json();
         setComments(data);

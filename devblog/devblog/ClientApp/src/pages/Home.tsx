@@ -8,10 +8,7 @@ const Home = () => {
     const getLatestPost = async () => {
         await fetch(`api/posts/${-1}`)
             .then((res) => { return res.json(); })
-            .then((data) => {
-                setLatestPost(data);
-                console.log(data);
-            });
+            .then((data) => setLatestPost(data));
     }
 
     useEffect(() => {
