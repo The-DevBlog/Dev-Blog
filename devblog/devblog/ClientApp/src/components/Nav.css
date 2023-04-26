@@ -1,7 +1,8 @@
 .navbar {
     display: flex;
     height: fit-content;
-    width: 100%;
+    margin: auto;
+    width: 100vw;
 }
 
 .navbar a,
@@ -35,4 +36,17 @@
 .navbar a:hover,
 .accounts a:hover {
     opacity: 1.0;
+}
+
+@media (max-width: 1000px) {
+    .accounts {
+        display: flex;
+        flex-direction: column;
+        padding: 0px;
+    }
+
+    .accounts a {
+        padding: 10px 8px 0px 0px;
+
+    }
 }

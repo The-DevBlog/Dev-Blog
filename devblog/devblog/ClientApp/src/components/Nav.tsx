@@ -30,8 +30,6 @@ const Nav = () => {
 
             <Link to="/" className={isActive("/")}>Home</Link>
             <Link to="/posts" className={isActive("/posts")}>Posts</Link>
-            <Link to="/about" className={isActive("/about")}>About</Link>
-
 
             {loggedIn ? (
                 <span style={{ display: "flex" }} className="accounts">
@@ -41,7 +39,7 @@ const Nav = () => {
             ) : (
                 <span className="accounts">
                     <Link to="/signin">Login</Link>
-                    <Link to="/signup">Sign Up</Link>
+                    <Link to="/signup">SignUp</Link>
                 </span>
             )}
 
