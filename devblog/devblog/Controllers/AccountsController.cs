@@ -27,19 +27,23 @@ namespace devblog.Controllers
             _config = config;
         }
 
-        //[HttpPost("/deleteAccount")]
-        //public async Task<IActionResult> DeleteAccount()
-        //{
-        //    // get current user
-        //    var userName = User.Identity.Name.ToUpper();
-        //    User user = UserMgr.Users.Where(x => x.NormalizedUserName == userName).FirstOrDefault();
+        [Authorize(Roles = "Visitor")]
+        [HttpDelete("{username}")]
+        public async Task<IActionResult> DeleteAccount(string username)
+        {
+            // get current user
+            User user = UserMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
 
-        //    // sign current user out and delete account
-        //    await SignInMgr.SignOutAsync();
-        //    await UserMgr.DeleteAsync(user);
+            if (user != null)
+            {
+                // sign current user out and delete account
+                await SignInMgr.SignOutAsync();
+                await UserMgr.DeleteAsync(user);
+                return Redirect("/");
+            }
 
-        //    return Redirect("/");
-        //}
+            return Redirect("/");
+        }
 
         //[HttpGet("{user}")]
         //public async Task<string> GetUserName(User user)
