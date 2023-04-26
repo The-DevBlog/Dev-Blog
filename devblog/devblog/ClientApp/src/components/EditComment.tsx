@@ -28,7 +28,6 @@ const EditComment = (props: IEditCommentProps) => {
             },
             body: JSON.stringify(content)
         }).then(() => props.handleCommentEdit());
-
     };
 
     const handleCancel = () => {
@@ -38,13 +37,13 @@ const EditComment = (props: IEditCommentProps) => {
 
     return (
         <>
-            {!props.isEditing && <Edit className="edit-comment" onClick={handleEdit} />}
+            {!props.isEditing && <Edit className="edit-comment-btn" onClick={handleEdit} />}
 
             {props.isEditing && (
-                <div style={{}}>
+                <div className="edit-comment">
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} style={{ width: "80%", height: "30px" }} />
 
-                    <div style={{ display: "flex" }}>
+                    <div>
                         <button onClick={handleSave}>Save</button>
                         <button onClick={handleCancel}>Cancel</button>
                     </div>

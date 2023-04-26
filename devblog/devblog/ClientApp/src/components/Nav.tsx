@@ -32,7 +32,7 @@ const Nav = () => {
             <Link to="/posts" className={isActive("/posts")}>Posts</Link>
 
             {loggedIn ? (
-                <span style={{ display: "flex" }} className="accounts">
+                <span className="accounts">
                     <span>Welcome {userName}</span>
                     <SignOut />
                 </span>

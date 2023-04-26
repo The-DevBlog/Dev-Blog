@@ -1,4 +1,13 @@
-.edit-comment:hover {
+.edit-comment-btn:hover {
     color: aquamarine;
     cursor: pointer;
+}
+
+.edit-comment textarea,
+.edit-comment button {
+    border-radius: .5em;
+}
+
+.edit-comment div {
+    display: flex;
 }

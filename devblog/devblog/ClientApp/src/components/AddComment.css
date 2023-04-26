@@ -9,22 +9,20 @@
     display: inline-flex;
     flex-direction: column;
     width: 100%;
-    /* border: 1px solid red; */
 }
 
 .create-comment form input {
     width: 10em;
-    /* border: 1px solid red; */
     margin: .5em 0 .5em 0;
-    /* border: none; */
     border: 0 0 1px 0;
 }
 
 .create-comment textarea {
-    /* width: 100%; */
+    border-radius: 0.5em;
 }
 
 .create-comment button {
+    border-radius: 0.5em;
     margin-top: .5em;
     width: 10em;
 }
