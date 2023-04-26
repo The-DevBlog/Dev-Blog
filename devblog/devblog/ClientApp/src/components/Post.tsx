@@ -5,6 +5,7 @@ import AddComment from "./AddComment";
 import DeletePost from "./DeletePost";
 import ICommentProps from "../interfaces/ICommentProps";
 import "./Post.css";
+import Vote from "./Vote";
 
 const Post = (props: IPost) => {
     const [comments, setComments] = useState<ICommentProps[]>();
@@ -38,6 +39,8 @@ const Post = (props: IPost) => {
                 <span className="date">{date}</span>
             </div>
             <img src={props.imgURL} alt="development update" />
+
+            <Vote postId={props.id} />
             <p className="post-description">{props.description}</p>
 
             <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
