@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SignOut from "../pages/SignOut";
 import { IsLoggedIn } from "../components/AuthenticationService";
 import "./Nav.css";
@@ -7,6 +7,11 @@ import "./Nav.css";
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [userName, setUsername] = useState("");
+    const location = useLocation();
+
+    const isActive = (path: string) => {
+        return location.pathname === path ? "active" : "non-active";
+    };
 
     useEffect(() => {
         setLoggedIn(IsLoggedIn);
@@ -15,13 +20,21 @@ const Nav = () => {
 
     return (
         <nav className="navbar">
-            <Link to="/">Home</Link>
-            <Link to="/posts">Posts</Link>
-            <Link to="/about">About</Link>
+            <Link to="/">
+                <div className="logo">
+                    <span>The</span>
+                    <br />
+                    <span>DevBlog</span>
+                </div>
+            </Link>
+
+            <Link to="/" className={isActive("/")}>Home</Link>
+            <Link to="/posts" className={isActive("/posts")}>Posts</Link>
+            <Link to="/about" className={isActive("/about")}>About</Link>
 
 
             {loggedIn ? (
-                <span className="accounts">
+                <span style={{ display: "flex" }} className="accounts">
                     <span>Welcome {userName}</span>
                     <SignOut />
                 </span>

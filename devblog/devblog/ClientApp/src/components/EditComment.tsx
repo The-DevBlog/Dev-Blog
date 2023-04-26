@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MdModeEditOutline as Edit } from "react-icons/md";
+import "./EditComment.css";
 
 interface IEditCommentProps {
     id?: number;
@@ -37,7 +38,7 @@ const EditComment = (props: IEditCommentProps) => {
 
     return (
         <>
-            {!props.isEditing && <Edit onClick={handleEdit} />}
+            {!props.isEditing && <Edit className="edit-comment" onClick={handleEdit} />}
 
             {props.isEditing && (
                 <div style={{}}>

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&family=Zilla+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&family=Silkscreen&family=Zilla+Slab&display=swap');
+
+/* Font families, font colors & theme colors */
+
+:root {
+    background-color: #0d1116;
+    color: white;
+    font-family: 'Silkscreen', cursive;
+}
+
+.post {
+    border: 1px solid rgb(94, 94, 94);
+    background-color: #1a2029;
+}
+
+.navbar {
+    background-color: #1a2029;
+}
+
+.comment,
+textarea,
+button {
+    border: 1px solid rgb(94, 94, 94);
+    background-color: #0d1116;
+    color: white;
+}
+
+.comment,
+.date,
+.post-description,
+textarea,
+button {
+    font-family: 'Chivo Mono', monospace;
+}

@@ -1,7 +1,7 @@
 export default interface ICommentProps {
     id?: number,
     content?: string;
-    date: string;
+    date: Date;
     userName?: string;
     handleCommentChange: () => void
 }

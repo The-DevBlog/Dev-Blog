@@ -1,6 +1,7 @@
-.posts-container {
-    display: flex;
-    justify-content: center;
+.posts {
     align-items: center;
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    margin: 50px;
 }

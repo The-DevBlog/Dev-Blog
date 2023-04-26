@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
-import "./Posts.css";
 import { GetIsAdmin } from "../components/AuthenticationService";
 import { Link } from "react-router-dom";
+import "./Posts.css";
 
 const Posts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);
@@ -18,8 +18,7 @@ const Posts = () => {
     }, []);
 
     return (
-        <section className="posts-container">
-            <h1>POSTS</h1>
+        <section className="posts">
             {isAdmin && <Link className="create-post-btn" to="/posts/create">Create Post</Link>}
             {posts.map((p) => <Post key={p.id} {...p} />)}
         </section>

@@ -1,4 +1,5 @@
 import { MdDelete as Trash } from "react-icons/md";
+import "./DeleteComment.css";
 
 interface IDeleteCommentProps {
     id?: number;
@@ -18,7 +19,7 @@ const DeleteComment = (props: IDeleteCommentProps) => {
         props.onCommentDelete();
     };
 
-    return <Trash onClick={handleDelete} />
+    return <Trash className="delete-comment" onClick={handleDelete} />
 }
 
 export default DeleteComment;

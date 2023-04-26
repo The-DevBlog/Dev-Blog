@@ -1,9 +1,19 @@
-.sign-up {
+.sign-up-container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.sign-up button {
+.sign-up-container input {
+    background-color: #0d1116;
+    color: white;
+}
+
+.sign-up-container label {
+    color: white;
+}
+
+.sign-up-container button {
     margin-top: 1em;
+    padding: 10px;
 }

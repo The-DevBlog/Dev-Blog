@@ -33,7 +33,7 @@ const SignUp = () => {
     }
 
     return (
-        <div className="sign-up">
+        <div className="sign-up-container">
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="UserName"

@@ -1,9 +1,19 @@
-.signIn {
+.sign-in-container {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.signIn button {
+.sign-in-container input {
+    background-color: black;
+    color: white;
+}
+
+.sign-in-container label {
+    color: white;
+}
+
+.sign-in-container button {
     margin-top: 1em;
+    padding: 10px;
 }

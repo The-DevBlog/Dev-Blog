@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
+import "./Home.css"
 
 const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
@@ -16,8 +17,7 @@ const Home = () => {
     }, []);
 
     return (
-        <section className="posts-container">
-            <h1>HOME</h1>
+        <section className="latest-post">
             {latestPost && <Post {...latestPost} />}
         </section>
     )

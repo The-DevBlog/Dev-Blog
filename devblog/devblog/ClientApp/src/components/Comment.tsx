@@ -16,10 +16,10 @@ const Comment = (props: ICommentProps) => {
         setIsAdmin(GetIsAdmin);
 
         // convert UTC time to user local time
-        let newDate = new Date(props.date);
-        let newDate2 = new Date(newDate.getTime() - newDate.getTimezoneOffset() * 60000)
+        let utcDate = new Date(props.date);
+        let localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000)
 
-        const formattedDate = newDate2?.toLocaleString('en-US', {
+        const formattedDate = localDate?.toLocaleString('en-US', {
             month: '2-digit',
             day: '2-digit',
             year: 'numeric',
@@ -41,7 +41,7 @@ const Comment = (props: ICommentProps) => {
                         handleCommentEdit={props.handleCommentChange}
                         isEditing={isEditing} setIsEditing={setIsEditing} />
                 }
-                <span>{date}</span>
+                <span className="date">{date}</span>
 
             </div>
             {(isEditing && userName === props.userName) &&

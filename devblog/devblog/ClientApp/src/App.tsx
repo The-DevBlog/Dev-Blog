@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import Posts from './pages/Posts';
 import SignUp from './pages/SignUp';
+import "./global.css";
 
 const App = () => {
   return (

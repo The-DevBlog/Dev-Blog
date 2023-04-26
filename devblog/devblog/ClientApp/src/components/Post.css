@@ -12,6 +12,7 @@
 .post-info {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .post-info span:last-child {

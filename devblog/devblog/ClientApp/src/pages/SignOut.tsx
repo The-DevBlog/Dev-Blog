@@ -1,4 +1,5 @@
 import { FormEvent } from "react";
+import "./SignOut.css";
 
 const SignOut = () => {
     const handleSignOut = (e: FormEvent<HTMLFormElement>) => {
@@ -15,7 +16,7 @@ const SignOut = () => {
 
     return (
         <form onSubmit={handleSignOut}>
-            <button>Sign Out</button>
+            <button className="sign-out">Sign Out</button>
         </form>
     );
 };
