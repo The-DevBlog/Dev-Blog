@@ -34,13 +34,13 @@ const Comment = (props: ICommentProps) => {
         <div className="comment">
             <div className="comment-info">
                 <span>{props.userName}</span>
-                {(userName === props.userName || isAdmin) && <DeleteComment id={props.id} onCommentDelete={props.handleCommentChange} />}
 
                 {(!isEditing && userName === props.userName) &&
                     <EditComment {...props}
                         handleCommentEdit={props.handleCommentChange}
                         isEditing={isEditing} setIsEditing={setIsEditing} />
                 }
+                {(userName === props.userName || isAdmin) && <DeleteComment id={props.id} onCommentDelete={props.handleCommentChange} />}
                 <span className="date">{date}</span>
 
             </div>
