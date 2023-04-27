@@ -28,7 +28,7 @@ const Comment = (props: ICommentProps) => {
         });
 
         setDate(formattedDate.toLocaleString())
-    }, [date]);
+    }, [props.date]);
 
     return (
         <div className="comment">

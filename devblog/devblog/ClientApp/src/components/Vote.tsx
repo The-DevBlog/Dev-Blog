@@ -15,13 +15,6 @@ const Vote = (props: IVoteProps) => {
     const [upVotes, setUpVotes] = useState<number>();
     const [loggedIn, setIsLoggedIn] = useState<boolean>();
 
-    useEffect(() => {
-        setUsername(GetUserName);
-        setIsLoggedIn(IsLoggedIn);
-        getVotes("upvotes");
-        getVotes("downvotes");
-    }, [upVotes, downVotes]);
-
     const getVotes = async (vote: string) => {
         await fetch(`api/posts/${props.postId}/${vote}`, {
             method: "GET",
@@ -38,6 +31,13 @@ const Vote = (props: IVoteProps) => {
                 }
             }).catch((e) => console.log(e));
     }
+
+    useEffect(() => {
+        setUsername(GetUserName);
+        setIsLoggedIn(IsLoggedIn);
+        getVotes("upvotes");
+        getVotes("downvotes");
+    }, [upVotes, downVotes, getVotes]);
 
     const handleVote = async (vote: string) => {
         await fetch(`api/posts/${props.postId}/${vote}`, {

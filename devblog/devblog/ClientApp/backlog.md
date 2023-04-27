@@ -3,5 +3,6 @@
 - add copyright to footer
 - create username table that tracks all usernames that ever were used
 - Add login error if unsuccessful login
+- add signup error
 - Are you sure delete account prompt
-- Like / dislike posts
+- null ref checks for backend?

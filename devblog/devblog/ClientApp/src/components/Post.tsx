@@ -29,7 +29,7 @@ const Post = (props: IPost) => {
     useEffect(() => {
         setDate(new Date(props.date).toLocaleDateString());
         getComments();
-    }, [comments]);
+    }, [getComments, props.date]);
 
     return (
         <div className="post">
