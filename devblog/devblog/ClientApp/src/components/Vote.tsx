@@ -20,7 +20,7 @@ const Vote = (props: IVoteProps) => {
         setIsLoggedIn(IsLoggedIn);
         getVotes("upvotes");
         getVotes("downvotes");
-    });
+    }, [upVotes, downVotes]);
 
     const getVotes = async (vote: string) => {
         await fetch(`api/posts/${props.postId}/${vote}`, {
