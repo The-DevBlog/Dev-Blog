@@ -1,0 +1,18 @@
+.votes span {
+    margin-right: 8px;
+}
+
+.up-vote:hover {
+    color: greenyellow;
+    cursor: pointer;
+}
+
+.down-vote:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.up-vote,
+.down-vote {
+    padding: 5px;
+}

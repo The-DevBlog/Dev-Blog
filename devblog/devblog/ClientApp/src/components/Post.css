@@ -1,0 +1,37 @@
+.create-post-btn {
+    margin-bottom: 1em;
+}
+
+.post {
+    margin-bottom: 5em;
+    border: .15em solid rgb(70, 68, 60);
+    border-radius: .5em;
+    padding: 1em;
+}
+
+.post-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-info span:last-child {
+    margin-left: auto;
+}
+
+.show-all-comments-btn {
+    border-radius: 0.5em;
+    padding: 5px;
+}
+
+img {
+    border-radius: .75em;
+}
+
+@media (max-width: 1000px) {
+
+    .post,
+    .post img {
+        width: 100%;
+    }
+}

@@ -1,0 +1,18 @@
+.create-post {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-post form input {
+    margin-bottom: 1em;
+}
+
+.create-post label,
+button {
+    display: block;
+}
+
+a {
+    color: white;
+}
