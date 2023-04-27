@@ -1,0 +1,28 @@
+.create-comment {
+    margin-bottom: .25em;
+    /* border: .15em solid rgb(70, 68, 60);
+    border-radius: .75em; */
+    padding: .3em;
+}
+
+.create-comment form {
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.create-comment form input {
+    width: 10em;
+    margin: .5em 0 .5em 0;
+    border: 0 0 1px 0;
+}
+
+.create-comment textarea {
+    border-radius: 0.5em;
+}
+
+.create-comment button {
+    border-radius: 0.5em;
+    margin-top: .5em;
+    width: 10em;
+}

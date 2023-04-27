@@ -1,0 +1,4 @@
+.delete-comment:hover {
+    color: red;
+    cursor: pointer;
+}

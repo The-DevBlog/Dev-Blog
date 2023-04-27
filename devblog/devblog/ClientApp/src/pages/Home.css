@@ -1,0 +1,18 @@
+.latest-post {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 150px 20px 0px 20px;
+}
+
+.youtube-video {
+    margin-bottom: 100px;
+}
+
+@media (max-width: 1000px) {
+
+    .youtube-video {
+        width: 470px
+    }
+}
