@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import IPost from "../interfaces/IPostProps";
 import Comment from "./Comment";
 import AddComment from "./AddComment";
@@ -13,14 +13,14 @@ const Post = (props: IPost) => {
     const [date, setDate] = useState<string>();
     const displayedComments = showAllComments ? comments : comments?.slice(0, 5);
 
-    const getComments = async () => {
+    const getComments = useCallback(async () => {
         const response = await fetch(`/api/comments/posts/${props.id}`);
 
         // sort comments by date - descending
         const data: ICommentProps[] = await response.json();
         const sortedComments = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setComments(sortedComments);
-    };
+    }, [props.id]);
 
     const handleCommentChange = async () => {
         getComments();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GetUserName, IsLoggedIn } from "./AuthenticationService";
 import { SentimentVerySatisfied as UpVote } from '@mui/icons-material';
 import { SentimentDissatisfied as DownVote } from '@mui/icons-material';
@@ -15,7 +15,7 @@ const Vote = (props: IVoteProps) => {
     const [upVotes, setUpVotes] = useState<number>();
     const [loggedIn, setIsLoggedIn] = useState<boolean>();
 
-    const getVotes = async (vote: string) => {
+    const getVotes = useCallback(async (vote: string) => {
         await fetch(`api/posts/${props.postId}/${vote}`, {
             method: "GET",
             headers: {
@@ -30,7 +30,7 @@ const Vote = (props: IVoteProps) => {
                     setDownVotes(data);
                 }
             }).catch((e) => console.log(e));
-    }
+    }, [props.postId]);
 
     useEffect(() => {
         setUsername(GetUserName);
