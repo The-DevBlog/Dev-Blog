@@ -31,6 +31,7 @@ button {
 .comment,
 .date,
 .post-description,
+.votes span,
 textarea,
 button {
     font-family: 'Chivo Mono', monospace;

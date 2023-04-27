@@ -47,7 +47,7 @@ const Post = (props: IPost) => {
             <div>
                 {displayedComments?.map((c) => <Comment key={c.id} {...c} handleCommentChange={handleCommentChange} />)}
                 {(comments && comments.length > 5) && (
-                    <button onClick={() => setShowAllComments(!showAllComments)}>
+                    <button className="show-all-comments-btn" onClick={() => setShowAllComments(!showAllComments)}>
                         {showAllComments ? 'Hide Comments' : 'Show All Comments'}
                     </button>
                 )}

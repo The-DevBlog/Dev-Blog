@@ -1,6 +1,7 @@
 using devblog.Data;
 using devblog.Interfaces;
 using devblog.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Services
@@ -15,11 +16,33 @@ namespace devblog.Services
         }
 
         /// <summary>
+        /// Returns the number of upvotes for specific post
+        /// </summary>
+        /// <param name="id">id of post</param>
+        /// <returns>number of upvotes</returns>
+        public async Task<int> GetUpVotesForPost(int id)
+        {
+            var votes = _db.UpVote.Where(x => x.PostId == id).Count();
+            return votes;
+        }
+
+        /// <summary>
+        /// Returns the number of downvotes for specific post
+        /// </summary>
+        /// <param name="id">id of post</param>
+        /// <returns>number of downvotes</returns>
+        public async Task<int> GetDownVotesForPost(int id)
+        {
+            var votes = _db.DownVote.Where(x => x.PostId == id).Count();
+            return votes;
+        }
+
+        /// <summary>
         /// Adds an up vote
         /// </summary>
         /// <param name="vote"></param>
-        /// <returns>UpVote</returns>
-        public async Task<UpVote> UpVote(int postId, string username)
+        /// <returns>Number of votes for post</returns>
+        public async Task<int> UpVote(int postId, string username)
         {
             var downVote = await _db.DownVote.Where(x => x.PostId == postId &&
                           x.UserName == username)
@@ -37,7 +60,7 @@ namespace devblog.Services
             {
                 _db.Remove(upVote);
                 await _db.SaveChangesAsync();
-                return null;
+                return _db.UpVote.Where(x => x.PostId == postId).Count(); ;
             }
 
             var newVote = new UpVote()
@@ -48,15 +71,17 @@ namespace devblog.Services
 
             _db.Add(newVote);
             await _db.SaveChangesAsync();
-            return newVote;
+
+            int totalVotes = _db.UpVote.Where(x => x.PostId == postId).Count();
+            return totalVotes;
         }
 
         /// <summary>
         /// Adds a down vote
         /// </summary>
         /// <param name="vote"></param>
-        /// <returns>DownVote</returns>
-        public async Task<DownVote> DownVote(int postId, string username)
+        /// <returns>Number of votes for post</returns>
+        public async Task<int> DownVote(int postId, string username)
         {
             var downVote = await _db.DownVote.Where(x => x.PostId == postId &&
                           x.UserName == username)
@@ -74,7 +99,7 @@ namespace devblog.Services
             {
                 _db.Remove(downVote);
                 await _db.SaveChangesAsync();
-                return null;
+                return _db.DownVote.Where(x => x.PostId == postId).Count(); ;
             }
             var newVote = new DownVote()
             {
@@ -84,7 +109,9 @@ namespace devblog.Services
 
             _db.Add(newVote);
             await _db.SaveChangesAsync();
-            return newVote;
+
+            int totalVotes = _db.DownVote.Where(x => x.PostId == postId).Count();
+            return totalVotes;
         }
     }
 }

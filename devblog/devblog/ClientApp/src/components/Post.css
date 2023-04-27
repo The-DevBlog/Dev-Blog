@@ -19,6 +19,11 @@
     margin-left: auto;
 }
 
+.show-all-comments-btn {
+    border-radius: 0.5em;
+    padding: 5px;
+}
+
 img {
     border-radius: .75em;
 }
