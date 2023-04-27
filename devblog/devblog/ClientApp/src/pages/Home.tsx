@@ -20,8 +20,8 @@ const Home = () => {
         <section className="latest-post">
             {latestPost && <Post {...latestPost} />}
             <iframe className="youtube-video"
-                width="560"
-                height="315"
+                width="925"
+                height="520"
                 src="https://www.youtube.com/embed?listType=playlist&list=PLp0sjyxOq4ASGN_YTLo2tObmkwXgvl6IX&index=1"
                 title="YouTube video player"
                 frameBorder="0"

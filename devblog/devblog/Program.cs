@@ -68,9 +68,9 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer"),
-        ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"))),
+        ValidIssuer = builder.Configuration.GetValue<string>("Issuer"),
+        ValidAudience = builder.Configuration.GetValue<string>("Audience"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Key"))),
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = false,

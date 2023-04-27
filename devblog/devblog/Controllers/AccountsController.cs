@@ -123,7 +123,7 @@ namespace devblog.Controllers
 
         private JwtSecurityToken GenerateToken(List<Claim> claims)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("JWT:Key")));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("Key")));
 
             var token = new JwtSecurityToken(
                 issuer: "https://localhost:44482/",
