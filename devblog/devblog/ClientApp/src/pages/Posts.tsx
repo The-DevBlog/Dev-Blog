@@ -20,7 +20,7 @@ const Posts = () => {
     return (
         <section className="posts">
             {isAdmin && <Link className="create-post-btn" to="/posts/create">Create Post</Link>}
-            {posts.length === 0 ? <h1>Loading</h1> : posts.map((p) => <Post key={p.id} {...p} />)}
+            {posts.length === 0 ? <h1>Loading...</h1> : posts.map((p) => <Post key={p.id} {...p} />)}
         </section>
     );
 
