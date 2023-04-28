@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
 import "./Home.css"
-import { ThreeDots } from 'react-loader-spinner'
 const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
 
@@ -18,15 +17,7 @@ const Home = () => {
 
     return (
         <section className="latest-post">
-            {latestPost ? (
-                < Post {...latestPost} />
-            ) : (
-                <>
-                    <h2>Loading</h2>
-                    <ThreeDots color="grey" />
-                </>
-            )}
-
+            {latestPost ? < Post {...latestPost} /> : <h1>Loading...</h1>}
 
             <iframe className="youtube-video"
                 width="925"
