@@ -27,11 +27,3 @@
 img {
     border-radius: .75em;
 }
-
-@media (max-width: 1000px) {
-
-    .post,
-    .post img {
-        width: 100%;
-    }
-}
