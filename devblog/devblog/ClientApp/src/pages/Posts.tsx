@@ -4,6 +4,7 @@ import Post from "../components/Post";
 import { GetIsAdmin } from "../components/AuthenticationService";
 import { Link } from "react-router-dom";
 import "./Posts.css";
+import { ThreeDots } from "react-loader-spinner";
 
 const Posts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);
@@ -20,7 +21,15 @@ const Posts = () => {
     return (
         <section className="posts">
             {isAdmin && <Link className="create-post-btn" to="/posts/create">Create Post</Link>}
-            {posts.map((p) => <Post key={p.id} {...p} />)}
+
+            {posts.length === 0 ? (
+                <>
+                    <h2>Loading</h2>
+                    <ThreeDots color="grey" />
+                </>
+            ) : (
+                posts.map((p) => <Post key={p.id} {...p} />)
+            )}
         </section>
     );
 

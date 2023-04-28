@@ -10,8 +10,7 @@ main {
 
 @media (max-width: 1000px) {
 
-    main,
-    .post img {
+    main {
         width: 100%;
     }
 }
