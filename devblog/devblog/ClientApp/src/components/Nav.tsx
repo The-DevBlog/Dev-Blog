@@ -7,16 +7,11 @@ import "./Nav.css";
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [userName, setUsername] = useState("");
-    const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
     const isActive = (path: string) => {
         return location.pathname === path ? "active" : "non-active";
     };
-
-    const handleMenuClick = () => {
-        setMenuOpen(!menuOpen);
-    }
 
     useEffect(() => {
         setLoggedIn(IsLoggedIn);
