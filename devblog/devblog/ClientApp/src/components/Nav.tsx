@@ -7,11 +7,16 @@ import "./Nav.css";
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [userName, setUsername] = useState("");
+    const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
     const isActive = (path: string) => {
         return location.pathname === path ? "active" : "non-active";
     };
+
+    const handleMenuClick = () => {
+        setMenuOpen(!menuOpen);
+    }
 
     useEffect(() => {
         setLoggedIn(IsLoggedIn);
@@ -20,7 +25,7 @@ const Nav = () => {
 
     return (
         <nav className="navbar">
-            <Link to="/">
+            <Link className="logo-link" to="/">
                 <div className="logo">
                     <span>The</span>
                     <br />
@@ -28,22 +33,38 @@ const Nav = () => {
                 </div>
             </Link>
 
-            <Link to="/" className={isActive("/")}>Home</Link>
-            <Link to="/posts" className={isActive("/posts")}>Posts</Link>
 
-            {loggedIn ? (
-                <span className="accounts">
-                    <span>Welcome {userName}</span>
-                    <SignOut />
-                </span>
-            ) : (
-                <span className="accounts">
-                    <Link to="/signin">Login</Link>
-                    <Link to="/signup">SignUp</Link>
-                </span>
-            )}
+            <div className="nav-items">
+                <Link to="/" className={isActive("/")}>Home</Link>
+                <Link to="/posts" className={isActive("/posts")}>Posts</Link>
 
-        </nav>
+                {loggedIn ? (
+                    <span className="accounts">
+                        <span>Welcome {userName}</span>
+                        <SignOut />
+                    </span>
+                ) : (
+                    <span className="accounts">
+                        <Link to="/signin">Login</Link>
+                        <Link to="/signup">SignUp</Link>
+                    </span>
+                )}
+            </div>
+
+            <div className="mobile-nav">
+                {loggedIn && <span>Welcome {userName}</span>}
+                <Link to="/" className={isActive("/")}>Home</Link>
+                <Link to="/posts" className={isActive("/posts")}>Posts</Link>
+                {loggedIn && <SignOut />}
+
+                {!loggedIn &&
+                    <span className="mobile-nav-accounts">
+                        <Link to="/signin">Login</Link>
+                        <Link to="/signup">SignUp</Link>
+                    </span>
+                }
+            </div>
+        </nav >
     );
 }
 
