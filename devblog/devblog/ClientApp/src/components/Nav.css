@@ -10,7 +10,8 @@
 
 .nav-items>a,
 .logo-link,
-.accounts {
+.accounts,
+.nav-items .accounts:last-child a {
     color: white;
     font-size: 20px;
     height: fit-content;
@@ -43,9 +44,10 @@
     padding: 3px;
 }
 
-.navbar a.active {
+.navbar .nav-items a.active {
     text-decoration: underline;
     font-weight: bold;
+    opacity: 1.0;
 }
 
 .non-active,

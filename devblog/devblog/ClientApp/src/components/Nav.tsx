@@ -40,8 +40,8 @@ const Nav = () => {
                     </span>
                 ) : (
                     <span className="accounts">
-                        <Link to="/signin">Login</Link>
-                        <Link to="/signup">SignUp</Link>
+                        <Link to="/signin" className={isActive("/signin")}>Login</Link>
+                        <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
                     </span>
                 )}
             </div>
@@ -54,8 +54,8 @@ const Nav = () => {
 
                 {!loggedIn &&
                     <span className="mobile-nav-accounts">
-                        <Link to="/signin">Login</Link>
-                        <Link to="/signup">SignUp</Link>
+                        <Link to="/signin" className={isActive("/signin")}>Login</Link>
+                        <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
                     </span>
                 }
             </div>
