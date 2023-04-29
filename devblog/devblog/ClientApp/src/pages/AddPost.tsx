@@ -6,23 +6,28 @@ import "./AddPost.css";
 const AddPost = () => {
     const [updateNum, setUpdateNum] = useState("");
     const [description, setDescription] = useState("");
-    const [imgURL, setImgURL] = useState("");
     const [isAdmin, setIsAdmin] = useState(false);
+    const [file, setFile] = useState<File>();
     const navigate = useNavigate();
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        fetch("api/posts", {
+        const formData = new FormData();
+        if (file != null) {
+            formData.append("file", file);
+            formData.append("description", description);
+            formData.append("updateNum", updateNum);
+        }
+
+        await fetch("api/posts", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({ updateNum, description, imgURL })
-        }).then(() => {
-            navigate("/posts");
-        });
+            body: formData
+        }).then(() => navigate("/posts"))
+            .catch(e => console.log("Error uploading file: ", e));
     }
 
     useEffect(() => {
@@ -51,10 +56,10 @@ const AddPost = () => {
 
                     <label>Image</label>
                     <input
-                        type="text"
+                        type="file"
                         required
-                        value={imgURL}
-                        onChange={(e) => setImgURL(e.target.value)}
+                        // onChange={(e) => handleFileInput(e)}
+                        onChange={(e) => e.target.files && setFile(e.target.files[0])}
                     />
 
                     <button>Create Post</button>

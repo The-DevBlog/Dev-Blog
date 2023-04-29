@@ -9,7 +9,10 @@ const DeletePost = (props: IPost) => {
     const handleDelete = () => {
         fetch(`api/posts/${props.id}`, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
         });
     };
 

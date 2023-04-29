@@ -1,4 +1,5 @@
 ﻿using devblog.Models;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace devblog.Interfaces
 {
@@ -10,6 +11,7 @@ namespace devblog.Interfaces
         /// <param name="description">Description of post</param>
         /// <param name="imgURL">Img URL of post</param>
         /// <param name="updateNum">Update number of post</param>
+        /// <param name="file">File to uploadfcgvvb</param>
         /// <returns>Post</returns>
         Task<Post> Create(string description, string imgURL, string updateNum);
 

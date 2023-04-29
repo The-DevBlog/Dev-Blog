@@ -1,6 +1,7 @@
 ﻿using devblog.Data;
 using devblog.Interfaces;
 using devblog.Models;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Services
@@ -8,10 +9,12 @@ namespace devblog.Services
     public class PostService : IPostService
     {
         private AppDbContext _db;
+        private IImgService _imgService;
 
-        public PostService(AppDbContext context)
+        public PostService(AppDbContext context, IImgService imgService)
         {
             _db = context;
+            _imgService = imgService;
         }
 
         /// <summary>
@@ -20,11 +23,12 @@ namespace devblog.Services
         /// <param name="description">Description of post</param>
         /// <param name="imgURL">Img URL of post</param>
         /// <param name="updateNum">Update number of post</param>
+        /// <param name="file">File to upload</param>
         /// <returns>Post</returns>
         public async Task<Post> Create(string description, string imgURL, string updateNum)
         {
-            //TODO: change to datetimeoffset.utcnow
-            //post.Date = DateTimeOffset.UtcNow;
+            //var fs = file.File.OpenReadStream(2000000);
+            //await _imgService.AddImgToDropBox(fs, imgURL);
 
             var newPost = new Post()
             {
