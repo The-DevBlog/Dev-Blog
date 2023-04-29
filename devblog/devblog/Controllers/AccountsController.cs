@@ -89,6 +89,29 @@ namespace devblog.Controllers
             return Ok();
         }
 
+        //[HttpGet("{username}")]
+        public async Task<IActionResult> UsernameExists(string username)
+        {
+            User user = UserMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
+
+            if (user == null)
+                return BadRequest("Username already exists.");
+
+            return Ok();
+            //return !(user == null);
+        }
+
+        public async Task<IActionResult> EmailExists(string email)
+        {
+            User user = UserMgr.Users.Where(x => x.NormalizedEmail == email).FirstOrDefault();
+
+            if (user == null)
+                return BadRequest("Email already exists");
+
+            return Ok();
+            //return !(user == null);
+        }
+
         /// <summary>
         /// Creates a new user
         /// </summary>
@@ -97,11 +120,18 @@ namespace devblog.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(User user)
         {
+            //bool userExists = await UsernameExists(user.UserName);
+            //bool emailExists = await EmailExists(user.Email);
+
+            await UsernameExists(user.UserName);
+            await EmailExists(user.Email);
+
             var res = await UserMgr.CreateAsync(user, user.PasswordHash);
             if (res.Succeeded)
             {
                 //await _email.Welcome(registerVM.Email);
                 var currentUser = await UserMgr.FindByNameAsync(user.UserName);
+
                 await UserMgr.AddToRoleAsync(currentUser, "Visitor");
                 await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
 

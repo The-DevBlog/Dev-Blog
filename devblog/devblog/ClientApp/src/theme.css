@@ -33,6 +33,7 @@ button {
 .post-description,
 .votes span,
 textarea,
+.sign-up-container,
 button {
     font-family: 'Chivo Mono', monospace;
 }
