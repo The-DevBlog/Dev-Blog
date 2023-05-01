@@ -13,6 +13,15 @@
 @media (max-width: 1000px) {
 
     .youtube-video {
-        width: 470px
+        width: 470px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .youtube-video {
+        width: 100%;
+        height: 325px;
     }
 }

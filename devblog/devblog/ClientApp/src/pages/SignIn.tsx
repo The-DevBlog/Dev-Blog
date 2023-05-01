@@ -8,6 +8,7 @@ import IToken from "../interfaces/IToken";
 const SignIn = () => {
     const [userName, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState<string>();
     const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -19,8 +20,14 @@ const SignIn = () => {
             body: JSON.stringify({ userName, password })
         }).then(async (res) => {
             const data = await res.json();
-            const decodedToken: IToken = jwtDecode(data.token);
 
+            if (data.error) {
+                // console.log(data.error);
+                setError(data.error);
+                console.log(error);
+            }
+
+            const decodedToken: IToken = jwtDecode(data.token);
             localStorage.setItem("token", data.token)
             localStorage.setItem("userName", decodedToken.userName);
             localStorage.setItem("email", decodedToken.email);
@@ -32,9 +39,11 @@ const SignIn = () => {
 
     return (
         <div className="sign-in-container">
+
+            {error && <span>{error}</span>}
+
             <form onSubmit={handleSubmit} className="sign-in">
                 <TextField
-                    // style={{ backgroundColor: "#0d1116" }}
                     label="Username"
                     value={userName}
                     type="text"

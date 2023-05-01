@@ -49,14 +49,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
-
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
-
+    options.User.RequireUniqueEmail = true;
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+!#$%&";
-    options.User.RequireUniqueEmail = false;
 });
 
 // ----------------------- AUTHORIZATION ----------------------------
@@ -107,6 +102,7 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevBlog");
 });
+app.UseDeveloperExceptionPage();
 
 app.MapControllerRoute(
     name: "default",

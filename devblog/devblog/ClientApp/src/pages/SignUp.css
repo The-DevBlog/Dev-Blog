@@ -1,6 +1,7 @@
 .sign-up-container {
-    display: flex;
     align-items: center;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     margin-top: 150px;
 }
@@ -19,6 +20,6 @@
     padding: 10px;
 }
 
-.sign-up-container form>span {
+.sign-up-container>span {
     color: red;
 }

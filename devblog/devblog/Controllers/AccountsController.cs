@@ -13,8 +13,8 @@ namespace devblog.Controllers
     [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
-        public SignInManager<User> SignInMgr { get; }
-        public UserManager<User> UserMgr { get; }
+        public SignInManager<User> _signInMgr { get; }
+        public UserManager<User> _userMgr { get; }
 
         public IConfiguration _config;
 
@@ -22,8 +22,8 @@ namespace devblog.Controllers
 
         public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config)
         {
-            UserMgr = usermgr;
-            SignInMgr = signInMgr;
+            _userMgr = usermgr;
+            _signInMgr = signInMgr;
             _config = config;
         }
 
@@ -32,48 +32,47 @@ namespace devblog.Controllers
         public async Task<IActionResult> DeleteAccount(string username)
         {
             // get current user
-            User user = UserMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
+            User user = _userMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
 
             if (user != null)
             {
                 // sign current user out and delete account
-                await SignInMgr.SignOutAsync();
-                await UserMgr.DeleteAsync(user);
+                await _signInMgr.SignOutAsync();
+                await _userMgr.DeleteAsync(user);
                 return Redirect("/");
             }
 
             return Redirect("/");
         }
 
-        //[HttpGet("{user}")]
-        //public async Task<string> GetUserName(User user)
-        //{
-        //    var res = await UserMgr.GetUserNameAsync(user);
-        //    return res;
-        //}
-
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignIn signIn)
         {
-            var user = await UserMgr.FindByNameAsync(signIn.Username);
+            var user = await _userMgr.FindByNameAsync(signIn.Username);
 
-            if (user == null || !await UserMgr.CheckPasswordAsync(user, signIn.Password))
+            if (user == null || !await _userMgr.CheckPasswordAsync(user, signIn.Password))
             {
                 return BadRequest(new { error = "Invalid userName or password" });
             }
             else
             {
-                //var res = await SignInMgr.PasswordSignInAsync(signIn.Password, signIn.Username, true, false);
-                await SignInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
+                //var res = await _signInMgr.PasswordSignInAsync(signIn.Password, signIn.Username, true, false);
+                var res = await _signInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
 
                 var claims = await GenerateClaims(user);
                 var token = GenerateToken(claims);
 
-                return Ok(new
+                if (res.Succeeded)
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo,
-                });
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo,
+                    });
+                }
+                else
+                    return BadRequest(new { error = "Unable to sign in. Please try again" });
+
             }
         }
 
@@ -85,31 +84,8 @@ namespace devblog.Controllers
         [HttpPost("signout")]
         public async Task<IActionResult> LogOut()
         {
-            await SignInMgr.SignOutAsync();
+            await _signInMgr.SignOutAsync();
             return Ok();
-        }
-
-        //[HttpGet("{username}")]
-        public async Task<IActionResult> UsernameExists(string username)
-        {
-            User user = UserMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
-
-            if (user == null)
-                return BadRequest("Username already exists.");
-
-            return Ok();
-            //return !(user == null);
-        }
-
-        public async Task<IActionResult> EmailExists(string email)
-        {
-            User user = UserMgr.Users.Where(x => x.NormalizedEmail == email).FirstOrDefault();
-
-            if (user == null)
-                return BadRequest("Email already exists");
-
-            return Ok();
-            //return !(user == null);
         }
 
         /// <summary>
@@ -120,20 +96,34 @@ namespace devblog.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(User user)
         {
-            //bool userExists = await UsernameExists(user.UserName);
-            //bool emailExists = await EmailExists(user.Email);
+            // verify unique username
+            var userName = _userMgr.Users.Where(x => x.NormalizedUserName == user.UserName.Normalize()).FirstOrDefault();
+            if (userName != null)
+            {
+                var error = new IdentityError();
+                error.Description = "Username already exists";
 
-            await UsernameExists(user.UserName);
-            await EmailExists(user.Email);
+                return BadRequest(new { errors = new List<IdentityError>() { error } });
+            }
 
-            var res = await UserMgr.CreateAsync(user, user.PasswordHash);
+            // verify unique email
+            var email = _userMgr.Users.Where(x => x.NormalizedEmail == user.Email.Normalize()).FirstOrDefault();
+            if (email != null)
+            {
+                var error = new IdentityError();
+                error.Description = "Email already exists";
+
+                return BadRequest(new { errors = new List<IdentityError>() { error } });
+            }
+
+            var res = await _userMgr.CreateAsync(user, user.PasswordHash);
             if (res.Succeeded)
             {
                 //await _email.Welcome(registerVM.Email);
-                var currentUser = await UserMgr.FindByNameAsync(user.UserName);
+                var currentUser = await _userMgr.FindByNameAsync(user.UserName);
 
-                await UserMgr.AddToRoleAsync(currentUser, "Visitor");
-                await SignInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
+                await _userMgr.AddToRoleAsync(currentUser, "Visitor");
+                await _signInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
 
                 var claims = await GenerateClaims(user);
                 var token = GenerateToken(claims);
@@ -145,9 +135,7 @@ namespace devblog.Controllers
                 });
             }
             else
-            {
-                return BadRequest(new { error = "There was an error creating your account" });
-            }
+                return BadRequest(new { errors = res.Errors.ToList() });
         }
 
 
@@ -175,7 +163,7 @@ namespace devblog.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var userRoles = await UserMgr.GetRolesAsync(user);
+            var userRoles = await _userMgr.GetRolesAsync(user);
             foreach (var userRole in userRoles)
                 claims.Add(new Claim("role", userRole));
             //claims.Add(new Claim(ClaimTypes.Role, userRole));

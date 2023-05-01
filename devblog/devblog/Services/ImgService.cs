@@ -24,10 +24,7 @@ namespace devblog.Services
             // create unique file name
             //string ext = Path.GetExtension(name);
             string fileName = $"{DateTime.Now.Ticks}{name}";
-
-
             var destinationPath = _config["DropboxDestinationPath"];
-
             string url = "";
             string dest = destinationPath + fileName;
 

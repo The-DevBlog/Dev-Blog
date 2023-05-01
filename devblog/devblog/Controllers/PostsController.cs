@@ -72,27 +72,5 @@ namespace devblog.Controllers
             await _posts.Delete(id);
         }
     }
-
-    public class Payload
-    {
-        public IFormFile file { get; set; }
-    }
-
-    public class ImageDTO
-    {
-        public string FileName { get; set; }
-
-        public IFormFile Image { get; set; }
-    }
-
-    public class Image
-    {
-        public int Id { get; set; }
-
-        public string FileName { get; set; }
-
-        public byte[] Picture { get; set; }
-        public List<User> Users { get; set; }
-    }
 }
 
