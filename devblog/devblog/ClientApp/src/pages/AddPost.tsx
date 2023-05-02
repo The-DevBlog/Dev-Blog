@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { GetIsAdmin } from "../components/AuthenticationService";
 import "./AddPost.css";
 
@@ -43,24 +44,19 @@ const AddPost = () => {
                         type="text"
                         required
                         value={updateNum}
-                        onChange={(e) => setUpdateNum(e.target.value)}
-                    />
-
-                    <label>Description</label>
-                    <input
-                        type="text"
-                        required
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
+                        onChange={(e) => setUpdateNum(e.target.value)} />
 
                     <label>Image</label>
                     <input
                         type="file"
                         required
-                        // onChange={(e) => handleFileInput(e)}
-                        onChange={(e) => e.target.files && setFile(e.target.files[0])}
-                    />
+                        onChange={(e) => e.target.files && setFile(e.target.files[0])} />
+
+                    <label>Description</label>
+                    <div className="addpost-description">
+                        <textarea onChange={(e) => setDescription(e.currentTarget.value)} />
+                        <ReactMarkdown className="description-result" children={description} />
+                    </div>
 
                     <button>Create Post</button>
                 </form>

@@ -4,8 +4,9 @@ import Comment from "./Comment";
 import AddComment from "./AddComment";
 import DeletePost from "./DeletePost";
 import ICommentProps from "../interfaces/ICommentProps";
-import "./Post.css";
+import ReactMarkdown from "react-markdown";
 import Vote from "./Vote";
+import "./Post.css";
 
 const Post = (props: IPost) => {
     const [comments, setComments] = useState<ICommentProps[]>();
@@ -41,7 +42,8 @@ const Post = (props: IPost) => {
             <img src={props.imgURL} alt="development update" />
 
             <Vote postId={props.id} />
-            <p className="post-description">{props.description}</p>
+
+            {props.description && <ReactMarkdown className="description" children={props.description} />}
 
             <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
             <div>

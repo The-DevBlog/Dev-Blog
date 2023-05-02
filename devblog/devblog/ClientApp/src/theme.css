@@ -34,6 +34,8 @@ button {
 .votes span,
 textarea,
 .sign-up-container,
+.description,
+.description-result,
 button {
     font-family: 'Chivo Mono', monospace;
 }

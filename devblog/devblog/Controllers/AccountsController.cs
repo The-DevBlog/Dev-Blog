@@ -100,7 +100,6 @@ namespace devblog.Controllers
         public async Task<IActionResult> SignUp(User user)
         {
             // verify unique username
-            //var userName = _userMgr.Users.Where(x => x.NormalizedUserName == user.UserName.Normalize()).FirstOrDefault();
             var userName = await _username.Exists(user.UserName.Normalize());
 
             if (userName)
