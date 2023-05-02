@@ -21,6 +21,6 @@
 .create-comment button {
     border-radius: 0.5em;
     margin-top: .5em;
-    width: 10em;
+    width: fit-content;
     padding: 8px;
 }
