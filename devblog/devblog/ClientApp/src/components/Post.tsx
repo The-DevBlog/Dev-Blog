@@ -32,9 +32,7 @@ const Post = (props: IPost) => {
     useEffect(() => {
         setDate(new Date(props.date).toLocaleDateString());
         getComments();
-
-        props.imgs && props.imgs.map((e) => console.log(e.url));
-    }, [getComments, props.date]);
+    }, [getComments, props.date, props.imgs]);
 
     return (
         <div className="post">
