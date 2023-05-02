@@ -35,8 +35,8 @@ const Nav = () => {
 
                 {loggedIn ? (
                     <span className="accounts">
-                        <span>Welcome {userName}</span>
                         <SignOut />
+                        <span>Welcome {userName}</span>
                     </span>
                 ) : (
                     <span className="accounts">
@@ -47,7 +47,7 @@ const Nav = () => {
             </div>
 
             <div className="mobile-nav">
-                {loggedIn && <span>Welcome {userName}</span>}
+                {loggedIn && <><span>Welcome</span><span>{userName}</span></>}
                 <Link to="/" className={isActive("/")}>Home</Link>
                 <Link to="/posts" className={isActive("/posts")}>Posts</Link>
                 {loggedIn && <SignOut />}

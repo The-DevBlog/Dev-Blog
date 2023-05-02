@@ -29,11 +29,7 @@
 }
 
 .accounts {
-    border: none;
-    margin-left: auto;
-    margin-right: 20px;
-    display: flex;
-    align-items: flex-end;
+    margin: auto 20px 5px auto;
 }
 
 .nav-items>span:last-child {
@@ -48,6 +44,16 @@
     text-decoration: underline;
     font-weight: bold;
     opacity: 1.0;
+}
+
+.nav-items>a:nth-child(1) {
+    margin-left: 30px;
+}
+
+.nav-items>a:nth-child(1),
+.nav-items>a:nth-child(2) {
+    margin-top: auto;
+    margin-bottom: 5px;
 }
 
 .non-active,
@@ -72,8 +78,13 @@
 
     .mobile-nav a,
     .mobile-nav form {
+        text-decoration: none;
         padding-top: 5px;
         margin-left: auto;
+    }
+
+    .mobile-nav a.active {
+        text-decoration: underline;
     }
 
     .mobile-nav {
@@ -84,8 +95,16 @@
         flex-direction: column;
     }
 
+    .mobile-nav>span:first-child {
+        margin-left: auto;
+    }
+
     .mobile-nav-accounts {
         display: flex;
         flex-direction: column;
+    }
+
+    .logout {
+        font-size: 16px;
     }
 }

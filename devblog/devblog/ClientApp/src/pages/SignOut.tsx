@@ -16,7 +16,7 @@ const SignOut = () => {
 
     return (
         <form onSubmit={handleSignOut}>
-            <button className="sign-out">Sign Out</button>
+            <button className="logout">Logout</button>
         </form>
     );
 };
