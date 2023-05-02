@@ -9,6 +9,7 @@ const Comment = (props: ICommentProps) => {
     const [userName, setUserName] = useState("");
     const [isAdmin, setIsAdmin] = useState<boolean>();
     const [date, setDate] = useState<string>();
+    const [time, setTime] = useState<string>();
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
@@ -23,11 +24,17 @@ const Comment = (props: ICommentProps) => {
             month: '2-digit',
             day: '2-digit',
             year: 'numeric',
+            // hour: 'numeric',
+            // minute: 'numeric'
+        });
+
+        const formattedTime = localDate?.toLocaleString('en-US', {
             hour: 'numeric',
             minute: 'numeric'
         });
 
         setDate(formattedDate.toLocaleString())
+        setTime(formattedTime.toLocaleString());
     }, [props.date]);
 
     return (
@@ -41,7 +48,10 @@ const Comment = (props: ICommentProps) => {
                         isEditing={isEditing} setIsEditing={setIsEditing} />
                 }
                 {(userName === props.userName || isAdmin) && <DeleteComment id={props.id} onCommentDelete={props.handleCommentChange} />}
-                <span className="date">{date}</span>
+                <div className="date">
+                    <span className="">{date}</span>
+                    <span className="">{time}</span>
+                </div>
 
             </div>
             {(isEditing && userName === props.userName) &&

@@ -1,11 +1,16 @@
 .edit-comment-btn:hover {
-    color: aquamarine;
+    color: greenyellow;
     cursor: pointer;
+}
+
+.edit-comment-btn {
+    padding: 0px 5px;
 }
 
 .edit-comment textarea,
 .edit-comment button {
     border-radius: .5em;
+    padding: 8px;
 }
 
 .edit-comment div {

@@ -19,7 +19,7 @@ const DeleteComment = (props: IDeleteCommentProps) => {
         props.onCommentDelete();
     };
 
-    return <Trash className="delete-comment" onClick={handleDelete} />
+    return <Trash className="delete-comment-btn" onClick={handleDelete} />
 }
 
 export default DeleteComment;

@@ -17,15 +17,29 @@
     width: 85%;
 }
 
-.comment-info span:last-child {
+.comment-info .date {
     margin-left: auto;
+    display: flex;
 }
 
-.comment-info span:first-child,
-.comment-info span:last-child {
+.comment-info>span:first-child,
+.comment-info .date {
     font-size: 0.85em;
 }
 
 .comment-info span:first-child {
     margin-right: 5px;
+}
+
+@media (max-width: 800px) {
+
+    .comment-info>span:first-child,
+    .edit-comment-btn,
+    .delete-comment-btn {
+        margin-bottom: auto;
+    }
+
+    .date {
+        flex-direction: column;
+    }
 }
