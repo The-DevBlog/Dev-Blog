@@ -35,6 +35,7 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IVoteService, VoteService>();
 builder.Services.AddScoped<IImgService, ImgService>();
+builder.Services.AddScoped<IUsernameService, UsernameService>();
 
 // ----------------------- IDENTITY -------------------------------
 builder.Services.AddIdentity<User, IdentityRole>()

@@ -1,4 +1,5 @@
-﻿using devblog.Models;
+﻿using devblog.Interfaces;
+using devblog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,15 @@ namespace devblog.Controllers
 
         public IConfiguration _config;
 
+        private readonly IUsernameService _username;
         //private readonly IEmailRepository _email;
 
-        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config)
+        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config, IUsernameService username)
         {
             _userMgr = usermgr;
             _signInMgr = signInMgr;
             _config = config;
+            _username = username;
         }
 
         [Authorize(Roles = "Visitor")]
@@ -97,8 +100,10 @@ namespace devblog.Controllers
         public async Task<IActionResult> SignUp(User user)
         {
             // verify unique username
-            var userName = _userMgr.Users.Where(x => x.NormalizedUserName == user.UserName.Normalize()).FirstOrDefault();
-            if (userName != null)
+            //var userName = _userMgr.Users.Where(x => x.NormalizedUserName == user.UserName.Normalize()).FirstOrDefault();
+            var userName = await _username.Exists(user.UserName.Normalize());
+
+            if (userName)
             {
                 var error = new IdentityError();
                 error.Description = "Username already exists";
@@ -124,6 +129,7 @@ namespace devblog.Controllers
 
                 await _userMgr.AddToRoleAsync(currentUser, "Visitor");
                 await _signInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
+                await _username.Create(user.UserName.Normalize());
 
                 var claims = await GenerateClaims(user);
                 var token = GenerateToken(claims);
