@@ -25,6 +25,9 @@
 }
 
 img {
+    border-radius: .5em;
+    border: .15em solid rgb(70, 68, 60);
     width: 100%;
-    border-radius: .75em;
+    max-width: 900px;
+
 }
