@@ -10,7 +10,7 @@
 
         public DateTime Date { get; set; }
 
-        public string? ImgURL { get; set; }
+        public List<Img>? Imgs { get; set; }
 
         public List<UpVote>? UpVotes { get; set; }
 

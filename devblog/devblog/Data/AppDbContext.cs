@@ -9,6 +9,7 @@ namespace devblog.Data
         public DbSet<Comment> Comment { get; set; }
         public DbSet<UpVote> UpVote { get; set; }
         public DbSet<DownVote> DownVote { get; set; }
+        public DbSet<Img> Img { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {

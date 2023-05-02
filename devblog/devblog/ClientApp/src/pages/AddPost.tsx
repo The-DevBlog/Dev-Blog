@@ -8,15 +8,16 @@ const AddPost = () => {
     const [updateNum, setUpdateNum] = useState("");
     const [description, setDescription] = useState("");
     const [isAdmin, setIsAdmin] = useState(false);
-    const [file, setFile] = useState<File>();
+    const [files, setFile] = useState<File[]>([]);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData();
-        if (file != null) {
-            formData.append("file", file);
+        if (files != null) {
+            files.forEach(f => formData.append("files", f));
+            // formData.append("file", file);
             formData.append("description", description);
             formData.append("updateNum", updateNum);
         }
@@ -50,7 +51,8 @@ const AddPost = () => {
                     <input
                         type="file"
                         required
-                        onChange={(e) => e.target.files && setFile(e.target.files[0])} />
+                        multiple
+                        onChange={(e) => e.target.files && setFile(Array.from(e.target.files))} />
 
                     <label>Description</label>
                     <div className="addpost-description">

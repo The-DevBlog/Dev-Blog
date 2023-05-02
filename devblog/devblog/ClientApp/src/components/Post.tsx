@@ -6,6 +6,8 @@ import DeletePost from "./DeletePost";
 import ICommentProps from "../interfaces/ICommentProps";
 import ReactMarkdown from "react-markdown";
 import Vote from "./Vote";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 import "./Post.css";
 
 const Post = (props: IPost) => {
@@ -30,21 +32,36 @@ const Post = (props: IPost) => {
     useEffect(() => {
         setDate(new Date(props.date).toLocaleDateString());
         getComments();
+
+        props.imgs && props.imgs.map((e) => console.log(e.url));
     }, [getComments, props.date]);
 
     return (
         <div className="post">
+            {/* UPDATE NUMBER & DATE */}
             <div className="post-info">
                 <DeletePost {...props} />
                 <span>{props.updateNum}</span>
                 <span className="date">{date}</span>
             </div>
-            <img src={props.imgURL} alt="development update" />
 
+            {/* IMAGES */}
+            <Carousel
+                showThumbs={false}
+                showStatus={false}
+                dynamicHeight={true}>
+
+                {props.imgs && props.imgs?.map(img => (
+                    <div style={{ width: "100%" }}><img src={img.url} alt="development update img" /></div>
+                ))}
+            </Carousel>
+
+            {/* LIKE / DISLIKE */}
             <Vote postId={props.id} />
 
             {props.description && <ReactMarkdown className="description" children={props.description} />}
 
+            {/* COMMENTS */}
             <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
             <div>
                 {displayedComments?.map((c) => <Comment key={c.id} {...c} handleCommentChange={handleCommentChange} />)}

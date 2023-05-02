@@ -1,7 +1,6 @@
 ﻿using devblog.Data;
 using devblog.Interfaces;
 using devblog.Models;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Services
@@ -21,11 +20,11 @@ namespace devblog.Services
         /// Creates a new post
         /// </summary>
         /// <param name="description">Description of post</param>
-        /// <param name="imgURL">Img URL of post</param>
+        /// <param name="imgURLs">Img URLs of post</param>
         /// <param name="updateNum">Update number of post</param>
         /// <param name="file">File to upload</param>
         /// <returns>Post</returns>
-        public async Task<Post> Create(string description, string imgURL, string updateNum)
+        public async Task<Post> Create(string description, string updateNum, IFormFile[] files)
         {
             //var fs = file.File.OpenReadStream(2000000);
             //await _imgService.AddImgToDropBox(fs, imgURL);
@@ -34,12 +33,12 @@ namespace devblog.Services
             {
                 Date = DateTime.Now,
                 Description = description,
-                ImgURL = imgURL,
                 UpdateNum = updateNum
             };
 
             var res = _db.Post.Add(newPost).Entity;
             await _db.SaveChangesAsync();
+            await _imgService.Create(files, res.Id);
 
             return res;
         }
@@ -53,6 +52,7 @@ namespace devblog.Services
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
+                                      .Include(x => x.Imgs)
                                       //.Include(x => x.UpVotes)
                                       //.Include(x => x.DownVotes)
                                       .ToListAsync();
@@ -74,6 +74,7 @@ namespace devblog.Services
             {
                 post = await _db.Post.OrderByDescending(x => x.Date)
                                          .Include(x => x.Comments)
+                                         .Include(x => x.Imgs)
                                          //.Include(x => x.UpVotes)
                                          //.Include(x => x.DownVotes)
                                          .FirstOrDefaultAsync();
@@ -81,6 +82,7 @@ namespace devblog.Services
             else
             {
                 post = await _db.Post.Include(x => x.Comments)
+                                         .Include(x => x.Imgs)
                                          //.Include(x => x.UpVotes)
                                          //.Include(x => x.DownVotes)
                                          .Where(p => p.Id == postId)

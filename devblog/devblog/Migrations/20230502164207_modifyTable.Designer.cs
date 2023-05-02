@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using devblog.Data;
 
@@ -10,9 +11,11 @@ using devblog.Data;
 namespace devblog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230502164207_modifyTable")]
+    partial class modifyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,7 +136,7 @@ namespace devblog.Migrations
             modelBuilder.Entity("devblog.Models.Img", b =>
                 {
                     b.HasOne("devblog.Models.Post", null)
-                        .WithMany("Imgs")
+                        .WithMany("ImgURLs")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -154,7 +157,7 @@ namespace devblog.Migrations
 
                     b.Navigation("DownVotes");
 
-                    b.Navigation("Imgs");
+                    b.Navigation("ImgURLs");
 
                     b.Navigation("UpVotes");
                 });

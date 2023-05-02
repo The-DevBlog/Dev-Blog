@@ -55,7 +55,7 @@ namespace devblog.Controllers
         public async Task<List<Comment>> Get(int postId)
         {
             var posts = await _posts.Get(postId);
-            return posts.Comments;
+            return posts.Comments != null ? posts.Comments : new List<Comment>();
         }
 
         /// <summary>

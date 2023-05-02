@@ -5,6 +5,11 @@ export default interface IPostProps {
     updateNum?: string;
     description?: string;
     date: Date;
-    imgURL?: string;
+    imgs?: ImgProps[];
     comments?: IComment[];
+}
+
+interface ImgProps {
+    postId?: number,
+    url: string
 }

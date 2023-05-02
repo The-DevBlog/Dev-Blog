@@ -46,17 +46,41 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="file">Data for new post</param>
         /// <returns>Post</returns>
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //public async Task<Post> Create(IFormFile[] files)
+        //{
+        //    var description = Request.Form["description"];
+        //    var updateNum = Request.Form["updateNum"];
+
+        //    List<string> imgUrls = new List<string>();
+        //    foreach (var f in files)
+        //    {
+        //        var stream = f.OpenReadStream();
+        //        string imgUrl = await _imgService.AddImgToDropBox(stream, f.FileName);
+        //        imgUrls.Add(imgUrl);
+        //    }
+
+        //    var newPost = await _posts.Create(description, imgUrl, updateNum);
+        //    return newPost;
+        //}
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<Post> Create(IFormFile file)
+        public async Task<Post> Create(IFormFile[] files)
         {
             var description = Request.Form["description"];
             var updateNum = Request.Form["updateNum"];
 
-            var stream = file.OpenReadStream();
-            string imgUrl = await _imgService.AddImgToDropBox(stream, file.FileName);
-            var newPost = await _posts.Create(description, imgUrl, updateNum);
+            //List<string> imgUrls = new List<string>();
+            //foreach (var f in files)
+            //{
+            //    var stream = f.OpenReadStream();
+            //    string imgUrl = await _imgService.AddImgToDropBox(stream, f.FileName);
+            //    imgUrls.Add(imgUrl);
+            //}
 
+            var newPost = await _posts.Create(description, updateNum, files);
             return newPost;
         }
 
