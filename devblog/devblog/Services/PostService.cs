@@ -97,7 +97,6 @@ namespace devblog.Services
                                          .FirstOrDefaultAsync();
             }
 
-            post.Imgs.Reverse();
             return post;
         }
 
