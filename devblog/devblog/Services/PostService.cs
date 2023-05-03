@@ -2,18 +2,26 @@
 using devblog.Interfaces;
 using devblog.Models;
 using Microsoft.EntityFrameworkCore;
+using Discord;
+using Discord.WebSocket;
 
 namespace devblog.Services
 {
     public class PostService : IPostService
     {
-        private AppDbContext _db;
-        private IImgService _imgService;
+        private readonly AppDbContext _db;
+        private readonly IImgService _imgService;
+        private readonly IConfiguration _config;
+        private readonly DiscordSocketClient _discordClient;
 
-        public PostService(AppDbContext context, IImgService imgService)
+        public PostService(AppDbContext context, IImgService imgService, DiscordSocketClient discordClient, IConfiguration config)
         {
             _db = context;
             _imgService = imgService;
+            _config = config;
+            _discordClient = discordClient;
+
+            _discordClient.LoginAsync(TokenType.Bot, _config.GetValue<string>("DiscordToken"));
         }
 
         /// <summary>
@@ -22,13 +30,10 @@ namespace devblog.Services
         /// <param name="description">Description of post</param>
         /// <param name="imgURLs">Img URLs of post</param>
         /// <param name="updateNum">Update number of post</param>
-        /// <param name="file">File to upload</param>
+        /// <param name="files">Files to upload</param>
         /// <returns>Post</returns>
         public async Task<Post> Create(string description, string updateNum, IFormFile[] files)
         {
-            //var fs = file.File.OpenReadStream(2000000);
-            //await _imgService.AddImgToDropBox(fs, imgURL);
-
             var newPost = new Post()
             {
                 Date = DateTime.Now,
@@ -39,6 +44,9 @@ namespace devblog.Services
             var res = _db.Post.Add(newPost).Entity;
             await _db.SaveChangesAsync();
             await _imgService.Create(files, res.Id);
+
+            await PostToDiscord(description, files);
+            await PostToReddit();
 
             return res;
         }
@@ -53,8 +61,8 @@ namespace devblog.Services
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
                                       .Include(x => x.Imgs)
-                                      //.Include(x => x.UpVotes)
-                                      //.Include(x => x.DownVotes)
+                                      .Include(x => x.UpVotes)
+                                      .Include(x => x.DownVotes)
                                       .ToListAsync();
 
             return posts;
@@ -75,20 +83,21 @@ namespace devblog.Services
                 post = await _db.Post.OrderByDescending(x => x.Date)
                                          .Include(x => x.Comments)
                                          .Include(x => x.Imgs)
-                                         //.Include(x => x.UpVotes)
-                                         //.Include(x => x.DownVotes)
+                                         .Include(x => x.UpVotes)
+                                         .Include(x => x.DownVotes)
                                          .FirstOrDefaultAsync();
             }
             else
             {
                 post = await _db.Post.Include(x => x.Comments)
                                          .Include(x => x.Imgs)
-                                         //.Include(x => x.UpVotes)
-                                         //.Include(x => x.DownVotes)
+                                         .Include(x => x.UpVotes)
+                                         .Include(x => x.DownVotes)
                                          .Where(p => p.Id == postId)
                                          .FirstOrDefaultAsync();
             }
 
+            post.Imgs.Reverse();
             return post;
         }
 
@@ -113,6 +122,39 @@ namespace devblog.Services
             var post = await Get(postId);
             _db.Remove(post);
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Sends new post to discord
+        /// </summary>
+        /// <param name="description">Description of new post</param>
+        /// <param name="files">Images of new post</param>
+        private async Task PostToDiscord(string description, IFormFile[] files)
+        {
+            await _discordClient.StartAsync().WaitAsync(TimeSpan.FromSeconds(15));
+
+            var channel = await _discordClient.GetChannelAsync(_config.GetValue<ulong>("DiscordChannelId")) as IMessageChannel;
+
+            List<FileAttachment> filesToSend = new List<FileAttachment>();
+
+            foreach (var file in files)
+            {
+                var stream = file.OpenReadStream();
+                filesToSend.Add(new FileAttachment(stream, file.FileName));
+            }
+
+            await channel.SendFilesAsync(filesToSend, description);
+            await _discordClient.StopAsync();
+        }
+
+        /// <summary>
+        /// Sends new post to Reddit
+        /// </summary>
+        /// <param name="description">Description of new post</param>
+        /// <param name="files">Images of new post</param>
+        private async Task PostToReddit()
+        {
+
         }
     }
 }

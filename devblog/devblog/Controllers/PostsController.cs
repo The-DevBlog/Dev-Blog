@@ -1,7 +1,6 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace devblog.Controllers
@@ -44,42 +43,14 @@ namespace devblog.Controllers
         /// <summary>
         /// Adds a new post
         /// </summary>
-        /// <param name="file">Data for new post</param>
+        /// <param name="files">Data for new post</param>
         /// <returns>Post</returns>
-        //[Authorize(Roles = "Admin")]
-        //[HttpPost]
-        //public async Task<Post> Create(IFormFile[] files)
-        //{
-        //    var description = Request.Form["description"];
-        //    var updateNum = Request.Form["updateNum"];
-
-        //    List<string> imgUrls = new List<string>();
-        //    foreach (var f in files)
-        //    {
-        //        var stream = f.OpenReadStream();
-        //        string imgUrl = await _imgService.AddImgToDropBox(stream, f.FileName);
-        //        imgUrls.Add(imgUrl);
-        //    }
-
-        //    var newPost = await _posts.Create(description, imgUrl, updateNum);
-        //    return newPost;
-        //}
-
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<Post> Create(IFormFile[] files)
         {
             var description = Request.Form["description"];
             var updateNum = Request.Form["updateNum"];
-
-            //List<string> imgUrls = new List<string>();
-            //foreach (var f in files)
-            //{
-            //    var stream = f.OpenReadStream();
-            //    string imgUrl = await _imgService.AddImgToDropBox(stream, f.FileName);
-            //    imgUrls.Add(imgUrl);
-            //}
-
             var newPost = await _posts.Create(description, updateNum, files);
             return newPost;
         }

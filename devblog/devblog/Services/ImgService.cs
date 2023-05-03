@@ -21,41 +21,8 @@ namespace devblog.Services
         /// <summary>
         /// Uploads an image to Dropbox account
         /// </summary>
-        /// <param name="fs">Image file stream</param>
-        /// <param name="name">Name of image</param>
-        /// <returns>Dropbox url to image</returns>
-        //public async Task<string> AddImgToDropBox(Stream fs, string name)
-        //{
-        //    // create unique file name
-        //    //string ext = Path.GetExtension(name);
-        //    string fileName = $"{DateTime.Now.Ticks}{name}";
-        //    var destinationPath = _config["DropboxDestinationPath"];
-        //    string url = "";
-        //    string dest = destinationPath + fileName;
-
-        //    using (var dbx = new DropboxClient(_config["DropboxToken"]))
-        //    {
-        //        // upload file to dbx
-        //        var updated = await dbx.Files.UploadAsync(
-        //            dest,
-        //            WriteMode.Overwrite.Instance,
-        //            body: fs
-        //        );
-        //        fs.Close();
-
-        //        // create shareable link
-        //        var link = dbx.Sharing.CreateSharedLinkWithSettingsAsync(dest);
-        //        link.Wait();
-
-        //        url = link.Result.Url;
-
-        //        // remove id and replace with raw=1
-        //        url = url.Substring(0, url.Length - 4) + "raw=1";
-        //    }
-
-        //    return url;
-        //}
-
+        /// <param name="files">Files to upload</param>
+        /// <param name="postId">Post Id</param>
         public async Task Create(IFormFile[] files, int postId)
         {
             foreach (var f in files)
@@ -69,10 +36,9 @@ namespace devblog.Services
                     Url = url,
                 };
 
-                var res = _db.Img.Add(img);
+                _db.Img.Add(img);
                 await _db.SaveChangesAsync();
             }
-
         }
 
         public async Task<string> AddImgToDropBox(Stream fs, string name)

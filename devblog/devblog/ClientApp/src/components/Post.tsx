@@ -49,8 +49,8 @@ const Post = (props: IPost) => {
                 showStatus={false}
                 dynamicHeight={true}>
 
-                {props.imgs && props.imgs?.map(img => (
-                    <div style={{ width: "100%" }}><img src={img.url} alt="development update img" /></div>
+                {props.imgs && props.imgs?.reverse().map(img => (
+                    <div><img src={img.url} alt="development update img" /></div>
                 ))}
             </Carousel>
 
