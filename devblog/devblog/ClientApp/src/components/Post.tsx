@@ -50,7 +50,7 @@ const Post = (props: IPost) => {
                 dynamicHeight={true}>
 
                 {props.imgs && props.imgs?.map(img => (
-                    <div><img src={img.url} alt="development update img" /></div>
+                    <div ><img src={img.url} alt="development update img" /></div>
                 ))}
             </Carousel>
 
