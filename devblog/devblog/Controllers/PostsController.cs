@@ -50,8 +50,7 @@ namespace devblog.Controllers
         public async Task<Post> Create(IFormFile[] files)
         {
             var description = Request.Form["description"];
-            var updateNum = Request.Form["updateNum"];
-            var newPost = await _posts.Create(description, updateNum, files);
+            var newPost = await _posts.Create(description, files);
             return newPost;
         }
 

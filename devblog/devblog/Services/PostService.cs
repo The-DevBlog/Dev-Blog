@@ -28,17 +28,14 @@ namespace devblog.Services
         /// Creates a new post
         /// </summary>
         /// <param name="description">Description of post</param>
-        /// <param name="imgURLs">Img URLs of post</param>
-        /// <param name="updateNum">Update number of post</param>
         /// <param name="files">Files to upload</param>
         /// <returns>Post</returns>
-        public async Task<Post> Create(string description, string updateNum, IFormFile[] files)
+        public async Task<Post> Create(string description, IFormFile[] files)
         {
             var newPost = new Post()
             {
                 Date = DateTime.Now,
                 Description = description,
-                UpdateNum = updateNum
             };
 
             var res = _db.Post.Add(newPost).Entity;
@@ -46,7 +43,6 @@ namespace devblog.Services
             await _imgService.Create(files, res.Id);
 
             await PostToDiscord(description, files);
-            await PostToReddit();
 
             return res;
         }
@@ -144,16 +140,6 @@ namespace devblog.Services
 
             await channel.SendFilesAsync(filesToSend, description);
             await _discordClient.StopAsync();
-        }
-
-        /// <summary>
-        /// Sends new post to Reddit
-        /// </summary>
-        /// <param name="description">Description of new post</param>
-        /// <param name="files">Images of new post</param>
-        private async Task PostToReddit()
-        {
-
         }
     }
 }

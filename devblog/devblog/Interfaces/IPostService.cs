@@ -8,11 +8,9 @@ namespace devblog.Interfaces
         /// Creates a new post
         /// </summary>
         /// <param name="description">Description of post</param>
-        /// <param name="imgURL">Img URL of post</param>
-        /// <param name="updateNum">Update number of post</param>
         /// <param name="file">File to uploadfcgvvb</param>
         /// <returns>Post</returns>
-        Task<Post> Create(string description, string updateNum, IFormFile[] files);
+        Task<Post> Create(string description, IFormFile[] files);
 
         /// <summary>
         /// Retrieves all posts

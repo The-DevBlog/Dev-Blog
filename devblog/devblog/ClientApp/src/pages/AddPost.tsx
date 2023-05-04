@@ -5,7 +5,6 @@ import { GetIsAdmin } from "../components/AuthenticationService";
 import "./AddPost.css";
 
 const AddPost = () => {
-    const [updateNum, setUpdateNum] = useState("");
     const [description, setDescription] = useState("");
     const [isAdmin, setIsAdmin] = useState(false);
     const [files, setFile] = useState<File[]>([]);
@@ -17,9 +16,7 @@ const AddPost = () => {
         const formData = new FormData();
         if (files != null) {
             files.forEach(f => formData.append("files", f));
-            // formData.append("file", file);
             formData.append("description", description);
-            formData.append("updateNum", updateNum);
         }
 
         await fetch("api/posts", {
@@ -40,13 +37,6 @@ const AddPost = () => {
         < div className="create-post" >
             {isAdmin &&
                 <form onSubmit={handleSubmit}>
-                    <label>Update Number</label>
-                    <input
-                        type="text"
-                        required
-                        value={updateNum}
-                        onChange={(e) => setUpdateNum(e.target.value)} />
-
                     <label>Image</label>
                     <input
                         type="file"
