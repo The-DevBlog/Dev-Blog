@@ -1,9 +1,9 @@
-import "./Comment.css";
 import ICommentProps from "../interfaces/ICommentProps";
 import { GetUserName, GetIsAdmin } from "../components/AuthenticationService";
 import DeleteComment from "./DeleteComment";
 import { useEffect, useState } from "react";
 import EditComment from "./EditComment";
+import "./styles/Comment.css";
 
 const Comment = (props: ICommentProps) => {
     const [userName, setUserName] = useState("");

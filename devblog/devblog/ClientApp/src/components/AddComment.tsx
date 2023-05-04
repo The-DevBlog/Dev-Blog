@@ -1,6 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 import { GetUserName, IsLoggedIn } from "./AuthenticationService";
-import "./AddComment.css";
+import "./styles/AddComment.css";
 
 interface IAddCommentProps {
     postId?: number;

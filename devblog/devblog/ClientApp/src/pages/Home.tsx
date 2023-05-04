@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
-import "./Home.css"
+import "./styles/Home.css"
 const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SignOut from "../pages/SignOut";
 import { IsLoggedIn } from "../components/AuthenticationService";
-import "./Nav.css";
+import "./styles/Nav.css";
 
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);

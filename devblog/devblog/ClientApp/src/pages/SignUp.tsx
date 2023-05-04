@@ -1,9 +1,9 @@
-import "./SignUp.css";
 import { TextField } from "@fluentui/react/lib/TextField";
 import { FormEvent, useState } from "react";
 import { Hash, useNavigate } from "react-router-dom";
 import IToken from "../interfaces/IToken";
 import jwtDecode from "jwt-decode";
+import "./styles/SignUp.css";
 
 const SignUp = () => {
     const [userName, setUsername] = useState("");

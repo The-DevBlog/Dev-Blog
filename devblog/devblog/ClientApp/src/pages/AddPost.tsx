@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { GetIsAdmin } from "../components/AuthenticationService";
-import "./AddPost.css";
+import "./styles/AddPost.css";
 
 const AddPost = () => {
     const [description, setDescription] = useState("");

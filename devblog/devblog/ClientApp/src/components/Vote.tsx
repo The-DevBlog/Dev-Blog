@@ -3,7 +3,7 @@ import { GetUserName, IsLoggedIn } from "./AuthenticationService";
 import { SentimentVerySatisfied as UpVote } from '@mui/icons-material';
 import { SentimentDissatisfied as DownVote } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
-import "./Vote.css";
+import "./styles/Vote.css";
 
 interface IVoteProps {
     postId?: number;

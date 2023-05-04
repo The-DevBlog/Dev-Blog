@@ -3,7 +3,7 @@ import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
 import { GetIsAdmin } from "../components/AuthenticationService";
 import { Link } from "react-router-dom";
-import "./Posts.css";
+import "./styles/Posts.css";
 
 const Posts = () => {
     const [posts, setPosts] = useState<IPost[]>([]);

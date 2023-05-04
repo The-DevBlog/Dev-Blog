@@ -1,5 +1,5 @@
 import { MdDelete as Trash } from "react-icons/md";
-import "./DeleteComment.css";
+import "./styles/DeleteComment.css";
 
 interface IDeleteCommentProps {
     id?: number;

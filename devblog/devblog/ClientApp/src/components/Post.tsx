@@ -6,9 +6,9 @@ import DeletePost from "./DeletePost";
 import ICommentProps from "../interfaces/ICommentProps";
 import ReactMarkdown from "react-markdown";
 import Vote from "./Vote";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import "./Post.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "./styles/Post.css";
 
 const Post = (props: IPost) => {
     const [comments, setComments] = useState<ICommentProps[]>();

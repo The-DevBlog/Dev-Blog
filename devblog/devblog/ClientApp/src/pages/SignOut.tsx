@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import "./SignOut.css";
+import "./styles/SignOut.css";
 
 const SignOut = () => {
     const handleSignOut = (e: FormEvent<HTMLFormElement>) => {

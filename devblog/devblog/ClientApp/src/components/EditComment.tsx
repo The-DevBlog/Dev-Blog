@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdModeEditOutline as Edit } from "react-icons/md";
-import "./EditComment.css";
+import "./styles/EditComment.css";
 
 interface IEditCommentProps {
     id?: number;
