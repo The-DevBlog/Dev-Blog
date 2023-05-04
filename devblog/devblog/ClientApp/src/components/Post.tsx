@@ -57,6 +57,7 @@ const Post = (props: IPost) => {
             {/* LIKE / DISLIKE */}
             <Vote postId={props.id} />
 
+            {/* DESCRIPTION */}
             {props.description && <ReactMarkdown className="description" children={props.description} />}
 
             {/* COMMENTS */}

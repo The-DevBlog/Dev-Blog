@@ -30,3 +30,15 @@ img {
     width: 100%;
     max-width: 900px;
 }
+
+.description {
+    width: 85%;
+    margin: auto;
+}
+
+
+@media (max-width: 800px) {
+    .description {
+        width: 100%;
+    }
+}
