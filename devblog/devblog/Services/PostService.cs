@@ -160,17 +160,10 @@ namespace devblog.Services
             var client = new RestClient(options);
             var request = new RestRequest();
 
-            foreach (var file in files)
-            {
-                Func<Stream> stream = () => file.OpenReadStream();
-                request.AddFile("media", stream, file.FileName);
-            }
-            //request.AddFile(files[0].Name, stream, files[0].FileName);
-            //request.AddJsonBody(new { text = description });
+            request.AddJsonBody(new { text = description });
 
             try
             {
-                var r = await client.ExecuteAsync(request);
                 var response = client.Post(request);
 
             }
