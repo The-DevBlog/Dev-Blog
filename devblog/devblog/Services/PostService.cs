@@ -6,6 +6,7 @@ using Discord;
 using Discord.WebSocket;
 using RestSharp.Authenticators;
 using RestSharp;
+using Mastonet;
 
 namespace devblog.Services
 {
@@ -47,6 +48,7 @@ namespace devblog.Services
 
             await PostToDiscord(description, files);
             await PostToTwitter(description, files);
+            await PostToMastodon(description, files);
 
             return res;
         }
@@ -134,18 +136,27 @@ namespace devblog.Services
 
             var channel = await _discordClient.GetChannelAsync(_config.GetValue<ulong>("DiscordChannelId")) as IMessageChannel;
 
-            List<FileAttachment> filesToSend = new List<FileAttachment>();
-
+            // add imgs to request
+            List<FileAttachment> attachments = new List<FileAttachment>();
             foreach (var file in files)
-            {
-                var stream = file.OpenReadStream();
-                filesToSend.Add(new FileAttachment(stream, file.FileName));
-            }
+                attachments.Add(new FileAttachment(file.OpenReadStream(), file.FileName));
 
-            await channel.SendFilesAsync(filesToSend, description);
-            await _discordClient.StopAsync();
+            try
+            {
+                await channel.SendFilesAsync(attachments, description);
+                await _discordClient.StopAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
+        /// <summary>
+        /// Sends new post to Twitter
+        /// </summary>
+        /// <param name="description">Description of new post</param>
+        /// <param name="files">Images of new post</param>
         private async Task PostToTwitter(string description, IFormFile[] files)
         {
             var options = new RestClientOptions()
@@ -165,11 +176,38 @@ namespace devblog.Services
             try
             {
                 var response = client.Post(request);
-
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Sends new post to Mastodon
+        /// </summary>
+        /// <param name="description">Description of new post</param>
+        /// <param name="files">Images of new post</param>
+        private async Task PostToMastodon(string description, IFormFile[] files)
+        {
+            var client = new MastodonClient("mastodon.social", _config.GetValue<string>("MastodonToken"));
+
+            // add imgs to request
+            List<string> attachments = new List<string>();
+            foreach (var file in files)
+            {
+                var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
+                var mediaId = await client.UploadMedia(media);
+                attachments.Add(mediaId.Id);
+            }
+
+            try
+            {
+                await client.PublishStatus(description, mediaIds: attachments);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }
