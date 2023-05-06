@@ -6,6 +6,7 @@ using Discord;
 using Discord.WebSocket;
 using RestSharp.Authenticators;
 using RestSharp;
+using Newtonsoft.Json.Linq;
 
 namespace devblog.Services
 {
@@ -154,25 +155,17 @@ namespace devblog.Services
                                                                         _config.GetValue<string>("TwitterConsumerSecret"),
                                                                         _config.GetValue<string>("TwitterAccessToken"),
                                                                         _config.GetValue<string>("TwitterAccessTokenSecret")),
-                BaseUrl = new Uri("https://api.twitter.com/2/tweets"),
+                BaseUrl = new Uri("https://api.twitter.com/2/tweets")
             };
 
             var client = new RestClient(options);
             var request = new RestRequest();
 
-            foreach (var file in files)
-            {
-                Func<Stream> stream = () => file.OpenReadStream();
-                request.AddFile("media", stream, file.FileName);
-            }
-            //request.AddFile(files[0].Name, stream, files[0].FileName);
-            //request.AddJsonBody(new { text = description });
+            request.AddJsonBody(new { text = description });
 
             try
             {
-                var r = await client.ExecuteAsync(request);
                 var response = client.Post(request);
-
             }
             catch (Exception ex)
             {
