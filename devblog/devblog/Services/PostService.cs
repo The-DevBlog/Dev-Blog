@@ -4,6 +4,8 @@ using devblog.Models;
 using Microsoft.EntityFrameworkCore;
 using Discord;
 using Discord.WebSocket;
+using RestSharp.Authenticators;
+using RestSharp;
 
 namespace devblog.Services
 {
@@ -19,8 +21,9 @@ namespace devblog.Services
             _db = context;
             _imgService = imgService;
             _config = config;
-            _discordClient = discordClient;
 
+            // set up discord client
+            _discordClient = discordClient;
             _discordClient.LoginAsync(TokenType.Bot, _config.GetValue<string>("DiscordToken"));
         }
 
@@ -43,6 +46,7 @@ namespace devblog.Services
             await _imgService.Create(files, res.Id);
 
             await PostToDiscord(description, files);
+            await PostToTwitter(description, files);
 
             return res;
         }
@@ -140,6 +144,40 @@ namespace devblog.Services
 
             await channel.SendFilesAsync(filesToSend, description);
             await _discordClient.StopAsync();
+        }
+
+        private async Task PostToTwitter(string description, IFormFile[] files)
+        {
+            var options = new RestClientOptions()
+            {
+                Authenticator = OAuth1Authenticator.ForProtectedResource(_config.GetValue<string>("TwitterConsumerKey"),
+                                                                        _config.GetValue<string>("TwitterConsumerSecret"),
+                                                                        _config.GetValue<string>("TwitterAccessToken"),
+                                                                        _config.GetValue<string>("TwitterAccessTokenSecret")),
+                BaseUrl = new Uri("https://api.twitter.com/2/tweets"),
+            };
+
+            var client = new RestClient(options);
+            var request = new RestRequest();
+
+            foreach (var file in files)
+            {
+                Func<Stream> stream = () => file.OpenReadStream();
+                request.AddFile("media", stream, file.FileName);
+            }
+            //request.AddFile(files[0].Name, stream, files[0].FileName);
+            //request.AddJsonBody(new { text = description });
+
+            try
+            {
+                var r = await client.ExecuteAsync(request);
+                var response = client.Post(request);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
