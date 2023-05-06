@@ -6,6 +6,7 @@ import "./styles/AddPost.css";
 
 const AddPost = () => {
     const [description, setDescription] = useState("");
+    const [charCount, setCharCount] = useState<number>();
     const [isAdmin, setIsAdmin] = useState(false);
     const [files, setFile] = useState<File[]>([]);
     const navigate = useNavigate();
@@ -33,6 +34,10 @@ const AddPost = () => {
         setIsAdmin(GetIsAdmin)
     }, []);
 
+    useEffect(() => {
+        setCharCount(description.length);
+    }, [description]);
+
     return (
         < div className="create-post" >
             {isAdmin &&
@@ -44,7 +49,8 @@ const AddPost = () => {
                         multiple
                         onChange={(e) => e.target.files && setFile(Array.from(e.target.files))} />
 
-                    <label>Description</label>
+                    <label>Description </label>
+                    <p>Mastodon char count: {charCount}/500</p>
                     <div className="addpost-description">
                         <textarea onChange={(e) => setDescription(e.currentTarget.value)} />
                         <ReactMarkdown className="description-result" children={description} />
