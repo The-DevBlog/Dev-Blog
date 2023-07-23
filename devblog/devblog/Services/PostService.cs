@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using RestSharp.Authenticators;
 using RestSharp;
 using Mastonet;
+using Microsoft.Extensions.Hosting;
 
 namespace devblog.Services
 {
@@ -148,7 +149,7 @@ namespace devblog.Services
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception("Failed to post to  Discord: " + e.Message);
             }
         }
 
@@ -179,7 +180,7 @@ namespace devblog.Services
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception("Failed to post to Reddit: " + e.Message);
             }
         }
 
@@ -207,7 +208,7 @@ namespace devblog.Services
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception("Failed to post to Mastodon: " + e.Message);
             }
         }
     }
