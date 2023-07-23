@@ -7,7 +7,6 @@ using Discord.WebSocket;
 using RestSharp.Authenticators;
 using RestSharp;
 using Mastonet;
-using Microsoft.Extensions.Hosting;
 
 namespace devblog.Services
 {
