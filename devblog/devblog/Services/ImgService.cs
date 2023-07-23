@@ -3,6 +3,7 @@ using devblog.Interfaces;
 using devblog.Models;
 using Dropbox.Api;
 using Dropbox.Api.Files;
+using System.Security.Policy;
 
 namespace devblog.Services
 {
@@ -38,6 +39,34 @@ namespace devblog.Services
 
                 _db.Img.Add(img);
                 await _db.SaveChangesAsync();
+            }
+        }
+        // "https://www.dropbox.com/scl/fi/0x5xo53l9rkg41bss41uk/638257148450375126a.png?rlkey=xuarjst596rg4t1jk38dvqhws&raw=1"
+        /// <summary>
+        /// Delete an img from dropbox account
+        /// </summary>
+        /// <param name="imgs">List of imgs to delete</param>
+        public async Task DeleteImgFromDropBox(List<Img> imgs)
+        {
+            using (var dbx = new DropboxClient(_config["DropboxToken"]))
+            {
+                imgs.ForEach(img =>
+                {
+                    try
+                    {
+                        // exract the filename from the img url
+                        Uri uri = new Uri(img.Url);
+                        var name = uri.Segments[uri.Segments.Length - 1];
+
+                        // delete file from dropbox
+                        var result = dbx.Files.DeleteV2Async($"{_config["DropboxDestinationPath"]}{name}").Result;
+
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Error getting dropbox file: ", e);
+                    }
+                });
             }
         }
 

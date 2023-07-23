@@ -63,6 +63,8 @@ namespace devblog.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
+            var imgs = _posts.Get(id).Result.Imgs;
+            await _imgService.DeleteImgFromDropBox(imgs);
             await _posts.Delete(id);
         }
     }
