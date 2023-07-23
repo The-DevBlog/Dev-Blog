@@ -36,10 +36,9 @@ const Post = (props: IPost) => {
 
     return (
         <div className="post">
-            {/* UPDATE NUMBER & DATE */}
+            {/* DATE */}
             <div className="post-info">
                 <DeletePost {...props} />
-                <span>Update #{props.id}</span>
                 <span className="date">{date}</span>
             </div>
 
