@@ -6,6 +6,18 @@
     margin: 150px 20px 0px 20px;
 }
 
+.update-video>button {
+    display: inline;
+}
+
+.update-video {
+    width: 80%;
+}
+
+.update-video>input {
+    width: 50%;
+}
+
 .youtube-video {
     margin-bottom: 100px;
 }

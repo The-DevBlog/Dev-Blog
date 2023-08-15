@@ -1,5 +1,6 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace devblog.Controllers
@@ -23,6 +24,19 @@ namespace devblog.Controllers
         public async Task<YtVideo> Get()
         {
             var video = await _video.GetVideo();
+            return video;
+        }
+
+        /// <summary>
+        /// Updates the url of the homepage YouTube video
+        /// </summary>
+        /// <param name="url">new url for video</param>
+        /// <returns>Updated Video</returns>
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<YtVideo> Set([FromBody] string url)
+        {
+            var video = await _video.SetVideo(url);
             return video;
         }
     }

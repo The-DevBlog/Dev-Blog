@@ -23,5 +23,19 @@ namespace devblog.Services
             var video = await _db.YtVideo.FirstAsync();
             return video;
         }
+
+        /// <summary>
+        /// Updates the url of the homepage YouTube video
+        /// </summary>
+        /// <param name="url">new url for video</param>
+        /// <returns>Updated Video</returns>
+        public async Task<YtVideo> SetVideo(string url)
+        {
+            var video = await _db.YtVideo.FirstAsync();
+            video.Url = url;
+            _db.YtVideo.Update(video);
+            await _db.SaveChangesAsync();
+            return video;
+        }
     }
 }
