@@ -1,4 +1,5 @@
 ﻿using devblog.Models;
+using Discord;
 using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Data
@@ -10,6 +11,7 @@ namespace devblog.Data
         public DbSet<UpVote> UpVote { get; set; }
         public DbSet<DownVote> DownVote { get; set; }
         public DbSet<Img> Img { get; set; }
+        public DbSet<YtVideo> YtVideo { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
@@ -19,14 +21,14 @@ namespace devblog.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UpVote>(entity =>
-            {
-                entity.HasKey(e => new { e.PostId, e.UserName });
-            });
+            modelBuilder.Entity<UpVote>().HasKey(e => new { e.PostId, e.UserName });
 
-            modelBuilder.Entity<DownVote>(entity =>
+            modelBuilder.Entity<DownVote>().HasKey(e => new { e.PostId, e.UserName });
+
+            modelBuilder.Entity<YtVideo>(entity =>
             {
-                entity.HasKey(e => new { e.PostId, e.UserName });
+                entity.HasData(new YtVideo { Id = 1, Url = "https://www.youtube.com/embed/DtuqZ11RhIc" });
+                entity.HasIndex(y => y.Url).IsUnique();
             });
         }
     }
