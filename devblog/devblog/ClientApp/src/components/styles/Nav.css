@@ -6,7 +6,7 @@
     margin: auto;
     width: 100vw;
     position: fixed;
-    z-index: 2;
+    z-index: 10;
 }
 
 .nav-items>a,
