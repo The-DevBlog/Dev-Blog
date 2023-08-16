@@ -23,7 +23,7 @@ namespace devblog.Controllers
         [HttpGet]
         public async Task<YtVideo> Get()
         {
-            var video = await _video.GetVideo();
+            var video = await _video.Get();
             return video;
         }
 
@@ -36,7 +36,7 @@ namespace devblog.Controllers
         [HttpPut("{id}")]
         public async Task<YtVideo> Set([FromBody] string url)
         {
-            var video = await _video.SetVideo(url);
+            var video = await _video.Update(url);
             return video;
         }
     }

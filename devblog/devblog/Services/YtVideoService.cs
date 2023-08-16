@@ -18,7 +18,7 @@ namespace devblog.Services
         /// Gets the URL for the homepage YouTube video
         /// </summary>
         /// <returns></returns>
-        public async Task<YtVideo> GetVideo()
+        public async Task<YtVideo> Get()
         {
             var video = await _db.YtVideo.FirstAsync();
             return video;
@@ -29,7 +29,7 @@ namespace devblog.Services
         /// </summary>
         /// <param name="url">new url for video</param>
         /// <returns>Updated Video</returns>
-        public async Task<YtVideo> SetVideo(string url)
+        public async Task<YtVideo> Update(string url)
         {
             var video = await _db.YtVideo.FirstAsync();
             video.Url = url;

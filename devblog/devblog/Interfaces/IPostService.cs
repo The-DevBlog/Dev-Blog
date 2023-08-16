@@ -28,9 +28,10 @@ namespace devblog.Interfaces
         /// <summary>
         /// Updates a post
         /// </summary>
-        /// <param name="post"></param>
-        /// <returns>Successful completion of task</returns>
-        Task Update(Post post);
+        /// <param name="id">Id of post to be updated</param>
+        /// <param name="description">New description of post</param>
+        /// <returns>Updated post</returns>
+        Task<Post> Update(int id, string description);
 
         /// <summary>
         /// Removes a specified post

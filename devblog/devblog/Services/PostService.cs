@@ -105,12 +105,17 @@ namespace devblog.Services
         /// <summary>
         /// Updates a post
         /// </summary>
-        /// <param name="post"></param>
+        /// <param name="id">Id of post to be updated</param>
+        /// <param name="description">New description of post</param>
         /// <returns>Successful completion of task</returns>
-        public async Task Update(Post post)
+        public async Task<Post> Update(int id, string description)
         {
+            var post = await _db.Post.Where(p => p.Id == id).FirstOrDefaultAsync();
+            post.Description = description;
             _db.Post.Update(post);
             await _db.SaveChangesAsync();
+
+            return post;
         }
 
         /// <summary>
