@@ -9,10 +9,13 @@ import Vote from "./Vote";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "./styles/Post.css";
+import EditPost from "./EditPost";
+import { GetIsAdmin } from "./AuthenticationService";
 
 const Post = (props: IPost) => {
     const [comments, setComments] = useState<ICommentProps[]>();
     const [showAllComments, setShowAllComments] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [date, setDate] = useState<string>();
     const displayedComments = showAllComments ? comments : comments?.slice(0, 5);
 
@@ -29,6 +32,8 @@ const Post = (props: IPost) => {
         getComments();
     };
 
+    useEffect(() => setIsAdmin(GetIsAdmin), []);
+
     useEffect(() => {
         setDate(new Date(props.date).toLocaleDateString());
         getComments();
@@ -38,7 +43,12 @@ const Post = (props: IPost) => {
         <div className="post">
             {/* DATE */}
             <div className="post-info">
-                <DeletePost {...props} />
+                {isAdmin &&
+                    <>
+                        <EditPost {...props} />
+                        <DeletePost {...props} />
+                    </>
+                }
                 <span className="date">{date}</span>
             </div>
 

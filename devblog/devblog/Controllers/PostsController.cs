@@ -55,6 +55,20 @@ namespace devblog.Controllers
         }
 
         /// <summary>
+        /// Updates a post
+        /// </summary>
+        /// <param name="id">Id of post to be updated</param>
+        /// <param name="description">New description of post</param>
+        /// <returns>Updated post</returns>
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<Post> Update(int id, [FromBody] string description)
+        {
+            var post = await _posts.Update(id, description);
+            return post;
+        }
+
+        /// <summary>
         /// Removes a specified post
         /// </summary>
         /// <param name="postId">Post Id</param>

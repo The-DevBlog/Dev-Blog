@@ -33,6 +33,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 });
 
 builder.Services.AddSingleton<DiscordSocketClient>();
+builder.Services.AddScoped<IYtVideoService, YtVideoService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IVoteService, VoteService>();
