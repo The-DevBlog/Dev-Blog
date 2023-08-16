@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
 
 interface IEditPostProps {
-    id?: number,
-    description?: string
+    id?: number;
+    description?: string;
+    onPostEdit: (newDescription: string) => void;
 }
 
 const EditPost = (props: IEditPostProps) => {
@@ -12,9 +12,6 @@ const EditPost = (props: IEditPostProps) => {
 
     const updatePost = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log(description);
-        console.log(props.id);
 
         await fetch(`api/posts/${props.id}`, {
             method: "PUT",
@@ -26,9 +23,11 @@ const EditPost = (props: IEditPostProps) => {
         });
     }
 
-    useEffect(() => {
-        setCharCount(description?.length);
-    }, []);
+    const handleDescriptionChange = async (e: React.ChangeEvent<HTMLTextAreaElement>
+    ) => {
+        setDescription(e.currentTarget.value);
+        props.onPostEdit(e.currentTarget.value || "");
+    }
 
     useEffect(() => {
         setCharCount(description?.length);
@@ -38,11 +37,9 @@ const EditPost = (props: IEditPostProps) => {
         <>
             <div>
                 <form onSubmit={updatePost}>
-                    <label>Description</label>
                     <p>Mastodon char count: {charCount}/500</p>
                     <div>
-                        <textarea value={description} onChange={(e) => setDescription(e.currentTarget.value)} />
-                        <ReactMarkdown className="description-result" children={description || ""} />
+                        <textarea value={description} onChange={handleDescriptionChange} style={{ width: "550px", height: "200px" }} />
                     </div>
 
                     <button>Update Post</button>

@@ -17,6 +17,7 @@ const Post = (props: IPost) => {
     const [showAllComments, setShowAllComments] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [date, setDate] = useState<string>();
+    const [description, setDescription] = useState(props.description);
     const displayedComments = showAllComments ? comments : comments?.slice(0, 5);
 
     const getComments = useCallback(async () => {
@@ -32,6 +33,10 @@ const Post = (props: IPost) => {
         getComments();
     };
 
+    const handlePostEdit = (newDescription: string) => {
+        setDescription(newDescription);
+    }
+
     useEffect(() => setIsAdmin(GetIsAdmin), []);
 
     useEffect(() => {
@@ -45,7 +50,7 @@ const Post = (props: IPost) => {
             <div className="post-info">
                 {isAdmin &&
                     <>
-                        <EditPost {...props} />
+                        <EditPost {...props} onPostEdit={handlePostEdit} />
                         <DeletePost {...props} />
                     </>
                 }
@@ -67,7 +72,7 @@ const Post = (props: IPost) => {
             <Vote postId={props.id} />
 
             {/* DESCRIPTION */}
-            {props.description && <ReactMarkdown className="description" children={props.description} />}
+            {props.description && <ReactMarkdown className="description" children={description || ""} />}
 
             {/* COMMENTS */}
             <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
