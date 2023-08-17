@@ -29,8 +29,13 @@ jobs:
       #     dir
       #     pwd
 
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v2
+
+      - uses: actions/checkout@v3
+
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: action/setup-node@v2
         with:
           node-version: 20.x
           cache: npm
