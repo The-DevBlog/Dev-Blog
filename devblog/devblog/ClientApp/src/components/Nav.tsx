@@ -29,8 +29,10 @@ const Nav = () => {
 
     // Listen for route changes and close the menu
     useEffect(() => {
-        setDisplay("none");
-        setIsMenuClicked(false);
+        if (isMenuClicked) {
+            setDisplay("none");
+            setIsMenuClicked(false);
+        }
     }, [location.pathname]);
 
     useEffect(() => {
