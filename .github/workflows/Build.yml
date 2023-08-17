@@ -23,38 +23,11 @@ jobs:
       #   run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
       # - name: Test
       #   run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-      # - name: npm ci
-      #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" ci
-      # - name: npm install
-      #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" install
-      # - name: npm install
-      #   run: npm --prefix ${{ env.CLIENT_APP_DIRECTORY }} install
-      # - name: npm run build
-      #   run: npm --prefix ${{ env.CLIENT_APP_DIRECTORY }} run build
 
-      # - uses: actions/checkout@v3
-      # - name: Setup .NET SDK
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-      # - name: Restore
-      #   run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
-      # - name: Dotnet Build
-      #   run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-      # - name: Test
-      #   run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-      # - name: npm ci
-      #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" ci
-      # - name: npm install
-      #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" install
+      - name: Check Working Directory Contents
+        run: |
+          ls -R ${{ env.WORKING_DIRECTORY }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
