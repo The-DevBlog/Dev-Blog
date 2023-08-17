@@ -55,8 +55,8 @@ const Home = () => {
 
             {/* YouTube video */}
             <iframe className="youtube-video"
-                width="925"
-                height="520"
+                // width="925"
+                // height="520"
                 src={url}
                 title="YouTube video player"
                 allowFullScreen

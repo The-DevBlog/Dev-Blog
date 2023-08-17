@@ -43,7 +43,9 @@ img {
 
 
 @media (max-width: 800px) {
-    .description {
+
+    .description,
+    .post {
         width: 100%;
     }
 }

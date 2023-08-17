@@ -19,21 +19,13 @@
 }
 
 .youtube-video {
+    width: 100%;
+    height: 520px;
     margin-bottom: 100px;
 }
 
-@media (max-width: 1000px) {
-
-    .youtube-video {
-        width: 470px;
-        height: 350px;
-    }
-}
-
 @media (max-width: 400px) {
-
     .youtube-video {
-        width: 325px;
-        height: 275px;
+        height: 350px;
     }
 }
