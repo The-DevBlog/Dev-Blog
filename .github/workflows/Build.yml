@@ -36,6 +36,6 @@ jobs:
 
       - name: Install and Build Client App
         run: |
-          cd devblog\devblog\ClientApp
+          cd ..\devblog\devblog\ClientApp
           npm install
           npm run build
