@@ -7,6 +7,7 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: devblog
+  CLIENT_APP_DIRECTORY: devblog/devblog/ClientApp
 jobs:
   build:
     runs-on: windows-latest
@@ -20,7 +21,7 @@ jobs:
         run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
       - name: Dotnet Build
         run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-      - name: NPM run build
+      - name: NPM run build "${{ env.CLIENT_APP_DIRECTORY }}"
         run: npm run build
       - name: Test
         run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
