@@ -33,9 +33,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 20.x
+          cache: npm
+          cache-dependency-path: "devblog/devblog/clientApp"
 
       - name: Install and Build Client App
         run: |
-          cd ..\devblog\devblog\ClientApp
           npm install
           npm run build
