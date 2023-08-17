@@ -7,7 +7,7 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: devblog
-  CLIENT_APP_DIRECTORY: ClientApp\
+  CLIENT_APP_DIRECTORY: ClientApp
 jobs:
   build:
     runs-on: windows-latest
@@ -29,7 +29,7 @@ jobs:
       #     node-version: ${{ matrix.node-version }}
       # - name: npm ci
       #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" ci
-      - name: npm init
-        run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" init
+      - name: npm install
+        run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" install
       - name: npm run build
         run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" run build
