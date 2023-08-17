@@ -17,6 +17,7 @@ const Nav = () => {
     };
 
     const updateMenu = () => {
+        console.log(isMenuClicked)
         if (!isMenuClicked) {
             setDisplay("flex")
         }
@@ -28,10 +29,8 @@ const Nav = () => {
 
     // Listen for route changes and close the menu
     useEffect(() => {
-        if (isMenuClicked) {
-            setDisplay("none");
-            setIsMenuClicked(false);
-        }
+        setDisplay("none");
+        setIsMenuClicked(false);
     }, [location.pathname]);
 
     useEffect(() => {
