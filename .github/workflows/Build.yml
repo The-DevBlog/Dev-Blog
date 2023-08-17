@@ -7,7 +7,7 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: devblog
-  CLIENT_APP_DIRECTORY: devblog\devblog\ClientApp\
+  CLIENT_APP_DIRECTORY: ClientApp
 jobs:
   build:
     runs-on: windows-latest
