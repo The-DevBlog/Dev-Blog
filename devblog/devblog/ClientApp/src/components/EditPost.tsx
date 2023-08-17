@@ -1,4 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
+import "./styles/EditPost.css";
+
 
 interface IEditPostProps {
     id?: number;
@@ -34,18 +36,16 @@ const EditPost = (props: IEditPostProps) => {
     }, [description]);
 
     return (
-        <>
-            <div>
-                <form onSubmit={updatePost}>
-                    <p style={{ fontFamily: "sans-serif" }}>Mastodon char count: {charCount}/500</p>
-                    <div>
-                        <textarea value={description} onChange={handleDescriptionChange} style={{ width: "100%", height: "200px" }} />
-                    </div>
+        <div>
+            <form onSubmit={updatePost}>
+                <p style={{ fontFamily: "sans-serif" }}>Mastodon char count: {charCount}/500</p>
+                <div>
+                    <textarea className="edit-post-description" value={description} onChange={handleDescriptionChange} />
+                </div>
 
-                    <button>Update Post</button>
-                </form>
-            </div>
-        </>
+                <button>Update Post</button>
+            </form>
+        </div>
     )
 }
 

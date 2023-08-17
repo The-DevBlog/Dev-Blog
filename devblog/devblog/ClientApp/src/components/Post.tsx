@@ -46,43 +46,46 @@ const Post = (props: IPost) => {
 
     return (
         <div className="post">
-            {/* DATE */}
-            <div className="post-info">
-                {isAdmin &&
-                    <>
-                        <EditPost {...props} onPostEdit={handlePostEdit} />
-                        <DeletePost {...props} />
-                    </>
-                }
-                <span className="date">{date}</span>
-            </div>
-
-            {/* IMAGES */}
-            <Carousel
-                showThumbs={false}
-                showStatus={false}
-                dynamicHeight={true}>
-
-                {props.imgs && props.imgs?.map(img => (
-                    <div ><img src={img.url} alt="development update img" /></div>
-                ))}
-            </Carousel>
-
-            {/* LIKE / DISLIKE */}
-            <Vote postId={props.id} />
-
-            {/* DESCRIPTION */}
-            {props.description && <ReactMarkdown className="description" children={description || ""} />}
-
-            {/* COMMENTS */}
-            <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
             <div>
-                {displayedComments?.map((c) => <Comment key={c.id} {...c} handleCommentChange={handleCommentChange} />)}
-                {(comments && comments.length > 5) && (
-                    <button className="show-all-comments-btn" onClick={() => setShowAllComments(!showAllComments)}>
-                        {showAllComments ? 'Hide Comments' : 'Show All Comments'}
-                    </button>
-                )}
+
+                {/* DATE */}
+                <div className="post-info">
+                    {isAdmin &&
+                        <>
+                            <DeletePost {...props} />
+                            <EditPost {...props} onPostEdit={handlePostEdit} />
+                        </>
+                    }
+                    <span className="date">{date}</span>
+                </div>
+
+                {/* IMAGES */}
+                <Carousel
+                    showThumbs={false}
+                    showStatus={false}
+                    dynamicHeight={true}>
+
+                    {props.imgs && props.imgs?.map(img => (
+                        <div ><img src={img.url} alt="development update img" /></div>
+                    ))}
+                </Carousel>
+
+                {/* LIKE / DISLIKE */}
+                <Vote postId={props.id} />
+
+                {/* DESCRIPTION */}
+                {props.description && <ReactMarkdown className="description" children={description || ""} />}
+
+                {/* COMMENTS */}
+                <AddComment postId={props.id} onCommentAdd={handleCommentChange} />
+                <div>
+                    {displayedComments?.map((c) => <Comment key={c.id} {...c} handleCommentChange={handleCommentChange} />)}
+                    {(comments && comments.length > 5) && (
+                        <button className="show-all-comments-btn" onClick={() => setShowAllComments(!showAllComments)}>
+                            {showAllComments ? 'Hide Comments' : 'Show All Comments'}
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

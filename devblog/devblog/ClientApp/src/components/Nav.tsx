@@ -17,7 +17,6 @@ const Nav = () => {
     };
 
     const updateMenu = () => {
-        console.log(isMenuClicked)
         if (!isMenuClicked) {
             setDisplay("flex")
         }

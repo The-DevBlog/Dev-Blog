@@ -22,7 +22,6 @@ const SignIn = () => {
             const data = await res.json();
 
             if (data.error) {
-                // console.log(data.error);
                 setError(data.error);
                 console.log(error);
             }
