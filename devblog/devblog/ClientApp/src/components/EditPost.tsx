@@ -37,9 +37,9 @@ const EditPost = (props: IEditPostProps) => {
         <>
             <div>
                 <form onSubmit={updatePost}>
-                    <p>Mastodon char count: {charCount}/500</p>
+                    <p style={{ fontFamily: "sans-serif" }}>Mastodon char count: {charCount}/500</p>
                     <div>
-                        <textarea value={description} onChange={handleDescriptionChange} style={{ width: "550px", height: "200px" }} />
+                        <textarea value={description} onChange={handleDescriptionChange} style={{ width: "100%", height: "200px" }} />
                     </div>
 
                     <button>Update Post</button>
