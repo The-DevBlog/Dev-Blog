@@ -7,7 +7,7 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: devblog
-  CLIENT_APP_DIRECTORY: ..\devblog\devblog\ClientApp
+  CLIENT_APP_DIRECTORY: devblog\devblog\ClientApp
 jobs:
   build:
     runs-on: windows-latest
@@ -24,18 +24,18 @@ jobs:
       # - name: Test
       #   run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
 
-      - name: Check Working Directory Contents
-        run: |
-          dir
-          pwd
-
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: 16
-
-      # - name: Install and Build Client App
+      # - name: Check Working Directory Contents
       #   run: |
-      #     cd ${{ env.CLIENT_APP_DIRECTORY }}
-      #     npm install
-      #     npm run build
+      #     dir
+      #     pwd
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install and Build Client App
+        run: |
+          cd devblog\devblog\ClientApp
+          npm install
+          npm run build
