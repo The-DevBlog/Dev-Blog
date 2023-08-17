@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Discord.WebSocket;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +83,12 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole(Role.Admin));
     options.AddPolicy("Visitor", policy => policy.RequireRole(Role.Visitor));
+});
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+    options.HttpsPort = 5001;
 });
 
 var app = builder.Build();
