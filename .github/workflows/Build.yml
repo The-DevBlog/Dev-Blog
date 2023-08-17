@@ -27,6 +27,7 @@ jobs:
       - name: Check Working Directory Contents
         run: |
           ls -R ${{ env.WORKING_DIRECTORY }}
+          cd devblog
           pwd
 
       # - name: Setup Node.js
