@@ -29,7 +29,9 @@ jobs:
       #     node-version: ${{ matrix.node-version }}
       # - name: npm ci
       #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" ci
+      # - name: npm install
+      #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" install
       - name: npm install
-        run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" install
+        run: npm --prefix ${{ env.CLIENT_APP_DIRECTORY }} install
       - name: npm run build
-        run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" run build
+        run: npm --prefix ${{ env.CLIENT_APP_DIRECTORY }} run build
