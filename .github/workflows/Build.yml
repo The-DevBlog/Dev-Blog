@@ -23,11 +23,13 @@ jobs:
       #   run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
       # - name: Test
       #   run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm ci
-        run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" ci
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      # - name: npm ci
+      #   run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" ci
+      - name: npm init
+        run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" init
       - name: npm run build
         run: npm --prefix "${{ env.CLIENT_APP_DIRECTORY }}" run build
