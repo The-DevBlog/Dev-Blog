@@ -75,7 +75,7 @@ const AddPost = () => {
                         <span style={{ color: discordUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
                             {discordUploadStatus}
                         </span>
-                        {discordUploadStatus != 200 &&
+                        {discordUploadStatus !== 200 &&
                             <p>{discordErrMessage}</p>
                         }
                     </h4>
@@ -83,7 +83,7 @@ const AddPost = () => {
                         <span style={{ color: mastodonUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
                             {mastodonUploadStatus}
                         </span>
-                        {mastodonUploadStatus != 200 &&
+                        {mastodonUploadStatus !== 200 &&
                             <p>{mastodonErrMessage}</p>
                         }
                     </h4>
