@@ -42,7 +42,7 @@ const Home = () => {
 
     return (
         <section className="latest-post">
-            {latestPost ? < Post {...latestPost} /> : <h1>Loading...</h1>}
+            {latestPost ? < Post {...latestPost} key={latestPost.id} /> : <h1>Loading...</h1>}
 
             {/* update YouTube video url */}
             {isAdmin &&
