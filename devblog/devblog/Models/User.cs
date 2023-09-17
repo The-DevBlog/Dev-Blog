@@ -5,10 +5,6 @@ namespace devblog.Models
     public class User : IdentityUser
     {
         public bool Subscribed { get; set; }
-
-        public User()
-        {
-            Subscribed = true;
-        }
+        public User() => Subscribed = true;
     }
 }

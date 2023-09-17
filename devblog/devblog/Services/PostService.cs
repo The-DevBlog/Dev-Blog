@@ -4,9 +4,8 @@ using devblog.Models;
 using Microsoft.EntityFrameworkCore;
 using Discord;
 using Discord.WebSocket;
-using RestSharp.Authenticators;
-using RestSharp;
 using Mastonet;
+using System.Net;
 
 namespace devblog.Services
 {
@@ -33,8 +32,8 @@ namespace devblog.Services
         /// </summary>
         /// <param name="description">Description of post</param>
         /// <param name="files">Files to upload</param>
-        /// <returns>Post</returns>
-        public async Task<Post> Create(string description, IFormFile[] files)
+        /// <returns>UploadStatus</returns>
+        public async Task<UploadStatus> Create(string description, IFormFile[] files)
         {
             var newPost = new Post()
             {
@@ -43,16 +42,22 @@ namespace devblog.Services
             };
 
             var res = _db.Post.Add(newPost).Entity;
-            await _db.SaveChangesAsync();
-            await _imgService.Create(files, res.Id);
 
-            await PostToDiscord(description, files);
-            await PostToTwitter(description, files);
-            await PostToMastodon(description, files);
+            var uploadStatus = new UploadStatus
+            {
+                DiscordStatus = await PostToDiscord(description, files),
+                MastodonStatus = await PostToMastodon(description, files)
+            };
 
-            return res;
+            // only create post on the devblog if posts are successful on other clients
+            if(uploadStatus.DiscordStatus.IsSuccessStatusCode && uploadStatus.MastodonStatus.IsSuccessStatusCode)
+            {
+                await _db.SaveChangesAsync();
+                await _imgService.Create(files, res.Id);
+            }
+
+            return uploadStatus;
         }
-
 
         /// <summary>
         /// Retrieves all posts
@@ -135,11 +140,12 @@ namespace devblog.Services
         /// </summary>
         /// <param name="description">Description of new post</param>
         /// <param name="files">Images of new post</param>
-        private async Task PostToDiscord(string description, IFormFile[] files)
+        private async Task<HttpResponseMessage> PostToDiscord(string description, IFormFile[] files)
         {
             await _discordClient.StartAsync().WaitAsync(TimeSpan.FromSeconds(15));
 
             var channel = await _discordClient.GetChannelAsync(_config.GetValue<ulong>("DiscordChannelId")) as IMessageChannel;
+            var res = new HttpResponseMessage();
 
             // add imgs to request
             List<FileAttachment> attachments = new List<FileAttachment>();
@@ -153,39 +159,13 @@ namespace devblog.Services
             }
             catch (Exception e)
             {
-                throw new Exception("Failed to post to  Discord: " + e.Message);
+                res.StatusCode = HttpStatusCode.BadRequest;
+                res.ReasonPhrase = "Failed to post to  Discord: " + e.Message;
+                return res;
             }
-        }
 
-        /// <summary>
-        /// Sends new post to Twitter
-        /// </summary>
-        /// <param name="description">Description of new post</param>
-        /// <param name="files">Images of new post</param>
-        private async Task PostToTwitter(string description, IFormFile[] files)
-        {
-            var options = new RestClientOptions()
-            {
-                Authenticator = OAuth1Authenticator.ForProtectedResource(_config.GetValue<string>("TwitterConsumerKey"),
-                                                                        _config.GetValue<string>("TwitterConsumerSecret"),
-                                                                        _config.GetValue<string>("TwitterAccessToken"),
-                                                                        _config.GetValue<string>("TwitterAccessTokenSecret")),
-                BaseUrl = new Uri("https://api.twitter.com/2/tweets"),
-            };
-
-            var client = new RestClient(options);
-            var request = new RestRequest();
-
-            request.AddJsonBody(new { text = description });
-
-            try
-            {
-                var response = client.Post(request);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Failed to post to Reddit: " + e.Message);
-            }
+            res.StatusCode = HttpStatusCode.OK;
+            return res;
         }
 
         /// <summary>
@@ -193,27 +173,33 @@ namespace devblog.Services
         /// </summary>
         /// <param name="description">Description of new post</param>
         /// <param name="files">Images of new post</param>
-        private async Task PostToMastodon(string description, IFormFile[] files)
+        private async Task<HttpResponseMessage> PostToMastodon(string description, IFormFile[] files)
         {
             var client = new MastodonClient("mastodon.social", _config.GetValue<string>("MastodonToken"));
+            var res = new HttpResponseMessage();
 
             // add imgs to request
             List<string> attachments = new List<string>();
-            foreach (var file in files)
-            {
-                var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
-                var mediaId = await client.UploadMedia(media);
-                attachments.Add(mediaId.Id);
-            }
 
             try
             {
+                foreach (var file in files)
+                {
+                    var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
+                    var mediaId = await client.UploadMedia(media);
+                    attachments.Add(mediaId.Id);
+                }
                 await client.PublishStatus(description, mediaIds: attachments);
             }
             catch (Exception e)
             {
-                throw new Exception("Failed to post to Mastodon: " + e.Message);
+                res.StatusCode = HttpStatusCode.BadRequest;
+                res.ReasonPhrase = "Failed to post to  Mastodon: " + e.Message;
+                return res;
             }
+
+            res.StatusCode = HttpStatusCode.OK;
+            return res;
         }
     }
 }

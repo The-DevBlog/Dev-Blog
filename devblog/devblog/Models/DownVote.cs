@@ -3,6 +3,6 @@
     public class DownVote
     {
         public int PostId { get; set; }
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
     }
 }

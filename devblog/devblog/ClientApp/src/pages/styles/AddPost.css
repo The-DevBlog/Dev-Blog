@@ -1,6 +1,5 @@
 .create-post {
     align-items: center;
-    display: flex;
     justify-content: center;
     margin-top: 150px;
     justify-self: center;
@@ -41,4 +40,13 @@ a {
     width: 55%;
     margin-left: 5px;
     font-size: 12px;
+}
+
+.upload-status {
+    font-family: 'Chivo Mono', monospace;
+}
+
+.upload-status>h4 p {
+    color: red;
+    margin-left: 30px;
 }
