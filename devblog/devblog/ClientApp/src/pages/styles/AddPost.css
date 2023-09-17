@@ -28,7 +28,9 @@ a {
 }
 
 .addpost-description>textarea {
-    width: 45%;
+    background-color: rgb(26, 32, 41);
+    width: 100%;
+    min-height: 100px;
     resize: none;
     outline: none;
     font-size: 17;
@@ -36,17 +38,26 @@ a {
     border-right: 2px solid rgb(70, 68, 60);
 }
 
-.description-result {
-    width: 55%;
-    margin-left: 5px;
-    font-size: 12px;
+.post-preview {
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 100px;
+    background-color: rgb(26, 32, 41);
 }
 
-.upload-status {
+.create-post {
     font-family: 'Chivo Mono', monospace;
+}
+
+.upload-platforms {
+    margin-bottom: 40px;
 }
 
 .upload-status>h4 p {
     color: red;
     margin-left: 30px;
+}
+
+.upload-platforms ul {
+    list-style: none;
 }

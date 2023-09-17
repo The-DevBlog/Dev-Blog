@@ -12,6 +12,9 @@ const AddPost = () => {
     const [discordErrMessage, setDiscordErrMessage] = useState("");
     const [mastodonUploadStatus, setMastodonUploadStatus] = useState<number>(0);
     const [mastodonErrMessage, setMastodonErrMessage] = useState("");
+    const [postToDiscord, setPostToDiscord] = useState(false);
+    const [postToMastodon, setPostToMastodon] = useState(false);
+    const [postToDevBlog, setPostToDevBlog] = useState(false);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -20,6 +23,9 @@ const AddPost = () => {
         if (files != null) {
             files.forEach(f => formData.append("files", f));
             formData.append("description", description);
+            formData.append("postToDiscord", postToDiscord.toString());
+            formData.append("postToMastodon", postToMastodon.toString());
+            formData.append("postToDevBlog", postToDevBlog.toString());
         }
 
         await fetch("api/posts", {
@@ -50,46 +56,84 @@ const AddPost = () => {
 
     return (
         < div className="create-post" >
-            {isAdmin && <>
+            {isAdmin &&
                 <form onSubmit={handleSubmit}>
-                    <label>Image</label>
-                    <input
-                        type="file"
-                        required
-                        multiple
-                        onChange={(e) => e.target.files && setFile(Array.from(e.target.files))} />
+                    <div className="upload-platforms">
+                        <p>Upload to:</p>
+                        <ul>
+                            <li>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={postToDiscord}
+                                        onChange={(e) => setPostToDiscord(e.target.checked)} />
+                                    Discord
+                                </label>
+                            </li>
 
-                    <label>Description </label>
-                    <p>Mastodon char count: {charCount}/500</p>
-                    <div className="addpost-description">
-                        <textarea onChange={(e) => setDescription(e.currentTarget.value)} />
-                        <ReactMarkdown className="description-result" children={description} />
+                            <li>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={postToMastodon}
+                                        onChange={(e) => setPostToMastodon(e.target.checked)} />
+                                    Mastodon
+                                </label>
+                            </li>
+
+                            <li>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={postToDevBlog}
+                                        onChange={(e) => setPostToDevBlog(e.target.checked)} />
+                                    DevBlog
+                                </label>
+                            </li>
+                        </ul>
+
+                        {/* Upload Statuses */}
+                        <div className="upload-status">
+                            <h4 style={{ display: postToDiscord ? 'block' : 'none' }}>Discord Upload Status:
+                                <span style={{ color: discordUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
+                                    {discordUploadStatus}
+                                </span>
+                                {discordUploadStatus !== 200 &&
+                                    <p>{discordErrMessage}</p>
+                                }
+                            </h4>
+                            <h4 style={{ display: postToMastodon ? 'block' : 'none' }}>Mastodon Upload Status:
+                                <span style={{ color: mastodonUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
+                                    {mastodonUploadStatus}
+                                </span>
+                                {mastodonUploadStatus !== 200 &&
+                                    <p>{mastodonErrMessage}</p>
+                                }
+                            </h4>
+                        </div>
+                    </div>
+
+                    <label>Image
+                        <input
+                            type="file"
+                            required
+                            multiple
+                            onChange={(e) => e.target.files && setFile(Array.from(e.target.files))} />
+                    </label>
+
+                    <label>Description
+                        <p>Mastodon char count: {charCount}/500</p>
+                        <div className="addpost-description">
+                            <textarea onChange={(e) => setDescription(e.currentTarget.value)} />
+                        </div>
+                    </label>
+
+                    <p>Preview:</p>
+                    <div className="post-preview">
+                        <ReactMarkdown children={description} />
                     </div>
                     <button>Create Post</button>
-
                 </form>
-
-                {/* Upload Statuses */}
-                <div className="upload-status">
-                    <h4>Discord Upload Status:
-                        <span style={{ color: discordUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
-                            {discordUploadStatus}
-                        </span>
-                        {discordUploadStatus !== 200 &&
-                            <p>{discordErrMessage}</p>
-                        }
-                    </h4>
-                    <h4>Mastodon Upload Status:
-                        <span style={{ color: mastodonUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
-                            {mastodonUploadStatus}
-                        </span>
-                        {mastodonUploadStatus !== 200 &&
-                            <p>{mastodonErrMessage}</p>
-                        }
-                    </h4>
-                </div>
-
-            </>
             }
         </div >
     )

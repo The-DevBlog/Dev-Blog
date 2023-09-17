@@ -2,7 +2,7 @@
 {
     public class UploadStatus
     {
-        public required HttpResponseMessage DiscordStatus { get; set; }
-        public required HttpResponseMessage MastodonStatus { get; set; }
+        public HttpResponseMessage? DiscordStatus { get; set; }
+        public HttpResponseMessage? MastodonStatus { get; set; }
     }
 }

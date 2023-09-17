@@ -6,6 +6,7 @@ using Discord;
 using Discord.WebSocket;
 using Mastonet;
 using System.Net;
+using devblog.Controllers;
 
 namespace devblog.Services
 {
@@ -30,30 +31,34 @@ namespace devblog.Services
         /// <summary>
         /// Creates a new post
         /// </summary>
-        /// <param name="description">Description of post</param>
-        /// <param name="files">Files to upload</param>
+        /// <param name="post">Data for new post</param>
         /// <returns>UploadStatus</returns>
-        public async Task<UploadStatus> Create(string description, IFormFile[] files)
+        public async Task<UploadStatus> Create(PostUpload post)
         {
             var newPost = new Post()
             {
                 Date = DateTime.Now,
-                Description = description,
+                Description = post.description,
             };
 
             var res = _db.Post.Add(newPost).Entity;
 
-            var uploadStatus = new UploadStatus
-            {
-                DiscordStatus = await PostToDiscord(description, files),
-                MastodonStatus = await PostToMastodon(description, files)
-            };
+            var uploadStatus = new UploadStatus();
 
-            // only create post on the devblog if posts are successful on other clients
-            if(uploadStatus.DiscordStatus.IsSuccessStatusCode && uploadStatus.MastodonStatus.IsSuccessStatusCode)
+            if (post.postToDiscord)
+            {
+                uploadStatus.DiscordStatus = await PostToDiscord(post.description, post.files);
+            }
+
+            if (post.postToMastodon)
+            {
+                uploadStatus.MastodonStatus = await PostToMastodon(post.description, post.files);
+            }
+
+            if (post.postToDevBlog)
             {
                 await _db.SaveChangesAsync();
-                await _imgService.Create(files, res.Id);
+                await _imgService.Create(post.files, res.Id);
             }
 
             return uploadStatus;

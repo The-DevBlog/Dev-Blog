@@ -1,4 +1,5 @@
-﻿using devblog.Models;
+﻿using devblog.Controllers;
+using devblog.Models;
 
 namespace devblog.Interfaces
 {
@@ -7,10 +8,9 @@ namespace devblog.Interfaces
         /// <summary>
         /// Creates a new post
         /// </summary>
-        /// <param name="description">Description of post</param>
-        /// <param name="file">File to uploadfcgvvb</param>
-        /// <returns>UploadStatus</returns>
-        Task<UploadStatus> Create(string description, IFormFile[] files);
+        /// <param name="post">Data for new post</param>
+        /// <returns>Post</returns>
+        Task<UploadStatus> Create(PostUpload post);
 
         /// <summary>
         /// Retrieves all posts
