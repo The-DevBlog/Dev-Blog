@@ -43,13 +43,13 @@ namespace devblog.Controllers
         /// <summary>
         /// Adds a new post
         /// </summary>
-        /// <param name="files">Data for new post</param>
+        /// <param name="post">Data for new post</param>
         /// <returns>UploadStatus</returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<UploadStatus> Create([FromForm] FileUpload img)
+        public async Task<UploadStatus> Create([FromForm] PostUpload post)
         {
-            var newPost = await _posts.Create(img.description, img.files);
+            var newPost = await _posts.Create(post);
             return newPost;
         }
 
@@ -82,8 +82,11 @@ namespace devblog.Controllers
         }
     }
 
-    public class FileUpload
+    public class PostUpload
     {
+        public bool postToDiscord { get; set; }
+        public bool postToMastodon { get; set; }
+        public bool postToDevBlog { get; set; }
         public string? description { get; set; }
         public required IFormFile[] files { get; set; }
     }
