@@ -9,8 +9,8 @@ namespace devblog.Interfaces
         /// </summary>
         /// <param name="description">Description of post</param>
         /// <param name="file">File to uploadfcgvvb</param>
-        /// <returns>Post</returns>
-        Task<Post> Create(string description, IFormFile[] files);
+        /// <returns>UploadStatus</returns>
+        Task<UploadStatus> Create(string description, IFormFile[] files);
 
         /// <summary>
         /// Retrieves all posts

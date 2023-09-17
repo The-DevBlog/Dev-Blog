@@ -19,8 +19,7 @@ namespace devblog.Services
         /// <param name="userName">new username</param>
         public async Task Create(string username)
         {
-            Username user = new Username();
-            user.Name = username;
+            Username user = new Username(username);
 
             _db.usernames.Add(user);
             await _db.SaveChangesAsync();

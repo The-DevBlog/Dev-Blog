@@ -3,7 +3,6 @@ using devblog.Interfaces;
 using devblog.Models;
 using Dropbox.Api;
 using Dropbox.Api.Files;
-using System.Security.Policy;
 
 namespace devblog.Services
 {
@@ -73,7 +72,6 @@ namespace devblog.Services
         public async Task<string> AddImgToDropBox(Stream fs, string name)
         {
             // create unique file name
-            //string ext = Path.GetExtension(name);
             string fileName = $"{DateTime.Now.Ticks}{name}";
             var destinationPath = _config["DropboxDestinationPath"];
             string url = "";

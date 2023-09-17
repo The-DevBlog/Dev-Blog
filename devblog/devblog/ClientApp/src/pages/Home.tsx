@@ -42,7 +42,7 @@ const Home = () => {
 
     return (
         <section className="latest-post">
-            {latestPost ? < Post {...latestPost} /> : <h1>Loading...</h1>}
+            {latestPost ? < Post {...latestPost} key={latestPost.id} /> : <h1>Loading...</h1>}
 
             {/* update YouTube video url */}
             {isAdmin &&
@@ -55,8 +55,6 @@ const Home = () => {
 
             {/* YouTube video */}
             <iframe className="youtube-video"
-                // width="925"
-                // height="520"
                 src={url}
                 title="YouTube video player"
                 allowFullScreen

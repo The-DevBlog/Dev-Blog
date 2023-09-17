@@ -44,13 +44,12 @@ namespace devblog.Controllers
         /// Adds a new post
         /// </summary>
         /// <param name="files">Data for new post</param>
-        /// <returns>Post</returns>
+        /// <returns>UploadStatus</returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<Post> Create(IFormFile[] files)
+        public async Task<UploadStatus> Create([FromForm] FileUpload img)
         {
-            var description = Request.Form["description"];
-            var newPost = await _posts.Create(description, files);
+            var newPost = await _posts.Create(img.description, img.files);
             return newPost;
         }
 
@@ -81,6 +80,12 @@ namespace devblog.Controllers
             await _imgService.DeleteImgFromDropBox(imgs);
             await _posts.Delete(id);
         }
+    }
+
+    public class FileUpload
+    {
+        public string? description { get; set; }
+        public required IFormFile[] files { get; set; }
     }
 }
 
