@@ -53,7 +53,8 @@ s .navbar .nav-items a.active {
 
 .nav-items>a:nth-child(1),
 .nav-items>a:nth-child(2),
-.nav-items>a:nth-child(3) {
+.nav-items>a:nth-child(3),
+.nav-items>a:nth-child(4) {
     margin-top: auto;
     margin-bottom: 5px;
 }
@@ -96,7 +97,10 @@ s .navbar .nav-items a.active {
     .mobile-nav-links form {
         text-decoration: none;
         padding-top: 5px;
-        /* border: 2px solid yellow; */
+    }
+
+    .mobile-nav-links>a:hover {
+        opacity: 1.0;
     }
 
     .mobile-nav-links a.active {
@@ -120,9 +124,12 @@ s .navbar .nav-items a.active {
         flex-direction: column;
     }
 
+    .logout-form {
+        width: fit-content;
+    }
+
     .logout {
         font-size: 16px;
-        margin-left: auto;
         padding: 0px;
     }
 }

@@ -7,8 +7,9 @@ import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import Posts from './pages/Posts';
 import SignUp from './pages/SignUp';
-import "./global.css";
 import About from './pages/About';
+import Insights from './pages/Insights';
+import "./global.css";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/posts" element={<Posts />} />
         <Route path="/posts/create" element={<AddPost />} />
         <Route path="/about" element={<About />} />
+        <Route path="/insights" element={<Insights />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signout" element={<SignOut />} />

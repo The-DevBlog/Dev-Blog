@@ -3,6 +3,7 @@ using devblog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,11 +17,8 @@ namespace devblog.Controllers
     {
         public SignInManager<User> _signInMgr { get; }
         public UserManager<User> _userMgr { get; }
-
         public IConfiguration _config;
-
         private readonly IUsernameService _username;
-        //private readonly IEmailRepository _email;
 
         public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config, IUsernameService username)
         {
@@ -30,6 +28,36 @@ namespace devblog.Controllers
             _username = username;
         }
 
+        /// <summary>
+        /// Returns all user's usernames and emails
+        /// </summary>
+        /// <returns>List<UserInfo></returns>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("count")]
+        public async Task<List<UserInfo>> GetUsersCount()
+        {
+            var users = await _userMgr.Users
+                .Select(u => new UserInfo
+                {
+                    UserName = u.UserName,
+                    Email = u.Email
+                })
+                .ToListAsync();
+
+            return users;
+        }
+
+        public class UserInfo
+        {
+            public string? UserName { get; set; }
+            public string? Email { get; set; }
+        }
+
+
+        /// <summary>
+        /// Delete an account
+        /// </summary>
+        /// <param name="username"></param>
         [Authorize(Roles = "Visitor")]
         [HttpDelete("{username}")]
         public async Task<IActionResult> DeleteAccount(string username)
@@ -48,6 +76,23 @@ namespace devblog.Controllers
             return Redirect("/");
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("admin/{username}")]
+        public async Task AdminDeleteAccount(string username)
+        {
+            User user = _userMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
+
+            if(user != null)
+            {
+                await _userMgr.DeleteAsync(user);
+            }
+        }
+
+
+        /// <summary>
+        /// Signs in a user
+        /// </summary>
+        /// <param name="signIn"></param>
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignIn signIn)
         {
