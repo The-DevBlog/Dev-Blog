@@ -13,10 +13,6 @@ interface IEditCommentProps {
 const EditComment = (props: IEditCommentProps) => {
     const [content, setContent] = useState(props.content);
 
-    const handleEdit = () => {
-        props.setIsEditing(true);
-    };
-
     const handleSave = async () => {
         props.setIsEditing(false);
 
@@ -37,7 +33,7 @@ const EditComment = (props: IEditCommentProps) => {
 
     return (
         <>
-            {!props.isEditing && <Edit className="edit-comment-btn" onClick={handleEdit} />}
+            {!props.isEditing && <Edit className="edit-comment-btn" onClick={() => props.setIsEditing(true)} />}
 
             {props.isEditing && (
                 <div className="edit-comment">

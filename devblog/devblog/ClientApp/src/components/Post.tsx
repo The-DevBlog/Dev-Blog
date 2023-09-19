@@ -47,15 +47,12 @@ const Post = (props: IPost) => {
     return (
         <div className="post">
             <div>
-
                 {/* DATE */}
                 <div className="post-info">
                     {isAdmin &&
-                        <>
-                            <DeletePost {...props} />
-                            <EditPost {...props} onPostEdit={handlePostEdit} />
-                        </>
+                        <EditPost {...props} onPostEdit={handlePostEdit} />
                     }
+                    <DeletePost {...props} />
                     <span className="date">{date}</span>
                 </div>
 
@@ -87,7 +84,7 @@ const Post = (props: IPost) => {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
