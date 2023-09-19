@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
+import { MdModeEditOutline as Edit } from "react-icons/md";
 import "./styles/EditPost.css";
-
 
 interface IEditPostProps {
     id?: number;
@@ -11,6 +11,7 @@ interface IEditPostProps {
 const EditPost = (props: IEditPostProps) => {
     const [description, setDescription] = useState(props.description);
     const [charCount, setCharCount] = useState<number>();
+    const [isEditing, setIsEditing] = useState(false);
 
     const updatePost = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,7 +23,7 @@ const EditPost = (props: IEditPostProps) => {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(description)
-        });
+        }).then(() => setIsEditing(false));
     }
 
     const handleDescriptionChange = async (e: React.ChangeEvent<HTMLTextAreaElement>
@@ -36,16 +37,21 @@ const EditPost = (props: IEditPostProps) => {
     }, [description]);
 
     return (
-        <div>
-            <form onSubmit={updatePost}>
-                <p style={{ fontFamily: "sans-serif" }}>Mastodon char count: {charCount}/500</p>
-                <div>
-                    <textarea className="edit-post-description" value={description} onChange={handleDescriptionChange} />
-                </div>
+        <>
+            {!isEditing && <Edit className="edit-post-btn" onClick={() => setIsEditing(true)} />}
 
-                <button>Update Post</button>
-            </form>
-        </div>
+            {isEditing && (
+                <div className="edit-post">
+                    <form onSubmit={updatePost}>
+                        <p style={{ fontFamily: "sans-serif" }}>Mastodon char count: {charCount}/500</p>
+                        <textarea className="edit-post-description" value={description} onChange={handleDescriptionChange} />
+
+                        <button>Update</button>
+                        <button onClick={() => setIsEditing(false)}>Cancel</button>
+                    </form>
+                </div>
+            )}
+        </>
     )
 }
 

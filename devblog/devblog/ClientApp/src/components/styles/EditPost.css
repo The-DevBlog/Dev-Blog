@@ -1,4 +1,15 @@
+.edit-post-btn:hover {
+    color: greenyellow;
+    cursor: pointer;
+
+}
+
 .edit-post-description {
-    width: 99%;
+    width: 100%;
     height: 125px;
+}
+
+.edit-post>form>button {
+    display: inline;
+    margin-right: 10px;
 }
