@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import SignOut from "../pages/SignOut";
 import { MdMenu } from "react-icons/md";
 import { IsLoggedIn } from "../components/AuthenticationService";
+import { GetIsAdmin } from "./AuthenticationService";
 import "./styles/Nav.css";
 
 const Nav = () => {
@@ -10,7 +11,10 @@ const Nav = () => {
     const [userName, setUsername] = useState("");
     const [isMenuClicked, setIsMenuClicked] = useState(false)
     const [display, setDisplay] = useState("none")
+    const [isAdmin, setIsAdmin] = useState(false);
     const location = useLocation();
+
+    useEffect(() => setIsAdmin(GetIsAdmin), []);
 
     const isActive = (path: string) => {
         return location.pathname === path ? "active" : "non-active";
@@ -52,6 +56,7 @@ const Nav = () => {
                     <Link to="/" className={isActive("/")}>Home</Link>
                     <Link to="/posts" className={isActive("/posts")}>Posts</Link>
                     <Link to="/about" className={isActive("/about")}>About</Link>
+                    {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
 
                     {loggedIn ? (
                         <span className="accounts">
@@ -74,6 +79,8 @@ const Nav = () => {
                     <Link to="/" className={isActive("/")}>Home</Link>
                     <Link to="/posts" className={isActive("/posts")}>Posts</Link>
                     <Link to="/about" className={isActive("/about")}>About</Link>
+                    {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
+
                     {loggedIn && <SignOut />}
 
                     {!loggedIn &&

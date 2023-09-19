@@ -11,21 +11,25 @@ const DeleteAccount = () => {
     }, []);
 
     const handleDelete = async () => {
-        await fetch(`api/accounts/${userName}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            }
-        }).then(async () => {
-            await fetch(`api/accounts/signout`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-            }).then(() => {
-                localStorage.clear();
-                window.location.reload();
-            });
-        })
+        const shouldDelete = window.confirm("Are you sure?");
+
+        if (shouldDelete) {
+            await fetch(`api/accounts/${userName}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }).then(async () => {
+                await fetch(`api/accounts/signout`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                }).then(() => {
+                    localStorage.clear();
+                    window.location.reload();
+                });
+            })
+        }
     };
 
     return <>{loggedIn && <button onClick={handleDelete} > Delete Account</button >}</>

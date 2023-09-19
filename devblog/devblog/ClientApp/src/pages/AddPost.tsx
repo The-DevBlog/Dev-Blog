@@ -113,26 +113,28 @@ const AddPost = () => {
                         </div>
                     </div>
 
-                    <label>Image
-                        <input
-                            type="file"
-                            required
-                            multiple
-                            onChange={(e) => e.target.files && setFile(Array.from(e.target.files))} />
-                    </label>
+                    <div className="new-post-info">
+                        <label>Image
+                            <input
+                                type="file"
+                                required
+                                multiple
+                                onChange={(e) => e.target.files && setFile(Array.from(e.target.files))} />
+                        </label>
 
-                    <label>Description
-                        <p>Mastodon char count: {charCount}/500</p>
-                        <div className="addpost-description">
-                            <textarea onChange={(e) => setDescription(e.currentTarget.value)} />
+                        <label>Description
+                            <p>Mastodon character limit: {charCount}/500</p>
+                            <div className="addpost-description">
+                                <textarea placeholder="Write description here..." onChange={(e) => setDescription(e.currentTarget.value)} />
+                            </div>
+                        </label>
+
+                        <p>Preview:</p>
+                        <div className="post-preview">
+                            <ReactMarkdown children={description} />
                         </div>
-                    </label>
-
-                    <p>Preview:</p>
-                    <div className="post-preview">
-                        <ReactMarkdown children={description} />
+                        <button>Create Post</button>
                     </div>
-                    <button>Create Post</button>
                 </form>
             }
         </div >
