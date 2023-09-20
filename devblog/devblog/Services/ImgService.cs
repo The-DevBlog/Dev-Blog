@@ -23,24 +23,35 @@ namespace devblog.Services
         /// </summary>
         /// <param name="files">Files to upload</param>
         /// <param name="postId">Post Id</param>
-        public async Task Create(IFormFile[] files, int postId)
+        public async Task<HttpResponseMessage> Create(IFormFile[] files, int postId)
         {
+            var res = new HttpResponseMessage();
             foreach (var f in files)
             {
-                var stream = f.OpenReadStream();
-                string url = await AddImgToDropBox(stream, f.FileName);
-
-                Img img = new Img
+                try
                 {
-                    PostId = postId,
-                    Url = url,
-                };
+                    var stream = f.OpenReadStream();
+                    string url = await AddImgToDropBox(stream, f.FileName);
 
-                _db.Img.Add(img);
-                await _db.SaveChangesAsync();
+                    Img img = new Img
+                    {
+                        PostId = postId,
+                        Url = url,
+                    };
+
+                    _db.Img.Add(img);
+                    await _db.SaveChangesAsync();
+                } catch (Exception e)
+                {
+                    res.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    res.ReasonPhrase = $"Failed to upload file to DropBox: {e.Message}";
+                    return res;
+                }
             }
+
+            res.StatusCode = System.Net.HttpStatusCode.OK;
+            return res;
         }
-        // "https://www.dropbox.com/scl/fi/0x5xo53l9rkg41bss41uk/638257148450375126a.png?rlkey=xuarjst596rg4t1jk38dvqhws&raw=1"
         /// <summary>
         /// Delete an img from dropbox account
         /// </summary>
