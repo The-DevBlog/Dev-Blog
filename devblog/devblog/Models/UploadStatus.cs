@@ -3,6 +3,7 @@
     public class UploadStatus
     {
         public HttpResponseMessage? DiscordStatus { get; set; }
+        public HttpResponseMessage? DevBlogStatus { get; set; }
         public HttpResponseMessage? MastodonStatus { get; set; }
     }
 }

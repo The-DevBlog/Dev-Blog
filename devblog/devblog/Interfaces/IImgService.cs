@@ -9,7 +9,7 @@ namespace devblog.Interfaces
         /// </summary>
         /// <param name="files">Files to upload</param>
         /// <param name="postId">Post Id</param>
-        Task Create(IFormFile[] files, int postId);
+        Task<HttpResponseMessage> Create(IFormFile[] files, int postId);
 
         /// <summary>
         /// Delete an img from dropbox account

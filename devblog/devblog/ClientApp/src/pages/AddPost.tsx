@@ -12,6 +12,8 @@ const AddPost = () => {
     const [discordErrMessage, setDiscordErrMessage] = useState("");
     const [mastodonUploadStatus, setMastodonUploadStatus] = useState<number>(0);
     const [mastodonErrMessage, setMastodonErrMessage] = useState("");
+    const [devBlogUploadStatus, setDevBlogUploadStatus] = useState<number>(0);
+    const [devBlogErrMessage, setDevBlogErrMessage] = useState("");
     const [postToDiscord, setPostToDiscord] = useState(false);
     const [postToMastodon, setPostToMastodon] = useState(false);
     const [postToDevBlog, setPostToDevBlog] = useState(false);
@@ -37,10 +39,21 @@ const AddPost = () => {
         }).then(async (res) => {
             if (res.ok) {
                 let data = await res.json();
-                setDiscordUploadStatus(data.discordStatus.statusCode);
-                setDiscordErrMessage(data.discordStatus.reasonPhrase)
-                setMastodonUploadStatus(data.mastodonStatus.statusCode);
-                setMastodonErrMessage(data.mastodonStatus.reasonPhrase)
+                if (postToDevBlog) {
+                    setDevBlogUploadStatus(data.devBlogStatus.statusCode);
+                    setDevBlogErrMessage(data.devBlogStatus.reasonPhrase);
+                    console.log(data);
+                }
+
+                if (postToDiscord) {
+                    setDiscordUploadStatus(data.discordStatus.statusCode);
+                    setDiscordErrMessage(data.discordStatus.reasonPhrase)
+                }
+
+                if (postToMastodon) {
+                    setMastodonUploadStatus(data.mastodonStatus.statusCode);
+                    setMastodonErrMessage(data.mastodonStatus.reasonPhrase)
+                }
             }
         })
             .catch(e => console.log("Error uploading file: ", e));
@@ -94,6 +107,7 @@ const AddPost = () => {
 
                         {/* Upload Statuses */}
                         <div className="upload-status">
+                            {/* discord */}
                             <h4 style={{ display: postToDiscord ? 'block' : 'none' }}>Discord Upload Status:
                                 <span style={{ color: discordUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
                                     {discordUploadStatus}
@@ -102,12 +116,22 @@ const AddPost = () => {
                                     <p>{discordErrMessage}</p>
                                 }
                             </h4>
+                            {/* mastodon */}
                             <h4 style={{ display: postToMastodon ? 'block' : 'none' }}>Mastodon Upload Status:
                                 <span style={{ color: mastodonUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
                                     {mastodonUploadStatus}
                                 </span>
                                 {mastodonUploadStatus !== 200 &&
                                     <p>{mastodonErrMessage}</p>
+                                }
+                            </h4>
+                            {/* thedevblog */}
+                            <h4 style={{ display: postToDevBlog ? 'block' : 'none' }}>TheDevBlog Upload Status:
+                                <span style={{ color: devBlogUploadStatus.toString().startsWith('2') ? 'green' : 'red' }}>
+                                    {devBlogUploadStatus}
+                                </span>
+                                {devBlogUploadStatus !== 200 &&
+                                    <p>{devBlogErrMessage}</p>
                                 }
                             </h4>
                         </div>

@@ -41,7 +41,6 @@ namespace devblog.Services
                 Description = post.description,
             };
 
-            var res = _db.Post.Add(newPost).Entity;
 
             var uploadStatus = new UploadStatus();
 
@@ -57,8 +56,9 @@ namespace devblog.Services
 
             if (post.postToDevBlog)
             {
+                var res = _db.Post.Add(newPost).Entity;
                 await _db.SaveChangesAsync();
-                await _imgService.Create(post.files, res.Id);
+                uploadStatus.DevBlogStatus = await _imgService.Create(post.files, res.Id);
             }
 
             return uploadStatus;
