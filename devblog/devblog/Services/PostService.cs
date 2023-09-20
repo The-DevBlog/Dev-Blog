@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using Mastonet;
 using System.Net;
 using devblog.Controllers;
+using Microsoft.Extensions.Hosting;
 
 namespace devblog.Services
 {
@@ -166,6 +167,9 @@ namespace devblog.Services
             var channel = await _discordClient.GetChannelAsync(_config.GetValue<ulong>("DiscordChannelId")) as IMessageChannel;
             var res = new HttpResponseMessage();
 
+            List<string> descriptions = new List<string>();
+            int posts = (int)Math.Ceiling(description.Length / 1988.0);
+
             // add imgs to request
             List<FileAttachment> attachments = new List<FileAttachment>();
             foreach (var file in files)
@@ -173,7 +177,30 @@ namespace devblog.Services
 
             try
             {
-                await channel.SendFilesAsync(attachments, description);
+                // because discords post chararacter limit is 2000, the description needs to broken into incriments 
+                // of 2000 (including the 'part' string variable below)
+                for (int i = 1; i < posts; i++)
+                {
+                    string postDescription = description.Substring(0, 1988);
+                    description = description.Remove(0, 1988);
+                    descriptions.Add(postDescription);
+                }
+
+                descriptions.Add(description);
+
+                for (int i = 1; i <= descriptions.Count; i++)
+                {
+                    string part = $"(Part {i}/{descriptions.Count}) ";
+
+                    if (i == 1)
+                    {
+                        await channel.SendFilesAsync(attachments, part + descriptions[i - 1]);
+                    } else
+                    {
+                        await channel.SendMessageAsync(part + descriptions[i - 1]);
+                    }
+                }
+
                 await _discordClient.StopAsync();
             }
             catch (Exception e)
@@ -199,16 +226,40 @@ namespace devblog.Services
 
             // add imgs to request
             List<string> attachments = new List<string>();
+            List<string> descriptions = new List<string>();
+            int posts = (int)Math.Ceiling(description.Length / 488.0);
 
             try
             {
-                foreach (var file in files)
+                // because mastodons post chararacter limit is 500, the description needs to broken into incriments 
+                // of 500 (including the 'part' string variable below)
+                for (int i = 1; i < posts; i++)
                 {
-                    var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
-                    var mediaId = await client.UploadMedia(media);
-                    attachments.Add(mediaId.Id);
+                    string postDescription = description.Substring(0, 488);
+                    description = description.Remove(0, 488);
+                    descriptions.Add(postDescription);
                 }
-                await client.PublishStatus(description, mediaIds: attachments);
+
+                descriptions.Add(description);
+
+                for (int i = 1; i <= descriptions.Count; i++)
+                {
+                    string part = $"(Part {i}/{descriptions.Count}) ";
+
+                    if(i == 1)
+                    {
+                        foreach (var file in files)
+                        {
+                            var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
+                            var mediaId = await client.UploadMedia(media);
+                            attachments.Add(mediaId.Id);
+                        }
+                        await client.PublishStatus(part + descriptions[i - 1], mediaIds: attachments);
+                    } else
+                    {
+                        await client.PublishStatus(part + descriptions[i - 1]);
+                    }
+                }
             }
             catch (Exception e)
             {
