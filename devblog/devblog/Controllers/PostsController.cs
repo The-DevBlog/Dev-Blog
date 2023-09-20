@@ -22,16 +22,35 @@ namespace devblog.Controllers
         /// Retrieves all posts
         /// </summary>
         /// <returns>List<Post></returns>
-        [HttpGet]
-        public async Task<List<Post>> Get()
+        //[HttpGet]
+        //public async Task<List<Post>> Get()
+        //{
+        //    var posts = await _posts.Get();
+        //    return posts;
+        //}
+
+        [HttpGet("page/{pageNum}")]
+        public async Task<List<Post>> GetPage(int pageNum)
         {
-            var posts = await _posts.Get();
+            var posts = await _posts.GetPage(pageNum);
             return posts;
         }
 
         /// <summary>
-        /// Retrieves all posts
+        /// Gets the total page count
         /// </summary>
+        /// <returns>int</returns>
+        [HttpGet("page/count")]
+        public async Task<int> GetPageCount()
+        {
+            var count = await _posts.GetPageCount();
+            return count;
+        }
+
+        /// <summary>
+        /// Retrieves Specified Post
+        /// </summary>
+        /// <param name="id">Post Id</param>
         /// <returns>List<Post></returns>
         [HttpGet("{id}")]
         public async Task<Post> Get(int id)

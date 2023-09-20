@@ -13,10 +13,17 @@ namespace devblog.Interfaces
         Task<UploadStatus> Create(PostUpload post);
 
         /// <summary>
-        /// Retrieves all posts
+        /// Gets the total page count
         /// </summary>
+        /// <returns>int</returns>
+        Task<int> GetPageCount();
+
+        /// <summary>
+        /// Retrieves all posts (5 max) for specified page
+        /// </summary>
+        /// <param name="pageNum">The page number to get posts from</param>
         /// <returns>List<Post></returns>
-        Task<List<Post>> Get();
+        Task<List<Post>> GetPage(int pageNum);
 
         /// <summary>
         /// Retrieves a specified post

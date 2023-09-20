@@ -65,16 +65,30 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Retrieves all posts
+        /// Gets the total page count
         /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetPageCount()
+        {
+            var postCount = await _db.Post.CountAsync();
+            var pageCount = (int)Math.Ceiling(postCount / 5.0);
+            return pageCount;
+        }
+
+        /// <summary>
+        /// Retrieves all posts (5 max) for specified page
+        /// </summary>
+        /// <param name="pageNum">The page number to get posts from</param>
         /// <returns>List<Post></returns>
-        public async Task<List<Post>> Get()
+        public async Task<List<Post>> GetPage(int pageNum)
         {
             var posts = await _db.Post.OrderByDescending(x => x.Date)
                                       .Include(x => x.Comments)
                                       .Include(x => x.Imgs)
                                       .Include(x => x.UpVotes)
                                       .Include(x => x.DownVotes)
+                                      .Skip((pageNum - 1) * 5)
+                                      .Take(5)
                                       .ToListAsync();
 
             return posts;
