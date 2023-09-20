@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { GetIsAdmin } from "../components/AuthenticationService";
+import { BarLoader, BeatLoader, BounceLoader, ClimbingBoxLoader, ClockLoader, GridLoader, FadeLoader, HashLoader, PuffLoader, RingLoader, RiseLoader, CircleLoader, PulseLoader, ScaleLoader } from "react-spinners";
 import "./styles/AddPost.css";
 
 const AddPost = () => {
@@ -17,9 +18,11 @@ const AddPost = () => {
     const [postToDiscord, setPostToDiscord] = useState(false);
     const [postToMastodon, setPostToMastodon] = useState(false);
     const [postToDevBlog, setPostToDevBlog] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const formData = new FormData();
         if (files != null) {
@@ -42,7 +45,6 @@ const AddPost = () => {
                 if (postToDevBlog) {
                     setDevBlogUploadStatus(data.devBlogStatus.statusCode);
                     setDevBlogErrMessage(data.devBlogStatus.reasonPhrase);
-                    console.log(data);
                 }
 
                 if (postToDiscord) {
@@ -57,6 +59,8 @@ const AddPost = () => {
             }
         })
             .catch(e => console.log("Error uploading file: ", e));
+
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -105,6 +109,8 @@ const AddPost = () => {
                             </li>
                         </ul>
 
+                        <PulseLoader className="loader" color="WHITE" loading={isLoading} />
+
                         {/* Upload Statuses */}
                         <div className="upload-status">
                             {/* discord */}
@@ -148,6 +154,7 @@ const AddPost = () => {
 
                         <label>Description
                             <p>Mastodon character limit: {charCount}/500</p>
+                            <p>Discord character limit: {charCount}/2000</p>
                             <div className="addpost-description">
                                 <textarea placeholder="Write description here..." onChange={(e) => setDescription(e.currentTarget.value)} />
                             </div>
