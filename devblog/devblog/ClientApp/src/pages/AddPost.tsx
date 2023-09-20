@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { GetIsAdmin } from "../components/AuthenticationService";
-import { BarLoader, BeatLoader, BounceLoader, ClimbingBoxLoader, ClockLoader, GridLoader, FadeLoader, HashLoader, PuffLoader, RingLoader, RiseLoader, CircleLoader, PulseLoader, ScaleLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 import "./styles/AddPost.css";
 
 const AddPost = () => {
