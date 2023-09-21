@@ -8,6 +8,7 @@ const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
     const [isAdmin, setIsAdmin] = useState(false);
     const [url, setUrl] = useState<string>();
+    const [totalPosts, setTotalPosts] = useState(0);
 
     const getVideoUrl = async () => {
         await fetch(`api/YtVideo`)
@@ -31,18 +32,25 @@ const Home = () => {
     const getLatestPost = async () => {
         await fetch(`api/posts/${-1}`)
             .then((res) => { return res.json(); })
-            .then((data) => setLatestPost(data));
+            .then((data) => setLatestPost(data))
+            .catch((e) => console.log("Error retrieving latest post: " + e));
     }
 
     useEffect(() => {
         getVideoUrl();
         setIsAdmin(GetIsAdmin);
         getLatestPost();
+
+        fetch("api/posts/count")
+            .then((res) => { return res.json(); })
+            .then((data) => {
+                setTotalPosts(data)
+            }).catch((e) => console.log("Error retrieving post count: " + e));
     }, []);
 
     return (
         <section className="latest-post">
-            {latestPost ? < Post {...latestPost} key={latestPost.id} /> : <h1>Loading...</h1>}
+            {latestPost ? < Post {...latestPost} key={latestPost.id} postNumber={totalPosts} /> : <h1>Loading...</h1>}
 
             {/* update YouTube video url */}
             {isAdmin &&

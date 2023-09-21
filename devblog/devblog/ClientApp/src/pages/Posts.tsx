@@ -12,24 +12,13 @@ const Posts = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-
-    const pageDown = (() => {
-        if (pageNum > 0) {
-            setPageNum(pageNum - 1);
-        }
-
-        console.log(totalPages);
-    });
-
-    const pageUp = (() => {
-        setPageNum(pageNum + 1);
-        console.log(totalPages);
-    });
+    const [totalPosts, setTotalPosts] = useState(0);
 
     useEffect(() => {
         fetch(`api/posts/page/${pageNum}`)
             .then((res) => { return res.json(); })
-            .then((data) => setPosts(data));
+            .then((data) => setPosts(data))
+            .catch((e) => console.log("Error retrieving posts: " + e))
     }, [pageNum]);
 
 
@@ -39,13 +28,19 @@ const Posts = () => {
             .then((res) => { return res.json(); })
             .then((data) => {
                 setTotalPages(data)
-            });
+            }).catch((e) => console.log("Error retrieving page count: " + e));
+
+        fetch("api/posts/count")
+            .then((res) => { return res.json(); })
+            .then((data) => {
+                setTotalPosts(data)
+            }).catch((e) => console.log("Error retrieving post count: " + e));
     }, []);
 
     const Pager = () => {
         return <div className="pager">
             {pageNum > 1 ? (
-                <MdChevronLeft className="arrow-visible" onClick={pageDown} />
+                <MdChevronLeft className="arrow-visible" onClick={() => pageNum > 0 && setPageNum(pageNum - 1)} />
             ) : (
                 <MdChevronLeft className="arrow-hidden" />
             )}
@@ -53,7 +48,7 @@ const Posts = () => {
             <span>{pageNum}</span>
 
             {pageNum < totalPages ? (
-                <MdChevronRight className="arrow-visible" onClick={pageUp} />
+                <MdChevronRight className="arrow-visible" onClick={() => setPageNum(pageNum + 1)} />
             ) : (
                 <MdChevronRight className="arrow-hidden" />
             )}
@@ -64,7 +59,7 @@ const Posts = () => {
         <section className="posts">
             <Pager />
             {isAdmin && <Link className="create-post-btn" to="/posts/create">Create Post</Link>}
-            {posts.length === 0 ? <h1>Loading...</h1> : posts.map((p) => <Post key={p.id} {...p} />)}
+            {posts.length === 0 ? <h1>Loading...</h1> : posts.map((p, i) => <Post key={p.id} {...p} postNumber={totalPosts - 5 * (pageNum - 1) - i} />)}
             <Pager />
         </section>
     );
