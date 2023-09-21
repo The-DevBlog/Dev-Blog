@@ -24,6 +24,10 @@
     margin-left: auto;
 }
 
+.post-info>span:first-child {
+    font-family: 'Chivo Mono', monospace;
+}
+
 .show-all-comments-btn {
     border-radius: 0.5em;
     padding: 8px;

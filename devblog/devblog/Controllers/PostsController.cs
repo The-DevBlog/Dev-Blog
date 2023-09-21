@@ -48,6 +48,17 @@ namespace devblog.Controllers
         }
 
         /// <summary>
+        /// Gets the total post count
+        /// </summary>
+        /// <returns>int</returns>
+        [HttpGet("count")]
+        public async Task<int> GetPostCount()
+        {
+            int count = await _posts.GetPostCount();
+            return count;
+        }
+
+        /// <summary>
         /// Retrieves Specified Post
         /// </summary>
         /// <param name="id">Post Id</param>

@@ -66,13 +66,23 @@ namespace devblog.Services
         }
 
         /// <summary>
+        /// Gets the total post count
+        /// </summary>
+        /// <returns>int</returns>
+        public async Task<int> GetPostCount()
+        {
+            int postCount = await _db.Post.CountAsync();
+            return postCount;
+        }
+
+        /// <summary>
         /// Gets the total page count
         /// </summary>
         /// <returns>int</returns>
         public async Task<int> GetPageCount()
         {
-            var postCount = await _db.Post.CountAsync();
-            var pageCount = (int)Math.Ceiling(postCount / 5.0);
+            int postCount = await _db.Post.CountAsync();
+            int pageCount = (int)Math.Ceiling(postCount / 5.0);
             return pageCount;
         }
 

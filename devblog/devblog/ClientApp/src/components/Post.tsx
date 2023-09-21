@@ -49,6 +49,7 @@ const Post = (props: IPost) => {
             <div>
                 {/* DATE */}
                 <div className="post-info">
+                    <span>Log {props.postNumber}</span>
                     {isAdmin &&
                         <EditPost {...props} onPostEdit={handlePostEdit} />
                     }

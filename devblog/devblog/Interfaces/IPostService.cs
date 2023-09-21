@@ -19,6 +19,12 @@ namespace devblog.Interfaces
         Task<int> GetPageCount();
 
         /// <summary>
+        /// Gets the total post count
+        /// </summary>
+        /// <returns>int</returns>
+        Task<int> GetPostCount();
+
+        /// <summary>
         /// Retrieves all posts (5 max) for specified page
         /// </summary>
         /// <param name="pageNum">The page number to get posts from</param>
