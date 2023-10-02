@@ -47,8 +47,8 @@ const Comment = (props: ICommentProps) => {
                 }
                 {(userName === props.userName || isAdmin) && <DeleteComment id={props.id} onCommentDelete={props.handleCommentChange} />}
                 <div className="date">
-                    <span className="">{date}</span>
-                    <span className="">{time}</span>
+                    <span>{date}</span>
+                    <span>{time}</span>
                 </div>
 
             </div>
