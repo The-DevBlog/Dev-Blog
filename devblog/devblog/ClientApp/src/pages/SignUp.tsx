@@ -22,6 +22,7 @@ const SignUp = () => {
             return;
         }
 
+        console.log(`${userName} || ${email}`)
         await fetch("api/accounts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
