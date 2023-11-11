@@ -7,7 +7,6 @@ using Discord.WebSocket;
 using Mastonet;
 using System.Net;
 using devblog.Controllers;
-using Microsoft.Extensions.Hosting;
 
 namespace devblog.Services
 {
@@ -41,7 +40,6 @@ namespace devblog.Services
                 Date = DateTime.Now,
                 Description = post.description,
             };
-
 
             var uploadStatus = new UploadStatus();
 

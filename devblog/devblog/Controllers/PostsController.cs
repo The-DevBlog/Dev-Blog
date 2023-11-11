@@ -18,17 +18,6 @@ namespace devblog.Controllers
             _imgService = imgService;
         }
 
-        /// <summary>
-        /// Retrieves all posts
-        /// </summary>
-        /// <returns>List<Post></returns>
-        //[HttpGet]
-        //public async Task<List<Post>> Get()
-        //{
-        //    var posts = await _posts.Get();
-        //    return posts;
-        //}
-
         [HttpGet("page/{pageNum}")]
         public async Task<List<Post>> GetPage(int pageNum)
         {
