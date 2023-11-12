@@ -11,7 +11,6 @@
 }
 
 .post {
-    border: 1px solid rgb(94, 94, 94);
     background-color: #1a2029;
 }
 
@@ -23,7 +22,7 @@
 .comment,
 textarea,
 button {
-    border: 1px solid rgb(94, 94, 94);
+    border: #0d1116;
     background-color: #0d1116;
     color: white;
 }
