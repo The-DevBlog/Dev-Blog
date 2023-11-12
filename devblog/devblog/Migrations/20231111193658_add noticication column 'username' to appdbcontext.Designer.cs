@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using devblog.Data;
 
@@ -10,9 +11,11 @@ using devblog.Data;
 namespace devblog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231111193658_add noticication column 'username' to appdbcontext")]
+    partial class addnoticicationcolumnusernametoappdbcontext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,13 +87,13 @@ namespace devblog.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .HasColumnType("varchar(255)");
 
                     b.Property<bool>("Seen")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("PostId", "UserName");
+                    b.HasKey("PostId", "Username");
 
                     b.ToTable("Notification");
                 });

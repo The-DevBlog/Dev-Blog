@@ -1,5 +1,4 @@
 ﻿using devblog.Models;
-using Discord;
 using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Data
@@ -12,6 +11,7 @@ namespace devblog.Data
         public DbSet<DownVote> DownVote { get; set; }
         public DbSet<Img> Img { get; set; }
         public DbSet<YtVideo> YtVideo { get; set; }
+        public DbSet<Notification> Notification { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
@@ -20,6 +20,8 @@ namespace devblog.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Notification>().HasKey(e => new { e.PostId, e.UserName });
 
             modelBuilder.Entity<UpVote>().HasKey(e => new { e.PostId, e.UserName });
 
