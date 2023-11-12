@@ -8,7 +8,6 @@ import "./styles/Nav.css";
 
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [userName, setUsername] = useState("");
     const [isMenuClicked, setIsMenuClicked] = useState(false)
     const [display, setDisplay] = useState("none")
     const [isAdmin, setIsAdmin] = useState(false);
@@ -38,7 +37,6 @@ const Nav = () => {
 
     useEffect(() => {
         setLoggedIn(IsLoggedIn);
-        setUsername(localStorage.getItem("userName")!);
     }, []);
 
     return (
@@ -46,51 +44,30 @@ const Nav = () => {
             <nav className="navbar">
                 <Link className="logo-link" to="/">
                     <div className="logo">
-                        <span>The</span>
-                        <br />
-                        <span>DevBlog</span>
+                        <span>The DevBlog</span>
                     </div>
                 </Link>
 
-                <div className="nav-items">
-                    <Link to="/" className={isActive("/")}>Home</Link>
-                    <Link to="/posts" className={isActive("/posts")}>Posts</Link>
-                    <Link to="/about" className={isActive("/about")}>About</Link>
-                    {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
+                <div className="nav-drop-down">
+                    <MdMenu className="nav-icon" onClick={updateMenu} size={69} />
 
-                    {loggedIn ? (
-                        <span className="accounts">
-                            <SignOut />
-                            <span>Welcome {userName}</span>
-                        </span>
-                    ) : (
-                        <span className="accounts">
-                            <Link to="/signin" className={isActive("/signin")}>Login</Link>
-                            <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
-                        </span>
-                    )}
+                    <div className="nav-links" style={{ display: display }}>
+                        <Link to="/" className={isActive("/")}>Home</Link>
+                        <Link to="/posts" className={isActive("/posts")}>Posts</Link>
+                        <Link to="/about" className={isActive("/about")}>About</Link>
+                        {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
+
+                        {loggedIn && <SignOut />}
+
+                        {!loggedIn &&
+                            <span className="nav-accounts">
+                                <Link to="/signin" className={isActive("/signin")}>Login</Link>
+                                <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
+                            </span>
+                        }
+                    </div>
                 </div>
             </nav >
-
-            <div className="mobile-nav">
-                <MdMenu className="mobile-nav-icon" onClick={updateMenu} size={75} />
-
-                <div className="mobile-nav-links" style={{ display: display }}>
-                    <Link to="/" className={isActive("/")}>Home</Link>
-                    <Link to="/posts" className={isActive("/posts")}>Posts</Link>
-                    <Link to="/about" className={isActive("/about")}>About</Link>
-                    {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
-
-                    {loggedIn && <SignOut />}
-
-                    {!loggedIn &&
-                        <span className="mobile-nav-accounts">
-                            <Link to="/signin" className={isActive("/signin")}>Login</Link>
-                            <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
-                        </span>
-                    }
-                </div>
-            </div>
         </>
     );
 }
