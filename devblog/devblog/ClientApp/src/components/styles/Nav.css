@@ -18,7 +18,7 @@
 }
 
 .logo {
-    font-size: 40px;
+    font-size: 38px;
     padding: 5px;
 }
 
@@ -32,9 +32,12 @@
     opacity: 1.0;
 }
 
-.nav-links,
-.nav-icon {
-    display: none;
+.notifications {
+    font-size: 35px;
+    margin-top: 23px;
+    margin-left: auto;
+    margin-right: 130px;
+    z-index: 21;
 }
 
 .nav-drop-down {
@@ -63,9 +66,11 @@
 }
 
 .nav-icon {
+    font-size: 69px;
     cursor: pointer;
     display: flex;
     margin-left: auto;
+    margin-top: 7px;
 }
 
 .nav-links {
@@ -90,6 +95,16 @@
 
 @media(max-width: 450px) {
     .logo {
-        font-size: 30px;
+        font-size: 25px;
+    }
+
+    .nav-icon {
+        font-size: 50px;
+    }
+
+    .notifications {
+        font-size: 25px;
+        margin-right: 85px;
+        margin-top: 19px;
     }
 }

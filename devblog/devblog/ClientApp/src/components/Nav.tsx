@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SignOut from "../pages/SignOut";
-import { MdMenu } from "react-icons/md";
+import { MdMenu, MdNotifications } from "react-icons/md";
 import { IsLoggedIn } from "../components/AuthenticationService";
 import { GetIsAdmin } from "./AuthenticationService";
 import "./styles/Nav.css";
@@ -48,8 +48,12 @@ const Nav = () => {
                     </div>
                 </Link>
 
+
+                <div className="notifications">
+                    <MdNotifications />
+                </div>
                 <div className="nav-drop-down">
-                    <MdMenu className="nav-icon" onClick={updateMenu} size={69} />
+                    <MdMenu className="nav-icon" onClick={updateMenu} />
 
                     <div className="nav-links" style={{ display: display }}>
                         <Link to="/" className={isActive("/")}>Home</Link>
