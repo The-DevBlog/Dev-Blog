@@ -44,21 +44,15 @@ const Nav = () => {
             <div className="nav-menus-container">
                 {loggedIn &&
                     <Notification
-                        setIsBellClicked={setIsBellClicked}
                         bellDisplay={bellDisplay}
                         loggedIn={loggedIn}
                         setBellDisplay={setBellDisplay}
                         isBellClicked={isBellClicked}
                         isMenuClicked={isMenuClicked}
-                        setIsMenuClicked={setIsMenuClicked}
                         handleBellClick={handleBellClick} />}
                 <NavLinks
                     loggedIn={loggedIn}
-                    isBellClicked={isBellClicked}
                     isMenuClicked={isMenuClicked}
-                    setBellDisplay={setBellDisplay}
-                    setIsBellClicked={setIsBellClicked}
-                    setIsMenuClicked={setIsMenuClicked}
                     handleMenuClick={handleMenuClick} />
             </div>
         </nav >

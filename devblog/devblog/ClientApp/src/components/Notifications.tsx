@@ -7,8 +7,6 @@ import { useLocation } from "react-router-dom";
 import "./styles/Notifications.css";
 
 interface IProps {
-    setIsMenuClicked: Dispatch<SetStateAction<boolean>>,
-    setIsBellClicked: Dispatch<SetStateAction<boolean>>,
     setBellDisplay: Dispatch<SetStateAction<string>>,
     handleBellClick: () => void,
     bellDisplay: string,
@@ -17,7 +15,9 @@ interface IProps {
     loggedIn: boolean,
 }
 
-const Notification = (props: IProps) => {
+const Notification = ({ setBellDisplay, handleBellClick,
+    bellDisplay, isBellClicked, loggedIn }: IProps) => {
+
     const [notifications, setNotifications] = useState<INotificationProps[]>()
     const [userName, setUsername] = useState("");
     const location = useLocation();
@@ -50,34 +50,29 @@ const Notification = (props: IProps) => {
     }
 
     useEffect(() => {
-        if (props.isBellClicked) {
-            props.setBellDisplay("flex")
+        if (isBellClicked) {
+            setBellDisplay("flex")
         }
         else {
-            props.setBellDisplay("none")
+            setBellDisplay("none")
         }
-    }, [props.isBellClicked])
+    }, [isBellClicked, location.pathname])
 
     useEffect(() => {
         setUsername(GetUserName);
     }, []);
 
     useEffect(() => {
-        props.setBellDisplay("none");
-        props.setIsBellClicked(false);
-    }, [location.pathname]);
-
-    useEffect(() => {
-        if (props.loggedIn) {
+        if (loggedIn) {
             getNotifications();
         }
-    }, [getNotifications]);
+    }, [getNotifications, loggedIn]);
 
     return (
         <div className="notification-drop-down" style={{ display: (notifications?.length ?? 0) > 0 ? "inline" : "none" }}>
-            <MdNotifications className="notification-icon" onClick={props.handleBellClick} />
+            <MdNotifications className="notification-icon" onClick={handleBellClick} />
             <span className="notification-count">{notifications?.length}</span>
-            <div className="notifications" style={{ display: props.bellDisplay }} >
+            <div className="notifications" style={{ display: bellDisplay }} >
                 {notifications?.map((n) => <>
                     <div className={`notification-item ${dismissedNotifications.includes(n.postId) ? 'dismissed' : ''}`}>
                         <HashLink smooth to={`/posts/#post${n.postId}`}><img src={n.imgUrl} alt="post thumbnail" /></HashLink>
