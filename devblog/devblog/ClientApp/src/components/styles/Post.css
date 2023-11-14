@@ -34,7 +34,6 @@
 
 img {
     border-radius: .5em;
-    border: .15em solid rgb(70, 68, 60);
     width: 100%;
     max-width: 900px;
 }
@@ -42,7 +41,6 @@ img {
 .description {
     margin: auto;
 }
-
 
 @media (max-width: 800px) {
 

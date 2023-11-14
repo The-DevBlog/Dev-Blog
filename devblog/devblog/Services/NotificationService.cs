@@ -34,8 +34,29 @@ namespace devblog.Services
                 };
 
                 await _db.Notification.AddAsync(notification);
-                await _db.SaveChangesAsync();
             });
+
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Gets all notifications for a specific user
+        /// </summary>
+        /// <returns>List<Notification></returns>
+        public async Task<List<Notification>> Get(string userName)
+        {
+            var notifications = await _db.Notification.Where(n => n.UserName == userName).ToListAsync();
+            return notifications;
+        }
+
+        /// <summary>
+        /// Delete a specified notification
+        /// </summary>
+        public async Task Delete(int postId, string userName)
+        {
+            var notification = await _db.Notification.Where(n => n.PostId == postId && n.UserName == userName).FirstOrDefaultAsync();
+            _db.Remove(notification);
+            await _db.SaveChangesAsync();
         }
     }
 }

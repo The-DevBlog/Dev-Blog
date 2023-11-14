@@ -45,7 +45,7 @@ const Post = (props: IPost) => {
     }, [getComments, props.date, props.imgs]);
 
     return (
-        <div className="post">
+        <div className="post" id={`post${props.id}`} >
             <div>
                 {/* DATE */}
                 <div className="post-info">

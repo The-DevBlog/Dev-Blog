@@ -23,42 +23,92 @@
 }
 
 .non-active,
-.accounts a {
-    opacity: 0.7;
+.accounts a,
+.nav-icon,
+.notification-icon {
+    opacity: 0.8;
 }
 
-.navbar a:hover,
-.accounts a:hover {
-    opacity: 1.0;
+.notification-drop-down {
+    font-size: 35px;
+    margin-top: 23px;
+    margin-right: 10px;
+    z-index: 21;
 }
 
 .notifications {
-    font-size: 35px;
-    margin-top: 23px;
+    display: flex;
+    font-family: 'Chivo Mono', monospace;
+    flex-direction: column;
+    font-size: 15px;
+    right: 1px;
+    background-color: rgb(26, 32, 41);
+    position: absolute;
+    padding: 10px 4px;
+}
+
+.notification-count {
+    background-color: red;
+    font-family: 'Chivo Mono', monospace;
+    font-size: 13px;
+    position: absolute;
+    border-radius: 50%;
+    padding: 5px;
+    line-height: 8px;
+    right: 118px;
+}
+
+.notifications img {
+    height: 50px;
+    width: 60px;
+    border-radius: 0%;
+}
+
+.nav-menus-container {
+    display: flex;
     margin-left: auto;
-    margin-right: 130px;
-    z-index: 21;
+}
+
+.notifications>div {
+    border-top: 1px solid gray;
+    display: flex;
+    flex-direction: row;
+}
+
+.notification-txt {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-txt>span:last-child {
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.notification-txt a {
+    padding: 4px;
+    text-decoration: none;
 }
 
 .nav-drop-down {
     display: flex;
-    margin-left: auto;
     margin-right: 20px;
     flex-direction: column;
-    right: 5px;
     z-index: 20;
-    position: fixed;
-    background-color: rgb(26, 32, 41);
+}
+
+.nav-drop-down:hover,
+.nav-icon:hover,
+.nav-links>a:hover,
+.notification-icon:hover {
+    opacity: 1.0;
+    cursor: pointer;
 }
 
 .nav-links a,
 .nav-links form {
     text-decoration: none;
     padding-top: 5px;
-}
-
-.nav-links>a:hover {
-    opacity: 1.0;
 }
 
 .nav-links a.active {
@@ -69,13 +119,15 @@
     font-size: 69px;
     cursor: pointer;
     display: flex;
-    margin-left: auto;
     margin-top: 7px;
 }
 
 .nav-links {
-    margin-left: auto;
+    margin-top: 70px;
     padding: 10px;
+    right: 2px;
+    position: fixed;
+    background-color: rgb(26, 32, 41);
     flex-direction: column;
 }
 
@@ -102,9 +154,20 @@
         font-size: 50px;
     }
 
-    .notifications {
+    .nav-links {
+        margin-top: 50px;
+    }
+
+    .notification-drop-down {
         font-size: 25px;
-        margin-right: 85px;
         margin-top: 19px;
+    }
+
+    .notification-count {
+        /* display: ; */
+        right: 92px;
+        font-size: 10px;
+        line-height: 6px;
+        padding: 4px;
     }
 }

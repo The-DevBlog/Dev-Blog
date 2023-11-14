@@ -3,6 +3,7 @@ using devblog.Interfaces;
 using devblog.Models;
 using Dropbox.Api;
 using Dropbox.Api.Files;
+using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Services
 {
@@ -16,6 +17,16 @@ namespace devblog.Services
         {
             _config = config;
             _db = db;
+        }
+
+        /// <summary>
+        /// Gets the first or default img from a specific post
+        /// </summary>
+        /// <returns>Img</returns>
+        public async Task<Img> Get(int postId)
+        {
+            var img = await _db.Img.Where(i => i.PostId == postId).FirstOrDefaultAsync();
+            return img;
         }
 
         /// <summary>
@@ -41,7 +52,8 @@ namespace devblog.Services
 
                     _db.Img.Add(img);
                     await _db.SaveChangesAsync();
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     res.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     res.ReasonPhrase = $"Failed to upload file to DropBox: {e.Message}";
