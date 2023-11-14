@@ -24,13 +24,13 @@ const Nav = () => {
 
     const handleMenuClick = () => {
         setIsMenuClicked(!isMenuClicked);
-        setIsBellClicked(false); // Hide notifications when menu is clicked
+        setIsBellClicked(false);
         setBellDisplay('none');
     };
 
     const handleBellClick = () => {
         setIsBellClicked(!isBellClicked);
-        setIsMenuClicked(false); // Hide menu when bell is clicked
+        setIsMenuClicked(false);
     };
 
     return (

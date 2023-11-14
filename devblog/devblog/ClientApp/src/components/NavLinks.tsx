@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import SignOut from "../pages/SignOut";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { GetIsAdmin } from "./AuthenticationService";
+import "./styles/NavLinks.css"
 
 interface IProps {
     setIsBellClicked: Dispatch<SetStateAction<boolean>>,
