@@ -5,7 +5,7 @@ button:hover {
 
 main {
     width: 1100px;
-    margin: auto
+    margin: auto;
 }
 
 @media (max-width: 1000px) {

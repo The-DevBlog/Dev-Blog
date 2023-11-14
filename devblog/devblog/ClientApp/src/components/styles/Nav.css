@@ -18,65 +18,8 @@
 }
 
 .logo {
-    font-size: 40px;
+    font-size: 38px;
     padding: 5px;
-}
-
-.non-active,
-.accounts a {
-    opacity: 0.7;
-}
-
-.navbar a:hover,
-.accounts a:hover {
-    opacity: 1.0;
-}
-
-.nav-links,
-.nav-icon {
-    display: none;
-}
-
-.nav-drop-down {
-    display: flex;
-    margin-left: auto;
-    margin-right: 20px;
-    flex-direction: column;
-    right: 5px;
-    z-index: 20;
-    position: fixed;
-    background-color: rgb(26, 32, 41);
-}
-
-.nav-links a,
-.nav-links form {
-    text-decoration: none;
-    padding-top: 5px;
-}
-
-.nav-links>a:hover {
-    opacity: 1.0;
-}
-
-.nav-links a.active {
-    text-decoration: underline;
-}
-
-.nav-icon {
-    cursor: pointer;
-    display: flex;
-    margin-left: auto;
-}
-
-.nav-links {
-    margin-left: auto;
-    padding: 10px;
-    flex-direction: column;
-}
-
-.nav-accounts {
-    display: flex;
-    flex-direction: column;
 }
 
 .logout-form {
@@ -90,6 +33,6 @@
 
 @media(max-width: 450px) {
     .logo {
-        font-size: 30px;
+        font-size: 25px;
     }
 }
