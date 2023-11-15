@@ -1,46 +1,55 @@
 ﻿using SendGrid.Helpers.Mail;
 using SendGrid;
-using devblog.Data;
-using Microsoft.AspNetCore.Identity;
 using devblog.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using devblog.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace devblog.Services
 {
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _config;
-        //private readonly UserManager<UserModel> userMgr;
-        //private readonly UserDbContext _userDb;
-        private readonly EmailAddress _email = new EmailAddress();
+        public UserManager<User> _userMgr { get; }
+        private readonly EmailAddress _email;
+        private readonly SendGridClient _sendGridClient;
 
-        public EmailService(UserDbContext userdb, IConfiguration config)
+        public EmailService(IConfiguration config, UserManager<User> usermgr)
         {
-            //_userDb = userdb;
-            //userMgr = um;
+            _userMgr = usermgr;
             _config = config;
+            _email = new EmailAddress(_config["emailAddress"]);
+            _sendGridClient = new SendGridClient(_config["SendGridApiKey"]);
+        }
+
+        /// <summary>
+        /// Sends an email to all subscribed users whenever a new post is made
+        /// </summary>
+        public async Task NewPost()
+        {
+            var allUsers = await _userMgr.Users.ToListAsync();
+
+            allUsers.ForEach(async user =>
+            {
+                if (user.Subscribed)
+                {
+                    var toEmail = new EmailAddress(user.Email);
+
+                    var msg = MailHelper.CreateSingleTemplateEmail(_email, toEmail, _config["SendGridNewPostTemplateId"], null);
+                    var res = await _sendGridClient.SendEmailAsync(msg);
+                }
+            });
         }
 
         /// <summary>
         /// Emails a welcome message to a newly registered user
         /// </summary>
-        /// <param name="email">User's email</param>
-        /// <returns>Successful completion of task</returns>
         public async Task Welcome(string email)
         {
-            _email.Email = _config["emailAddress"];
-            var apiKey = _config["SendGridApiKey"];
-            var client = new SendGridClient(apiKey);
+            var toEmail = new EmailAddress(email);
 
-            var msg = new SendGridMessage()
-            {
-                TemplateId = _config["SendGridWelcomeTemplate"],
-                From = _email,
-            };
-
-            msg.AddTo(email);
-
-            var t = await client.SendEmailAsync(msg);
-            await Console.Out.WriteLineAsync("HELO");
+            var msg = MailHelper.CreateSingleTemplateEmail(_email, toEmail, _config["SendGridWelcomeTemplateId"], null);
+            var res = await _sendGridClient.SendEmailAsync(msg);
         }
     }
 }

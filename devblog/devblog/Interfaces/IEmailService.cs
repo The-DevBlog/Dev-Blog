@@ -5,8 +5,11 @@
         /// <summary>
         /// Emails a welcome message to a newly registered user
         /// </summary>
-        /// <param name="email">User's email</param>
-        /// <returns>Successful completion of task</returns>
         Task Welcome(string email);
+
+        /// <summary>
+        /// Sends an email whenever a new post is made
+        /// </summary>
+        Task NewPost();
     }
 }

@@ -171,7 +171,7 @@ namespace devblog.Controllers
             var res = await _userMgr.CreateAsync(user, user.PasswordHash);
             if (res.Succeeded)
             {
-                var welcomeEmail = _email.Welcome(user.Email);
+                await _email.Welcome(user.Email);
                 var currentUser = await _userMgr.FindByNameAsync(user.UserName);
 
                 await _userMgr.AddToRoleAsync(currentUser, "Visitor");
