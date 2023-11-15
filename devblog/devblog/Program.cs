@@ -35,6 +35,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 
 builder.Services.AddSingleton<DiscordSocketClient>();
 builder.Services.AddScoped<IYtVideoService, YtVideoService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();

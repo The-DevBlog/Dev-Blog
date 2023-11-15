@@ -17,13 +17,15 @@ namespace devblog.Services
         private readonly IConfiguration _config;
         private readonly DiscordSocketClient _discordClient;
         private readonly INotificationService _notifications;
+        private readonly IEmailService _email;
 
-        public PostService(AppDbContext context, IImgService imgService, DiscordSocketClient discordClient, IConfiguration config, INotificationService notificationService)
+        public PostService(AppDbContext context, IImgService imgService, DiscordSocketClient discordClient, IConfiguration config, INotificationService notificationService, IEmailService email)
         {
             _db = context;
             _imgs = imgService;
             _notifications = notificationService;
             _config = config;
+            _email = email;
 
             // set up discord client
             _discordClient = discordClient;
@@ -43,18 +45,13 @@ namespace devblog.Services
                 Description = post.description,
             };
 
-
             var uploadStatus = new UploadStatus();
 
             if (post.postToDiscord)
-            {
                 uploadStatus.DiscordStatus = await PostToDiscord(post.description, post.files);
-            }
 
             if (post.postToMastodon)
-            {
                 uploadStatus.MastodonStatus = await PostToMastodon(post.description, post.files);
-            }
 
             if (post.postToDevBlog)
             {
@@ -62,8 +59,9 @@ namespace devblog.Services
                 await _db.SaveChangesAsync();
                 uploadStatus.DevBlogStatus = await _imgs.Create(post.files, res.Id);
 
-                // create notifications for new post
+                // create notifications and send emails for new post
                 await _notifications.Create(res.Id);
+                await _email.NewPost();
             }
 
             return uploadStatus;

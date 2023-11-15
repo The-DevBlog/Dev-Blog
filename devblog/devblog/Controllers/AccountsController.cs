@@ -1,5 +1,6 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
+using devblog.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,15 @@ namespace devblog.Controllers
         public UserManager<User> _userMgr { get; }
         public IConfiguration _config;
         private readonly IUsernameService _username;
+        private readonly IEmailService _email;
 
-        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config, IUsernameService username)
+        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config, IUsernameService username, IEmailService email)
         {
             _userMgr = usermgr;
             _signInMgr = signInMgr;
             _config = config;
             _username = username;
+            _email = email;
         }
 
         /// <summary>
@@ -82,7 +85,7 @@ namespace devblog.Controllers
         {
             User user = _userMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
 
-            if(user != null)
+            if (user != null)
             {
                 await _userMgr.DeleteAsync(user);
             }
@@ -168,7 +171,7 @@ namespace devblog.Controllers
             var res = await _userMgr.CreateAsync(user, user.PasswordHash);
             if (res.Succeeded)
             {
-                //await _email.Welcome(registerVM.Email);
+                await _email.Welcome(user.Email);
                 var currentUser = await _userMgr.FindByNameAsync(user.UserName);
 
                 await _userMgr.AddToRoleAsync(currentUser, "Visitor");
