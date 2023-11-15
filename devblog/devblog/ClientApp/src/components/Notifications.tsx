@@ -66,7 +66,7 @@ const Notification = ({ setBellDisplay, handleBellClick,
         if (loggedIn) {
             getNotifications();
         }
-    }, [loggedIn]);
+    });
 
     return (
         <div className="notification-drop-down" style={{ display: (notifications?.length ?? 0) > 0 ? "inline" : "none" }}>
