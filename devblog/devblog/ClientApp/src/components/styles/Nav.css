@@ -9,10 +9,7 @@
     z-index: 10;
 }
 
-.nav-items>a,
-.logo-link,
-.accounts,
-.nav-items .accounts:last-child a {
+.logo-link {
     color: white;
     font-size: 20px;
     height: fit-content;
@@ -21,115 +18,21 @@
 }
 
 .logo {
-    font-size: 40px;
+    font-size: 38px;
+    padding: 5px;
 }
 
-.nav-items {
-    display: flex;
-    width: 100%;
+.logout-form {
+    width: fit-content;
 }
 
-.accounts {
-    margin: auto 20px 5px auto;
+.logout {
+    font-size: 16px;
+    padding: 0px;
 }
 
-.nav-items>span:last-child {
-    flex-direction: column;
-}
-
-.nav-items>span:last-child a {
-    padding: 3px;
-}
-
-s .navbar .nav-items a.active {
-    text-decoration: underline;
-    font-weight: bold;
-    opacity: 1.0;
-}
-
-.nav-items>a:nth-child(1) {
-    margin-left: 30px;
-}
-
-.nav-items>a:nth-child(1),
-.nav-items>a:nth-child(2),
-.nav-items>a:nth-child(3),
-.nav-items>a:nth-child(4) {
-    margin-top: auto;
-    margin-bottom: 5px;
-}
-
-.non-active,
-.accounts a {
-    opacity: 0.7;
-}
-
-.navbar a:hover,
-.accounts a:hover {
-    opacity: 1.0;
-}
-
-.mobile-nav-links,
-.mobile-nav-icon {
-    display: none;
-}
-
-
-
-@media (max-width: 800px) {
-    .mobile-nav {
-        display: flex;
-        margin-left: auto;
-        margin-right: 20px;
-        flex-direction: column;
-        top: 25px;
-        right: 5px;
-        z-index: 20;
-        position: fixed;
-        background-color: rgb(26, 32, 41);
-    }
-
-    .nav-items {
-        display: none;
-    }
-
-    .mobile-nav-links a,
-    .mobile-nav-links form {
-        text-decoration: none;
-        padding-top: 5px;
-    }
-
-    .mobile-nav-links>a:hover {
-        opacity: 1.0;
-    }
-
-    .mobile-nav-links a.active {
-        text-decoration: underline;
-    }
-
-    .mobile-nav-icon {
-        cursor: pointer;
-        display: flex;
-        margin-left: auto;
-    }
-
-    .mobile-nav-links {
-        margin-left: auto;
-        padding: 10px;
-        flex-direction: column;
-    }
-
-    .mobile-nav-accounts {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .logout-form {
-        width: fit-content;
-    }
-
-    .logout {
-        font-size: 16px;
-        padding: 0px;
+@media(max-width: 450px) {
+    .logo {
+        font-size: 25px;
     }
 }

@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&family=Zilla+Slab&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&family=Silkscreen&family=Zilla+Slab&display=swap');
 
 .logout {
     border: none;
     background-color: inherit;
     opacity: .7;
     font-family: 'Silkscreen', cursive;
-    font-size: 20px;
     margin-left: auto;
 }
 

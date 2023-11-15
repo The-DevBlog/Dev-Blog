@@ -13,14 +13,16 @@ namespace devblog.Services
     public class PostService : IPostService
     {
         private readonly AppDbContext _db;
-        private readonly IImgService _imgService;
+        private readonly IImgService _imgs;
         private readonly IConfiguration _config;
         private readonly DiscordSocketClient _discordClient;
+        private readonly INotificationService _notifications;
 
-        public PostService(AppDbContext context, IImgService imgService, DiscordSocketClient discordClient, IConfiguration config)
+        public PostService(AppDbContext context, IImgService imgService, DiscordSocketClient discordClient, IConfiguration config, INotificationService notificationService)
         {
             _db = context;
-            _imgService = imgService;
+            _imgs = imgService;
+            _notifications = notificationService;
             _config = config;
 
             // set up discord client
@@ -57,7 +59,10 @@ namespace devblog.Services
             {
                 var res = _db.Post.Add(newPost).Entity;
                 await _db.SaveChangesAsync();
-                uploadStatus.DevBlogStatus = await _imgService.Create(post.files, res.Id);
+                uploadStatus.DevBlogStatus = await _imgs.Create(post.files, res.Id);
+
+                // create notifications for new post
+                await _notifications.Create(res.Id);
             }
 
             return uploadStatus;
@@ -203,7 +208,8 @@ namespace devblog.Services
                     if (i == 1)
                     {
                         await channel.SendFilesAsync(attachments, part + descriptions[i - 1]);
-                    } else
+                    }
+                    else
                     {
                         await channel.SendMessageAsync(part + descriptions[i - 1]);
                     }
@@ -254,7 +260,7 @@ namespace devblog.Services
                 {
                     string part = $"(Part {i}/{descriptions.Count}) ";
 
-                    if(i == 1)
+                    if (i == 1)
                     {
                         foreach (var file in files)
                         {
@@ -263,7 +269,8 @@ namespace devblog.Services
                             attachments.Add(mediaId.Id);
                         }
                         await client.PublishStatus(part + descriptions[i - 1], mediaIds: attachments);
-                    } else
+                    }
+                    else
                     {
                         await client.PublishStatus(part + descriptions[i - 1]);
                     }

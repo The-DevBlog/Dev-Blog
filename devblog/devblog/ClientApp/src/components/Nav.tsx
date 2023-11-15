@@ -1,97 +1,61 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import SignOut from "../pages/SignOut";
-import { MdMenu } from "react-icons/md";
+import Notification from "./Notifications";
 import { IsLoggedIn } from "../components/AuthenticationService";
-import { GetIsAdmin } from "./AuthenticationService";
 import "./styles/Nav.css";
+import NavLinks from "./NavLinks";
 
 const Nav = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [userName, setUsername] = useState("");
     const [isMenuClicked, setIsMenuClicked] = useState(false)
-    const [display, setDisplay] = useState("none")
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [bellDisplay, setBellDisplay] = useState("none")
+    const [isBellClicked, setIsBellClicked] = useState(false)
     const location = useLocation();
-
-    useEffect(() => setIsAdmin(GetIsAdmin), []);
-
-    const isActive = (path: string) => {
-        return location.pathname === path ? "active" : "non-active";
-    };
-
-    const updateMenu = () => {
-        if (!isMenuClicked) {
-            setDisplay("flex")
-        }
-        else {
-            setDisplay("none")
-        }
-        setIsMenuClicked(!isMenuClicked)
-    }
 
     // Listen for route changes and close the menu
     useEffect(() => {
-        setDisplay("none");
         setIsMenuClicked(false);
     }, [location.pathname]);
 
     useEffect(() => {
-        setLoggedIn(IsLoggedIn);
-        setUsername(localStorage.getItem("userName")!);
+        var isLoggedIn = IsLoggedIn();
+        setLoggedIn(isLoggedIn);
     }, []);
 
+    const handleMenuClick = () => {
+        setIsMenuClicked(!isMenuClicked);
+        setIsBellClicked(false);
+        setBellDisplay('none');
+    };
+
+    const handleBellClick = () => {
+        setIsBellClicked(!isBellClicked);
+        setIsMenuClicked(false);
+    };
+
     return (
-        <>
-            <nav className="navbar">
-                <Link className="logo-link" to="/">
-                    <div className="logo">
-                        <span>The</span>
-                        <br />
-                        <span>DevBlog</span>
-                    </div>
-                </Link>
-
-                <div className="nav-items">
-                    <Link to="/" className={isActive("/")}>Home</Link>
-                    <Link to="/posts" className={isActive("/posts")}>Posts</Link>
-                    <Link to="/about" className={isActive("/about")}>About</Link>
-                    {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
-
-                    {loggedIn ? (
-                        <span className="accounts">
-                            <SignOut />
-                            <span>Welcome {userName}</span>
-                        </span>
-                    ) : (
-                        <span className="accounts">
-                            <Link to="/signin" className={isActive("/signin")}>Login</Link>
-                            <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
-                        </span>
-                    )}
+        <nav className="navbar">
+            <Link className="logo-link" to="/">
+                <div className="logo">
+                    <span>The DevBlog</span>
                 </div>
-            </nav >
+            </Link>
 
-            <div className="mobile-nav">
-                <MdMenu className="mobile-nav-icon" onClick={updateMenu} size={75} />
-
-                <div className="mobile-nav-links" style={{ display: display }}>
-                    <Link to="/" className={isActive("/")}>Home</Link>
-                    <Link to="/posts" className={isActive("/posts")}>Posts</Link>
-                    <Link to="/about" className={isActive("/about")}>About</Link>
-                    {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
-
-                    {loggedIn && <SignOut />}
-
-                    {!loggedIn &&
-                        <span className="mobile-nav-accounts">
-                            <Link to="/signin" className={isActive("/signin")}>Login</Link>
-                            <Link to="/signup" className={isActive("/signup")}>SignUp</Link>
-                        </span>
-                    }
-                </div>
+            <div className="nav-menus-container">
+                {loggedIn &&
+                    <Notification
+                        bellDisplay={bellDisplay}
+                        loggedIn={loggedIn}
+                        setBellDisplay={setBellDisplay}
+                        isBellClicked={isBellClicked}
+                        isMenuClicked={isMenuClicked}
+                        handleBellClick={handleBellClick} />}
+                <NavLinks
+                    loggedIn={loggedIn}
+                    isMenuClicked={isMenuClicked}
+                    handleMenuClick={handleMenuClick} />
             </div>
-        </>
+        </nav >
     );
 }
 

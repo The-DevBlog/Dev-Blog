@@ -10,12 +10,11 @@ namespace devblog.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostService _posts;
-        private readonly IImgService _imgService;
-
-        public PostsController(IPostService posts, IImgService imgService)
+        private readonly IImgService _imgs;
+        public PostsController(IPostService posts, IImgService imgs)
         {
             _posts = posts;
-            _imgService = imgService;
+            _imgs = imgs;
         }
 
         [HttpGet("page/{pageNum}")]
@@ -96,7 +95,7 @@ namespace devblog.Controllers
         public async Task Delete(int id)
         {
             var imgs = _posts.Get(id).Result.Imgs;
-            await _imgService.DeleteImgFromDropBox(imgs);
+            await _imgs.DeleteImgFromDropBox(imgs);
             await _posts.Delete(id);
         }
     }

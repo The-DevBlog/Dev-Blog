@@ -21,7 +21,6 @@ const Posts = () => {
             .catch((e) => console.log("Error retrieving posts: " + e))
     }, [pageNum]);
 
-
     useEffect(() => {
         setIsAdmin(GetIsAdmin);
         fetch("api/posts/page/count")

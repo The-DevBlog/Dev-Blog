@@ -1,5 +1,4 @@
 ﻿using devblog.Interfaces;
-using devblog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
