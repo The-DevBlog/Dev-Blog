@@ -34,7 +34,7 @@ const Notification = ({ setBellDisplay, handleBellClick,
                 setNotifications(data);
             })
             .catch((e) => console.log("Error retrieving notifications: " + e));
-    }
+    };
 
     const deleteNotification = async (postId: number, userName: string) => {
         setDismissedNotifications([...dismissedNotifications, postId]);
@@ -56,7 +56,7 @@ const Notification = ({ setBellDisplay, handleBellClick,
         else {
             setBellDisplay("none")
         }
-    }, [isBellClicked, location.pathname])
+    }, [isBellClicked, setBellDisplay, location.pathname])
 
     useEffect(() => {
         setUsername(GetUserName);
@@ -66,7 +66,7 @@ const Notification = ({ setBellDisplay, handleBellClick,
         if (loggedIn) {
             getNotifications();
         }
-    }, [getNotifications, loggedIn]);
+    }, [loggedIn]);
 
     return (
         <div className="notification-drop-down" style={{ display: (notifications?.length ?? 0) > 0 ? "inline" : "none" }}>
