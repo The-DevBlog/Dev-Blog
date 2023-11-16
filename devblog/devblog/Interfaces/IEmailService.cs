@@ -1,4 +1,6 @@
-﻿namespace devblog.Interfaces
+﻿using devblog.Models;
+
+namespace devblog.Interfaces
 {
     public interface IEmailService
     {
@@ -11,5 +13,10 @@
         /// Sends an email whenever a new post is made
         /// </summary>
         Task NewPost();
+
+        /// <summary>
+        /// Toggles a specific users email preference
+        /// </summary>
+        Task<bool> ToggleSubscribe(User user);
     }
 }

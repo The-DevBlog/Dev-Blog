@@ -1,6 +1,5 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
-using devblog.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,10 +30,37 @@ namespace devblog.Controllers
             _email = email;
         }
 
+        [Authorize]
+        [HttpPut("subscribe")]
+        public async Task<bool> ToggleSubscribe()
+        {
+            var username = User.FindFirstValue("userName");
+            var user = await _userMgr.Users.Where(u => u.NormalizedUserName == username).FirstOrDefaultAsync();
+
+            var subscribed = await _email.ToggleSubscribe(user);
+            return subscribed;
+        }
+
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<UserInfo> GetCurrentUser()
+        {
+            var username = User.FindFirstValue("userName");
+            var user = await _userMgr.Users.Where(u => u.NormalizedUserName == username).FirstOrDefaultAsync();
+
+            var userInfo = new UserInfo
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Subscribed = user.Subscribed,
+            };
+
+            return userInfo;
+        }
+
         /// <summary>
         /// Returns all user's usernames and emails
         /// </summary>
-        /// <returns>List<UserInfo></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("count")]
         public async Task<List<UserInfo>> GetUsersCount()
@@ -43,7 +69,8 @@ namespace devblog.Controllers
                 .Select(u => new UserInfo
                 {
                     UserName = u.UserName,
-                    Email = u.Email
+                    Email = u.Email,
+                    Subscribed = u.Subscribed,
                 })
                 .ToListAsync();
 
@@ -54,6 +81,7 @@ namespace devblog.Controllers
         {
             public string? UserName { get; set; }
             public string? Email { get; set; }
+            public bool Subscribed { get; set; }
         }
 
 
