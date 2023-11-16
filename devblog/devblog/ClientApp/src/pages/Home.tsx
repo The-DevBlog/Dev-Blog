@@ -50,28 +50,29 @@ const Home = () => {
 
     return (
         <section className="latest-post">
-            {latestPost ? < Post {...latestPost} key={latestPost.id} postNumber={totalPosts} /> : <h1>Loading...</h1>}
-
             <div className="subscribe-to-email">
                 <h1>Dont miss a thing!</h1>
                 <button>Subscribe to the email list</button>
             </div>
 
-            {/* update YouTube video url */}
-            {isAdmin &&
-                <form className="update-video" onSubmit={setVideoUrl}>
-                    <label>URL </label>
-                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
-                    <button>Update</button>
-                </form>
-            }
+            {latestPost ? < Post {...latestPost} key={latestPost.id} postNumber={totalPosts} /> : <h1>Loading...</h1>}
 
-            {/* YouTube video */}
-            <iframe className="youtube-video"
-                src={url}
-                title="YouTube video player"
-                allowFullScreen
-            ></iframe>
+            {/* update YouTube video url */}
+            <div className="youtube-video">
+                {isAdmin &&
+                    <form className="update-video" onSubmit={setVideoUrl}>
+                        <label>URL </label>
+                        <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
+                        <button>Update</button>
+                    </form>}
+
+                {/* YouTube video */}
+                <iframe className="youtube-video"
+                    src={url}
+                    title="YouTube video player"
+                    allowFullScreen
+                ></iframe>
+            </div>
         </section>
     )
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using devblog.Models;
 using Microsoft.EntityFrameworkCore;
 using devblog.Data;
+using Newtonsoft.Json.Linq;
 
 namespace devblog.Services
 {
@@ -33,6 +34,62 @@ namespace devblog.Services
             var u = await _userDb.Users.Where(u => u == user).FirstOrDefaultAsync();
             u.Subscribed = !user.Subscribed;
             await _userDb.SaveChangesAsync();
+
+            Response response = null;
+
+            // add or remove the email from the send grid contact list
+            if (!u.Subscribed)
+            {
+                // retrive the contact
+                var data = $@"{{
+                    ""emails"": [""{user.Email}""]
+                }}";
+
+                var contact = await _sendGridClient.RequestAsync(
+                    method: SendGridClient.Method.POST,
+                    urlPath: "marketing/contacts/search/emails",
+                    requestBody: data
+                );
+
+                // extract the id from the contact
+                JObject json = JObject.Parse(await contact.Body.ReadAsStringAsync());
+                string id = json["result"][user.Email]["contact"]["id"].ToString();
+
+                // delete the contact from the list
+                var queryParams = $@"{{
+                    ""ids"": [""{id}""]
+                }}";
+
+                response = await _sendGridClient.RequestAsync(
+                    method: SendGridClient.Method.DELETE,
+                    urlPath: "marketing/contacts",
+                    queryParams: queryParams
+                );
+            }
+            else
+            {
+                var data = $@"{{
+                    ""list_ids"": [""{_config["SendGridDevBlogContactList"]}""],
+                    ""contacts"": [
+                        {{
+                            ""email"": ""{user.Email}""
+                        }}
+                    ]
+                }}";
+
+                response = await _sendGridClient.RequestAsync(
+                    method: SendGridClient.Method.PUT,
+                    urlPath: "marketing/contacts",
+                    requestBody: data
+                );
+
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(response.Body.ReadAsStringAsync().Result);
+            Console.WriteLine();
+
             return u.Subscribed;
         }
 

@@ -84,7 +84,6 @@ namespace devblog.Controllers
             public bool Subscribed { get; set; }
         }
 
-
         /// <summary>
         /// Delete an account
         /// </summary>
