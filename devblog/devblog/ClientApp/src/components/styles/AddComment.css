@@ -14,12 +14,7 @@
     border: 0 0 1px 0;
 }
 
-.create-comment textarea {
-    border-radius: 0.5em;
-}
-
 .create-comment button {
-    border-radius: 0.5em;
     margin-top: .5em;
     width: fit-content;
     padding: 8px;

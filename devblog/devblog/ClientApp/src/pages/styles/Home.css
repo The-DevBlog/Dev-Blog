@@ -6,6 +6,20 @@
     margin: 92px 20px 0px 20px;
 }
 
+.subscribe-to-email {
+    margin: 100px 0px;
+    text-align: center;
+}
+
+.subscribe-to-email>button {
+    /* background-color: #2d3747; */
+    padding: 15px;
+
+    font-family: 'Chivo Mono', monospace;
+    font-size: 15px;
+    margin: auto;
+}
+
 .update-video>button {
     display: inline;
 }
@@ -25,6 +39,10 @@
 }
 
 @media (max-width: 400px) {
+    .subscribe-to-email {
+        margin: 50px 0px;
+    }
+
     .youtube-video {
         height: 350px;
     }
