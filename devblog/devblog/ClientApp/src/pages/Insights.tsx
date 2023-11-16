@@ -4,21 +4,27 @@ import { MdDelete as Trash } from "react-icons/md";
 
 interface IUserInfo {
     userName: string,
-    email: string
+    email: string,
+    subscribed: boolean
 }
 
 const Insights = () => {
     const [users, setUsers] = useState<IUserInfo[]>();
+    const [subscribedUsers, setSubscribedUsers] = useState<number>(0);
 
     const getUsers = async () => {
         await fetch("api/accounts/count", {
             method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
-            }
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         }).then((res) => { return res.json(); })
             .then((data) => {
                 setUsers(data);
+
+                // count subscribed users
+                const subscribedCount = data.reduce((count: number, user: IUserInfo) => {
+                    return user.subscribed ? count + 1 : count;
+                }, 0);
+                setSubscribedUsers(subscribedCount);
             });
     }
 
@@ -33,7 +39,6 @@ const Insights = () => {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
             }).then(() => {
-                // users.filter((user) => user.userName !== userNameToRemove);
                 setUsers(users?.filter((user) => user.userName !== userName));
             })
                 .catch((e) => console.log(`Error deleting account: ${e}`));
@@ -45,6 +50,7 @@ const Insights = () => {
     return (
         <section className="insights">
             <p>Total Users: {users?.length}</p>
+            <p>Subscribed Users: {subscribedUsers}</p>
 
             <table className="user-table">
                 <thead>
@@ -59,6 +65,7 @@ const Insights = () => {
                         <tr key={index}>
                             <td>{user.userName}</td>
                             <td>{user.email}</td>
+                            <td>Subscribed: {user.subscribed ? 'Yes' : 'No'}</td>
                             <td><Trash className="delete-post-btn" onClick={() => handleDeleteAccount(user.userName)} /></td>
                         </tr>
                     ))}
