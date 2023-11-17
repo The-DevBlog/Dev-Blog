@@ -74,6 +74,9 @@ const Home = () => {
             {(!loggedIn || (loggedIn && !isSubscribed)) &&
                 <div className="subscribe-to-email">
                     <h1>Dont miss a thing!</h1>
+                    {loggedIn &&
+                        <input type="text" placeholder="user@example.com" />
+                    }
                     <button onClick={subscribeToEmail}>Subscribe to the email list</button>
                 </div>
             }

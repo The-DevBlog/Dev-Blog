@@ -107,7 +107,7 @@ namespace devblog.Services
                 );
             }
             else
-                response = EmailSubscribe(u).Result;
+                response = EmailSubscribe(u.Email).Result;
 
             Console.WriteLine();
             Console.WriteLine(response.StatusCode);
