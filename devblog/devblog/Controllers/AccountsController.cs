@@ -30,6 +30,7 @@ namespace devblog.Controllers
             _email = email;
         }
 
+
         [Authorize]
         [HttpPut("subscribe")]
         public async Task<bool> ToggleSubscribe()
@@ -39,6 +40,19 @@ namespace devblog.Controllers
 
             var subscribed = await _email.ToggleSubscribe(user);
             return subscribed;
+        }
+
+        [HttpGet("subscribe/{email}")]
+        public async Task EmailSubscribe(string email)
+        {
+
+            var response = await _email.EmailSubscribe(email);
+            if (User.Identity.IsAuthenticated && response.IsSuccessStatusCode)
+            {
+                var username = User.FindFirstValue("userName");
+                var user = await _userMgr.Users.Where(u => u.NormalizedUserName == username).FirstOrDefaultAsync();
+                await _email.DevBlogSubscribe(user);
+            }
         }
 
         [Authorize]

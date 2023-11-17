@@ -1,12 +1,14 @@
 import { FormEvent, useEffect, useState } from "react";
 import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
-import { GetIsAdmin } from "../components/AuthenticationService";
+import { GetIsAdmin, IsLoggedIn } from "../components/AuthenticationService";
 import "./styles/Home.css"
 
 const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
     const [url, setUrl] = useState<string>();
     const [totalPosts, setTotalPosts] = useState(0);
 
@@ -36,10 +38,28 @@ const Home = () => {
             .catch((e) => console.log("Error retrieving latest post: " + e));
     }
 
+    const subscribeToEmail = async () => {
+        await fetch(`api/accounts/subscribe`, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+        }).then(() => setIsSubscribed(true))
+            .catch((e) => console.log("Error subscribing to email: " + e));
+    }
+
+    const getUserInfo = async () => {
+        await fetch("api/accounts/user", {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+        }).then((res) => { return res.json(); })
+            .then((data) => setIsSubscribed(data.subscribed))
+            .catch((e) => console.log("Error retrieving current user: " + e));
+    }
+
     useEffect(() => {
         getVideoUrl();
         setIsAdmin(GetIsAdmin);
         getLatestPost();
+        setLoggedIn(IsLoggedIn);
+        getUserInfo();
+
 
         fetch("api/posts/count")
             .then((res) => { return res.json(); })
@@ -49,11 +69,14 @@ const Home = () => {
     }, []);
 
     return (
-        <section className="latest-post">
-            <div className="subscribe-to-email">
-                <h1>Dont miss a thing!</h1>
-                <button>Subscribe to the email list</button>
-            </div>
+        <section className="home">
+
+            {(!loggedIn || (loggedIn && !isSubscribed)) &&
+                <div className="subscribe-to-email">
+                    <h1>Dont miss a thing!</h1>
+                    <button onClick={subscribeToEmail}>Subscribe to the email list</button>
+                </div>
+            }
 
             {latestPost ? < Post {...latestPost} key={latestPost.id} postNumber={totalPosts} /> : <h1>Loading...</h1>}
 

@@ -1,4 +1,5 @@
 ﻿using devblog.Models;
+using SendGrid;
 
 namespace devblog.Interfaces
 {
@@ -13,6 +14,16 @@ namespace devblog.Interfaces
         /// Sends an email whenever a new post is made
         /// </summary>
         Task NewPost();
+
+        /// <summary>
+        /// Subscribes a user to the email list
+        /// </summary>
+        Task<Response> EmailSubscribe(string email);
+
+        /// <summary>
+        /// Subscribes a user to the devblog website
+        /// </summary>
+        Task DevBlogSubscribe(User user);
 
         /// <summary>
         /// Toggles a specific users email preference

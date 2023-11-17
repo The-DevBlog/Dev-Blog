@@ -27,6 +27,46 @@ namespace devblog.Services
         }
 
         /// <summary>
+        /// Subscribes a user to the email list
+        /// </summary>
+        public async Task<Response> EmailSubscribe(string email)
+        {
+            var data = $@"{{
+                    ""list_ids"": [""{_config["SendGridDevBlogContactList"]}""],
+                    ""contacts"": [
+                        {{
+                            ""email"": ""{email}""
+                        }}
+                    ]
+                }}";
+
+            var response = await _sendGridClient.RequestAsync(
+                method: SendGridClient.Method.PUT,
+                urlPath: "marketing/contacts",
+                requestBody: data
+            );
+
+            Console.WriteLine();
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(response.Body.ReadAsStringAsync().Result);
+            Console.WriteLine();
+
+            return response;
+        }
+
+        /// <summary>
+        /// Subscribes a user to the devblog website
+        /// </summary>
+        public async Task DevBlogSubscribe(User user)
+        {
+            if (!user.Subscribed)
+            {
+                user.Subscribed = true;
+                await _userDb.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
         /// Toggles a specific users email preference
         /// </summary>
         public async Task<bool> ToggleSubscribe(User user)
@@ -67,23 +107,7 @@ namespace devblog.Services
                 );
             }
             else
-            {
-                var data = $@"{{
-                    ""list_ids"": [""{_config["SendGridDevBlogContactList"]}""],
-                    ""contacts"": [
-                        {{
-                            ""email"": ""{user.Email}""
-                        }}
-                    ]
-                }}";
-
-                response = await _sendGridClient.RequestAsync(
-                    method: SendGridClient.Method.PUT,
-                    urlPath: "marketing/contacts",
-                    requestBody: data
-                );
-
-            }
+                response = EmailSubscribe(u).Result;
 
             Console.WriteLine();
             Console.WriteLine(response.StatusCode);

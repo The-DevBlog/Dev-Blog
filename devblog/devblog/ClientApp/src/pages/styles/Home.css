@@ -1,13 +1,13 @@
-.latest-post {
+.home {
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0px 20px;
+    margin: 100px 20px 0px 20px;
 }
 
 .subscribe-to-email {
-    margin: 125px;
+    margin: 50px 0px 100px 0px;
     width: 100%;
     text-align: center;
 }
@@ -40,7 +40,7 @@
 
 @media (max-width: 400px) {
     .subscribe-to-email {
-        margin: 75px;
+        margin: 25px 0px 100px 0px;
         width: 100%;
     }
 
