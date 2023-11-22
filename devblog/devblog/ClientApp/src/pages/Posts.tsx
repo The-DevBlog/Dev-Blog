@@ -13,8 +13,10 @@ const Posts = () => {
     const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [totalPosts, setTotalPosts] = useState(0);
+    const [pageParamQuery, setPageParamQuery] = useState(0);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
+    const pageParam = searchParams.get("pageNum");
 
     useEffect(() => {
         fetch(`api/posts/page/${pageNum}`)
@@ -22,17 +24,14 @@ const Posts = () => {
             .then((data) => setPosts(data))
             .catch((e) => console.log("Error retrieving posts: " + e))
 
-        setTimeout(() => {
-            scrollToHash();
-        }, 2000);
-        scrollToHash();
     }, [pageNum]);
 
     useEffect(() => {
-        const pageParam = searchParams.get("pageNum");
+        console.log("HELLO");
 
         if (pageParam) {
             setPageNum(parseInt(pageParam));
+            setPageParamQuery(parseInt(pageParam));
         }
     }, [location.search]);
 
@@ -51,6 +50,15 @@ const Posts = () => {
             }).catch((e) => console.log("Error retrieving post count: " + e));
     }, []);
 
+    useEffect(() => {
+        if (pageNum === pageParamQuery) {
+            setTimeout(() => {
+                scrollToHash();
+            }, 2000);
+        }
+
+    }, [() => scrollToHash, pageNum]);
+
     const scrollToHash = () => {
         const postIdParam = searchParams.get("postId");
         const target = document.querySelector("#post" + postIdParam);
@@ -59,10 +67,16 @@ const Posts = () => {
         }
     };
 
+    const handlePagerClick = (page: number) => {
+        window.history.replaceState(null, '', '/posts');
+        setPageParamQuery(-1);
+        setPageNum(page);
+    }
+
     const Pager = () => {
         return <div className="pager">
             {pageNum > 1 ? (
-                <MdChevronLeft className="arrow-visible" onClick={() => pageNum > 0 && setPageNum(pageNum - 1)} />
+                <MdChevronLeft className="arrow-visible" onClick={() => pageNum > 0 && handlePagerClick(pageNum - 1)} />
             ) : (
                 <MdChevronLeft className="arrow-hidden" />
             )}
@@ -70,7 +84,7 @@ const Posts = () => {
             <span>{pageNum}</span>
 
             {pageNum < totalPages ? (
-                <MdChevronRight className="arrow-visible" onClick={() => setPageNum(pageNum + 1)} />
+                <MdChevronRight className="arrow-visible" onClick={() => handlePagerClick(pageNum + 1)} />
             ) : (
                 <MdChevronRight className="arrow-hidden" />
             )}

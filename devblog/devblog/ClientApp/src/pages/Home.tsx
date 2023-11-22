@@ -11,7 +11,6 @@ const Home = () => {
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [url, setUrl] = useState("");
-    const [email, setEmail] = useState("");
     const [totalPosts, setTotalPosts] = useState(0);
 
     const getVideoUrl = async () => {
@@ -38,14 +37,6 @@ const Home = () => {
             .then((res) => { return res.json(); })
             .then((data) => setLatestPost(data))
             .catch((e) => console.log("Error retrieving latest post: " + e));
-    }
-
-    const subscribeToEmail = async () => {
-        await fetch(`api/accounts/subscribe`, {
-            method: "POST",
-            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
-        }).then(() => setIsSubscribed(true))
-            .catch((e) => console.log("Error subscribing to email: " + e));
     }
 
     const getUserInfo = async () => {
