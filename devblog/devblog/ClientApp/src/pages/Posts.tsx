@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdChevronLeft } from "react-icons/md"
 import { MdChevronRight } from "react-icons/md"
 import IPost from "../interfaces/IPostProps";
@@ -13,7 +13,6 @@ const Posts = () => {
     const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [totalPosts, setTotalPosts] = useState(0);
-    const [pageParamQuery, setPageParamQuery] = useState(0);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const pageParam = searchParams.get("pageNum");
@@ -27,11 +26,12 @@ const Posts = () => {
     }, [pageNum]);
 
     useEffect(() => {
-        console.log("HELLO");
-
         if (pageParam) {
             setPageNum(parseInt(pageParam));
-            setPageParamQuery(parseInt(pageParam));
+
+            setTimeout(() => {
+                scrollToHash();
+            }, 1700);
         }
     }, [location.search, pageParam]);
 
@@ -58,18 +58,8 @@ const Posts = () => {
         }
     };
 
-    useEffect(() => {
-        if (pageNum === pageParamQuery) {
-            setTimeout(() => {
-                scrollToHash();
-            }, 1700);
-        }
-
-    }, [scrollToHash, pageNum, pageParamQuery]);
-
     const handlePagerClick = (page: number) => {
         window.history.replaceState(null, '', '/posts');
-        setPageParamQuery(-1);
         setPageNum(page);
     }
 
