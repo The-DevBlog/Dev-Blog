@@ -27,13 +27,16 @@ button {
     color: white;
 }
 
-button {
+button,
+.signup-prompt {
+    text-decoration: none;
     background-color: #28303d;
     border-radius: 0.5em;
 
 }
 
-button:hover {
+button:hover,
+.signup-prompt:hover {
     background-color: #323d4f;
     cursor: pointer;
 }

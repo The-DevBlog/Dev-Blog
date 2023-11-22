@@ -32,6 +32,11 @@ namespace devblog.Interfaces
         Task<List<Post>> GetPage(int pageNum);
 
         /// <summary>
+        /// Returns the page number of a given post
+        /// </summary>
+        Task<int> GetPageNumber(int postId);
+
+        /// <summary>
         /// Retrieves a specified post
         /// </summary>
         /// <param name="postId">Post Id</param>

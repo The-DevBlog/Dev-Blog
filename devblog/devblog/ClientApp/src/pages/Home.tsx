@@ -3,13 +3,15 @@ import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
 import { GetIsAdmin, IsLoggedIn } from "../components/AuthenticationService";
 import "./styles/Home.css"
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const [latestPost, setLatestPost] = useState<IPost>();
     const [isAdmin, setIsAdmin] = useState(false);
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
-    const [url, setUrl] = useState<string>();
+    const [url, setUrl] = useState("");
+    const [email, setEmail] = useState("");
     const [totalPosts, setTotalPosts] = useState(0);
 
     const getVideoUrl = async () => {
@@ -40,6 +42,7 @@ const Home = () => {
 
     const subscribeToEmail = async () => {
         await fetch(`api/accounts/subscribe`, {
+            method: "POST",
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         }).then(() => setIsSubscribed(true))
             .catch((e) => console.log("Error subscribing to email: " + e));
@@ -71,21 +74,15 @@ const Home = () => {
     return (
         <section className="home">
 
-            {(!loggedIn || (loggedIn && !isSubscribed)) &&
-                <div className="subscribe-to-email">
-                    <h1>Dont miss a thing!</h1>
-                    {!loggedIn &&
-                        <input type="text" placeholder="user@example.com" />
-                    }
-                    <button onClick={subscribeToEmail}>Subscribe to the email list</button>
-                </div>
-            }
+            {/* sign up / subscribe prompt */}
+            {!loggedIn && <Link className="signup-prompt" to="/signup">Join the community. Sign up!</Link>}
+            {(loggedIn && !isSubscribed) && <Link className="signup-prompt" to="/account">Subscribe to the newsletter!</Link>}
 
             {latestPost ? < Post {...latestPost} key={latestPost.id} postNumber={totalPosts} /> : <h1>Loading...</h1>}
 
             {/* update YouTube video url */}
             <div className="youtube-video">
-                {isAdmin &&
+                {(isAdmin && loggedIn) &&
                     <form className="update-video" onSubmit={setVideoUrl}>
                         <label>URL </label>
                         <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />

@@ -4,7 +4,7 @@ import { MdChevronRight } from "react-icons/md"
 import IPost from "../interfaces/IPostProps";
 import Post from "../components/Post";
 import { GetIsAdmin } from "../components/AuthenticationService";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./styles/Posts.css";
 
 const Posts = () => {
@@ -13,13 +13,28 @@ const Posts = () => {
     const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [totalPosts, setTotalPosts] = useState(0);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
 
     useEffect(() => {
         fetch(`api/posts/page/${pageNum}`)
             .then((res) => { return res.json(); })
             .then((data) => setPosts(data))
             .catch((e) => console.log("Error retrieving posts: " + e))
+
+        setTimeout(() => {
+            scrollToHash();
+        }, 2000);
+        scrollToHash();
     }, [pageNum]);
+
+    useEffect(() => {
+        const pageParam = searchParams.get("pageNum");
+
+        if (pageParam) {
+            setPageNum(parseInt(pageParam));
+        }
+    }, [location.search]);
 
     useEffect(() => {
         setIsAdmin(GetIsAdmin);
@@ -35,6 +50,14 @@ const Posts = () => {
                 setTotalPosts(data)
             }).catch((e) => console.log("Error retrieving post count: " + e));
     }, []);
+
+    const scrollToHash = () => {
+        const postIdParam = searchParams.get("postId");
+        const target = document.querySelector("#post" + postIdParam);
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
     const Pager = () => {
         return <div className="pager">

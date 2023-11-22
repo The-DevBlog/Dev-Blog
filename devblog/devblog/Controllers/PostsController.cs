@@ -17,6 +17,13 @@ namespace devblog.Controllers
             _imgs = imgs;
         }
 
+        [HttpGet("getPageNum/{postId}")]
+        public async Task<int> GetPageNumber(int postId)
+        {
+            var pageNum = await _posts.GetPageNumber(postId);
+            return pageNum;
+        }
+
         [HttpGet("page/{pageNum}")]
         public async Task<List<Post>> GetPage(int pageNum)
         {

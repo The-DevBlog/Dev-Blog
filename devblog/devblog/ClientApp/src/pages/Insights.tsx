@@ -57,6 +57,7 @@ const Insights = () => {
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
+                        <th>Subscribed</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -65,7 +66,7 @@ const Insights = () => {
                         <tr key={index}>
                             <td>{user.userName}</td>
                             <td>{user.email}</td>
-                            <td>Subscribed: {user.subscribed ? 'Yes' : 'No'}</td>
+                            <td>{user.subscribed ? 'Yes' : 'No'}</td>
                             <td><Trash className="delete-post-btn" onClick={() => handleDeleteAccount(user.userName)} /></td>
                         </tr>
                     ))}

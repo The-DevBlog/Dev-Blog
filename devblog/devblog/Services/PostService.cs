@@ -108,6 +108,26 @@ namespace devblog.Services
         }
 
         /// <summary>
+        /// Returns the page number of a given post
+        /// </summary>
+        public async Task<int> GetPageNumber(int postId)
+        {
+            int pageSize = 5;
+
+            var posts = await _db.Post.OrderByDescending(x => x.Date).ToListAsync();
+            var postIdx = posts.FindIndex(x => x.Id == postId);
+
+            if(postIdx >= 0)
+            {
+                int pageNum = (postIdx / pageSize) + 1;
+                return pageNum;
+            }
+
+            // If post not found or encountered an error, return 0 or handle accordingly
+            return 0;
+        }
+
+        /// <summary>
         /// Retrieves a specified post
         /// </summary>
         /// <param name="postId">Post Id</param>

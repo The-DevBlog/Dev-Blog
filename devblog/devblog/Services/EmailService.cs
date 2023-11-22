@@ -55,18 +55,6 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Subscribes a user to the devblog website
-        /// </summary>
-        public async Task DevBlogSubscribe(User user)
-        {
-            if (!user.Subscribed)
-            {
-                user.Subscribed = true;
-                await _userDb.SaveChangesAsync();
-            }
-        }
-
-        /// <summary>
         /// Toggles a specific users email preference
         /// </summary>
         public async Task<bool> ToggleSubscribe(User user)

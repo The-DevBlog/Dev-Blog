@@ -21,11 +21,6 @@ namespace devblog.Interfaces
         Task<Response> EmailSubscribe(string email);
 
         /// <summary>
-        /// Subscribes a user to the devblog website
-        /// </summary>
-        Task DevBlogSubscribe(User user);
-
-        /// <summary>
         /// Toggles a specific users email preference
         /// </summary>
         Task<bool> ToggleSubscribe(User user);

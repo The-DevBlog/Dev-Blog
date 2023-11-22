@@ -54,7 +54,7 @@
     margin-left: 10px;
 }
 
-.notification-txt a {
+.notification-txt span:first-child {
     padding: 4px;
     opacity: 0.8;
     text-decoration: none;
@@ -63,7 +63,7 @@
 
 .notification-icon:hover,
 .notification-txt>span:last-child:hover,
-.notification-txt a:hover {
+.notification-txt span:hover {
     opacity: 1.0;
     cursor: pointer;
 }

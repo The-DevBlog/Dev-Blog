@@ -42,19 +42,6 @@ namespace devblog.Controllers
             return subscribed;
         }
 
-        [HttpGet("subscribe/{email}")]
-        public async Task EmailSubscribe(string email)
-        {
-
-            var response = await _email.EmailSubscribe(email);
-            if (User.Identity.IsAuthenticated && response.IsSuccessStatusCode)
-            {
-                var username = User.FindFirstValue("userName");
-                var user = await _userMgr.Users.Where(u => u.NormalizedUserName == username).FirstOrDefaultAsync();
-                await _email.DevBlogSubscribe(user);
-            }
-        }
-
         [Authorize]
         [HttpGet("user")]
         public async Task<UserInfo> GetCurrentUser()
