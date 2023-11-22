@@ -27,6 +27,20 @@ button {
     color: white;
 }
 
+button,
+.signup-prompt {
+    text-decoration: none;
+    background-color: #28303d;
+    border-radius: 0.5em;
+
+}
+
+button:hover,
+.signup-prompt:hover {
+    background-color: #323d4f;
+    cursor: pointer;
+}
+
 .comment,
 .date,
 .post-description,

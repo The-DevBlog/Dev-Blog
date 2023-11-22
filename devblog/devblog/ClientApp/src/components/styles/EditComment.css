@@ -9,8 +9,8 @@
 
 .edit-comment textarea,
 .edit-comment button {
-    border-radius: .5em;
     padding: 8px;
+    margin-right: 5px;
 }
 
 .edit-comment div {

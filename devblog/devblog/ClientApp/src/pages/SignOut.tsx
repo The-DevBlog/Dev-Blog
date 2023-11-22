@@ -1,7 +1,10 @@
 import { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles/SignOut.css";
 
 const SignOut = () => {
+    const navigate = useNavigate();
+
     const handleSignOut = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -10,6 +13,7 @@ const SignOut = () => {
             headers: { "Content-Type": "application/json" },
         }).then(() => {
             localStorage.clear();
+            navigate("/");
             window.location.reload();
         });
     };

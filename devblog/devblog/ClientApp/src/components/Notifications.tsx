@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { MdNotifications } from "react-icons/md";
 import INotificationProps from "../interfaces/INotificationProps";
 import { GetUserName } from "./AuthenticationService";
-import { HashLink } from "react-router-hash-link";
 import { useLocation } from "react-router-dom";
 import "./styles/Notifications.css";
 
@@ -68,6 +67,14 @@ const Notification = ({ setBellDisplay, handleBellClick,
         }
     });
 
+    const handleClick = async (postId: number) => {
+        await fetch(`api/posts/getPageNum/${postId}`)
+            .then((res) => { return res.json() })
+            .then((data) => {
+                window.location.href = `/posts?pageNum=${data}&postId=${postId}`
+            }).catch((e) => console.log("Error getting page number: " + e));
+    }
+
     return (
         <div className="notification-drop-down" style={{ display: (notifications?.length ?? 0) > 0 ? "inline" : "none" }}>
             <MdNotifications className="notification-icon" onClick={handleBellClick} />
@@ -75,9 +82,9 @@ const Notification = ({ setBellDisplay, handleBellClick,
             <div className="notifications" style={{ display: bellDisplay }} >
                 {notifications?.map((n) => <>
                     <div className={`notification-item ${dismissedNotifications.includes(n.postId) ? 'dismissed' : ''}`}>
-                        <HashLink smooth to={`/posts/#post${n.postId}`}><img src={n.imgUrl} alt="post thumbnail" /></HashLink>
+                        <span onClick={() => handleClick(n.postId)}><img src={n.imgUrl} alt="post thumbnail" /></span>
                         <div className="notification-txt">
-                            <HashLink smooth to={`/posts/#post${n.postId}`}>{n.userName} posted</HashLink>
+                            <span onClick={() => handleClick(n.postId)}>{n.userName} posted</span>
                             <span onClick={() => deleteNotification(n.postId, n.userName)}>dismiss</span>
                         </div>
                     </div>

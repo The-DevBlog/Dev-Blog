@@ -9,6 +9,7 @@ import Posts from './pages/Posts';
 import SignUp from './pages/SignUp';
 import About from './pages/About';
 import Insights from './pages/Insights';
+import Account from './pages/Account';
 import "./global.css";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/posts" element={<Posts />} />
         <Route path="/posts/create" element={<AddPost />} />
         <Route path="/about" element={<About />} />
+        <Route path="/account" element={<Account />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

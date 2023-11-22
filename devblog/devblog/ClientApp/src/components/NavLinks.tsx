@@ -41,6 +41,7 @@ const NavLinks = ({ handleMenuClick, isMenuClicked, loggedIn }: IProps) => {
                 <Link to="/" className={isActive("/")}>Home</Link>
                 <Link to="/posts" className={isActive("/posts")}>Posts</Link>
                 <Link to="/about" className={isActive("/about")}>About</Link>
+                {loggedIn && <Link to="/account" className={isActive("/account")}>Account</Link>}
                 {isAdmin && <Link to="/insights" className={isActive("/insights")}>Insights</Link>}
 
                 {loggedIn && <SignOut />}
