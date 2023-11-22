@@ -50,22 +50,22 @@ const Posts = () => {
             }).catch((e) => console.log("Error retrieving post count: " + e));
     }, []);
 
-    useEffect(() => {
-        if (pageNum === pageParamQuery) {
-            setTimeout(() => {
-                scrollToHash();
-            }, 2000);
-        }
-
-    }, [() => scrollToHash, pageNum, pageParamQuery]);
-
-    const scrollToHash = useCallback(async () => {
+    const scrollToHash = () => {
         const postIdParam = searchParams.get("postId");
         const target = document.querySelector("#post" + postIdParam);
         if (target) {
             target.scrollIntoView({ behavior: "smooth" });
         }
-    }, []);
+    };
+
+    useEffect(() => {
+        if (pageNum === pageParamQuery) {
+            setTimeout(() => {
+                scrollToHash();
+            }, 1700);
+        }
+
+    }, [scrollToHash, pageNum, pageParamQuery]);
 
     const handlePagerClick = (page: number) => {
         window.history.replaceState(null, '', '/posts');
