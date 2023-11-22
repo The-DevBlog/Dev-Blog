@@ -33,7 +33,7 @@ const Posts = () => {
                 scrollToHash();
             }, 1700);
         }
-    }, [location.search, pageParam]);
+    }, []);
 
     useEffect(() => {
         setIsAdmin(GetIsAdmin);
