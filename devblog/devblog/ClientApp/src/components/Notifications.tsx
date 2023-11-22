@@ -48,6 +48,14 @@ const Notification = ({ setBellDisplay, handleBellClick,
         }, 300);
     }
 
+    const handleClick = async (postId: number) => {
+        await fetch(`api/posts/getPageNum/${postId}`)
+            .then((res) => { return res.json() })
+            .then((data) => {
+                window.location.href = `/posts?pageNum=${data}&postId=${postId}`
+            }).catch((e) => console.log("Error getting page number: " + e));
+    }
+
     useEffect(() => {
         if (isBellClicked) {
             setBellDisplay("flex")
@@ -66,14 +74,6 @@ const Notification = ({ setBellDisplay, handleBellClick,
             getNotifications();
         }
     });
-
-    const handleClick = async (postId: number) => {
-        await fetch(`api/posts/getPageNum/${postId}`)
-            .then((res) => { return res.json() })
-            .then((data) => {
-                window.location.href = `/posts?pageNum=${data}&postId=${postId}`
-            }).catch((e) => console.log("Error getting page number: " + e));
-    }
 
     return (
         <div className="notification-drop-down" style={{ display: (notifications?.length ?? 0) > 0 ? "inline" : "none" }}>
