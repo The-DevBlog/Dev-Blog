@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdChevronLeft } from "react-icons/md"
 import { MdChevronRight } from "react-icons/md"
 import IPost from "../interfaces/IPostProps";
@@ -33,7 +33,7 @@ const Posts = () => {
             setPageNum(parseInt(pageParam));
             setPageParamQuery(parseInt(pageParam));
         }
-    }, [location.search]);
+    }, [location.search, pageParam]);
 
     useEffect(() => {
         setIsAdmin(GetIsAdmin);
@@ -57,15 +57,15 @@ const Posts = () => {
             }, 2000);
         }
 
-    }, [() => scrollToHash, pageNum]);
+    }, [() => scrollToHash, pageNum, pageParamQuery]);
 
-    const scrollToHash = () => {
+    const scrollToHash = useCallback(async () => {
         const postIdParam = searchParams.get("postId");
         const target = document.querySelector("#post" + postIdParam);
         if (target) {
             target.scrollIntoView({ behavior: "smooth" });
         }
-    };
+    }, []);
 
     const handlePagerClick = (page: number) => {
         window.history.replaceState(null, '', '/posts');
