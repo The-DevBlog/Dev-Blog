@@ -16,47 +16,7 @@ const Posts = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const pageParam = searchParams.get("pageNum");
-
-    useEffect(() => {
-        fetch(`api/posts/page/${pageNum}`)
-            .then((res) => { return res.json(); })
-            .then((data) => setPosts(data))
-            .catch((e) => console.log("Error retrieving posts: " + e))
-
-    }, [pageNum]);
-
-    useEffect(() => {
-        if (pageParam) {
-            setPageNum(parseInt(pageParam));
-
-            setTimeout(() => {
-                scrollToHash();
-            }, 1700);
-        }
-    }, []);
-
-    useEffect(() => {
-        setIsAdmin(GetIsAdmin);
-        fetch("api/posts/page/count")
-            .then((res) => { return res.json(); })
-            .then((data) => {
-                setTotalPages(data)
-            }).catch((e) => console.log("Error retrieving page count: " + e));
-
-        fetch("api/posts/count")
-            .then((res) => { return res.json(); })
-            .then((data) => {
-                setTotalPosts(data)
-            }).catch((e) => console.log("Error retrieving post count: " + e));
-    }, []);
-
-    const scrollToHash = () => {
-        const postIdParam = searchParams.get("postId");
-        const target = document.querySelector("#post" + postIdParam);
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth" });
-        }
-    };
+    const postIdParam = searchParams.get("postId");
 
     const handlePagerClick = (page: number) => {
         window.history.replaceState(null, '', '/posts');
@@ -80,6 +40,44 @@ const Posts = () => {
             )}
         </div>
     }
+
+    // get all posts for a specific page
+    useEffect(() => {
+        fetch(`api/posts/page/${pageNum}`)
+            .then((res) => { return res.json(); })
+            .then((data) => setPosts(data))
+            .catch((e) => console.log("Error retrieving posts: " + e))
+
+    }, [pageNum]);
+
+    // scroll to the selected post
+    useEffect(() => {
+        if (pageParam) {
+            setPageNum(parseInt(pageParam));
+
+            setTimeout(() => {
+                const target = document.querySelector("#post" + postIdParam);
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 1700);
+        }
+    }, [pageParam]);
+
+    useEffect(() => {
+        setIsAdmin(GetIsAdmin);
+        fetch("api/posts/page/count")
+            .then((res) => { return res.json(); })
+            .then((data) => {
+                setTotalPages(data)
+            }).catch((e) => console.log("Error retrieving page count: " + e));
+
+        fetch("api/posts/count")
+            .then((res) => { return res.json(); })
+            .then((data) => {
+                setTotalPosts(data)
+            }).catch((e) => console.log("Error retrieving post count: " + e));
+    }, []);
 
     return (
         <section className="posts">

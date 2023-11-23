@@ -48,7 +48,7 @@ const Notification = ({ setBellDisplay, handleBellClick,
         }, 300);
     }
 
-    const handleClick = async (postId: number) => {
+    const handleNotificationClick = async (postId: number) => {
         await fetch(`api/posts/getPageNum/${postId}`)
             .then((res) => { return res.json() })
             .then((data) => {
@@ -82,9 +82,9 @@ const Notification = ({ setBellDisplay, handleBellClick,
             <div className="notifications" style={{ display: bellDisplay }} >
                 {notifications?.map((n) => <>
                     <div className={`notification-item ${dismissedNotifications.includes(n.postId) ? 'dismissed' : ''}`}>
-                        <span onClick={() => handleClick(n.postId)}><img src={n.imgUrl} alt="post thumbnail" /></span>
+                        <span onClick={() => handleNotificationClick(n.postId)}><img src={n.imgUrl} alt="post thumbnail" /></span>
                         <div className="notification-txt">
-                            <span onClick={() => handleClick(n.postId)}>{n.userName} posted</span>
+                            <span onClick={() => handleNotificationClick(n.postId)}>{n.userName} posted</span>
                             <span onClick={() => deleteNotification(n.postId, n.userName)}>dismiss</span>
                         </div>
                     </div>

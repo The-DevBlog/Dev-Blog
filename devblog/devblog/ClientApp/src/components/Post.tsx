@@ -7,7 +7,7 @@ import ICommentProps from "../interfaces/ICommentProps";
 import ReactMarkdown from "react-markdown";
 import Vote from "./Vote";
 import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./styles/Post.css";
 import EditPost from "./EditPost";
 import { GetIsAdmin } from "./AuthenticationService";
