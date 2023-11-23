@@ -62,7 +62,7 @@ const Posts = () => {
                 }
             }, 1700);
         }
-    }, [pageParam]);
+    }, [pageParam, postIdParam]);
 
     useEffect(() => {
         setIsAdmin(GetIsAdmin);
