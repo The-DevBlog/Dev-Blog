@@ -1,8 +1,10 @@
+mod api;
 mod components;
 mod pages;
 mod router;
 mod store;
 
+use api::*;
 use components::navbar::Navbar;
 use store::*;
 use stylist::yew::styled_component;
