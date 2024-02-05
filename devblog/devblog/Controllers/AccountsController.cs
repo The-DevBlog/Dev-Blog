@@ -63,8 +63,8 @@ namespace devblog.Controllers
         /// Returns all user's usernames and emails
         /// </summary>
         [Authorize(Roles = "Admin")]
-        [HttpGet("count")]
-        public async Task<List<UserInfo>> GetUsersCount()
+        [HttpGet]
+        public async Task<List<UserInfo>> GetUsers()
         {
             var users = await _userMgr.Users
                 .Select(u => new UserInfo
