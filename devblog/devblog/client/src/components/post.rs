@@ -11,6 +11,7 @@ const STYLE: &str = include_str!("styles/post.css");
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub post: PostModel,
+    pub post_number: u32,
 }
 
 #[function_component(Post)]
@@ -22,7 +23,7 @@ pub fn post(props: &Props) -> Html {
             <div class="post" id={format!("post{}", props.post.id)}>
                 // POST INFO
                 <div class="post-info">
-                    <span>{"Log "}</span>
+                    <span>{"Log "}{props.post_number}</span>
                     <span>{Local.from_local_datetime(&props.post.date).unwrap().to_string()}</span>
                 </div>
 
