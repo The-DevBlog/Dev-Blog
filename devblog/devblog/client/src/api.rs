@@ -1,18 +1,22 @@
+use gloo::console::log;
 use gloo_net::http::Request;
-use serde::de::DeserializeOwned;
+use serde::{de::DeserializeOwned, Serialize};
+use serde_json::to_string_pretty;
 use yew::{Callback, UseStateHandle};
+
+const URL: &str = "https://localhost:44482/api/";
 
 pub enum Api {
     GetPost(i32),
-    GetVotes(i32, String),
+    GetPage(u32),
+    GetPostsCount,
 }
 
 impl Api {
     pub async fn call<T>(&self, callback: Callback<T>)
     where
-        T: DeserializeOwned,
+        T: DeserializeOwned + Serialize,
     {
-        let callback = callback.clone();
         let response = Request::get(&self.uri())
             .send()
             .await
@@ -21,18 +25,15 @@ impl Api {
             .await
             .unwrap();
 
-        callback.emit(response);
+        log!(to_string_pretty(&response).unwrap());
+        callback.clone().emit(response);
     }
 
     pub fn uri(&self) -> String {
-        let prefix = "https://localhost:44482/api/";
         match self {
-            Api::GetPost(id) => {
-                format!("{}posts/{}", prefix, id)
-            }
-            Api::GetVotes(id, vote_type) => {
-                format!("{}posts/{}/{}", prefix, id, vote_type)
-            }
+            Api::GetPost(id) => format!("{}posts/{}", URL, id),
+            Api::GetPage(num) => format!("{}posts/page/{}", URL, num),
+            Api::GetPostsCount => format!("{}posts/count", URL),
         }
     }
 }

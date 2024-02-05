@@ -1,10 +1,12 @@
-// use gloo::console::log;
+use crate::{components::post::Post, Api, CustomCallback, PostModel};
+use stylist::Style;
 use yew::prelude::*;
 
-use crate::{components::post::Post, Api, CustomCallback, PostModel};
+const STYLE: &str = include_str!("styles/home.css");
 
 #[function_component(Home)]
 pub fn home() -> Html {
+    let style = Style::new(STYLE).unwrap();
     let latest_post = use_state(|| PostModel::default());
     let callback = CustomCallback::new(&latest_post);
 
@@ -17,9 +19,10 @@ pub fn home() -> Html {
     });
 
     html! {
-        <section>
-            <h1>{"Home Page"}</h1>
-            <Post post={(*latest_post).clone()}/>
+        <section class={style}>
+            <div class="home">
+                <Post post={(*latest_post).clone()}/>
+            </div>
         </section>
     }
 }

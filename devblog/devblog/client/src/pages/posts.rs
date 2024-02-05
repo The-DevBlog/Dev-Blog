@@ -1,37 +1,31 @@
-use crate::PostModel;
-use gloo::console::log;
-use gloo_net::http::Request;
+use crate::{components::post::Post, Api, CustomCallback, PostModel};
+use stylist::Style;
 use yew::prelude::*;
+
+const STYLE: &str = include_str!("styles/posts.css");
 
 #[function_component(Posts)]
 pub fn posts() -> Html {
-    // let first_load = use_state(|| true);
+    let style = Style::new(STYLE).unwrap();
+    let posts = use_state(|| vec![PostModel::default()]);
+    let total_posts_count = use_state(|| u32::default());
+    let callback_posts = CustomCallback::new(&posts);
+    let callback_total_posts_count = CustomCallback::new(&total_posts_count);
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            // if *first_load {
-            log!("FETCHING POSTS");
-            // first_load.set(false);
-
-            let request: Vec<PostModel> = Request::get("https://localhost:44482/api/posts/page/1")
-                .send()
-                .await
-                .unwrap()
-                .json()
-                .await
-                .unwrap();
-
-            let json = serde_json::to_string_pretty(&request).unwrap_or_default();
-            log!("body:", json.to_string());
-            // }
+            Api::GetPage(1).call(callback_posts).await;
+            Api::GetPostsCount.call(callback_total_posts_count).await;
         });
 
         || {} // on destroy
     });
 
     html! {
-        <section>
-            <h1>{"Posts Page"}</h1>
+        <section class={style}>
+            <div class="posts">
+                    {for posts.iter().map(|post| html! {<Post post={post.clone()}/>})}
+            </div>
         </section>
     }
 }

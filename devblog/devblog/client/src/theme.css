@@ -1,0 +1,56 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Silkscreen&family=Zilla+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&family=Silkscreen&family=Zilla+Slab&display=swap'); */
+/* @import url("assets/fonts/Silkscreen-Bold.ttf"); */
+/* Font families, font colors & theme colors */
+
+:root {
+    background-color: #0d1116;
+    color: white;
+    overflow-x: hidden;
+    font-family: 'Silkscreen', cursive;
+    /* src: url("assets/fonts/Silkscreen-Bold.ttf"); */
+    src: local("assets/fonts/Silkscreen-Bold.ttf");
+}
+
+.post {
+    background-color: #1a2029;
+}
+
+.navbar,
+.footer {
+    background-color: #1a2029;
+}
+
+.comment,
+textarea,
+button {
+    border: #0d1116;
+    background-color: #0d1116;
+    color: white;
+}
+
+button,
+.signup-prompt {
+    text-decoration: none;
+    background-color: #28303d;
+    border-radius: 0.5em;
+
+}
+
+button:hover,
+.signup-prompt:hover {
+    background-color: #323d4f;
+    cursor: pointer;
+}
+
+.comment,
+.date,
+.post-description,
+.votes span,
+textarea,
+.sign-up-container,
+.description,
+.description-result,
+button {
+    font-family: 'Chivo Mono', monospace;
+}

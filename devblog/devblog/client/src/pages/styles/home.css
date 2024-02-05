@@ -1,0 +1,44 @@
+.home {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 100px 20px 0px 20px;
+}
+
+.signup-prompt {
+    font-size: 20px;
+    padding: 15px;
+    margin: 75px 0px 100px 0px;
+    text-align: center;
+}
+
+.update-video>button {
+    display: inline;
+}
+
+.update-video {
+    width: 80%;
+}
+
+.update-video>input {
+    width: 50%;
+}
+
+.youtube-video {
+    height: 520px;
+    margin-top: 25px;
+    margin-bottom: 100px;
+    width: 100%;
+}
+
+@media (max-width: 400px) {
+    .signup-prompt {
+        margin: 25px 0px 75px 0px;
+    }
+
+    .youtube-video {
+        height: 350px;
+        margin-top: 10px;
+    }
+}

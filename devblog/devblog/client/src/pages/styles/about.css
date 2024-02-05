@@ -1,0 +1,30 @@
+.about {
+    margin: 150px 20px 0px 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.about>ul>li {
+    font-size: 20px;
+    padding-bottom: 30px;
+}
+
+.about>img {
+    width: 50%;
+}
+
+/* @media(max-width: 500px) {
+    .about {
+        flex-direction: column;
+    }
+
+    .about>ul {
+        align-self: left;
+        order: 2;
+    }
+
+    .about>img {
+        width: 95%;
+    }
+} */

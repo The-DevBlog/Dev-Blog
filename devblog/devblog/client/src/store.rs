@@ -1,3 +1,4 @@
+#![allow(warnings)]
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use yewdux::Store;
