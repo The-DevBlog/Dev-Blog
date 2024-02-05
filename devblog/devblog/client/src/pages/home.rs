@@ -8,7 +8,7 @@ const STYLE: &str = include_str!("styles/home.css");
 pub fn home() -> Html {
     let style = Style::new(STYLE).unwrap();
     let latest_post = use_state(|| PostModel::default());
-    let total_posts_count = use_state(|| u32::default());
+    let total_posts_count = use_state(|| i32::default());
     let callback_latest_post = CustomCallback::new(&latest_post);
     let callback_total_posts_count = CustomCallback::new(&total_posts_count);
 
@@ -17,8 +17,6 @@ pub fn home() -> Html {
             Api::GetPost(-1).call(callback_latest_post).await;
             Api::GetPostsCount.call(callback_total_posts_count).await;
         });
-
-        || {} // cleanup
     });
 
     html! {

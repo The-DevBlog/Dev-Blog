@@ -1,4 +1,7 @@
+use stylist::Style;
 use yew::{function_component, html, Html, Properties};
+
+const STYLE: &str = include_str!("styles/vote.css");
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -8,10 +11,14 @@ pub struct Props {
 
 #[function_component(Vote)]
 pub fn vote(props: &Props) -> Html {
+    let style = Style::new(STYLE).unwrap();
+
     html! {
-        <div class="votes">
-            <span>{"Up"}{props.up_votes}</span>
-            <span>{"Down"}{props.down_votes}</span>
+        <div class={style}>
+            <div class="votes">
+                <span>{"Up"}{props.up_votes}</span>
+                <span>{"Down"}{props.down_votes}</span>
+            </div>
         </div>
     }
 }

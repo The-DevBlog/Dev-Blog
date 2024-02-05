@@ -11,7 +11,7 @@ const STYLE: &str = include_str!("styles/post.css");
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub post: PostModel,
-    pub post_number: u32,
+    pub post_number: i32,
 }
 
 #[function_component(Post)]

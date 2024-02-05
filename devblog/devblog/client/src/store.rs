@@ -1,12 +1,13 @@
 #![allow(warnings)]
 use chrono::NaiveDateTime;
+use gloo::console::log;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use yewdux::Store;
 
 use crate::Api;
 
 #[derive(Clone, Serialize, Deserialize, Store, PartialEq, Debug, Default)]
-#[store(storage = "local")]
 pub struct PostModel {
     pub id: u32,
     pub description: String,
@@ -15,13 +16,6 @@ pub struct PostModel {
     pub comments: Vec<CommentModel>,
     pub upVotes: Vec<UpVoteModel>,
     pub downVotes: Vec<DownVoteModel>,
-}
-
-impl PostModel {
-    pub async fn get_posts(&self) -> Vec<PostModel> {
-        let posts: Vec<PostModel> = Api::GetPost(1).call_2().await;
-        posts
-    }
 }
 
 #[derive(Clone, Serialize, Deserialize, Store, PartialEq, Debug, Default)]
@@ -49,4 +43,11 @@ pub struct UpVoteModel {
 pub struct DownVoteModel {
     pub postId: u32,
     pub userName: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, Store, PartialEq, Debug, Default)]
+pub struct User {
+    pub userName: String,
+    pub email: String,
+    pub subscribed: bool,
 }
