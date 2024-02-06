@@ -35,7 +35,7 @@ pub fn insights() -> Html {
                     <tbody>
                         {for users.iter().map(|user| html! {
                             <tr>
-                                <td>{&user.userName}</td>
+                                <td>{&user.username}</td>
                                 <td>{&user.email}</td>
                                 <td>{if user.subscribed {"yes"} else {"no"}}</td>
                             </tr>

@@ -1,7 +1,7 @@
-use gloo::{console::log, utils::format::JsValueSerdeExt};
+use gloo::console::log;
 use gloo_net::http::{Headers, Method, Request};
 use serde::{de::DeserializeOwned, Serialize};
-use serde_json::Value;
+// use serde_json::to_string_pretty;
 use wasm_bindgen::JsValue;
 use yew::{Callback, UseStateHandle};
 
@@ -14,6 +14,7 @@ pub enum Api {
     GetPagesCount,
     GetUsers,
     SignIn,
+    SignUp,
 }
 
 impl Api {
@@ -23,66 +24,26 @@ impl Api {
         hdrs: Option<Headers>,
         method: Method,
         body: Option<T>,
-        // body: Value,
     ) where
         T: DeserializeOwned + Serialize,
     {
-        // let mut parsed_body = JsValue::default();
-        let mut parsed_body = String::default();
+        let mut parsed_body = JsValue::default();
         if let Some(obj) = body {
-            // parsed_body = <JsValue as JsValueSerdeExt>::from_serde(&obj).unwrap();
-            parsed_body = serde_json::to_string(&obj).unwrap();
-        } else {
-            parsed_body = serde_json::to_string(&String::default()).unwrap();
+            let parsed = serde_json::to_string(&obj).unwrap();
+            parsed_body = JsValue::from_str(&parsed);
         }
 
-        log!("body: ", parsed_body.clone());
-
-        // log!(body.to_string());
-        // let request: RequestBuilder = Request::get(&self.uri())
-        //     .headers(hdrs.unwrap_or_default())
-        //     .method(method.clone());
-
-        // if method == Method::POST {
-        //     let response = request
-        //         .body(body.to_string())
-        //         .unwrap()
-        //         .send()
-        //         .await
-        //         .unwrap()
-        //         .json()
-        //         .await
-        //         .unwrap();
-        //     callback.clone().emit(response);
-        // } else {
-        //     let response = request.send().await.unwrap().json().await.unwrap();
-        //     callback.clone().emit(response);
-        // }
-        // log!(to_string_pretty(&response).unwrap());
-
-        // let mut parsed_body = JsValue::default();
-        // if !body.to_string().is_empty() {
-        //     log!("NOT EMPTY");
-        //     parsed_body = JsValue::from_str(&body.to_string());
-        // } else {
-        //     log!("EMPTY");
-        // }
-
-        let response = Request::get(&self.uri())
+        log!("request body: ", parsed_body.clone());
+        let req = Request::get(&self.uri())
             .headers(hdrs.unwrap_or_default())
-            .method(method.clone())
+            .method(method)
             .body(parsed_body)
-            .unwrap()
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
             .unwrap();
 
-        // Emit the callback
-        callback.clone().emit(response);
-        // }
+        let res: T = req.send().await.unwrap().json().await.unwrap();
+        // log!("response body: ", to_string_pretty(&res).unwrap());
+
+        callback.clone().emit(res);
     }
 
     pub fn uri(&self) -> String {
@@ -93,6 +54,7 @@ impl Api {
             Api::GetPagesCount => format!("{}posts/countPages", URL),
             Api::GetUsers => format!("{}accounts", URL),
             Api::SignIn => format!("{}accounts/signin", URL),
+            Api::SignUp => format!("{}accounts/signup", URL),
         }
     }
 }

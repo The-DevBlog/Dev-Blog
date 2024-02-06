@@ -19,7 +19,7 @@ pub fn comment(props: &Props) -> Html {
             <div class="comment">
                 <div class="comment-info">
                     // USERNAME
-                    <span>{&props.comment.userName}</span>
+                    <span>{&props.comment.username}</span>
 
                     // DATE / TIME
                     <div class={"date"}>

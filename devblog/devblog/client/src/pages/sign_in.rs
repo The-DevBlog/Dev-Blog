@@ -1,11 +1,9 @@
-use crate::{Api, CustomCallback, Login};
+use crate::{components::items::text_input::TextInput, Api, CustomCallback, Login, LoginField};
 use gloo_net::http::{Headers, Method};
-use serde_json::json;
 use std::ops::Deref;
 use stylist::Style;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
-// use gloo::console::log;
 
 const STYLE: &str = include_str!("styles/signIn.css");
 
@@ -15,36 +13,24 @@ pub fn sign_in() -> Html {
     let login = use_state(Login::default);
     let login_cb = CustomCallback::new(&login);
 
-    let username_onchange = {
+    let onchange = |field: LoginField| -> Callback<Event> {
         let login = login.clone();
         Callback::from(move |e: Event| {
+            let login_clone = login.deref().clone();
             let input = e.target_dyn_into::<HtmlInputElement>();
-            let mut login_clone = login.deref().clone();
-            if let Some(username) = input {
-                login_clone.username = username.value();
-                login.set(login_clone);
-            }
-        })
-    };
-
-    let password_onchange = {
-        let login = login.clone();
-        Callback::from(move |e: Event| {
-            let input = e.target_dyn_into::<HtmlInputElement>();
-            let mut login_clone = login.deref().clone();
-            if let Some(password) = input {
-                login_clone.password = password.value();
-                login.set(login_clone);
+            if let Some(value) = input {
+                let tmp = login_clone.set(value.value(), &field);
+                login.set(tmp);
             }
         })
     };
 
     let onsubmit = {
+        let login = login.clone();
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
             let login_cb = login_cb.clone();
             let login = login.deref().clone();
-            // let json = json!({"username": login.username, "password": login.password});
             let hdrs = Headers::new();
             hdrs.append("content-type", "application/json");
             wasm_bindgen_futures::spawn_local(async move {
@@ -56,53 +42,17 @@ pub fn sign_in() -> Html {
     };
 
     html! {
-            <div class={style}>
-                <div class="sign-in-container">
-                    <form {onsubmit}>
-                        <label for="username">{"username"}</label>
-                        <input
-                            id="username"
-                            type="text"
-                            placeholder="username"
-                            value="username"
-                            onchange={username_onchange}
-                        />
+        <div class={style}>
+            <div class="sign-in-container">
 
-                        <label for="password">{"password"}</label>
-                        <input
-                            id="password"
-                            type="password"
-                            value="mypassword"
-                            onchange={password_onchange}
-                        />
+                // {error && <span>{error}</span>}
 
-                        <button>{"Login"}</button>
-                    </form>
-
-                    // {error && <span>{error}</span>}
-
-    // <form onSubmit={handleSubmit} className="sign-in">
-    //     <TextField
-    //         label="Username"
-    //         value={userName}
-    //         type="text"
-    //         onChange={(e) => setUsername(e.currentTarget.value)}
-    //         validateOnFocusOut
-    //         required
-    //     />
-
-    //     <TextField
-    //         label="Password"
-    //         value={password}
-    //         type="password"
-    //         onChange={(e) => setPassword(e.currentTarget.value)}
-    //         validateOnFocusOut
-    //         required
-    //     />
-
-    //     <button>Login</button>
-    // </form>
-                </div>
+                <form {onsubmit} class="sign-in">
+                    <TextInput label="username" input_type="text" value={login.username.clone()} onchange={onchange(LoginField::Username)}/>
+                    <TextInput label="password" input_type="password" value={login.password.clone()} onchange={onchange(LoginField::Password)}/>
+                    <button>{"Login"}</button>
+                </form>
             </div>
-        }
+        </div>
+    }
 }
