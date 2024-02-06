@@ -51,3 +51,9 @@ pub struct User {
     pub email: String,
     pub subscribed: bool,
 }
+
+#[derive(Clone, Serialize, Deserialize, Store, PartialEq, Debug, Default)]
+pub struct Login {
+    pub username: String,
+    pub password: String,
+}

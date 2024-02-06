@@ -1,4 +1,6 @@
 use crate::{Api, CustomCallback, User};
+use gloo_net::http::Method;
+use serde_json::json;
 use stylist::Style;
 use yew::prelude::*;
 
@@ -12,7 +14,9 @@ pub fn insights() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async {
-            Api::GetUsers.call(users_cb).await;
+            Api::GetUsers
+                .call(users_cb, None, Method::GET, json!({}))
+                .await;
         });
     });
 
