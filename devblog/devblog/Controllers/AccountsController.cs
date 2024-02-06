@@ -172,7 +172,7 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="user">New user to add</param>
         /// <returns>Task<IActionResult></returns>
-        [HttpPost]
+        [HttpPost("signup")]
         public async Task<IActionResult> SignUp(User user)
         {
             // verify unique username
