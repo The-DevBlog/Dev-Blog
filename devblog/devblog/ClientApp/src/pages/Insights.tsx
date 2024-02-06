@@ -13,7 +13,7 @@ const Insights = () => {
     const [subscribedUsers, setSubscribedUsers] = useState<number>(0);
 
     const getUsers = async () => {
-        await fetch("api/accounts/count", {
+        await fetch("api/accounts", {
             method: "GET",
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         }).then((res) => { return res.json(); })
