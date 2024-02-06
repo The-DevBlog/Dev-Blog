@@ -1,5 +1,5 @@
 use crate::{Api, CustomCallback, Login};
-use gloo_net::http::Method;
+use gloo_net::http::{Headers, Method};
 use serde_json::json;
 use std::ops::Deref;
 use stylist::Style;
@@ -44,11 +44,12 @@ pub fn sign_in() -> Html {
             e.prevent_default();
             let login_cb = login_cb.clone();
             let login = login.deref().clone();
-            let json = json!({"userName": login.username, "password": login.password});
-            // {"userName":"devmaster","password":"@Test123!"}
+            // let json = json!({"username": login.username, "password": login.password});
+            let hdrs = Headers::new();
+            hdrs.append("content-type", "application/json");
             wasm_bindgen_futures::spawn_local(async move {
                 Api::SignIn
-                    .call(login_cb.clone(), None, Method::POST, json)
+                    .call(login_cb.clone(), Some(hdrs), Method::POST, Some(login))
                     .await;
             });
         })

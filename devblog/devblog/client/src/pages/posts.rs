@@ -3,7 +3,6 @@ use crate::{
     Api, CustomCallback, PostModel,
 };
 use gloo_net::http::Method;
-use serde_json::json;
 // use gloo::console::log;
 use stylist::Style;
 use yew::prelude::*;
@@ -25,10 +24,10 @@ pub fn posts() -> Html {
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async {
             Api::GetPostsCount
-                .call(total_posts_count_cb, None, Method::GET, json!({}))
+                .call(total_posts_count_cb, None, Method::GET, None)
                 .await;
             Api::GetPagesCount
-                .call(total_pages_count_cb, None, Method::GET, json!({}))
+                .call(total_pages_count_cb, None, Method::GET, None)
                 .await;
         });
     });
@@ -39,7 +38,7 @@ pub fn posts() -> Html {
         wasm_bindgen_futures::spawn_local(async move {
             loading_clone.set(false);
             Api::GetPage(*page_num_clone as u32)
-                .call(posts_cb, None, Method::GET, json!({}))
+                .call(posts_cb, None, Method::GET, None)
                 .await;
             loading_clone.set(true);
         });
