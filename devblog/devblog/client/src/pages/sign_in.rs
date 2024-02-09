@@ -1,45 +1,15 @@
-use crate::{components::items::text_input::TextInput, Api, CustomCallback, Login, LoginField};
-use gloo_net::http::{Headers, Method};
-use std::ops::Deref;
+use crate::{components::items::text_input::TextInput, helpers, ApiPost, User, UserField};
 use stylist::Style;
-use web_sys::HtmlInputElement;
 use yew::prelude::*;
+use yew_router::hooks::use_navigator;
 
 const STYLE: &str = include_str!("styles/signIn.css");
 
 #[function_component(SignIn)]
 pub fn sign_in() -> Html {
     let style = Style::new(STYLE).unwrap();
-    let login = use_state(Login::default);
-    let login_cb = CustomCallback::new(&login);
-
-    let onchange = |field: LoginField| -> Callback<Event> {
-        let login = login.clone();
-        Callback::from(move |e: Event| {
-            let login_clone = login.deref().clone();
-            let input = e.target_dyn_into::<HtmlInputElement>();
-            if let Some(value) = input {
-                let tmp = login_clone.set(value.value(), &field);
-                login.set(tmp);
-            }
-        })
-    };
-
-    let onsubmit = {
-        let login = login.clone();
-        Callback::from(move |e: SubmitEvent| {
-            e.prevent_default();
-            let login_cb = login_cb.clone();
-            let login = login.deref().clone();
-            let hdrs = Headers::new();
-            hdrs.append("content-type", "application/json");
-            wasm_bindgen_futures::spawn_local(async move {
-                Api::SignIn
-                    .call(login_cb.clone(), Some(hdrs), Method::POST, Some(login))
-                    .await;
-            });
-        })
-    };
+    let user = use_state(User::default);
+    let nav = use_navigator().unwrap();
 
     html! {
         <div class={style}>
@@ -47,9 +17,9 @@ pub fn sign_in() -> Html {
 
                 // {error && <span>{error}</span>}
 
-                <form {onsubmit} class="sign-in">
-                    <TextInput label="username" input_type="text" value={login.username.clone()} onchange={onchange(LoginField::Username)}/>
-                    <TextInput label="password" input_type="password" value={login.password.clone()} onchange={onchange(LoginField::Password)}/>
+                <form onsubmit={helpers::onsubmit(&user, nav, ApiPost::SignIn)} class="sign-in">
+                    <TextInput label="username" input_type="text" value={user.username.clone()} onchange={helpers::onchange(&user, UserField::Username)}/>
+                    <TextInput label="password" input_type="password" value={user.password.clone()} onchange={helpers::onchange(&user, UserField::Password)}/>
                     <button>{"Login"}</button>
                 </form>
             </div>
