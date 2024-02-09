@@ -1,7 +1,8 @@
 use crate::{
     components::{pager::Pager, post::Post},
-    ApiGet, CustomCallback, PostModel,
+    Api, CustomCallback, PostModel,
 };
+use gloo_net::http::Method;
 // use gloo::console::log;
 use stylist::Style;
 use yew::prelude::*;
@@ -22,8 +23,12 @@ pub fn posts() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async {
-            let _ = ApiGet::PostsCount.fetch(total_posts_count_cb).await;
-            let _ = ApiGet::PagesCount.fetch(total_pages_count_cb).await;
+            let _ = Api::GetPostsCount
+                .fetch(Some(total_posts_count_cb), None, None, Method::GET)
+                .await;
+            let _ = Api::GetPagesCount
+                .fetch(Some(total_pages_count_cb), None, None, Method::GET)
+                .await;
         });
     });
 
@@ -32,7 +37,9 @@ pub fn posts() -> Html {
     use_effect_with(page_num_clone.clone(), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             loading_clone.set(false);
-            let _ = ApiGet::Page(*page_num_clone as u32).fetch(posts_cb).await;
+            let _ = Api::GetPage(*page_num_clone as u32)
+                .fetch(Some(posts_cb), None, None, Method::GET)
+                .await;
             loading_clone.set(true);
         });
     });

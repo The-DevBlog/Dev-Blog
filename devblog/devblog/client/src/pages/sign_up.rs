@@ -2,7 +2,7 @@ use stylist::Style;
 use yew::prelude::*;
 use yew_router::hooks::use_navigator;
 
-use crate::{components::items::text_input::TextInput, helpers, ApiPost, User, UserField};
+use crate::{components::items::text_input::TextInput, helpers, Api, User, UserField};
 
 const STYLE: &str = include_str!("styles/signUp.css");
 
@@ -15,7 +15,7 @@ pub fn sign_up() -> Html {
     html! {
         <div class={style}>
             <div class="sign-up-container">
-                <form onsubmit={helpers::onsubmit(&user, nav, ApiPost::SignUp)}>
+                <form onsubmit={helpers::onsubmit(&user, nav, Api::SignUp)}>
                     <TextInput label="username" input_type="text" value={user.username.clone()} onchange={helpers::onchange(&user, UserField::Username)}/>
                     <TextInput label="email" input_type="text" value={user.email.clone()} onchange={helpers::onchange(&user, UserField::Email)}/>
                     <TextInput label="password" input_type="password" value={user.password_hash.clone()} onchange={helpers::onchange(&user, UserField::PasswordHash)}/>

@@ -1,4 +1,4 @@
-use crate::{components::items::text_input::TextInput, helpers, ApiPost, User, UserField};
+use crate::{components::items::text_input::TextInput, helpers, Api, User, UserField};
 use stylist::Style;
 use yew::prelude::*;
 use yew_router::hooks::use_navigator;
@@ -17,7 +17,7 @@ pub fn sign_in() -> Html {
 
                 // {error && <span>{error}</span>}
 
-                <form onsubmit={helpers::onsubmit(&user, nav, ApiPost::SignIn)} class="sign-in">
+                <form onsubmit={helpers::onsubmit(&user, nav, Api::SignIn)} class="sign-in">
                     <TextInput label="username" input_type="text" value={user.username.clone()} onchange={helpers::onchange(&user, UserField::Username)}/>
                     <TextInput label="password" input_type="password" value={user.password.clone()} onchange={helpers::onchange(&user, UserField::Password)}/>
                     <button>{"Login"}</button>

@@ -1,9 +1,21 @@
-use crate::{router::Route, ApiPost, User, UserField};
-use gloo_net::http::Headers;
+use crate::{helpers, Api};
+use crate::{router::Route, User, UserField};
+use gloo_net::http::{Headers, Method};
+use serde::Serialize;
 use std::ops::Deref;
+use wasm_bindgen::JsValue;
 use web_sys::{Event, HtmlInputElement, SubmitEvent};
 use yew::{Callback, TargetCast, UseStateHandle};
 use yew_router::navigator::Navigator;
+
+pub fn to_jsvalue<T>(body: T) -> JsValue
+where
+    T: Serialize,
+{
+    let parsed = serde_json::to_string(&body).unwrap();
+    let parsed_body = JsValue::from_str(&parsed);
+    parsed_body
+}
 
 pub fn onchange(user: &UseStateHandle<User>, field: UserField) -> Callback<Event> {
     let user = user.clone();
@@ -17,11 +29,7 @@ pub fn onchange(user: &UseStateHandle<User>, field: UserField) -> Callback<Event
     })
 }
 
-pub fn onsubmit(
-    user: &UseStateHandle<User>,
-    nav: Navigator,
-    api: ApiPost,
-) -> Callback<SubmitEvent> {
+pub fn onsubmit(user: &UseStateHandle<User>, nav: Navigator, api: Api) -> Callback<SubmitEvent> {
     let user = user.clone();
     Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
@@ -30,7 +38,11 @@ pub fn onsubmit(
         let hdrs = Headers::new();
         hdrs.append("content-type", "application/json");
         wasm_bindgen_futures::spawn_local(async move {
-            let response = api.fetch(Some(hdrs), user).await;
+            // let response = api.fetch(Some(hdrs), user).await;
+            let body = helpers::to_jsvalue(user);
+            let response = api
+                .fetch::<User>(None, Some(hdrs), Some(body), Method::POST)
+                .await;
 
             if let Ok(_) = response {
                 nav.push(&Route::Home);

@@ -1,4 +1,5 @@
-use crate::{ApiGet, CustomCallback, User};
+use crate::{Api, CustomCallback, User};
+use gloo_net::http::Method;
 use stylist::Style;
 use yew::prelude::*;
 
@@ -12,7 +13,9 @@ pub fn insights() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async {
-            let _ = ApiGet::Users.fetch(users_cb).await;
+            let _ = Api::GetUsers
+                .fetch(Some(users_cb), None, None, Method::GET)
+                .await;
         });
     });
 

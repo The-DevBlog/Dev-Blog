@@ -1,11 +1,9 @@
-use chrono::NaiveDate;
 use gloo::console::log;
 use gloo_net::{
-    http::{Headers, Method, Request, Response},
+    http::{Headers, Method, RequestBuilder, Response},
     Error,
 };
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use serde_json::to_string_pretty;
+use serde::{de::DeserializeOwned, Serialize};
 // use serde_json::to_string_pretty;
 use wasm_bindgen::JsValue;
 use yew::{Callback, UseStateHandle};
@@ -13,51 +11,44 @@ use yew::{Callback, UseStateHandle};
 const URL: &str = "https://localhost:44482/api/";
 
 #[derive(Clone, Copy)]
-pub enum ApiPost {
+pub enum Api {
+    GetPage(u32),
+    GetPost(i32),
+    GetPostsCount,
+    GetPagesCount,
+    GetUsers,
     SignIn,
     SignUp,
 }
 
-pub enum ApiGet {
-    Page(u32),
-    Post(i32),
-    PostsCount,
-    PagesCount,
-    Users,
-}
-
-#[derive(Deserialize, Serialize)]
-struct Token {
-    pub token: String,
-    pub expiration: String,
-}
-
-impl ApiPost {
-    pub async fn fetch<T>(&self, hdrs: Option<Headers>, body: T) -> Result<Response, Error>
+impl Api {
+    pub async fn fetch<T>(
+        &self,
+        callback: Option<Callback<T>>,
+        hdrs: Option<Headers>,
+        body: Option<JsValue>,
+        method: Method,
+    ) -> Result<Response, Error>
     where
         T: DeserializeOwned + Serialize + Clone,
     {
-        log!("HELLO");
-        let parsed = serde_json::to_string(&body).unwrap();
-        let parsed_body = JsValue::from_str(&parsed);
-
-        // log!("request body: ", parsed_body.clone());
-        let request = Request::get(&self.uri())
+        let request = RequestBuilder::new(&self.uri())
             .headers(hdrs.unwrap_or_default())
-            .method(Method::POST)
-            .body(parsed_body)
+            .method(method)
+            .body(body.unwrap_or_default())
             .unwrap();
 
         let result = request.send().await;
 
         match &result {
             Ok(_res) => {
-                // log!("Successfully sent request");
-                // let json: Token = _res.json().await.unwrap();
-                // let str_json = to_string_pretty(&json).unwrap();
-                log!("HELLO");
-                // log!("body: ", str_json);
-                // log!("Response: ", _res.body());
+                log!("Successfully sent request");
+                let txt = _res.text().await.unwrap();
+                log!("Response: ", &txt);
+
+                if let Some(cb) = callback {
+                    cb.emit(serde_json::from_str::<T>(&txt).unwrap());
+                }
             }
             Err(e) => log!("Error sending request: ", e.to_string()),
         }
@@ -65,39 +56,15 @@ impl ApiPost {
         result
     }
 
-    pub fn uri(&self) -> String {
+    fn uri(&self) -> String {
         match self {
-            ApiPost::SignIn => format!("{}accounts/signin", URL),
-            ApiPost::SignUp => format!("{}accounts/signup", URL),
-        }
-    }
-}
-
-impl ApiGet {
-    pub async fn fetch<T>(&self, callback: Callback<T>) -> Result<T, Error>
-    where
-        T: DeserializeOwned + Serialize + Clone,
-    {
-        let request = Request::get(&self.uri());
-        let result: Result<T, Error> = request.send().await.unwrap().json().await;
-
-        // log!("response body: ", to_string_pretty(&result).unwrap());
-
-        match &result {
-            Ok(val) => callback.clone().emit(val.clone()),
-            Err(e) => log!("Error getting response body: ", e.to_string()),
-        }
-
-        result
-    }
-
-    pub fn uri(&self) -> String {
-        match self {
-            ApiGet::Page(num) => format!("{}posts/?page={}", URL, num),
-            ApiGet::Post(id) => format!("{}posts/{}", URL, id),
-            ApiGet::PostsCount => format!("{}posts/countPosts", URL),
-            ApiGet::PagesCount => format!("{}posts/countPages", URL),
-            ApiGet::Users => format!("{}accounts", URL),
+            Api::GetPage(num) => format!("{}posts/?page={}", URL, num),
+            Api::GetPost(id) => format!("{}posts/{}", URL, id),
+            Api::GetPostsCount => format!("{}posts/countPosts", URL),
+            Api::GetPagesCount => format!("{}posts/countPages", URL),
+            Api::GetUsers => format!("{}accounts", URL),
+            Api::SignIn => format!("{}accounts/signin", URL),
+            Api::SignUp => format!("{}accounts/signup", URL),
         }
     }
 }

@@ -1,4 +1,5 @@
-use crate::{components::post::Post, ApiGet, CustomCallback, PostModel};
+use crate::{components::post::Post, Api, CustomCallback, PostModel};
+use gloo_net::http::Method;
 use stylist::Style;
 use yew::prelude::*;
 
@@ -14,8 +15,12 @@ pub fn home() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            let _ = ApiGet::Post(-1).fetch(callback_latest_post).await;
-            let _ = ApiGet::PostsCount.fetch(callback_total_posts_count).await;
+            let _ = Api::GetPost(-1)
+                .fetch(Some(callback_latest_post), None, None, Method::GET)
+                .await;
+            let _ = Api::GetPostsCount
+                .fetch(Some(callback_total_posts_count), None, None, Method::GET)
+                .await;
         });
     });
 
