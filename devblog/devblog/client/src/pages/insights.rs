@@ -14,7 +14,7 @@ pub fn insights() -> Html {
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async {
             let hdrs = Headers::new();
-            hdrs.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImRldm1hc3RlciIsImVtYWlsIjoiZGV2bWFzdGVyQHRoZWRldmJsb2cubmV0IiwianRpIjoiN2M3OGQxNDUtNzk3OC00OGJmLWJjNGQtOWRlYmU2ZTA4MDBlIiwicm9sZSI6IkFkbWluIiwiZXhwIjoxNzA3NTEwMTYzLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDQ4Mi8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDQ4Mi9hcGkvIn0.iDAeXuhIB4eaf0bnirAvI3H9TFABrqVTZZNhEsickAM");
+            hdrs.append("Authorization", "Bearer ");
 
             let _ = Api::GetUsers
                 .fetch(Some(users_cb), Some(hdrs), None, Method::GET)
