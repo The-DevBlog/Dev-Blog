@@ -4,13 +4,16 @@ use gloo_net::{
     Error,
 };
 use serde::{de::DeserializeOwned, Serialize};
+use serde_json::to_string_pretty;
 // use serde_json::to_string_pretty;
+use crate::store::Store;
 use wasm_bindgen::JsValue;
 use yew::{Callback, UseStateHandle};
+use yewdux::prelude::*;
 
 const URL: &str = "https://localhost:44482/api/";
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Api {
     GetPage(u32),
     GetPost(i32),
@@ -39,12 +42,17 @@ impl Api {
             .unwrap();
 
         let result = request.send().await;
-
         match &result {
             Ok(_res) => {
                 log!("Successfully sent request");
                 let txt = _res.text().await.unwrap();
+                // let t: T = serde_json::from_str(&txt).unwrap();
                 log!("Response: ", &txt);
+
+                if self == &Api::SignIn {
+                    // let store_obj: Store = serde_json::from_str(&txt).unwrap();
+                    // log!("Token: ", obj.username);
+                }
 
                 if let Some(cb) = callback {
                     cb.emit(serde_json::from_str::<T>(&txt).unwrap());
