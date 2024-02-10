@@ -147,6 +147,7 @@ namespace devblog.Controllers
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
                         expiration = token.ValidTo,
+                        username = user.UserName.Normalize()
                     });
                 }
                 else
@@ -212,7 +213,8 @@ namespace devblog.Controllers
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    expiration = token.ValidTo, 
+                    username = user.UserName
                 });
             }
             else
