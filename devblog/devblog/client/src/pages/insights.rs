@@ -1,4 +1,7 @@
-use crate::{Api, CustomCallback, User};
+use crate::{
+    helpers::{self, CustomCallback},
+    Api, User,
+};
 use gloo_net::http::{Headers, Method};
 use stylist::Style;
 use yew::prelude::*;
@@ -12,13 +15,12 @@ pub fn insights() -> Html {
     let users_cb = CustomCallback::new(&users);
 
     use_effect_with((), move |_| {
-        wasm_bindgen_futures::spawn_local(async {
+        wasm_bindgen_futures::spawn_local(async move {
             let hdrs = Headers::new();
             hdrs.append("Authorization", "Bearer ");
 
-            let _ = Api::GetUsers
-                .fetch(Some(users_cb), Some(hdrs), None, Method::GET)
-                .await;
+            let res = Api::GetUsers.fetch2(None, None, Method::GET).await;
+            helpers::emit(&users_cb, res.unwrap()).await;
         });
     });
 

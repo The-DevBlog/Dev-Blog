@@ -1,7 +1,8 @@
 use crate::{helpers, Api};
 use crate::{router::Route, User, UserField};
 // use gloo::console::log;
-use gloo_net::http::{Headers, Method};
+use gloo_net::http::{Headers, Method, Response};
+use serde::de::DeserializeOwned;
 use serde::Serialize;
 use std::ops::Deref;
 use wasm_bindgen::JsValue;
@@ -31,12 +32,13 @@ pub fn onsubmit(user: &UseStateHandle<User>, nav: Navigator, api: Api) -> Callba
         hdrs.append("content-type", "application/json");
         wasm_bindgen_futures::spawn_local(async move {
             let body = Some(helpers::to_jsvalue(user));
-            let response = api
-                .fetch::<User>(None, Some(hdrs), body, Method::POST)
-                .await;
+            let response = api.fetch2(Some(hdrs), body, Method::POST).await;
 
-            if let Ok(_) = response {
-                nav.push(&Route::Home);
+            // navigate home if the submission is successful
+            if let Some(res) = response {
+                if res.status() == 200 {
+                    nav.push(&Route::Home);
+                }
             }
         });
     })
@@ -49,4 +51,23 @@ where
     let parsed = serde_json::to_string(&body).unwrap();
     let parsed_body = JsValue::from_str(&parsed);
     parsed_body
+}
+
+pub struct CustomCallback;
+
+impl CustomCallback {
+    pub fn new<T: 'static>(state: &UseStateHandle<T>) -> Callback<T> {
+        let state = state.clone();
+        Callback::from(move |req: T| {
+            state.set(req);
+        })
+    }
+}
+
+pub async fn emit<T>(callback: &Callback<T>, response: Response)
+where
+    T: DeserializeOwned,
+{
+    let txt = response.text().await.unwrap();
+    callback.emit(serde_json::from_str::<T>(&txt).unwrap());
 }

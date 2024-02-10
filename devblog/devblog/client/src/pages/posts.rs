@@ -1,6 +1,7 @@
 use crate::{
     components::{pager::Pager, post::Post},
-    Api, CustomCallback, PostModel,
+    helpers::{self, CustomCallback},
+    Api, PostModel,
 };
 use gloo_net::http::Method;
 // use gloo::console::log;
@@ -22,13 +23,12 @@ pub fn posts() -> Html {
     let total_pages_count_cb = CustomCallback::new(&total_pages_count);
 
     use_effect_with((), move |_| {
-        wasm_bindgen_futures::spawn_local(async {
-            let _ = Api::GetPostsCount
-                .fetch(Some(total_posts_count_cb), None, None, Method::GET)
-                .await;
-            let _ = Api::GetPagesCount
-                .fetch(Some(total_pages_count_cb), None, None, Method::GET)
-                .await;
+        wasm_bindgen_futures::spawn_local(async move {
+            let res = Api::GetPostsCount.fetch2(None, None, Method::GET).await;
+            helpers::emit(&total_posts_count_cb, res.unwrap()).await;
+
+            let res = Api::GetPagesCount.fetch2(None, None, Method::GET).await;
+            helpers::emit(&total_pages_count_cb, res.unwrap()).await;
         });
     });
 
@@ -37,9 +37,9 @@ pub fn posts() -> Html {
     use_effect_with(page_num_clone.clone(), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             loading_clone.set(false);
-            let _ = Api::GetPage(*page_num_clone as u32)
-                .fetch(Some(posts_cb), None, None, Method::GET)
-                .await;
+            let num = *page_num_clone as u32;
+            let res = Api::GetPage(num).fetch2(None, None, Method::GET).await;
+            helpers::emit(&posts_cb, res.unwrap()).await;
             loading_clone.set(true);
         });
     });
