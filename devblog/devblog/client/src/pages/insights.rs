@@ -1,9 +1,10 @@
 use crate::{
-    helpers::{self, CustomCallback},
+    helpers::{self, on_click, CustomCallback},
     store::Store,
     Api, User,
 };
 use gloo_net::http::{Headers, Method};
+use std::rc::Rc;
 use stylist::Style;
 use yew::prelude::*;
 use yewdux::prelude::*;
@@ -18,10 +19,11 @@ pub fn insights() -> Html {
     let store = use_store_value::<Store>();
 
     // get all users
+    let token = store.token.clone();
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             let hdrs = Headers::new();
-            let auth = format!("Bearer {}", store.token.clone());
+            let auth = format!("Bearer {}", token);
             hdrs.append("Authorization", &auth);
 
             let res = Api::GetUsers.fetch(Some(hdrs), None, Method::GET).await;
@@ -45,12 +47,21 @@ pub fn insights() -> Html {
                         </tr>
                     </thead>
                     <tbody>
-                        {for users.iter().map(|user| html! {
-                            <tr>
-                                <td>{&user.username}</td>
-                                <td>{&user.email}</td>
-                                <td>{if user.subscribed {"yes"} else {"no"}}</td>
-                            </tr>
+                        {for users.iter().map(|user|{
+                            let onclick = {
+                                let token = store.token.clone();
+                                let api = Rc::new(Api::DeleteAccount(user.username.clone()));
+                                on_click(token, api, Method::DELETE, None)
+                            };
+
+                            html! {
+                                <tr>
+                                    <td>{&user.username}</td>
+                                    <td>{&user.email}</td>
+                                    <td>{if user.subscribed {"yes"} else {"no"}}</td>
+                                    <td><button {onclick}>{"X"}</button></td>
+                                </tr>
+                            }
                         })}
                     </tbody>
                 </table>

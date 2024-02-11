@@ -90,10 +90,11 @@ namespace devblog.Controllers
         /// </summary>
         /// <param name="username"></param>
         [Authorize(Roles = "Visitor")]
-        [HttpDelete("{username}")]
-        public async Task<IActionResult> DeleteAccount(string username)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAccount()
         {
             // get current user
+            var username = User.FindFirstValue("username");
             User user = _userMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();
 
             if (user != null)
@@ -101,14 +102,14 @@ namespace devblog.Controllers
                 // sign current user out and delete account
                 await _signInMgr.SignOutAsync();
                 await _userMgr.DeleteAsync(user);
-                return Redirect("/");
+                return Ok();
             }
 
-            return Redirect("/");
+            return BadRequest(new { error = "Error attempting to delete account." });
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("admin/{username}")]
+        [HttpDelete("adminDelete/{username}")]
         public async Task AdminDeleteAccount(string username)
         {
             User user = _userMgr.Users.Where(x => x.NormalizedUserName == username).FirstOrDefault();

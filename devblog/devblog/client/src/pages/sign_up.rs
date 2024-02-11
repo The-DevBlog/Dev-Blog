@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 use crate::{components::items::text_input::TextInput, helpers, Api, Store, User, UserField};
 use stylist::Style;
 use yew::prelude::*;
@@ -16,7 +18,7 @@ pub fn sign_up() -> Html {
     html! {
         <div class={style}>
             <div class="sign-up-container">
-                <form onsubmit={helpers::onsubmit(&user, nav, Api::SignUp, dispatch)}>
+                <form onsubmit={helpers::on_submit(&user, nav, Rc::new(Api::SignUp), dispatch)}>
                     <TextInput label="username" input_type="text" value={user.username.clone()} onchange={helpers::onchange(&user, UserField::Username)}/>
                     <TextInput label="email" input_type="text" value={user.email.clone()} onchange={helpers::onchange(&user, UserField::Email)}/>
                     <TextInput label="password" input_type="password" value={user.password_hash.clone()} onchange={helpers::onchange(&user, UserField::PasswordHash)}/>

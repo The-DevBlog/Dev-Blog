@@ -4,7 +4,7 @@ use wasm_bindgen::JsValue;
 
 const URL: &str = "https://localhost:44482/api/";
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub enum Api {
     GetPage(u32),
     GetPost(i32),
@@ -12,8 +12,11 @@ pub enum Api {
     GetPagesCount,
     GetUsers,
     GetCurrentUser,
+    ToggleSubscribe,
     SignIn,
     SignUp,
+    DeleteCurrentAccount,
+    DeleteAccount(String),
 }
 
 impl Api {
@@ -54,8 +57,11 @@ impl Api {
             Api::GetPagesCount => format!("{}posts/countPages", URL),
             Api::GetUsers => format!("{}accounts", URL),
             Api::GetCurrentUser => format!("{}accounts/user", URL),
+            Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
             Api::SignIn => format!("{}accounts/signin", URL),
             Api::SignUp => format!("{}accounts/signup", URL),
+            Api::DeleteCurrentAccount => format!("{}accounts", URL),
+            Api::DeleteAccount(username) => format!("{}accounts/adminDelete/{}", URL, username),
         }
     }
 }
