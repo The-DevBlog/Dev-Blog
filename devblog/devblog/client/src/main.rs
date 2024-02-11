@@ -6,7 +6,10 @@ mod pages;
 mod router;
 mod store;
 
-use crate::router::{switch, Route};
+use crate::{
+    components::footer::Footer,
+    router::{switch, Route},
+};
 use api::*;
 use components::navbar::Navbar;
 use models::*;
@@ -29,6 +32,7 @@ pub fn app() -> Html {
             <BrowserRouter>
                 <Navbar />
                 <Switch<Route> render={switch} />
+                <Footer />
             </BrowserRouter>
         </div>
     }

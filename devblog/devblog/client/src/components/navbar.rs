@@ -24,6 +24,7 @@ pub fn navbar() -> Html {
                     <Link<Route> to={Route::AddPost}>{"AddPost"}</Link<Route>>
                     <Link<Route> to={Route::About}>{"About"}</Link<Route>>
                     <Link<Route> to={Route::Insights}>{"Insights"}</Link<Route>>
+                    <Link<Route> to={Route::Account}>{"Account"}</Link<Route>>
                     <Link<Route> to={Route::SignIn}>{"SignIn"}</Link<Route>>
                     <Link<Route> to={Route::SignOut}>{"SignOut"}</Link<Route>>
                     <Link<Route> to={Route::SignUp}>{"SignUp"}</Link<Route>>

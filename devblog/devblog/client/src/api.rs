@@ -1,6 +1,5 @@
 use gloo::console::log;
 use gloo_net::http::{Headers, Method, RequestBuilder, Response};
-// use serde_json::to_string_pretty;
 use wasm_bindgen::JsValue;
 
 const URL: &str = "https://localhost:44482/api/";
@@ -12,6 +11,7 @@ pub enum Api {
     GetPostsCount,
     GetPagesCount,
     GetUsers,
+    GetCurrentUser,
     SignIn,
     SignUp,
 }
@@ -53,6 +53,7 @@ impl Api {
             Api::GetPostsCount => format!("{}posts/countPosts", URL),
             Api::GetPagesCount => format!("{}posts/countPages", URL),
             Api::GetUsers => format!("{}accounts", URL),
+            Api::GetCurrentUser => format!("{}accounts/user", URL),
             Api::SignIn => format!("{}accounts/signin", URL),
             Api::SignUp => format!("{}accounts/signup", URL),
         }

@@ -49,6 +49,7 @@ pub fn onsubmit(
                     let obj: Store = serde_json::from_str(&res.text().await.unwrap()).unwrap();
                     dispatch_clone.reduce_mut(move |store| {
                         store.token = obj.token;
+                        store.username = obj.username;
                     });
                     nav.push(&Route::Home);
                 }
