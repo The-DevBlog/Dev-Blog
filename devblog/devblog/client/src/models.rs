@@ -50,12 +50,16 @@ pub struct DownVoteModel {
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
 pub struct User {
-    #[serde(rename = "userName")]
+    #[serde(default, rename = "userName")]
     pub username: String,
+    #[serde(default)]
     pub email: String,
+    #[serde(default)]
     pub password: String,
-    #[serde(rename = "passwordHash")]
+    #[serde(default, rename = "passwordHash")]
     pub password_hash: String,
+    #[serde(default)]
+    pub subscribed: bool,
 }
 
 impl User {
@@ -75,12 +79,4 @@ pub enum UserField {
     Password,
     PasswordHash,
     Email,
-}
-
-#[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
-pub struct UserInfo {
-    #[serde(rename = "userName")]
-    pub username: String,
-    pub subscribed: bool,
-    pub email: String,
 }

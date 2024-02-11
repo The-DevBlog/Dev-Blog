@@ -1,7 +1,7 @@
 use crate::{
     helpers::{self, CustomCallback},
     store::Store,
-    Api, UserInfo,
+    Api, User,
 };
 use gloo_net::http::{Headers, Method};
 use stylist::Style;
@@ -13,10 +13,11 @@ const STYLE: &str = include_str!("styles/insights.css");
 #[function_component(Insights)]
 pub fn insights() -> Html {
     let style = Style::new(STYLE).unwrap();
-    let users = use_state(|| vec![UserInfo::default()]);
+    let users = use_state(|| vec![User::default()]);
     let users_cb = CustomCallback::new(&users);
     let store = use_store_value::<Store>();
 
+    // get all users
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             let hdrs = Headers::new();

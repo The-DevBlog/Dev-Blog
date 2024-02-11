@@ -17,6 +17,7 @@ pub fn home() -> Html {
     let latest_post_cb = CustomCallback::new(&latest_post);
     let total_posts_count_cb = CustomCallback::new(&total_posts_count);
 
+    // get latest page and posts count
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             let res = Api::GetPost(-1).fetch(None, None, Method::GET).await;

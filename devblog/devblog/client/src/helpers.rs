@@ -1,7 +1,7 @@
-// use gloo::console::log;
 use crate::store::Store;
 use crate::{helpers, Api};
 use crate::{router::Route, User, UserField};
+use gloo::console::log;
 use gloo_net::http::{Headers, Method, Response};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
@@ -35,7 +35,8 @@ pub fn onsubmit(
         e.prevent_default();
         let dispatch_clone = dispatch.clone();
         let nav = nav.clone();
-        let user = user.deref().clone();
+        let mut user = user.deref().clone();
+        user.subscribed = true;
         let hdrs = Headers::new();
         hdrs.append("content-type", "application/json");
         wasm_bindgen_futures::spawn_local(async move {
@@ -81,5 +82,6 @@ where
     T: DeserializeOwned,
 {
     let txt = response.text().await.unwrap();
+    log!("Response: ", &txt);
     callback.emit(serde_json::from_str::<T>(&txt).unwrap());
 }

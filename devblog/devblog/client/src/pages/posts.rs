@@ -22,6 +22,7 @@ pub fn posts() -> Html {
     let total_posts_count_cb = CustomCallback::new(&total_posts_count);
     let total_pages_count_cb = CustomCallback::new(&total_pages_count);
 
+    // get pages count and posts count
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             let res = Api::GetPostsCount.fetch(None, None, Method::GET).await;
@@ -32,6 +33,7 @@ pub fn posts() -> Html {
         });
     });
 
+    // get posts for current page
     let page_num_clone = page_num.clone();
     let loading_clone = loading.clone();
     use_effect_with(page_num_clone.clone(), move |_| {
