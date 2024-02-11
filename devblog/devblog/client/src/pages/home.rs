@@ -19,10 +19,10 @@ pub fn home() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            let res = Api::GetPost(-1).fetch2(None, None, Method::GET).await;
+            let res = Api::GetPost(-1).fetch(None, None, Method::GET).await;
             helpers::emit(&latest_post_cb, res.unwrap()).await;
 
-            let response = Api::GetPostsCount.fetch2(None, None, Method::GET).await;
+            let response = Api::GetPostsCount.fetch(None, None, Method::GET).await;
             helpers::emit(&total_posts_count_cb, response.unwrap()).await;
         });
     });

@@ -53,7 +53,6 @@ pub struct User {
     #[serde(rename = "userName")]
     pub username: String,
     pub email: String,
-    pub subscribed: bool,
     pub password: String,
     #[serde(rename = "passwordHash")]
     pub password_hash: String,
@@ -76,4 +75,12 @@ pub enum UserField {
     Password,
     PasswordHash,
     Email,
+}
+
+#[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
+pub struct UserInfo {
+    #[serde(rename = "userName")]
+    pub username: String,
+    pub subscribed: bool,
+    pub email: String,
 }

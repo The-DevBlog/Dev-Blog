@@ -17,7 +17,7 @@ pub enum Api {
 }
 
 impl Api {
-    pub async fn fetch2(
+    pub async fn fetch(
         &self,
         hdrs: Option<Headers>,
         body: Option<JsValue>,

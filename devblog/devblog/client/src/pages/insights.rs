@@ -1,25 +1,29 @@
 use crate::{
     helpers::{self, CustomCallback},
-    Api, User,
+    store::Store,
+    Api, UserInfo,
 };
 use gloo_net::http::{Headers, Method};
 use stylist::Style;
 use yew::prelude::*;
+use yewdux::prelude::*;
 
 const STYLE: &str = include_str!("styles/insights.css");
 
 #[function_component(Insights)]
 pub fn insights() -> Html {
     let style = Style::new(STYLE).unwrap();
-    let users = use_state(|| vec![User::default()]);
+    let users = use_state(|| vec![UserInfo::default()]);
     let users_cb = CustomCallback::new(&users);
+    let store = use_store_value::<Store>();
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             let hdrs = Headers::new();
-            hdrs.append("Authorization", "Bearer ");
+            let auth = format!("Bearer {}", store.token.clone());
+            hdrs.append("Authorization", &auth);
 
-            let res = Api::GetUsers.fetch2(None, None, Method::GET).await;
+            let res = Api::GetUsers.fetch(Some(hdrs), None, Method::GET).await;
             helpers::emit(&users_cb, res.unwrap()).await;
         });
     });

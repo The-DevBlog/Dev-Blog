@@ -1,6 +1,7 @@
+// use gloo::console::log;
+use crate::store::Store;
 use crate::{helpers, Api};
 use crate::{router::Route, User, UserField};
-// use gloo::console::log;
 use gloo_net::http::{Headers, Method, Response};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
@@ -9,6 +10,7 @@ use wasm_bindgen::JsValue;
 use web_sys::{Event, HtmlInputElement, SubmitEvent};
 use yew::{Callback, TargetCast, UseStateHandle};
 use yew_router::navigator::Navigator;
+use yewdux::Dispatch;
 
 pub fn onchange(user: &UseStateHandle<User>, field: UserField) -> Callback<Event> {
     let user = user.clone();
@@ -22,21 +24,31 @@ pub fn onchange(user: &UseStateHandle<User>, field: UserField) -> Callback<Event
     })
 }
 
-pub fn onsubmit(user: &UseStateHandle<User>, nav: Navigator, api: Api) -> Callback<SubmitEvent> {
+pub fn onsubmit(
+    user: &UseStateHandle<User>,
+    nav: Navigator,
+    api: Api,
+    dispatch: Dispatch<Store>,
+) -> Callback<SubmitEvent> {
     let user = user.clone();
     Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
+        let dispatch_clone = dispatch.clone();
         let nav = nav.clone();
         let user = user.deref().clone();
         let hdrs = Headers::new();
         hdrs.append("content-type", "application/json");
         wasm_bindgen_futures::spawn_local(async move {
             let body = Some(helpers::to_jsvalue(user));
-            let response = api.fetch2(Some(hdrs), body, Method::POST).await;
+            let response = api.fetch(Some(hdrs), body, Method::POST).await;
 
             // navigate home if the submission is successful
             if let Some(res) = response {
                 if res.status() == 200 {
+                    let obj: Store = serde_json::from_str(&res.text().await.unwrap()).unwrap();
+                    dispatch_clone.reduce_mut(move |store| {
+                        store.token = obj.token;
+                    });
                     nav.push(&Route::Home);
                 }
             }

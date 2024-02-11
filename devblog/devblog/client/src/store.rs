@@ -8,12 +8,3 @@ pub struct Store {
     pub token: String,
     pub expiration: String,
 }
-
-impl Store {
-    pub fn add_to_store(&self, dispatch: Dispatch<Store>) {
-        dispatch.reduce_mut(move |store| {
-            store.username = self.username.clone();
-            store.token = self.token.clone();
-        });
-    }
-}

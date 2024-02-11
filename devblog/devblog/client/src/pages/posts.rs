@@ -24,10 +24,10 @@ pub fn posts() -> Html {
 
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            let res = Api::GetPostsCount.fetch2(None, None, Method::GET).await;
+            let res = Api::GetPostsCount.fetch(None, None, Method::GET).await;
             helpers::emit(&total_posts_count_cb, res.unwrap()).await;
 
-            let res = Api::GetPagesCount.fetch2(None, None, Method::GET).await;
+            let res = Api::GetPagesCount.fetch(None, None, Method::GET).await;
             helpers::emit(&total_pages_count_cb, res.unwrap()).await;
         });
     });
@@ -38,7 +38,7 @@ pub fn posts() -> Html {
         wasm_bindgen_futures::spawn_local(async move {
             loading_clone.set(false);
             let num = *page_num_clone as u32;
-            let res = Api::GetPage(num).fetch2(None, None, Method::GET).await;
+            let res = Api::GetPage(num).fetch(None, None, Method::GET).await;
             helpers::emit(&posts_cb, res.unwrap()).await;
             loading_clone.set(true);
         });
