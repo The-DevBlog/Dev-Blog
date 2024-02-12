@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
@@ -23,6 +23,18 @@ pub struct CommentModel {
     pub date: NaiveDateTime,
     #[serde(rename = "userName")]
     pub username: String,
+}
+
+impl CommentModel {
+    pub fn new(id: u32, post_id: u32, content: String, username: String) -> Self {
+        CommentModel {
+            id,
+            post_id,
+            content,
+            date: Utc::now().naive_utc(),
+            username,
+        }
+    }
 }
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]

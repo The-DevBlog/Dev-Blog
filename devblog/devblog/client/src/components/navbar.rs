@@ -1,13 +1,15 @@
-use crate::router::Route;
+use crate::{pages::sign_out::SignOut, router::Route, store::Store};
 use stylist::Style;
 use yew::prelude::*;
 use yew_router::prelude::*;
+use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/navbar.css");
 
 #[function_component(Navbar)]
 pub fn navbar() -> Html {
     let style = Style::new(STYLE).unwrap();
+    let store = use_store_value::<Store>();
 
     html! {
         <div class={style}>
@@ -25,8 +27,14 @@ pub fn navbar() -> Html {
                     <Link<Route> to={Route::About}>{"About"}</Link<Route>>
                     <Link<Route> to={Route::Insights}>{"Insights"}</Link<Route>>
                     <Link<Route> to={Route::Account}>{"Account"}</Link<Route>>
+
+                    // <Link<Route> to={Route::SignOut}>{"SignOut"}</Link<Route>>
+
+                    if store.authenticated {
+                        <SignOut />
+                    }
+
                     <Link<Route> to={Route::SignIn}>{"SignIn"}</Link<Route>>
-                    <Link<Route> to={Route::SignOut}>{"SignOut"}</Link<Route>>
                     <Link<Route> to={Route::SignUp}>{"SignUp"}</Link<Route>>
                 </div>
             </nav>

@@ -14,9 +14,9 @@ pub fn footer() -> Html {
         <div class={style}>
             <div class="footer">
                 // <DeleteAccount />
-                // {loggedIn &&
+                if store.authenticated {
                     <span>{"Welcome "}{store.username.clone()}</span>
-                // }
+                }
             </div>
         </div>
     }

@@ -7,4 +7,6 @@ pub struct Store {
     pub username: String,
     pub token: String,
     pub expiration: String,
+    #[serde(default)]
+    pub authenticated: bool,
 }

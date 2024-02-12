@@ -148,7 +148,8 @@ namespace devblog.Controllers
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
                         expiration = token.ValidTo,
-                        username = user.UserName.Normalize()
+                        username = user.UserName.Normalize(),
+                        authenticated = true,
                     });
                 }
                 else
@@ -161,12 +162,19 @@ namespace devblog.Controllers
         /// Signs out the currently sign in user
         /// </summary>
         /// <returns>Task<IActionResult></returns>
-        [Authorize]
+        //[Authorize]
         [HttpPost("signout")]
         public async Task<IActionResult> LogOut()
         {
             await _signInMgr.SignOutAsync();
-            return Ok();
+
+            return Ok(new
+            {
+                token = "",
+                expiration = "",
+                username = "", 
+                authenticated = false
+            });
         }
 
         /// <summary>
@@ -215,7 +223,8 @@ namespace devblog.Controllers
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo, 
-                    username = user.UserName
+                    username = user.UserName, 
+                    authenticated = true,
                 });
             }
             else

@@ -1,5 +1,5 @@
 use crate::{
-    components::{comment::Comment, vote::Vote},
+    components::{add_comment::AddComment, comment::Comment, vote::Vote},
     PostModel,
 };
 use chrono::{Local, TimeZone};
@@ -41,6 +41,7 @@ pub fn post(props: &Props) -> Html {
                 <div>{&props.post.description}</div>
 
                 // COMMENTS
+                <AddComment post_id={props.post.id}/>
                 <div>
                     {for props.post.comments.iter().map(|comment| {
                         html! {<Comment comment={comment.clone()} />}

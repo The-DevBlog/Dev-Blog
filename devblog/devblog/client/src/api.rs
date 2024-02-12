@@ -6,17 +6,19 @@ const URL: &str = "https://localhost:44482/api/";
 
 #[derive(Clone, PartialEq)]
 pub enum Api {
+    AddComment,
+    DeleteCurrentAccount,
+    DeleteAccount(String),
     GetPage(u32),
     GetPost(i32),
     GetPostsCount,
     GetPagesCount,
     GetUsers,
     GetCurrentUser,
-    ToggleSubscribe,
     SignIn,
     SignUp,
-    DeleteCurrentAccount,
-    DeleteAccount(String),
+    SignOut,
+    ToggleSubscribe,
 }
 
 impl Api {
@@ -51,17 +53,19 @@ impl Api {
 
     fn uri(&self) -> String {
         match self {
+            Api::AddComment => format!("{}comments", URL),
+            Api::DeleteCurrentAccount => format!("{}accounts", URL),
+            Api::DeleteAccount(username) => format!("{}accounts/adminDelete/{}", URL, username),
             Api::GetPage(num) => format!("{}posts/?page={}", URL, num),
             Api::GetPost(id) => format!("{}posts/{}", URL, id),
             Api::GetPostsCount => format!("{}posts/countPosts", URL),
             Api::GetPagesCount => format!("{}posts/countPages", URL),
             Api::GetUsers => format!("{}accounts", URL),
             Api::GetCurrentUser => format!("{}accounts/user", URL),
-            Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
             Api::SignIn => format!("{}accounts/signin", URL),
             Api::SignUp => format!("{}accounts/signup", URL),
-            Api::DeleteCurrentAccount => format!("{}accounts", URL),
-            Api::DeleteAccount(username) => format!("{}accounts/adminDelete/{}", URL, username),
+            Api::SignOut => format!("{}accounts/signout", URL),
+            Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
         }
     }
 }

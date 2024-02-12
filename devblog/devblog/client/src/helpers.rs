@@ -2,6 +2,7 @@ use crate::store::Store;
 use crate::{helpers, Api};
 use crate::{router::Route, User, UserField};
 use gloo::console::log;
+// use gloo::utils::format::JsValueSerdeExt;
 use gloo_net::http::{Headers, Method, Response};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
@@ -13,7 +14,7 @@ use yew::{Callback, TargetCast, UseStateHandle};
 use yew_router::navigator::Navigator;
 use yewdux::Dispatch;
 
-pub fn onchange(user: &UseStateHandle<User>, field: UserField) -> Callback<Event> {
+pub fn on_change(user: &UseStateHandle<User>, field: UserField) -> Callback<Event> {
     let user = user.clone();
     Callback::from(move |e: Event| {
         let user_clone = user.deref().clone();
@@ -60,13 +61,18 @@ pub fn on_submit(
     let api = Rc::clone(&api);
     Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
+
+        // clone parameter fields to prevent ownership issues with callbacks
+        let api = Rc::clone(&api);
         let dispatch_clone = dispatch.clone();
         let nav = nav.clone();
         let mut user = user.deref().clone();
         user.subscribed = true;
+
+        // build headers
         let hdrs = Headers::new();
         hdrs.append("content-type", "application/json");
-        let api = Rc::clone(&api);
+
         wasm_bindgen_futures::spawn_local(async move {
             let body = Some(helpers::to_jsvalue(user));
 
@@ -74,9 +80,12 @@ pub fn on_submit(
             if let Some(res) = api.fetch(Some(hdrs), body, Method::POST).await {
                 if res.status() == 200 {
                     let obj: Store = serde_json::from_str(&res.text().await.unwrap()).unwrap();
+
+                    // log!("Response: ", <JsValue as JsValueSerdeExt>::from_serde(&obj).unwrap());
                     dispatch_clone.reduce_mut(move |store| {
                         store.token = obj.token;
                         store.username = obj.username;
+                        store.authenticated = obj.authenticated;
                     });
                     nav.push(&Route::Home);
                 }
@@ -85,7 +94,7 @@ pub fn on_submit(
     })
 }
 
-fn to_jsvalue<T>(body: T) -> JsValue
+pub fn to_jsvalue<T>(body: T) -> JsValue
 where
     T: Serialize,
 {
