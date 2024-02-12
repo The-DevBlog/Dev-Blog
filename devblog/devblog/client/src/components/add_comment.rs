@@ -3,7 +3,7 @@ use gloo::console::log;
 use gloo_net::http::{Headers, Method};
 use std::ops::Deref;
 use stylist::Style;
-use web_sys::{Event, HtmlInputElement, HtmlTextAreaElement, SubmitEvent};
+use web_sys::{Event, HtmlTextAreaElement, SubmitEvent};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -12,6 +12,7 @@ const STYLE: &str = include_str!("styles/addComment.css");
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub post_id: u32,
+    pub on_comment_add: Callback<CommentModel>,
 }
 
 #[function_component(AddComment)]
@@ -34,6 +35,7 @@ pub fn add_comment(props: &Props) -> Html {
 
     let onsubmit = {
         let comment = comment.clone();
+        let on_comment_add = props.on_comment_add.clone();
         let post_id = props.post_id.clone();
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
@@ -43,7 +45,6 @@ pub fn add_comment(props: &Props) -> Html {
             hdrs.append("content-type", "application/json");
 
             let new_comment = CommentModel::new(
-                0,
                 post_id,
                 comment.deref().content.clone(),
                 store.username.clone(),
@@ -54,8 +55,10 @@ pub fn add_comment(props: &Props) -> Html {
             log!("Response: ", body.clone().unwrap());
 
             wasm_bindgen_futures::spawn_local(async move {
-                let res = Api::AddComment.fetch(Some(hdrs), body, Method::POST).await;
+                let _res = Api::AddComment.fetch(Some(hdrs), body, Method::POST).await;
             });
+
+            on_comment_add.emit(new_comment);
         })
     };
 

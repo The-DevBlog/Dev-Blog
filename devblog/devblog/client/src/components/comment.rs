@@ -13,6 +13,9 @@ pub struct Props {
 #[function_component(Comment)]
 pub fn comment(props: &Props) -> Html {
     let style = Style::new(STYLE).unwrap();
+    let date = Local
+        .from_utc_datetime(&props.comment.date)
+        .format("%x %I:%M %p");
 
     html! {
         <div class={style}>
@@ -23,7 +26,7 @@ pub fn comment(props: &Props) -> Html {
 
                     // DATE / TIME
                     <div class={"date"}>
-                        <span>{Local.from_local_datetime(&props.comment.date).unwrap().to_string()}</span>
+                        <span>{date.to_string()}</span>
                     </div>
 
                     // CONTENT

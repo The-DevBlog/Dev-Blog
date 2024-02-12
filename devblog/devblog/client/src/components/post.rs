@@ -1,10 +1,11 @@
 use crate::{
     components::{add_comment::AddComment, comment::Comment, vote::Vote},
-    PostModel,
+    CommentModel, PostModel,
 };
 use chrono::{Local, TimeZone};
+use std::ops::Deref;
 use stylist::Style;
-use yew::{function_component, html, Html, Properties};
+use yew::{function_component, html, use_effect_with, use_state, Callback, Html, Properties};
 
 const STYLE: &str = include_str!("styles/post.css");
 
@@ -17,6 +18,22 @@ pub struct Props {
 #[function_component(Post)]
 pub fn post(props: &Props) -> Html {
     let style = Style::new(STYLE).unwrap();
+    let comments = use_state(|| props.post.comments.clone());
+
+    let post_comments = props.post.comments.clone();
+    let comments_clone = comments.clone();
+    use_effect_with(props.post.comments.clone(), move |_| {
+        comments_clone.set(post_comments.clone());
+    });
+
+    let comments_clone = comments.clone();
+    let on_comment_add = {
+        Callback::from(move |comment: CommentModel| {
+            let mut new_comments = comments_clone.deref().clone();
+            new_comments.insert(0, comment);
+            comments_clone.set(new_comments);
+        })
+    };
 
     html! {
         <div class={style}>
@@ -24,7 +41,7 @@ pub fn post(props: &Props) -> Html {
                 // POST INFO
                 <div class="post-info">
                     <span>{"Log "}{props.post_number}</span>
-                    <span>{Local.from_local_datetime(&props.post.date).unwrap().to_string()}</span>
+                    <span>{Local.from_utc_datetime(&props.post.date).format("%x").to_string()}</span>
                 </div>
 
                 // IMAGES
@@ -41,9 +58,9 @@ pub fn post(props: &Props) -> Html {
                 <div>{&props.post.description}</div>
 
                 // COMMENTS
-                <AddComment post_id={props.post.id}/>
+                <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>
                 <div>
-                    {for props.post.comments.iter().map(|comment| {
+                    {for comments.iter().map(|comment| {
                         html! {<Comment comment={comment.clone()} />}
                     })}
                 </div>

@@ -26,9 +26,9 @@ pub struct CommentModel {
 }
 
 impl CommentModel {
-    pub fn new(id: u32, post_id: u32, content: String, username: String) -> Self {
+    pub fn new(post_id: u32, content: String, username: String) -> Self {
         CommentModel {
-            id,
+            id: 0,
             post_id,
             content,
             date: Utc::now().naive_utc(),
