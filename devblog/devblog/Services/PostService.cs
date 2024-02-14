@@ -183,6 +183,7 @@ namespace devblog.Services
         public async Task Delete(int postId)
         {
             var post = await Get(postId);
+            await _notifications.DeleteAllForPost(postId);
             _db.Remove(post);
             await _db.SaveChangesAsync();
         }

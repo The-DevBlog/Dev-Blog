@@ -20,5 +20,11 @@ namespace devblog.Interfaces
         /// Delete a specified notification
         /// </summary>
         Task Delete(int postId, string userName);
+
+        /// <summary>
+        /// Delete all notifications for a specified post
+        /// </summary>
+        /// <param name="postId"></param>
+        Task DeleteAllForPost(int postId);
     }
 }

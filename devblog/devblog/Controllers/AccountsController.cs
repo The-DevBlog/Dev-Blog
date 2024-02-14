@@ -1,6 +1,7 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -136,9 +137,7 @@ namespace devblog.Controllers
             }
             else
             {
-                //var res = await _signInMgr.PasswordSignInAsync(signIn.Password, signIn.Username, true, false);
                 var res = await _signInMgr.PasswordSignInAsync(user, signIn.Password, true, false);
-
                 var claims = await GenerateClaims(user);
                 var token = GenerateToken(claims);
 
@@ -150,6 +149,7 @@ namespace devblog.Controllers
                         expiration = token.ValidTo,
                         username = user.UserName.Normalize(),
                         authenticated = true,
+                        admin = await _userMgr.IsInRoleAsync(user, "Admin"),
                     });
                 }
                 else
@@ -173,7 +173,8 @@ namespace devblog.Controllers
                 token = "",
                 expiration = "",
                 username = "", 
-                authenticated = false
+                authenticated = false,
+                admin = false,
             });
         }
 
@@ -225,6 +226,7 @@ namespace devblog.Controllers
                     expiration = token.ValidTo, 
                     username = user.UserName, 
                     authenticated = true,
+                    admin = false,
                 });
             }
             else

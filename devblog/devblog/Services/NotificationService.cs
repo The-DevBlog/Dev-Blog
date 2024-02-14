@@ -58,5 +58,16 @@ namespace devblog.Services
             _db.Remove(notification);
             await _db.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Delete all notifications for a specified post
+        /// </summary>
+        /// <param name="postId"></param>
+        public async Task DeleteAllForPost(int postId)
+        {
+            var notifications = await _db.Notification.Where(n => n.PostId == postId).ToListAsync();
+            notifications.ForEach(n => _db.Remove(n));
+            await _db.SaveChangesAsync();
+        }
     }
 }
