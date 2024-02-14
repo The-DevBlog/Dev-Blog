@@ -8,8 +8,7 @@ use crate::{
 use chrono::{Local, TimeZone};
 use gloo::console::log;
 use stylist::Style;
-use web_sys::MouseEvent;
-use yew::{function_component, html, use_effect_with, use_state, Callback, Html, Properties};
+use yew::{function_component, html, use_state, Callback, Html, Properties};
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/comment.css");
@@ -39,7 +38,6 @@ pub fn comment(props: &Props) -> Html {
     let on_edit_save = move |value: String| {
         log!("SAVE EDIT COMMENT");
         content_clone.set(value);
-        // props.comment.content = "HOOOOYAHHHH".to_string();
     };
 
     html! {
@@ -78,7 +76,6 @@ pub fn comment(props: &Props) -> Html {
                     }
 
                     // CONTENT
-                    // <p>{&props.comment.content}</p>
                     <p>{content.deref()}</p>
                 </div>
             </div>

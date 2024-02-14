@@ -1,17 +1,22 @@
 use crate::{
     components::{pager::Pager, post::Post},
     helpers::{self, CustomCallback},
+    router::Route,
+    store::Store,
     Api, PostModel,
 };
 use gloo_net::http::Method;
 use stylist::Style;
 use yew::prelude::*;
+use yew_router::components::Link;
+use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/posts.css");
 
 #[function_component(Posts)]
 pub fn posts() -> Html {
     let style = Style::new(STYLE).unwrap();
+    let store = use_store_value::<Store>();
     let loading = use_state(|| true);
     let page_num = use_state(|| 1i32);
     let posts = use_state(|| vec![PostModel::default()]);
@@ -75,6 +80,10 @@ pub fn posts() -> Html {
         <section class={style}>
             <div class="posts">
                 <Pager page_num={*page_num} on_click={&on_pager_click} total_pages={*pages_count}/>
+
+                if store.admin {
+                    <Link<Route> to={Route::AddPost}>{"Create Post"}</Link<Route>>
+                }
 
                 // ALL POSTS
                 if *loading {

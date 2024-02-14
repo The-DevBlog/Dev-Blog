@@ -23,7 +23,6 @@ pub fn navbar() -> Html {
                 <div class="nav-menus-container">
                     <Link<Route> to={Route::Home}>{"Home"}</Link<Route>>
                     <Link<Route> to={Route::Posts}>{"Posts"}</Link<Route>>
-                    <Link<Route> to={Route::AddPost}>{"AddPost"}</Link<Route>>
                     <Link<Route> to={Route::About}>{"About"}</Link<Route>>
 
                     if store.admin {
