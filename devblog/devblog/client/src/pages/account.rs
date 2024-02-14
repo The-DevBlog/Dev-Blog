@@ -1,14 +1,13 @@
-use std::rc::Rc;
-
 use crate::{
-    helpers::{self, on_click, CustomCallback},
+    helpers::{self, CustomCallback},
     store::Store,
     Api, User,
 };
 use gloo_net::http::{Headers, Method};
+use std::rc::Rc;
 use stylist::Style;
 use yew::prelude::*;
-use yew_router::hooks::use_navigator;
+use yew_router::{hooks::use_navigator, navigator::Navigator};
 use yewdux::prelude::*;
 
 const STYLE: &str = include_str!("styles/account.css");
@@ -20,6 +19,7 @@ pub fn account() -> Html {
     let user_cb = CustomCallback::new(&user);
     let nav = use_navigator().unwrap();
     let store = use_store_value::<Store>();
+    let (_, dispatch) = use_store::<Store>();
 
     // get current user
     let token = store.token.clone();
@@ -37,18 +37,20 @@ pub fn account() -> Html {
         })
     });
 
-    // toggle subscription state of current user
-    let toggle_subscribe = {
-        let token = store.token.clone();
-        let api = Rc::new(Api::ToggleSubscribe);
-        on_click(token, api, Method::PUT, None)
-    };
-
-    let delete_account = {
-        let token = store.token.clone();
-        let api = Rc::new(Api::DeleteCurrentAccount);
-        on_click(token, api, Method::DELETE, Some(nav))
-    };
+    let on_click =
+        |api: Api, method: Method, nav: Option<Navigator>, dispatch: Option<Dispatch<Store>>| {
+            let token = store.token.clone();
+            let api = Rc::new(api);
+            Callback::from(move |_| {
+                helpers::on_click(
+                    token.clone(),
+                    api.clone(),
+                    method.clone(),
+                    nav.clone(),
+                    dispatch.clone(),
+                )
+            })
+        };
 
     html! {
         <section class={style}>
@@ -62,10 +64,10 @@ pub fn account() -> Html {
                     <h1>{"Email Preferences"}</h1>
                     <input type="checkbox"
                         checked={user.subscribed}
-                        onclick={toggle_subscribe}/>
+                        onclick={on_click(Api::ToggleSubscribe, Method::PUT, None, None)}/>
                     <span>{"Subscribed"}</span>
                 </div>
-                <button onclick={delete_account}>{"Delete Account"}</button>
+                <button onclick={on_click(Api::DeleteCurrentAccount, Method::DELETE, Some(nav), Some(dispatch))}>{"Delete Account"}</button>
             </div>
         </section>
     }

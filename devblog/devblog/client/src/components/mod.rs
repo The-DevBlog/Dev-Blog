@@ -1,8 +1,11 @@
-pub mod add_comment;
 pub mod comment;
+pub mod comment_add;
+pub mod comment_delete;
+pub mod comment_edit;
 pub mod footer;
 pub mod items;
 pub mod navbar;
 pub mod pager;
 pub mod post;
+pub mod post_delete;
 pub mod vote;

@@ -9,7 +9,7 @@ use serde::Serialize;
 use std::ops::Deref;
 use std::rc::Rc;
 use wasm_bindgen::JsValue;
-use web_sys::{Event, HtmlInputElement, MouseEvent, SubmitEvent};
+use web_sys::{Event, HtmlInputElement, SubmitEvent};
 use yew::{Callback, TargetCast, UseStateHandle};
 use yew_router::navigator::Navigator;
 use yewdux::Dispatch;
@@ -31,24 +31,33 @@ pub fn on_click(
     api: Rc<Api>,
     method: Method,
     navigator: Option<Navigator>,
-) -> Callback<MouseEvent> {
+    dispatch: Option<Dispatch<Store>>,
+) {
+    let method = method.clone();
+    let navigator = navigator.clone();
+    let auth = format!("Bearer {}", token);
+    let hdrs = Headers::new();
+    hdrs.append("Authorization", &auth);
     let api = Rc::clone(&api);
-    Callback::from(move |_| {
-        let method = method.clone();
-        let navigator = navigator.clone();
-        let auth = format!("Bearer {}", token);
-        let hdrs = Headers::new();
-        hdrs.append("Authorization", &auth);
-        let api = Rc::clone(&api);
+    let dispatch = dispatch.clone();
 
-        wasm_bindgen_futures::spawn_local(async move {
-            if let Some(res) = api.fetch(Some(hdrs), None, method).await {
-                if res.status() == 200 {
-                    navigator.map(|nav| nav.push(&Route::Home));
-                }
+    wasm_bindgen_futures::spawn_local(async move {
+        if let Some(res) = api.fetch(Some(hdrs), None, method).await {
+            if res.status() == 200 {
+                dispatch.map(|d| set_user_data(d, Store::default()));
+                navigator.map(|nav| nav.push(&Route::Home));
             }
-        });
-    })
+        }
+    });
+}
+
+pub fn set_user_data(dispatch: Dispatch<Store>, store: Store) {
+    dispatch.reduce_mut(move |s| {
+        s.token = store.token;
+        s.username = store.username;
+        s.authenticated = store.authenticated;
+        s.admin = store.admin;
+    });
 }
 
 pub fn on_submit(
@@ -64,7 +73,7 @@ pub fn on_submit(
 
         // clone parameter fields to prevent ownership issues with callbacks
         let api = Rc::clone(&api);
-        let dispatch_clone = dispatch.clone();
+        let dispatch = dispatch.clone();
         let nav = nav.clone();
         let mut user = user.deref().clone();
         user.subscribed = true;
@@ -80,13 +89,7 @@ pub fn on_submit(
             if let Some(res) = api.fetch(Some(hdrs), body, Method::POST).await {
                 if res.status() == 200 {
                     let obj: Store = serde_json::from_str(&res.text().await.unwrap()).unwrap();
-
-                    // log!("Response: ", <JsValue as JsValueSerdeExt>::from_serde(&obj).unwrap());
-                    dispatch_clone.reduce_mut(move |store| {
-                        store.token = obj.token;
-                        store.username = obj.username;
-                        store.authenticated = obj.authenticated;
-                    });
+                    set_user_data(dispatch, obj);
                     nav.push(&Route::Home);
                 }
             }

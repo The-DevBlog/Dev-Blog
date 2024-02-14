@@ -1,10 +1,10 @@
 use crate::{
-    helpers::{self, on_click, CustomCallback},
+    helpers::{self, CustomCallback},
     store::Store,
     Api, User,
 };
 use gloo_net::http::{Headers, Method};
-use std::rc::Rc;
+use std::{ops::Deref, rc::Rc};
 use stylist::Style;
 use yew::prelude::*;
 use yewdux::prelude::*;
@@ -48,10 +48,20 @@ pub fn insights() -> Html {
                     </thead>
                     <tbody>
                         {for users.iter().map(|user|{
-                            let onclick = {
+                            let current_users = users.clone();
+                            let onclick = |name: String| {
                                 let token = store.token.clone();
                                 let api = Rc::new(Api::DeleteAccount(user.username.clone()));
-                                on_click(token, api, Method::DELETE, None)
+                                let users = users.clone();
+                                Callback::from(move |_| {
+                                    // remove deleted user from array
+                                    let mut current_users = current_users.deref().clone();
+                                    if let Some(idx) = current_users.iter().position(|u| u.username == name) {
+                                        current_users.remove(idx);
+                                        users.set(current_users);
+                                    }
+                                    helpers::on_click(token.clone(), Rc::clone(&api), Method::DELETE, None, None);
+                                })
                             };
 
                             html! {
@@ -59,7 +69,7 @@ pub fn insights() -> Html {
                                     <td>{&user.username}</td>
                                     <td>{&user.email}</td>
                                     <td>{if user.subscribed {"yes"} else {"no"}}</td>
-                                    <td><button {onclick}>{"X"}</button></td>
+                                    <td><button onclick={onclick(user.username.clone())}>{"X"}</button></td>
                                 </tr>
                             }
                         })}

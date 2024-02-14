@@ -1,0 +1,8 @@
+.delete-comment-btn:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.delete-comment-btn {
+    padding: 0px 5px;
+}

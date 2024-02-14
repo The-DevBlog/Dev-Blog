@@ -25,17 +25,18 @@ pub fn navbar() -> Html {
                     <Link<Route> to={Route::Posts}>{"Posts"}</Link<Route>>
                     <Link<Route> to={Route::AddPost}>{"AddPost"}</Link<Route>>
                     <Link<Route> to={Route::About}>{"About"}</Link<Route>>
-                    <Link<Route> to={Route::Insights}>{"Insights"}</Link<Route>>
-                    <Link<Route> to={Route::Account}>{"Account"}</Link<Route>>
 
-                    // <Link<Route> to={Route::SignOut}>{"SignOut"}</Link<Route>>
-
-                    if store.authenticated {
-                        <SignOut />
+                    if store.admin {
+                        <Link<Route> to={Route::Insights}>{"Insights"}</Link<Route>>
                     }
 
-                    <Link<Route> to={Route::SignIn}>{"SignIn"}</Link<Route>>
-                    <Link<Route> to={Route::SignUp}>{"SignUp"}</Link<Route>>
+                    if store.authenticated {
+                        <Link<Route> to={Route::Account}>{"Account"}</Link<Route>>
+                        <SignOut />
+                    } else {
+                        <Link<Route> to={Route::SignIn}>{"SignIn"}</Link<Route>>
+                        <Link<Route> to={Route::SignUp}>{"SignUp"}</Link<Route>>
+                    }
                 </div>
             </nav>
         </div>

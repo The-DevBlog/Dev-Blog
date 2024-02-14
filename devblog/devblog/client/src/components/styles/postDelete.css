@@ -1,0 +1,8 @@
+.delete-post-btn:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.delete-post-btn {
+    margin-left: 10px;
+}

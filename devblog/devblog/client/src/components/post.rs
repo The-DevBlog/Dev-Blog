@@ -1,5 +1,5 @@
 use crate::{
-    components::{add_comment::AddComment, comment::Comment, vote::Vote},
+    components::{comment::Comment, comment_add::AddComment, post_delete::DeletePost, vote::Vote},
     CommentModel, PostModel,
 };
 use chrono::{Local, TimeZone};
@@ -13,6 +13,7 @@ const STYLE: &str = include_str!("styles/post.css");
 pub struct Props {
     pub post: PostModel,
     pub post_number: i32,
+    pub on_post_delete: Callback<u32>,
 }
 
 #[function_component(Post)]
@@ -35,12 +36,24 @@ pub fn post(props: &Props) -> Html {
         })
     };
 
+    let comments_clone = comments.clone();
+    let on_comment_delete = {
+        Callback::from(move |id| {
+            let mut new_comments = comments_clone.deref().clone();
+            if let Some(idx) = new_comments.iter().position(|c| c.id == id) {
+                new_comments.remove(idx);
+                comments_clone.set(new_comments);
+            }
+        })
+    };
+
     html! {
         <div class={style}>
             <div class="post" id={format!("post{}", props.post.id)}>
                 // POST INFO
                 <div class="post-info">
                     <span>{"Log "}{props.post_number}</span>
+                    <DeletePost id={props.post.id} on_post_delete={&props.on_post_delete}/>
                     <span>{Local.from_utc_datetime(&props.post.date).format("%x").to_string()}</span>
                 </div>
 
@@ -61,7 +74,7 @@ pub fn post(props: &Props) -> Html {
                 <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>
                 <div>
                     {for comments.iter().map(|comment| {
-                        html! {<Comment comment={comment.clone()} />}
+                        html! {<Comment comment={comment.clone()} on_comment_delete={&on_comment_delete} />}
                     })}
                 </div>
             </div>

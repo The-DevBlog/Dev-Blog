@@ -1,0 +1,53 @@
+use crate::{store::Store, Api};
+use gloo_net::http::{Headers, Method};
+use stylist::Style;
+use yew::{function_component, html, Callback, Html, Properties};
+use yewdux::use_store_value;
+
+const STYLE: &str = include_str!("styles/PostDelete.css");
+
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    pub id: u32,
+    pub on_post_delete: Callback<u32>,
+}
+
+#[function_component(DeletePost)]
+pub fn delete_post(props: &Props) -> Html {
+    let style = Style::new(STYLE).unwrap();
+    let store = use_store_value::<Store>();
+
+    let delete = {
+        let id = props.id.clone();
+        let token = store.token.clone();
+        let callback = props.on_post_delete.clone();
+        Callback::from(move |_| {
+            let auth = format!("Bearer {}", token);
+            let hdrs = Headers::new();
+            hdrs.append("Authorization", &auth);
+            let callback = callback.clone();
+
+            wasm_bindgen_futures::spawn_local(async move {
+                // delete post
+                let response = Api::DeletePost(id)
+                    .fetch(Some(hdrs), None, Method::DELETE)
+                    .await;
+
+                // invoke on_post_delete callback
+                if let Some(res) = response {
+                    if res.status() == 200 {
+                        callback.emit(id);
+                    }
+                }
+            });
+        })
+    };
+
+    html! {
+        if store.admin {
+            <span class={style}>
+                <button onclick={delete} class="delete-post-btn">{"X"}</button>
+            </span>
+        }
+    }
+}

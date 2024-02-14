@@ -2,7 +2,7 @@ use yew::{html, Html};
 use yew_router::Routable;
 
 use crate::pages::{
-    about::About, account::Account, add_post::AddPost, home::Home, insights::Insights,
+    about::About, account::Account, home::Home, insights::Insights, post_add::AddPost,
     posts::Posts, sign_in::SignIn, sign_out::SignOut, sign_up::SignUp,
 };
 

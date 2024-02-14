@@ -9,4 +9,5 @@ pub struct Store {
     pub expiration: String,
     #[serde(default)]
     pub authenticated: bool,
+    pub admin: bool,
 }

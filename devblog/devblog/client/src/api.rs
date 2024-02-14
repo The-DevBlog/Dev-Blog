@@ -7,17 +7,21 @@ const URL: &str = "https://localhost:44482/api/";
 #[derive(Clone, PartialEq)]
 pub enum Api {
     AddComment,
-    DeleteCurrentAccount,
+    AddPost,
     DeleteAccount(String),
+    DeleteComment(u32),
+    DeleteCurrentAccount,
+    DeletePost(u32),
+    EditComment(u32),
     GetPage(u32),
+    GetPagesCount,
     GetPost(i32),
     GetPostsCount,
-    GetPagesCount,
-    GetUsers,
     GetCurrentUser,
+    GetUsers,
     SignIn,
-    SignUp,
     SignOut,
+    SignUp,
     ToggleSubscribe,
 }
 
@@ -54,17 +58,21 @@ impl Api {
     fn uri(&self) -> String {
         match self {
             Api::AddComment => format!("{}comments", URL),
-            Api::DeleteCurrentAccount => format!("{}accounts", URL),
+            Api::AddPost => format!("{}posts", URL),
             Api::DeleteAccount(username) => format!("{}accounts/adminDelete/{}", URL, username),
+            Api::DeleteComment(id) => format!("{}comments/{}", URL, id),
+            Api::DeleteCurrentAccount => format!("{}accounts", URL),
+            Api::DeletePost(id) => format!("{}posts/{}", URL, id),
+            Api::EditComment(id) => format!("{}comments/{}", URL, id),
             Api::GetPage(num) => format!("{}posts/?page={}", URL, num),
+            Api::GetPagesCount => format!("{}posts/countPages", URL),
             Api::GetPost(id) => format!("{}posts/{}", URL, id),
             Api::GetPostsCount => format!("{}posts/countPosts", URL),
-            Api::GetPagesCount => format!("{}posts/countPages", URL),
-            Api::GetUsers => format!("{}accounts", URL),
             Api::GetCurrentUser => format!("{}accounts/user", URL),
+            Api::GetUsers => format!("{}accounts", URL),
             Api::SignIn => format!("{}accounts/signin", URL),
-            Api::SignUp => format!("{}accounts/signup", URL),
             Api::SignOut => format!("{}accounts/signout", URL),
+            Api::SignUp => format!("{}accounts/signup", URL),
             Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
         }
     }

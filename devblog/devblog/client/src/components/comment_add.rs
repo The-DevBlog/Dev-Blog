@@ -7,7 +7,7 @@ use web_sys::{Event, HtmlTextAreaElement, SubmitEvent};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
-const STYLE: &str = include_str!("styles/addComment.css");
+const STYLE: &str = include_str!("styles/commentAdd.css");
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -37,6 +37,7 @@ pub fn add_comment(props: &Props) -> Html {
         let comment = comment.clone();
         let on_comment_add = props.on_comment_add.clone();
         let post_id = props.post_id.clone();
+        let store = store.clone();
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
             let auth = format!("Bearer {}", store.token);
@@ -54,11 +55,11 @@ pub fn add_comment(props: &Props) -> Html {
             let body = Some(helpers::to_jsvalue(new_comment.clone()));
             log!("Response: ", body.clone().unwrap());
 
+            let on_comment_add = on_comment_add.clone();
             wasm_bindgen_futures::spawn_local(async move {
                 let _res = Api::AddComment.fetch(Some(hdrs), body, Method::POST).await;
+                on_comment_add.emit(new_comment);
             });
-
-            on_comment_add.emit(new_comment);
         })
     };
 
@@ -66,13 +67,18 @@ pub fn add_comment(props: &Props) -> Html {
         <div class={style}>
             <div class="create-comment">
                 <form {onsubmit}>
-                    <textarea placeholder="your comments here..."
-                        type="text"
-                        required={true}
-                        value={comment.content.clone()}
-                        onchange={onchange}>
-                    </textarea>
-                    <button>{"Add Comment"}</button>
+
+                    if store.authenticated.clone() {
+                        <textarea placeholder="your comments here..."
+                            type="text"
+                            required={true}
+                            value={comment.content.clone()}
+                            onchange={onchange}>
+                        </textarea>
+                        <button>{"Add Comment"}</button>
+                    } else {
+                        <textarea placeholder="sign in to comment..." disabled={true}></textarea>
+                    }
                 </form>
             </div>
         </div>

@@ -1,0 +1,18 @@
+.edit-comment-btn:hover {
+    color: greenyellow;
+    cursor: pointer;
+}
+
+.edit-comment-btn {
+    padding: 0px 5px;
+}
+
+.edit-comment textarea,
+.edit-comment button {
+    padding: 8px;
+    margin-right: 5px;
+}
+
+.edit-comment div {
+    display: flex;
+}

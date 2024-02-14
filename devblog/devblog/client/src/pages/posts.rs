@@ -4,7 +4,6 @@ use crate::{
     Api, PostModel,
 };
 use gloo_net::http::Method;
-// use gloo::console::log;
 use stylist::Style;
 use yew::prelude::*;
 
@@ -16,27 +15,34 @@ pub fn posts() -> Html {
     let loading = use_state(|| true);
     let page_num = use_state(|| 1i32);
     let posts = use_state(|| vec![PostModel::default()]);
-    let total_posts_count = use_state(|| i32::default());
-    let total_pages_count = use_state(|| i32::default());
+    let posts_count = use_state(|| i32::default());
+    let pages_count = use_state(|| i32::default());
+    let trigger = use_state(|| false);
     let posts_cb = CustomCallback::new(&posts);
-    let total_posts_count_cb = CustomCallback::new(&total_posts_count);
-    let total_pages_count_cb = CustomCallback::new(&total_pages_count);
+    let posts_count_cb = CustomCallback::new(&posts_count);
+    let pages_count_cb = CustomCallback::new(&pages_count);
 
     // get pages count and posts count
-    use_effect_with((), move |_| {
+    let get_count = |posts_ct_cb: Callback<i32>, pages_ct_cb: Callback<i32>| {
         wasm_bindgen_futures::spawn_local(async move {
             let res = Api::GetPostsCount.fetch(None, None, Method::GET).await;
-            helpers::emit(&total_posts_count_cb, res.unwrap()).await;
+            helpers::emit(&posts_ct_cb, res.unwrap()).await;
 
             let res = Api::GetPagesCount.fetch(None, None, Method::GET).await;
-            helpers::emit(&total_pages_count_cb, res.unwrap()).await;
+            helpers::emit(&pages_ct_cb, res.unwrap()).await;
         });
+    };
+
+    let posts_count_cb_clone = posts_count_cb.clone();
+    let pages_count_cb_clone = pages_count_cb.clone();
+    use_effect_with((), move |_| {
+        get_count(posts_count_cb_clone, pages_count_cb_clone);
     });
 
-    // get posts for current page
+    // // get posts for current page
     let page_num_clone = page_num.clone();
     let loading_clone = loading.clone();
-    use_effect_with(page_num_clone.clone(), move |_| {
+    use_effect_with(trigger.clone(), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             loading_clone.set(false);
             let num = *page_num_clone as u32;
@@ -46,26 +52,40 @@ pub fn posts() -> Html {
         });
     });
 
+    // page left / right callback
+    let trigger_clone = trigger.clone();
     let on_pager_click = {
         let page_num = page_num.clone();
-        Callback::from(move |page: i32| page_num.set(page))
+        Callback::from(move |page: i32| {
+            trigger_clone.set(!*trigger_clone);
+            page_num.set(page)
+        })
+    };
+
+    // refresh posts on page if post was deleted
+    let trigger_clone = trigger.clone();
+    let on_post_delete = {
+        Callback::from(move |_| {
+            trigger_clone.set(!*trigger_clone);
+            get_count(posts_count_cb.clone(), pages_count_cb.clone());
+        })
     };
 
     html! {
         <section class={style}>
             <div class="posts">
-                <Pager page_num={*page_num} on_click={&on_pager_click} total_pages={*total_pages_count}/>
+                <Pager page_num={*page_num} on_click={&on_pager_click} total_pages={*pages_count}/>
 
                 // ALL POSTS
                 if *loading {
                     {for posts.iter().enumerate().map(|(idx, post)| html! {
-                        <Post post={post.clone()} post_number={*total_posts_count - 5 * (*page_num as i32 - 1) - idx as i32}/>
+                        <Post post={post.clone()} post_number={*posts_count - 5 * (*page_num as i32 - 1) - idx as i32} on_post_delete={&on_post_delete}/>
                     })}
                 } else {
                     <h1>{"loading..."}</h1>
                 }
 
-                <Pager page_num={*page_num} on_click={&on_pager_click} total_pages={*total_pages_count}/>
+                <Pager page_num={*page_num} on_click={&on_pager_click} total_pages={*pages_count}/>
             </div>
         </section>
     }
