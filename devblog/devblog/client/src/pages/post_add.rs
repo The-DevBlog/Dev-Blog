@@ -1,12 +1,12 @@
 use std::{fs::File, ops::Deref};
 
-use crate::{router::Route, store::Store, Api};
+use crate::{store::Store, Api};
 use gloo::console::log;
 use gloo_net::http::{Headers, Method};
 // use gloo::file::File;
 use stylist::{css, Style};
+use web_sys::{HtmlElement, HtmlTextAreaElement};
 use yew::prelude::*;
-use yew_router::components::Link;
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/postAdd.css");
@@ -29,10 +29,10 @@ pub fn add_post() -> Html {
     let discord_err = use_state(|| String::default());
     let store = use_store_value::<Store>();
 
-    // let char_count_clone = char_count.clone();
-    use_effect(move || {
-        // char_count_clone.set(description.len()); // causing page to not load
-        log!("FIRST RENDER");
+    let char_count_clone = char_count.clone();
+    let description_clone = description.clone();
+    use_effect_with(description_clone.clone(), move |_| {
+        char_count_clone.set(description_clone.len());
     });
 
     let onsubmit = {
@@ -87,7 +87,19 @@ pub fn add_post() -> Html {
         }
     };
 
-    let onchange = { Callback::from(move |e: Event| {}) };
+    let update_checkbox = {
+        Callback::from(move |e: ChangeData| {
+            let input = e.target_dyn_into::<HtmlElement>().unwrap();
+        })
+    };
+
+    let update_char_count = {
+        let description = description.clone();
+        Callback::from(move |e: InputEvent| {
+            let input = e.target_dyn_into::<HtmlTextAreaElement>();
+            description.set(input.unwrap().value());
+        })
+    };
 
     html! {
         if store.admin {
@@ -99,9 +111,9 @@ pub fn add_post() -> Html {
                             // PLATFORM UPLOAD OPTIONS
                             <p>{"Upload to:"}</p>
                             <ul>
-                                {upload_to("Discord".to_string(), *discord, onchange.clone())}
-                                {upload_to("Mastodon".to_string(), *mastodon, onchange.clone())}
-                                {upload_to("DevBlog".to_string(), *devblog, onchange)}
+                                {upload_to("Discord".to_string(), *discord, update_checkbox.clone())}
+                                {upload_to("Mastodon".to_string(), *mastodon, update_checkbox.clone())}
+                                {upload_to("DevBlog".to_string(), *devblog, update_checkbox)}
                             </ul>
 
                             <span class="loader">{"Loading..."}</span>
@@ -126,7 +138,7 @@ pub fn add_post() -> Html {
                                 <p>{"Mastodon character limit: "}{*char_count}{"/500"}</p>
                                 <p>{"Discord character limit: "}{*char_count}{"/2000"}</p>
                                 <div class="addpost-description">
-                                    <textarea placeholder="Write description here..."/>
+                                    <textarea oninput={update_char_count} placeholder="Write description here..."/>
                                 </div>
                             </label>
 
