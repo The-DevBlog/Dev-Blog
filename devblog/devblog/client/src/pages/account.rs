@@ -3,7 +3,7 @@ use crate::{
     store::Store,
     Api, User,
 };
-use gloo_net::http::{Headers, Method};
+use gloo_net::http::Method;
 use std::rc::Rc;
 use stylist::Style;
 use yew::prelude::*;
@@ -25,10 +25,7 @@ pub fn account() -> Html {
     let token = store.token.clone();
     use_effect_with((), |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            let hdrs = Headers::new();
-            let auth = format!("Bearer {}", token);
-            hdrs.append("Authorization", &auth);
-
+            let hdrs = helpers::create_auth_header(&token);
             let res = Api::GetCurrentUser
                 .fetch(Some(hdrs), None, Method::GET)
                 .await;

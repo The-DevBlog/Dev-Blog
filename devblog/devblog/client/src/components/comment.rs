@@ -41,7 +41,7 @@ pub fn comment(props: &Props) -> Html {
     };
 
     html! {
-        <div class={style}>
+        <div class={{style}}>
             <div class="comment">
                 <div class="comment-info">
                     // USERNAME

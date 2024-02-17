@@ -18,4 +18,14 @@
 
 .insights>table>tbody tr:nth-child(odd) {
     background-color: rgb(26, 32, 41);
+
+}
+
+.insights svg {
+    height: 10;
+}
+
+.insights svg:hover {
+    cursor: pointer;
+    fill: red;
 }

@@ -1,6 +1,7 @@
 mod api;
 mod components;
 mod helpers;
+mod icons;
 mod models;
 mod pages;
 mod router;

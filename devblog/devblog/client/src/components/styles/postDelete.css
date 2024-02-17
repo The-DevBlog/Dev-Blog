@@ -1,8 +1,12 @@
-.delete-post-btn:hover {
-    color: red;
-    cursor: pointer;
+span:root {
+    margin-left: 10;
 }
 
-.delete-post-btn {
-    margin-left: 10px;
+.delete-post-btn>svg {
+    height: 13;
+}
+
+.delete-post-btn svg:hover {
+    cursor: pointer;
+    fill: red;
 }

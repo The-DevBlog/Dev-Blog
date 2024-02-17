@@ -1,5 +1,5 @@
-use crate::{store::Store, Api};
-use gloo_net::http::{Headers, Method};
+use crate::{helpers, icons::icons::TrashIcon, store::Store, Api};
+use gloo_net::http::Method;
 use stylist::Style;
 use yew::{function_component, html, Callback, Html, Properties};
 use yewdux::use_store_value;
@@ -22,9 +22,7 @@ pub fn delete_post(props: &Props) -> Html {
         let token = store.token.clone();
         let callback = props.on_post_delete.clone();
         Callback::from(move |_| {
-            let auth = format!("Bearer {}", token);
-            let hdrs = Headers::new();
-            hdrs.append("Authorization", &auth);
+            let hdrs = helpers::create_auth_header(&token);
             let callback = callback.clone();
 
             wasm_bindgen_futures::spawn_local(async move {
@@ -46,7 +44,9 @@ pub fn delete_post(props: &Props) -> Html {
     html! {
         if store.admin {
             <span class={style}>
-                <button onclick={delete} class="delete-post-btn">{"X"}</button>
+                <span onclick={delete} class="delete-post-btn">
+                    <TrashIcon />
+                </span>
             </span>
         }
     }

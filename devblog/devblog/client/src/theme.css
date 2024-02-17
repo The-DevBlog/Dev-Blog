@@ -29,6 +29,10 @@ button {
     color: white;
 }
 
+svg {
+    fill: white;
+}
+
 button,
 .signup-prompt {
     text-decoration: none;

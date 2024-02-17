@@ -1,14 +1,10 @@
-use gloo::console::log;
-use gloo_net::http::{Headers, Method};
+use crate::{helpers, icons::icons::EditIcon, store::Store, Api};
+use gloo_net::http::Method;
 use std::ops::Deref;
 use stylist::Style;
 use web_sys::{Event, HtmlTextAreaElement};
-use yew::{
-    function_component, html, use_effect_with, use_state, Callback, Html, Properties, TargetCast,
-};
+use yew::{function_component, html, use_state, Callback, Html, Properties, TargetCast};
 use yewdux::use_store_value;
-
-use crate::{helpers, store::Store, Api};
 
 const STYLE: &str = include_str!("styles/commentEdit.css");
 
@@ -53,11 +49,8 @@ pub fn edit_comment(props: &Props) -> Html {
             on_is_editing.emit(false);
             let content = content.clone();
             let on_save = on_save.clone();
-            let auth = format!("Bearer {}", store.deref().token);
-            let hdrs = Headers::new();
-            hdrs.append("Authorization", &auth);
-            hdrs.append("content-type", "application/json");
             let body = Some(helpers::to_jsvalue(content.deref().clone()));
+            let hdrs = helpers::create_auth_header(&store.token);
 
             wasm_bindgen_futures::spawn_local(async move {
                 let response = Api::EditComment(id)
@@ -81,7 +74,9 @@ pub fn edit_comment(props: &Props) -> Html {
     html! {
         <div class={style}>
             if !props.is_editing {
-                <button class="edit-comment-btn" onclick={edit}>{"*"}</button>
+                <span class="edit-comment-btn" onclick={edit}>
+                    <EditIcon />
+                </span>
             }
 
             if props.is_editing {

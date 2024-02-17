@@ -1,6 +1,6 @@
 use crate::{helpers, store::Store, Api, CommentModel};
 use gloo::console::log;
-use gloo_net::http::{Headers, Method};
+use gloo_net::http::Method;
 use std::ops::Deref;
 use stylist::Style;
 use web_sys::{Event, HtmlTextAreaElement, SubmitEvent};
@@ -40,10 +40,7 @@ pub fn add_comment(props: &Props) -> Html {
         let store = store.clone();
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
-            let auth = format!("Bearer {}", store.token);
-            let hdrs = Headers::new();
-            hdrs.append("Authorization", &auth);
-            hdrs.append("content-type", "application/json");
+            let hdrs = helpers::create_auth_header(&store.token);
 
             let new_comment = CommentModel::new(
                 post_id,

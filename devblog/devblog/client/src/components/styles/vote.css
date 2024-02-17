@@ -7,18 +7,19 @@
 }
 
 .up-vote:hover {
-    color: yellow;
+    fill: yellow;
     cursor: pointer;
 }
 
 .down-vote:hover {
-    color: red;
+    fill: red;
     cursor: pointer;
 }
 
 .up-vote,
 .down-vote {
     padding: 5px;
+    height: 30;
 }
 
 @media (max-width: 800px) {

@@ -1,9 +1,10 @@
 use crate::{
     helpers::{self, CustomCallback},
+    icons::icons::TrashIcon,
     store::Store,
     Api, User,
 };
-use gloo_net::http::{Headers, Method};
+use gloo_net::http::Method;
 use std::{ops::Deref, rc::Rc};
 use stylist::Style;
 use yew::prelude::*;
@@ -22,10 +23,7 @@ pub fn insights() -> Html {
     let token = store.token.clone();
     use_effect_with((), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            let hdrs = Headers::new();
-            let auth = format!("Bearer {}", token);
-            hdrs.append("Authorization", &auth);
-
+            let hdrs = helpers::create_auth_header(&token);
             let res = Api::GetUsers.fetch(Some(hdrs), None, Method::GET).await;
             helpers::emit(&users_cb, res.unwrap()).await;
         });
@@ -69,7 +67,7 @@ pub fn insights() -> Html {
                                     <td>{&user.username}</td>
                                     <td>{&user.email}</td>
                                     <td>{if user.subscribed {"yes"} else {"no"}}</td>
-                                    <td><button onclick={onclick(user.username.clone())}>{"X"}</button></td>
+                                    <td onclick={onclick(user.username.clone())}><TrashIcon /></td>
                                 </tr>
                             }
                         })}

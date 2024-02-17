@@ -1,6 +1,11 @@
-.edit-comment-btn:hover {
-    color: greenyellow;
+.edit-comment-btn svg:hover {
     cursor: pointer;
+    fill: greenyellow;
+}
+
+.edit-comment-btn svg {
+    fill: white;
+    height: 12;
 }
 
 .edit-comment-btn {
@@ -9,8 +14,8 @@
 
 .edit-comment textarea,
 .edit-comment button {
-    padding: 8px;
     margin-right: 5px;
+    padding: 8px;
 }
 
 .edit-comment div {

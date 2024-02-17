@@ -1,11 +1,10 @@
 use std::{fs::File, ops::Deref};
 
-use crate::{store::Store, Api};
-use gloo::console::log;
-use gloo_net::http::{Headers, Method};
+use crate::{helpers, store::Store, Api};
+use gloo_net::http::Method;
 // use gloo::file::File;
 use stylist::{css, Style};
-use web_sys::{HtmlElement, HtmlTextAreaElement};
+use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
 use yewdux::use_store_value;
 
@@ -36,17 +35,14 @@ pub fn add_post() -> Html {
     });
 
     let onsubmit = {
-        let store = store.clone();
+        let token = store.token.clone();
         let discord = *discord.clone();
         let mastodon = *mastodon.clone();
         let devblog = *devblog.clone();
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
             loading.set(true);
-            let auth = format!("Bearer {}", store.token);
-            let hdrs = Headers::new();
-            hdrs.append("Authorization", &auth);
-            hdrs.append("content-type", "application/json");
+            let hdrs = helpers::create_auth_header(&token);
 
             wasm_bindgen_futures::spawn_local(async move {
                 let response = Api::AddPost.fetch(Some(hdrs), None, Method::POST).await;
@@ -88,8 +84,8 @@ pub fn add_post() -> Html {
     };
 
     let update_checkbox = {
-        Callback::from(move |e: ChangeData| {
-            let input = e.target_dyn_into::<HtmlElement>().unwrap();
+        Callback::from(move |e| {
+            // let input = e.target_dyn_into::<HtmlElement>().unwrap();
         })
     };
 

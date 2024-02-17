@@ -35,9 +35,7 @@ pub fn on_click(
 ) {
     let method = method.clone();
     let navigator = navigator.clone();
-    let auth = format!("Bearer {}", token);
-    let hdrs = Headers::new();
-    hdrs.append("Authorization", &auth);
+    let hdrs = helpers::create_auth_header(&token);
     let api = Rc::clone(&api);
     let dispatch = dispatch.clone();
 
@@ -104,6 +102,14 @@ where
     let parsed = serde_json::to_string(&body).unwrap();
     let parsed_body = JsValue::from_str(&parsed);
     parsed_body
+}
+
+pub fn create_auth_header(token: &String) -> Headers {
+    let auth = format!("Bearer {}", token);
+    let hdrs = Headers::new();
+    hdrs.append("Authorization", &auth);
+    hdrs.append("content-type", "application/json");
+    hdrs
 }
 
 pub struct CustomCallback;

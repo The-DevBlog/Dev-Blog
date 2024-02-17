@@ -82,7 +82,7 @@ pub fn posts() -> Html {
                 <Pager page_num={*page_num} on_click={&on_pager_click} total_pages={*pages_count}/>
 
                 if store.admin {
-                    <Link<Route> to={Route::AddPost}>{"Create Post"}</Link<Route>>
+                    <span class="create-post-btn"><Link<Route> to={Route::AddPost}>{"Create Post"}</Link<Route>></span>
                 }
 
                 // ALL POSTS

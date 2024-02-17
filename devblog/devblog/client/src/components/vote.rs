@@ -1,3 +1,4 @@
+use crate::icons::icons::{DownVoteIcon, UpVoteIcon};
 use stylist::Style;
 use yew::{function_component, html, Html, Properties};
 
@@ -16,8 +17,11 @@ pub fn vote(props: &Props) -> Html {
     html! {
         <div class={style}>
             <div class="votes">
-                <span>{"Up"}{props.up_votes}</span>
-                <span>{"Down"}{props.down_votes}</span>
+                <UpVoteIcon />
+                <span>{props.up_votes}</span>
+
+                <DownVoteIcon />
+                <span>{props.down_votes}</span>
             </div>
         </div>
     }
