@@ -15,7 +15,7 @@ use api::*;
 use components::navbar::Navbar;
 use models::*;
 use store::Store;
-use stylist::yew::Global;
+use stylist::{yew::Global, Style};
 use yew::{function_component, html, Html};
 use yew_router::{BrowserRouter, Switch};
 
@@ -28,13 +28,13 @@ fn main() {
 #[function_component(App)]
 pub fn app() -> Html {
     html! {
-        <div>
+        <>
             <Global css={STYLE} />
             <BrowserRouter>
                 <Navbar />
                 <Switch<Route> render={switch} />
                 <Footer />
             </BrowserRouter>
-        </div>
+        </>
     }
 }
