@@ -1,16 +1,12 @@
 use crate::{
-    helpers,
+    helpers::{self},
     icons::icons::{DownVoteIcon, UpVoteIcon},
     store::Store,
-    Api,
+    Api, VoteCount,
 };
-use gloo::console::log;
 use gloo_net::http::Method;
-use serde::{Deserialize, Serialize};
-use serde_json::to_string_pretty;
 use stylist::Style;
-use web_sys::MouseEvent;
-use yew::{function_component, html, use_state, Callback, Html, Properties};
+use yew::{function_component, html, use_effect_with, use_state, Callback, Html, Properties};
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/vote.css");
@@ -22,18 +18,12 @@ pub struct Props {
     pub post_id: u32,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Votes {
-    pub upVotes: u32,
-    pub downVotes: u32,
-}
-
 #[function_component(Vote)]
 pub fn vote(props: &Props) -> Html {
     let style = Style::new(STYLE).unwrap();
     let store = use_store_value::<Store>();
-    let down_votes = use_state(|| props.down_votes);
-    let up_votes = use_state(|| props.up_votes);
+    let down_votes = use_state(|| 0);
+    let up_votes = use_state(|| 0);
 
     let onclick = {
         let id = props.post_id.clone();
@@ -50,21 +40,31 @@ pub fn vote(props: &Props) -> Html {
                     .await;
 
                 if let Some(res) = response {
-                    let votes = res.text().await.unwrap();
+                    if res.status() == 200 {
+                        let txt = res.text().await.unwrap();
+                        let vote_count = serde_json::from_str::<VoteCount>(&txt).unwrap();
+                        up_votes.set(vote_count.up);
+                        down_votes.set(vote_count.down);
+                    }
                 }
             });
         })
     };
 
+    let down_votes_clone = down_votes.clone();
+    let up_votes_clone = up_votes.clone();
+    use_effect_with((props.down_votes, props.up_votes), move |(down, up)| {
+        down_votes_clone.set(*down);
+        up_votes_clone.set(*up);
+    });
+
     html! {
         <div class={style}>
             <div class="votes">
                 <UpVoteIcon vote_onclick={onclick.clone()}/>
-                // <span>{props.up_votes}</span>
                 <span>{*up_votes}</span>
 
                 <DownVoteIcon vote_onclick={onclick}/>
-                // <span>{props.down_votes}</span>
                 <span>{*down_votes}</span>
             </div>
         </div>

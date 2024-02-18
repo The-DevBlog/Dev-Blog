@@ -60,6 +60,12 @@ pub struct DownVoteModel {
     pub username: String,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct VoteCount {
+    pub up: usize,
+    pub down: usize,
+}
+
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
 pub struct User {
     #[serde(default, rename = "userName")]
