@@ -65,7 +65,7 @@ pub fn post(props: &Props) -> Html {
                 </div>
 
                 // LIKE / DISLIKE
-                <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} />
+                <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
 
                 // DESCRIPTION
                 <div>{&props.post.description}</div>

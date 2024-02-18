@@ -1,6 +1,7 @@
 ﻿using devblog.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace devblog.Controllers
 {
@@ -46,8 +47,9 @@ namespace devblog.Controllers
         /// <returns>Number of votes for post</returns>
         [Authorize]
         [HttpPost("{id}/upvote")]
-        public async Task<int> UpVote(int id, [FromBody] string username)
+        public async Task<int> UpVote(int id)
         {
+            var username = User.FindFirstValue("userName");
             var vote = await _votes.UpVote(id, username);
             return vote;
         }
@@ -59,8 +61,9 @@ namespace devblog.Controllers
         /// <returns>Number of votes for post</returns>
         [Authorize]
         [HttpPost("{id}/downvote")]
-        public async Task<int> DownVote(int id, [FromBody] string username)
+        public async Task<int> DownVote(int id)
         {
+            var username = User.FindFirstValue("userName");
             var vote = await _votes.DownVote(id, username);
             return vote;
         }

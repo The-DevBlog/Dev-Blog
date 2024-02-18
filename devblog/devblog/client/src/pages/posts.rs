@@ -44,7 +44,7 @@ pub fn posts() -> Html {
         get_count(posts_count_cb_clone, pages_count_cb_clone);
     });
 
-    // // get posts for current page
+    // get posts for current page
     let page_num_clone = page_num.clone();
     let loading_clone = loading.clone();
     use_effect_with(trigger.clone(), move |_| {

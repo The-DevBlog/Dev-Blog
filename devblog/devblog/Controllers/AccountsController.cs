@@ -1,7 +1,6 @@
 ﻿using devblog.Interfaces;
 using devblog.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -172,7 +171,7 @@ namespace devblog.Controllers
             {
                 token = "",
                 expiration = "",
-                username = "", 
+                username = "",
                 authenticated = false,
                 admin = false,
             });
@@ -223,8 +222,8 @@ namespace devblog.Controllers
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo, 
-                    username = user.UserName, 
+                    expiration = token.ValidTo,
+                    username = user.UserName,
                     authenticated = true,
                     admin = false,
                 });

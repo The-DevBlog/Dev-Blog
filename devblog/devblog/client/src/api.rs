@@ -23,6 +23,7 @@ pub enum Api {
     SignOut,
     SignUp,
     ToggleSubscribe,
+    Vote(u32, String),
 }
 
 impl Api {
@@ -74,6 +75,7 @@ impl Api {
             Api::SignOut => format!("{}accounts/signout", URL),
             Api::SignUp => format!("{}accounts/signup", URL),
             Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
+            Api::Vote(post_id, vote) => format!("{}posts/{}/{}", URL, post_id, vote),
         }
     }
 }
