@@ -1,7 +1,7 @@
 use stylist::Style;
 use yew::{function_component, html, Callback, Html, Properties};
 
-use crate::icons::icons::{ArrowLeft, ArrowRight};
+use crate::icons::icons::{ArrowLeftIcon, ArrowRightIcon};
 // use gloo::console::log;
 
 const STYLE: &str = include_str!("styles/pager.css");
@@ -31,14 +31,14 @@ pub fn pager(props: &Props) -> Html {
             <div class="pager">
                 // PAGE LEFT
                 if props.page_num > 1 {
-                    <span onclick={page(-1)}><ArrowLeft /></span>
+                    <span onclick={page(-1)}><ArrowLeftIcon /></span>
                 }
 
                 <span>{props.page_num}</span>
 
                 // PAGE RIGHT
                 if props.page_num < props.total_pages {
-                    <span onclick={page(1)}><ArrowRight /></span>
+                    <span onclick={page(1)}><ArrowRightIcon /></span>
                 }
             </div>
         </div>

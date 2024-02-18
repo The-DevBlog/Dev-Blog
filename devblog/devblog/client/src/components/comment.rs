@@ -6,7 +6,6 @@ use crate::{
     CommentModel,
 };
 use chrono::{Local, TimeZone};
-use gloo::console::log;
 use stylist::Style;
 use yew::{function_component, html, use_state, Callback, Html, Properties};
 use yewdux::use_store_value;
@@ -36,7 +35,6 @@ pub fn comment(props: &Props) -> Html {
 
     let content_clone = content.clone();
     let on_edit_save = move |value: String| {
-        log!("SAVE EDIT COMMENT");
         content_clone.set(value);
     };
 
@@ -65,19 +63,21 @@ pub fn comment(props: &Props) -> Html {
                     <div class={"date"}>
                         <span>{date.to_string()}</span>
                     </div>
-
-                    // EDIT COMMENT
-                    if *is_editing && props.comment.username == store.username {
-                        <EditComment id={props.comment.id}
-                            content={props.comment.content.clone()}
-                            is_editing={*is_editing}
-                            on_is_editing={on_is_editing}
-                            on_edit_save={on_edit_save}/>
-                    }
-
-                    // CONTENT
-                    <p>{content.deref()}</p>
                 </div>
+
+                // EDIT COMMENT
+                if *is_editing && props.comment.username == store.username {
+                    <EditComment id={props.comment.id}
+                        content={props.comment.content.clone()}
+                        is_editing={*is_editing}
+                        on_is_editing={on_is_editing}
+                        on_edit_save={on_edit_save}/>
+                }
+
+                // CONTENT
+                if !*is_editing {
+                    <p>{content.deref()}</p>
+                }
             </div>
         </div>
     }

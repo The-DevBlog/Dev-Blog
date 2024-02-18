@@ -1,3 +1,60 @@
+.non-active,
+.accounts a,
+.nav-icon {
+    opacity: 0.8;
+}
+
+.nav-menus-container {
+    display: flex;
+    margin-left: auto;
+}
+
+.nav-drop-down {
+    display: flex;
+    margin-right: 20px;
+    flex-direction: column;
+    z-index: 20;
+}
+
+.nav-drop-down:hover,
+.nav-icon:hover,
+.nav-links span:hover {
+    opacity: 1.0;
+    cursor: pointer;
+}
+
+.nav-links a,
+.nav-links form {
+    text-decoration: none;
+    padding-top: 5px;
+}
+
+.nav-links span.active {
+    text-decoration: underline;
+}
+
+.nav-icon {
+    height: 45;
+    font-size: 17;
+    cursor: pointer;
+    display: flex;
+    margin-top: 7px;
+}
+
+.nav-links {
+    margin-top: 70px;
+    padding: 10px;
+    right: 2px;
+    position: fixed;
+    background-color: rgb(26, 32, 41);
+    flex-direction: column;
+}
+
+.nav-accounts {
+    display: flex;
+    flex-direction: column;
+}
+
 .navbar {
     top: 0;
     left: 0;
@@ -34,5 +91,15 @@
 /* @media(max-width: 450px) {
     .logo {
         font-size: 25px;
+    }
+} */
+
+/* @media(max-width: 450px) {
+    .nav-icon {
+        font-size: 50px;
+    }
+
+    .nav-links {
+        margin-top: 50px;
     }
 } */

@@ -3,6 +3,7 @@ use crate::{
     store::Store,
     Api, User,
 };
+use gloo::utils::window;
 use gloo_net::http::Method;
 use std::rc::Rc;
 use stylist::Style;
@@ -39,13 +40,20 @@ pub fn account() -> Html {
             let token = store.token.clone();
             let api = Rc::new(api);
             Callback::from(move |_| {
-                helpers::on_click(
-                    token.clone(),
-                    api.clone(),
-                    method.clone(),
-                    nav.clone(),
-                    dispatch.clone(),
-                )
+                let mut confirm = true;
+                if method == Method::DELETE {
+                    confirm = window().confirm_with_message("Are you sure?").unwrap();
+                }
+
+                if confirm {
+                    helpers::on_click(
+                        token.clone(),
+                        api.clone(),
+                        method.clone(),
+                        nav.clone(),
+                        dispatch.clone(),
+                    )
+                }
             })
         };
 

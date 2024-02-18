@@ -72,23 +72,25 @@ pub fn edit_comment(props: &Props) -> Html {
     };
 
     html! {
-        <div class={style}>
-            if !props.is_editing {
-                <span class="edit-comment-btn" onclick={edit}>
-                    <EditIcon />
-                </span>
-            }
+        <>
+            <div class={style}>
+                if !props.is_editing {
+                    <span class="edit-comment-btn" onclick={edit}>
+                        <EditIcon />
+                    </span>
+                }
 
-            if props.is_editing {
-                <div class="edit-comment">
-                    <textarea value={props.content.clone()} {onchange}></textarea>
+                if props.is_editing {
+                    <div class="edit-comment">
+                        <textarea value={props.content.clone()} {onchange}></textarea>
 
-                    <div>
-                        <button onclick={save}>{"Save"}</button>
-                        <button onclick={cancel}>{"Cancel"}</button>
+                        <div>
+                            <button onclick={save}>{"Save"}</button>
+                            <button onclick={cancel}>{"Cancel"}</button>
+                        </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        </>
     }
 }

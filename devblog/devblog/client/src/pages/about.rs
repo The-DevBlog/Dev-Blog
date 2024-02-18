@@ -18,7 +18,7 @@ pub fn about() -> Html {
                     <li><a target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/andrew149/">{"LinkedIn"}</a></li>
                 </ul>
 
-                <img src="me.png" alt="The DevBlog creator Andrew Smith" />
+                <img src="./assets/imgs/me.png" alt="The DevBlog creator Andrew Smith" />
 
             </div>
         </section>

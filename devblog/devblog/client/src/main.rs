@@ -15,7 +15,7 @@ use api::*;
 use components::navbar::Navbar;
 use models::*;
 use store::Store;
-use stylist::{yew::Global, Style};
+use stylist::yew::Global;
 use yew::{function_component, html, Html};
 use yew_router::{BrowserRouter, Switch};
 

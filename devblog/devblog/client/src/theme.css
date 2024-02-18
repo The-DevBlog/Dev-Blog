@@ -12,6 +12,14 @@
     src: local("assets/fonts/Silkscreen-Bold.ttf");
 }
 
+a {
+    color: white;
+}
+
+svg {
+    fill: white;
+}
+
 .post {
     background-color: #1a2029;
 }

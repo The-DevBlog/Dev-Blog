@@ -4,6 +4,7 @@ use crate::{
     store::Store,
     Api, User,
 };
+use gloo::utils::window;
 use gloo_net::http::Method;
 use std::{ops::Deref, rc::Rc};
 use stylist::Style;
@@ -32,8 +33,8 @@ pub fn insights() -> Html {
     html! {
         <section class={style}>
             <div class="insights">
-                <p>{"Total Users: "}</p>
-                <p>{"Subscribed Users: "}</p>
+                <p>{"Total Users: "}{users.len()}</p>
+                <p>{"Subscribed Users: "}{users.iter().filter(|u| u.subscribed).count() as u32}</p>
 
                 <table class="user-table">
                     <thead>
@@ -48,15 +49,20 @@ pub fn insights() -> Html {
                         {for users.iter().map(|user|{
                             let current_users = users.clone();
                             let onclick = |name: String| {
+
+
                                 let token = store.token.clone();
                                 let api = Rc::new(Api::DeleteAccount(user.username.clone()));
                                 let users = users.clone();
                                 Callback::from(move |_| {
-                                    // remove deleted user from array
-                                    let mut current_users = current_users.deref().clone();
-                                    if let Some(idx) = current_users.iter().position(|u| u.username == name) {
-                                        current_users.remove(idx);
-                                        users.set(current_users);
+                                    let confirm = window().confirm_with_message("Are you sure?").unwrap();
+                                    if confirm {
+                                        // remove deleted user from array
+                                        let mut current_users = current_users.deref().clone();
+                                        if let Some(idx) = current_users.iter().position(|u| u.username == name) {
+                                            current_users.remove(idx);
+                                            users.set(current_users);
+                                        }
                                     }
                                     helpers::on_click(token.clone(), Rc::clone(&api), Method::DELETE, None, None);
                                 })
