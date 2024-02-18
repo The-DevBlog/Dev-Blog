@@ -34,7 +34,7 @@ pub fn pager(props: &Props) -> Html {
                     <span onclick={page(-1)}><ArrowLeft /></span>
                 }
 
-                // <span>{props.page_num}</span>
+                <span>{props.page_num}</span>
 
                 // PAGE RIGHT
                 if props.page_num < props.total_pages {
