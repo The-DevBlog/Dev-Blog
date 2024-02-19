@@ -51,6 +51,7 @@ pub fn edit_comment(props: &Props) -> Html {
             let on_save = on_save.clone();
             let body = Some(helpers::to_jsvalue(content.deref().clone()));
             let hdrs = helpers::create_auth_header(&store.token);
+            hdrs.append("content-type", "application/json");
 
             wasm_bindgen_futures::spawn_local(async move {
                 let response = Api::EditComment(id)

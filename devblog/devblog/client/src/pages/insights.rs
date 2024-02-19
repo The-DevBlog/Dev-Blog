@@ -42,7 +42,6 @@ pub fn insights() -> Html {
                             <th>{"Username"}</th>
                             <th>{"Email"}</th>
                             <th>{"Subscribed"}</th>
-                            <th>{"Delete"}</th>
                         </tr>
                     </thead>
                     <tbody>

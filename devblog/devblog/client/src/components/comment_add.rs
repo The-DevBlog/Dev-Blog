@@ -41,6 +41,7 @@ pub fn add_comment(props: &Props) -> Html {
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
             let hdrs = helpers::create_auth_header(&store.token);
+            hdrs.append("content-type", "application/json");
 
             let new_comment = CommentModel::new(
                 post_id,

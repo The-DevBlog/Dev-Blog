@@ -2,7 +2,6 @@ use crate::store::Store;
 use crate::{helpers, Api};
 use crate::{router::Route, User, UserField};
 use gloo::console::log;
-// use gloo::utils::format::JsValueSerdeExt;
 use gloo_net::http::{Headers, Method, Response};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
@@ -108,7 +107,6 @@ pub fn create_auth_header(token: &String) -> Headers {
     let auth = format!("Bearer {}", token);
     let hdrs = Headers::new();
     hdrs.append("Authorization", &auth);
-    hdrs.append("content-type", "application/json");
     hdrs
 }
 
