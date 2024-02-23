@@ -30,16 +30,12 @@ pub fn pager(props: &Props) -> Html {
         <div class={style}>
             <div class="pager">
                 // PAGE LEFT
-                if props.page_num > 1 {
-                    <span onclick={page(-1)}><ArrowLeftIcon /></span>
-                }
+                <span class={if props.page_num > 1 {"arrow-visible"} else {"arrow-hidden"}} onclick={page(-1)}><ArrowLeftIcon /></span>
 
                 <span>{props.page_num}</span>
 
                 // PAGE RIGHT
-                if props.page_num < props.total_pages {
-                    <span onclick={page(1)}><ArrowRightIcon /></span>
-                }
+                <span class={if props.page_num < props.total_pages {"arrow-visible"} else {"arrow-hidden"}} onclick={page(1)}><ArrowRightIcon /></span>
             </div>
         </div>
     }
