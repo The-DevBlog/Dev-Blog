@@ -43,7 +43,7 @@
 
 .nav-links {
     margin-top: 70px;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     right: 2px;
     position: fixed;
     background-color: rgb(26, 32, 41);
@@ -77,15 +77,6 @@
 .logo {
     font-size: 38px;
     padding: 5px;
-}
-
-.logout-form {
-    width: fit-content;
-}
-
-.logout {
-    font-size: 16px;
-    padding: 0px;
 }
 
 /* @media(max-width: 450px) {

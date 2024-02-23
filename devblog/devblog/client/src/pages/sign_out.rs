@@ -15,10 +15,8 @@ pub fn sign_out() -> Html {
     let (_, dispatch) = use_store::<Store>();
 
     html! {
-        <span class={style}>
-            <form onsubmit={helpers::on_submit(&user, nav, Rc::new(Api::SignOut), dispatch)} class="logout-form">
+            <form class={style} onsubmit={helpers::on_submit(&user, nav, Rc::new(Api::SignOut), dispatch)}>
                 <button class="logout">{"Logout"}</button>
             </form>
-        </span>
     }
 }

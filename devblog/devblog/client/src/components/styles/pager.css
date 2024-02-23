@@ -1,3 +1,7 @@
+div:root {
+    height: 45px;
+}
+
 .pager:first-child {
     display: flex;
     margin-bottom: 10px;
@@ -19,8 +23,7 @@
 }
 
 .pager svg {
-    font-size: 35px;
-    height: 30;
+    height: 35;
     opacity: 0.7;
 }
 

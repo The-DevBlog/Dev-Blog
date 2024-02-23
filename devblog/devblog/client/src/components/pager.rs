@@ -1,8 +1,6 @@
+use crate::icons::icons::{ArrowLeftIcon, ArrowRightIcon};
 use stylist::Style;
 use yew::{function_component, html, Callback, Html, Properties};
-
-use crate::icons::icons::{ArrowLeftIcon, ArrowRightIcon};
-// use gloo::console::log;
 
 const STYLE: &str = include_str!("styles/pager.css");
 
