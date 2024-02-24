@@ -2,6 +2,12 @@ use chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
+pub struct YoutubeVideo {
+    pub id: u32,
+    pub url: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
 pub struct PostModel {
     pub id: u32,
     pub description: String,

@@ -8,4 +8,5 @@ pub mod navbar;
 pub mod pager;
 pub mod post;
 pub mod post_delete;
+pub mod post_edit;
 pub mod vote;

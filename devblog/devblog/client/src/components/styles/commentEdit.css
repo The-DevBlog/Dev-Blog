@@ -14,6 +14,7 @@
 .edit-comment textarea,
 .edit-comment button {
     margin-right: 5px;
+    margin-top: 5px;
     padding: 8px;
 }
 

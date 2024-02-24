@@ -42,21 +42,27 @@ pub fn add_comment(props: &Props) -> Html {
             e.prevent_default();
             let hdrs = helpers::create_auth_header(&store.token);
             hdrs.append("content-type", "application/json");
+            let comment = comment.clone();
 
             let new_comment = CommentModel::new(
                 post_id,
                 comment.deref().content.clone(),
                 store.username.clone(),
             );
-            comment.set(new_comment.clone());
 
             let body = Some(helpers::to_jsvalue(new_comment.clone()));
             log!("Response: ", body.clone().unwrap());
 
             let on_comment_add = on_comment_add.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let _res = Api::AddComment.fetch(Some(hdrs), body, Method::POST).await;
-                on_comment_add.emit(new_comment);
+                let response = Api::AddComment.fetch(Some(hdrs), body, Method::POST).await;
+
+                if let Some(res) = response {
+                    if res.status() == 200 {
+                        on_comment_add.emit(new_comment);
+                        comment.set(CommentModel::default());
+                    }
+                }
             });
         })
     };
@@ -65,7 +71,6 @@ pub fn add_comment(props: &Props) -> Html {
         <div class={style}>
             <div class="create-comment">
                 <form {onsubmit}>
-
                     if store.authenticated.clone() {
                         <textarea placeholder="your comments here..."
                             type="text"

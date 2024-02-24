@@ -1,4 +1,5 @@
 use crate::{helpers, icons::icons::TrashIcon, store::Store, Api};
+use gloo::utils::window;
 use gloo_net::http::Method;
 use stylist::Style;
 use yew::{function_component, html, Callback, Html, Properties};
@@ -22,22 +23,25 @@ pub fn delete_post(props: &Props) -> Html {
         let token = store.token.clone();
         let callback = props.on_post_delete.clone();
         Callback::from(move |_| {
-            let hdrs = helpers::create_auth_header(&token);
-            let callback = callback.clone();
+            let confirm = window().confirm_with_message("Are you sure?").unwrap();
 
-            wasm_bindgen_futures::spawn_local(async move {
-                // delete post
-                let response = Api::DeletePost(id)
-                    .fetch(Some(hdrs), None, Method::DELETE)
-                    .await;
+            if confirm {
+                let hdrs = helpers::create_auth_header(&token);
+                let callback = callback.clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    // delete post
+                    let response = Api::DeletePost(id)
+                        .fetch(Some(hdrs), None, Method::DELETE)
+                        .await;
 
-                // invoke on_post_delete callback
-                if let Some(res) = response {
-                    if res.status() == 200 {
-                        callback.emit(id);
+                    // invoke on_post_delete callback
+                    if let Some(res) = response {
+                        if res.status() == 200 {
+                            callback.emit(id);
+                        }
                     }
-                }
-            });
+                });
+            }
         })
     };
 

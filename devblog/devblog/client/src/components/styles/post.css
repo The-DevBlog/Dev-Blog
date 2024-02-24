@@ -19,12 +19,12 @@
     margin-bottom: 10px;
 }
 
-.post-info span:last-child {
-    margin-left: auto;
-}
-
 .post-info>span:first-child {
     font-family: 'Chivo Mono', monospace;
+}
+
+.post-info span:last-child {
+    margin-left: auto;
 }
 
 .show-all-comments-btn {

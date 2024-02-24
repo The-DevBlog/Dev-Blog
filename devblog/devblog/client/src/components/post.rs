@@ -1,5 +1,8 @@
 use crate::{
-    components::{comment::Comment, comment_add::AddComment, post_delete::DeletePost, vote::Vote},
+    components::{
+        comment::Comment, comment_add::AddComment, post_delete::DeletePost, post_edit::EditPost,
+        vote::Vote,
+    },
     CommentModel, PostModel,
 };
 use chrono::{Local, TimeZone};
@@ -20,6 +23,7 @@ pub struct Props {
 pub fn post(props: &Props) -> Html {
     let style = Style::new(STYLE).unwrap();
     let comments = use_state(|| props.post.comments.clone());
+    let description = use_state(|| props.post.description.clone());
 
     let post_comments = props.post.comments.clone();
     let comments_clone = comments.clone();
@@ -47,6 +51,13 @@ pub fn post(props: &Props) -> Html {
         })
     };
 
+    let on_post_edit = {
+        let description = description.clone();
+        Callback::from(move |value: String| {
+            description.set(value);
+        })
+    };
+
     html! {
         <div class={style}>
             <div class="post" id={format!("post{}", props.post.id)}>
@@ -54,6 +65,7 @@ pub fn post(props: &Props) -> Html {
                 <div class="post-info">
                     <span>{"Log "}{props.post_number}</span>
                     <DeletePost id={props.post.id} on_post_delete={&props.on_post_delete}/>
+                    <EditPost id={props.post.id} description={props.post.description.clone()} on_post_edit={on_post_edit}/>
                     <span>{Local.from_utc_datetime(&props.post.date).format("%x").to_string()}</span>
                 </div>
 
@@ -68,7 +80,8 @@ pub fn post(props: &Props) -> Html {
                 <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
 
                 // DESCRIPTION
-                <div>{&props.post.description}</div>
+                // <div>{&props.post.description}</div>
+                <div>{description.deref()}</div>
 
                 // COMMENTS
                 <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>

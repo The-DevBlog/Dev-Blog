@@ -49,11 +49,11 @@ pub fn posts() -> Html {
     let loading_clone = loading.clone();
     use_effect_with(trigger.clone(), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
-            loading_clone.set(false);
+            loading_clone.set(true);
             let num = *page_num_clone as u32;
             let res = Api::GetPage(num).fetch(None, None, Method::GET).await;
             helpers::emit(&posts_cb, res.unwrap()).await;
-            loading_clone.set(true);
+            loading_clone.set(false);
         });
     });
 
@@ -87,7 +87,7 @@ pub fn posts() -> Html {
                 }
 
                 // ALL POSTS
-                if *loading {
+                if !*loading {
                     {for posts.iter().enumerate().map(|(idx, post)| html! {
                         <Post post={post.clone()} post_number={*posts_count - 5 * (*page_num as i32 - 1) - idx as i32} on_post_delete={&on_post_delete}/>
                     })}

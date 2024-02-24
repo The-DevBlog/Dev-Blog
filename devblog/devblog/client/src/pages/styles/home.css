@@ -13,16 +13,12 @@ section:root {
     text-align: center;
 }
 
-.update-video>button {
-    display: inline;
+.update-video * {
+    padding-right: 5px;
 }
 
 .update-video {
-    width: 80%;
-}
-
-.update-video>input {
-    width: 50%;
+    display: flex;
 }
 
 .youtube-video {

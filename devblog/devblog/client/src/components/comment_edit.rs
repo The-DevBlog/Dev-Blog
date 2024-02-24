@@ -77,7 +77,7 @@ pub fn edit_comment(props: &Props) -> Html {
             <div class={style}>
                 if !props.is_editing {
                     <span class="edit-comment-btn" onclick={edit}>
-                        <EditIcon />
+                        <EditIcon/>
                     </span>
                 }
 
