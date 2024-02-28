@@ -72,7 +72,7 @@ pub struct VoteCount {
     pub down: usize,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, PartialEq)]
 pub struct Notification {
     #[serde(rename = "imgUrl")]
     pub img_url: String,

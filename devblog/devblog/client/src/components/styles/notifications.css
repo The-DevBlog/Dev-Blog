@@ -1,5 +1,10 @@
-.notification-icon {
+.bell-icon {
     opacity: 0.8;
+}
+
+.bell-icon svg {
+    padding-top: 5;
+    height: 30;
 }
 
 .notification-drop-down {
@@ -27,8 +32,8 @@
     position: absolute;
     border-radius: 50%;
     padding: 5px;
-    line-height: 8px;
-    right: 118px;
+    line-height: 10px;
+    right: 108px;
 }
 
 .notifications img {
@@ -61,7 +66,7 @@
 }
 
 
-.notification-icon:hover,
+.bell-icon:hover,
 .notification-txt>span:last-child:hover,
 .notification-txt span:hover {
     opacity: 1.0;

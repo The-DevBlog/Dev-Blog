@@ -12,6 +12,7 @@ pub enum Api {
     DeleteComment(u32),
     DeleteCurrentAccount,
     DeletePost(u32),
+    DeleteNotification(u32, String),
     EditComment(u32),
     EditPost(u32),
     GetPage(u32),
@@ -68,6 +69,9 @@ impl Api {
             Api::DeleteComment(id) => format!("{}comments/{}", URL, id),
             Api::DeleteCurrentAccount => format!("{}accounts", URL),
             Api::DeletePost(id) => format!("{}posts/{}", URL, id),
+            Api::DeleteNotification(post_id, username) => {
+                format!("{}notifications/{}/{}", URL, post_id, username)
+            }
             Api::EditComment(id) => format!("{}comments/{}", URL, id),
             Api::EditPost(id) => format!("{}posts/{}", URL, id),
             Api::GetPage(num) => format!("{}posts/?page={}", URL, num),
