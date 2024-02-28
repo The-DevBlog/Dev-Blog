@@ -17,6 +17,11 @@ namespace devblog.Controllers
             _imgs = imgs;
         }
 
+        /// <summary>
+        /// Gets all notifications for a specific user
+        /// </summary>
+        /// <param name="userName">Username to retrive unseen notifications for</param>
+        /// <returns>List<Notification></returns>
         [Authorize]
         [HttpGet("{userName}")]
         public async Task<List<NotificationViewModel>> Get(string userName)
@@ -38,6 +43,9 @@ namespace devblog.Controllers
             return notificationsVM.OrderByDescending(n => n.PostId).ToList();
         }
 
+        /// <summary>
+        /// Delete a specified notification
+        /// </summary>
         [Authorize]
         [HttpDelete("{postId}/{userName}")]
         public async Task Delete(int postId, string userName)

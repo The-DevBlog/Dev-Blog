@@ -49,7 +49,7 @@ pub fn edit_comment(props: &Props) -> Html {
             on_is_editing.emit(false);
             let content = content.clone();
             let on_save = on_save.clone();
-            let body = Some(helpers::to_jsvalue(content.deref().clone()));
+            let body = Some(helpers::to_jsvalue(content.deref()));
             let hdrs = helpers::create_auth_header(&store.token);
             hdrs.append("content-type", "application/json");
 

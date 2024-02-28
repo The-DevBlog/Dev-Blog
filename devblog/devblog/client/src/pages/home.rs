@@ -42,8 +42,10 @@ pub fn home() -> Html {
         wasm_bindgen_futures::spawn_local(async move {
             let response = Api::GetVideoUrl.fetch(None, None, Method::GET).await;
             if let Some(res) = response {
-                let js: YoutubeVideo = res.json().await.unwrap();
-                url_clone.set(js.url);
+                if res.status() == 200 {
+                    let js: YoutubeVideo = res.json().await.unwrap();
+                    url_clone.set(js.url);
+                }
             }
         });
     };

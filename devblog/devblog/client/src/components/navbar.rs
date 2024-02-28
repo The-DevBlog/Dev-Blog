@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 use crate::{
     components::notifications::Notifications, icons::icons::MenuIcon, pages::sign_out::SignOut,
     router::Route, store::Store,
@@ -14,6 +16,8 @@ pub fn navbar() -> Html {
     let style = Style::new(STYLE).unwrap();
     let is_menu_clicked = use_state(|| false);
     let nav_display = use_state(|| "none".to_string());
+    let bell_display = use_state(|| "none".to_string());
+    let is_bell_clicked = use_state(|| false);
     let store = use_store_value::<Store>();
     let location = use_location();
 
@@ -27,11 +31,24 @@ pub fn navbar() -> Html {
     let st = format!(r#":root {{ display: {} }}"#, *nav_display);
     let nav_links_style = Style::new(st).unwrap();
 
-    // set 'is_menu_clicked' state to true
+    // menu click
     let is_menu_clicked_clone = is_menu_clicked.clone();
-    let menu_click = move |_| {
+    let bell_display_clone = bell_display.clone();
+    let onclick_menu = move |_| {
         is_menu_clicked_clone.set(!*is_menu_clicked_clone);
+        bell_display_clone.set("none".to_string());
     };
+
+    // bell click
+    let is_menu_clicked_clone = is_menu_clicked.clone();
+    let is_bell_clicked_clone = is_bell_clicked.clone();
+    let onclick_bell = move |()| {
+        is_bell_clicked_clone.set(!*is_bell_clicked_clone);
+        is_menu_clicked_clone.set(false);
+    };
+
+    // set bell display
+    let set_bell_display = move |display: String| {};
 
     // reset 'is_menu_clicked' state when path changes
     let path = location.clone().unwrap().path().to_string();
@@ -60,10 +77,16 @@ pub fn navbar() -> Html {
                 </Link<Route>>
 
                 <div class="nav-menus-container">
-                    <Notifications />
+                    <Notifications
+                        bell_display={bell_display.deref().clone()}
+                        is_bell_clicked={*is_bell_clicked}
+                        is_menu_clicked={*is_menu_clicked}
+                        {onclick_bell}
+                        {set_bell_display}
+                    />
 
                     <div class="nav-drop-down">
-                        <span class="nav-icon" onclick={menu_click}>
+                        <span class="nav-icon" onclick={onclick_menu}>
                             <MenuIcon />
                         </span>
 

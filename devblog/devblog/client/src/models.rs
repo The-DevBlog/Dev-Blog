@@ -72,6 +72,16 @@ pub struct VoteCount {
     pub down: usize,
 }
 
+#[derive(Serialize, Deserialize, Default)]
+pub struct Notification {
+    #[serde(rename = "imgUrl")]
+    pub img_url: String,
+    #[serde(rename = "postId")]
+    pub post_id: u32,
+    #[serde(rename = "userName")]
+    pub username: String,
+}
+
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
 pub struct User {
     #[serde(default, rename = "userName")]
