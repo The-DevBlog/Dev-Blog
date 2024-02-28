@@ -1,4 +1,7 @@
-use crate::{icons::icons::MenuIcon, pages::sign_out::SignOut, router::Route, store::Store};
+use crate::{
+    components::notifications::Notifications, icons::icons::MenuIcon, pages::sign_out::SignOut,
+    router::Route, store::Store,
+};
 use stylist::Style;
 use yew::prelude::*;
 use yew_router::prelude::*;
@@ -57,6 +60,7 @@ pub fn navbar() -> Html {
                 </Link<Route>>
 
                 <div class="nav-menus-container">
+                    <Notifications />
 
                     <div class="nav-drop-down">
                         <span class="nav-icon" onclick={menu_click}>
