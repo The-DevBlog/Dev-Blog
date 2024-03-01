@@ -18,11 +18,13 @@ namespace devblog.Controllers
         public SignInManager<User> _signInMgr { get; }
         public UserManager<User> _userMgr { get; }
         public IConfiguration _config;
+        private readonly INotificationService _notifications;
         private readonly IUsernameService _username;
         private readonly IEmailService _email;
 
-        public AccountsController(SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config, IUsernameService username, IEmailService email)
+        public AccountsController(INotificationService notifications, SignInManager<User> signInMgr, UserManager<User> usermgr, IConfiguration config, IUsernameService username, IEmailService email)
         {
+            _notifications = notifications;
             _userMgr = usermgr;
             _signInMgr = signInMgr;
             _config = config;
@@ -78,13 +80,6 @@ namespace devblog.Controllers
             return users;
         }
 
-        public class UserInfo
-        {
-            public string? UserName { get; set; }
-            public string? Email { get; set; }
-            public bool Subscribed { get; set; }
-        }
-
         /// <summary>
         /// Delete an account
         /// </summary>
@@ -99,7 +94,8 @@ namespace devblog.Controllers
 
             if (user != null)
             {
-                // sign current user out and delete account
+                // sign current user out and delete account & notifications
+                await _notifications.DeleteAllForUser(username);
                 await _signInMgr.SignOutAsync();
                 await _userMgr.DeleteAsync(user);
                 return Ok();
@@ -116,6 +112,7 @@ namespace devblog.Controllers
 
             if (user != null)
             {
+                await _notifications.DeleteAllForUser(username);
                 await _userMgr.DeleteAsync(user);
             }
         }
@@ -263,6 +260,13 @@ namespace devblog.Controllers
             //claims.Add(new Claim(ClaimTypes.Role, userRole));
 
             return claims;
+        }
+
+        public class UserInfo
+        {
+            public string? UserName { get; set; }
+            public string? Email { get; set; }
+            public bool Subscribed { get; set; }
         }
     }
 }

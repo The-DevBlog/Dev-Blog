@@ -45,7 +45,7 @@ namespace devblog.Services
         /// <returns>List<Notification></returns>
         public async Task<List<Notification>> Get(string userName)
         {
-            var notifications = await _db.Notification.Where(n => n.UserName == userName).ToListAsync();
+            var notifications = await _db.Notification.Where(n => n.UserName.ToLower() == userName.ToLower()).ToListAsync();
             return notifications;
         }
 
@@ -66,6 +66,17 @@ namespace devblog.Services
         public async Task DeleteAllForPost(int postId)
         {
             var notifications = await _db.Notification.Where(n => n.PostId == postId).ToListAsync();
+            notifications.ForEach(n => _db.Remove(n));
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Delete all notifications for a specified user
+        /// </summary>
+        /// <param name="username"></param>
+        public async Task DeleteAllForUser(string username)
+        {
+            var notifications = await _db.Notification.Where(n => n.UserName.ToLower() == username.ToLower()).ToListAsync();
             notifications.ForEach(n => _db.Remove(n));
             await _db.SaveChangesAsync();
         }

@@ -26,5 +26,11 @@ namespace devblog.Interfaces
         /// </summary>
         /// <param name="postId"></param>
         Task DeleteAllForPost(int postId);
+
+        /// <summary>
+        /// Delete all notifications for a specified user
+        /// </summary>
+        /// <param name="username"></param>
+        Task DeleteAllForUser(string username);
     }
 }
