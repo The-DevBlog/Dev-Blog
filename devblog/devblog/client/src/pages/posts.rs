@@ -1,14 +1,17 @@
 use crate::{
     components::{pager::Pager, post::Post},
     helpers::{self, CustomCallback},
-    router::Route,
+    router::{PostQuery, Route},
     store::Store,
     Api, PostModel,
 };
 use gloo_net::http::Method;
 use stylist::Style;
 use yew::prelude::*;
-use yew_router::components::Link;
+use yew_router::{
+    components::Link,
+    hooks::{use_location, use_navigator},
+};
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/posts.css");
@@ -26,6 +29,8 @@ pub fn posts() -> Html {
     let posts_cb = CustomCallback::new(&posts);
     let posts_count_cb = CustomCallback::new(&posts_count);
     let pages_count_cb = CustomCallback::new(&pages_count);
+    let location = use_location();
+    let navigator = use_navigator();
 
     // get pages count and posts count
     let get_count = |posts_ct_cb: Callback<i32>, pages_ct_cb: Callback<i32>| {
@@ -47,10 +52,18 @@ pub fn posts() -> Html {
     // get posts for current page
     let page_num_clone = page_num.clone();
     let loading_clone = loading.clone();
-    use_effect_with(trigger.clone(), move |_| {
+    let location = location.clone();
+    use_effect_with(page_num_clone.clone(), move |_| {
         wasm_bindgen_futures::spawn_local(async move {
             loading_clone.set(true);
-            let num = *page_num_clone as u32;
+            let mut num = *page_num_clone as u32;
+
+            let query = location.unwrap().query::<PostQuery>();
+            if let Ok(q) = query {
+                num = q.page;
+            }
+
+            page_num_clone.set(num as i32);
             let res = Api::GetPage(num).fetch(None, None, Method::GET).await;
             helpers::emit(&posts_cb, res.unwrap()).await;
             loading_clone.set(false);
@@ -60,9 +73,12 @@ pub fn posts() -> Html {
     // page left / right callback
     let trigger_clone = trigger.clone();
     let on_pager_click = {
+        let navigator = navigator.clone().unwrap();
         let page_num = page_num.clone();
         Callback::from(move |page: i32| {
             trigger_clone.set(!*trigger_clone);
+            let query = &PostQuery { page: page as u32 };
+            let _ = navigator.push_with_query(&Route::Posts, &query);
             page_num.set(page)
         })
     };

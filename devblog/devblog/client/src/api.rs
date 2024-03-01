@@ -17,6 +17,7 @@ pub enum Api {
     EditPost(u32),
     GetPage(u32),
     GetPagesCount,
+    GetPageNumber(u32),
     GetPost(i32),
     GetPostsCount,
     GetCurrentUser,
@@ -74,8 +75,9 @@ impl Api {
             }
             Api::EditComment(id) => format!("{}comments/{}", URL, id),
             Api::EditPost(id) => format!("{}posts/{}", URL, id),
-            Api::GetPage(num) => format!("{}posts/?page={}", URL, num),
+            Api::GetPage(num) => format!("{}posts?page={}", URL, num),
             Api::GetPagesCount => format!("{}posts/countPages", URL),
+            Api::GetPageNumber(id) => format!("{}posts/getPageNum/{}", URL, id),
             Api::GetPost(id) => format!("{}posts/{}", URL, id),
             Api::GetPostsCount => format!("{}posts/countPosts", URL),
             Api::GetCurrentUser => format!("{}accounts/user", URL),
@@ -87,7 +89,7 @@ impl Api {
             Api::SignUp => format!("{}accounts/signup", URL),
             Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
             Api::UpdateVideoUrl => format!("{}YtVideo/1", URL),
-            Api::Vote(post_id, vote) => format!("{}posts/{}/{}", URL, post_id, vote),
+            Api::Vote(id, vote) => format!("{}posts/{}/{}", URL, id, vote),
         }
     }
 }

@@ -34,7 +34,7 @@ pub fn edit_post(props: &Props) -> Html {
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
             let description = description.clone();
-            let body = Some(helpers::to_jsvalue(description.deref().clone()));
+            let body = Some(helpers::to_jsvalue(description.deref()));
             let hdrs = helpers::create_auth_header(&token);
             hdrs.append("content-type", "application/json");
             let on_post_edit = on_post_edit.clone();

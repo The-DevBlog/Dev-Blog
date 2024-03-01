@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use yew::{html, Html};
 use yew_router::Routable;
 
@@ -40,4 +41,9 @@ pub fn switch(routes: Route) -> Html {
         Route::SignUp => html! {<SignUp />},
         Route::SignOut => html! {<SignOut />},
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct PostQuery {
+    pub page: u32,
 }

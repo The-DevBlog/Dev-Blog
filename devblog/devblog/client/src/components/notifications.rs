@@ -1,13 +1,15 @@
 use crate::{
     helpers::{self, CustomCallback},
     icons::icons::BellIcon,
+    router::{PostQuery, Route},
     store::Store,
     Api, Notification,
 };
 use gloo_net::http::Method;
+use std::{ops::Deref, rc::Rc};
 use stylist::Style;
 use yew::prelude::*;
-use yew_router::hooks::use_location;
+use yew_router::hooks::use_navigator;
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/notifications.css");
@@ -28,7 +30,7 @@ pub fn notifications(props: &Props) -> Html {
     let notifications_cb = CustomCallback::new(&notifications);
     let store = use_store_value::<Store>();
     let onclick_bell = props.onclick_bell.clone();
-    let location = use_location();
+    let navigator = use_navigator();
 
     // get all notifications for user
     let token = store.token.clone();
@@ -61,8 +63,61 @@ pub fn notifications(props: &Props) -> Html {
     use_effect_with(notifications.clone(), move |n| {
         display_clone.set(if n.len() > 0 { "inline" } else { "none" }.to_string());
     });
-    // let token = store.token.clone();
-    // let username = store.username.clone();
+
+    let nav_to_post = |post_id: u32| -> Callback<MouseEvent> {
+        let navigator = navigator.clone();
+        Callback::from(move |_| {
+            let navigator = navigator.clone().unwrap();
+            wasm_bindgen_futures::spawn_local(async move {
+                let response = Api::GetPageNumber(post_id)
+                    .fetch(None, None, Method::GET)
+                    .await;
+
+                if let Some(res) = response {
+                    if res.status() == 200 {
+                        let data = res.text().await.unwrap();
+                        let page_num = serde_json::from_str::<u32>(&data).unwrap();
+
+                        let query = &PostQuery { page: page_num };
+                        let _ = navigator.push_with_query(&Route::Posts, &query);
+                    }
+                }
+            });
+        })
+    };
+
+    let delete_notification = |post_id: u32,
+                               store: Rc<Store>,
+                               notifications: UseStateHandle<Vec<Notification>>|
+     -> Callback<MouseEvent> {
+        let store_clone = store.clone();
+        let notifications = notifications.clone();
+
+        Callback::from(move |_| {
+            let hdrs = helpers::create_auth_header(&store_clone.token);
+            let username = store_clone.username.clone();
+            let notifications = notifications.clone();
+
+            wasm_bindgen_futures::spawn_local(async move {
+                let response = Api::DeleteNotification(post_id, username)
+                    .fetch(Some(hdrs), None, Method::DELETE)
+                    .await;
+
+                if let Some(res) = response {
+                    // if delete is success, remove the deleted notifications from the notifications vec
+                    if res.status() == 200 {
+                        let mut new_notifications = notifications.deref().clone();
+                        if let Some(idx) =
+                            new_notifications.iter().position(|n| n.post_id == post_id)
+                        {
+                            new_notifications.remove(idx);
+                            notifications.set(new_notifications);
+                        }
+                    }
+                }
+            });
+        })
+    };
 
     html! {
         if store.authenticated {
@@ -79,34 +134,22 @@ pub fn notifications(props: &Props) -> Html {
                         <div class="notifications">
                         if !*loading && props.is_bell_clicked && !props.is_menu_clicked {
                             {for notifications.iter().enumerate().map(|(_idx, n)| {
+                                let id = n.post_id;
 
-                            let store_clone = store.clone();
-                            let id = n.post_id;
-                            let delete_notification = {
-                                Callback::from(move |_| {
-                                    let hdrs = helpers::create_auth_header(&store_clone.token);
-                                    let username = store_clone.username.clone();
+                                html! {
+                                    <div class="">
+                                        // thumbnail
+                                        <span>
+                                            <img src={n.img_url.clone()} alt="post thumbnail"/>
+                                        </span>
 
-                                    wasm_bindgen_futures::spawn_local(async move {
-                                        let response = Api::DeleteNotification(id, username)
-                                            .fetch(Some(hdrs), None, Method::DELETE)
-                                            .await;
-                                    });
-                                })
-                            };
-
-                            html! {
-                            <div class="">
-                                // thumbnail
-                                <span>
-                                    <img src={n.img_url.clone()} alt="post thumbnail"/>
-                                    </span>
-                                    <div class="notification-txt">
-                                        <span>{n.username.clone()}{" posted"}</span>
-                                        <span onclick={delete_notification}>{" dismiss"}</span>
+                                        <div class="notification-txt">
+                                            <span onclick={nav_to_post(id)}>{n.username.clone()}{" posted"}</span>
+                                            <span onclick={delete_notification(id, store.clone(), notifications.clone())}>{" dismiss"}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            }})}
+                                }
+                            })}
                         }
                     </div>
                 </div>
