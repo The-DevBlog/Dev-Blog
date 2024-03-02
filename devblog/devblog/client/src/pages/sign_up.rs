@@ -1,6 +1,5 @@
-use std::rc::Rc;
-
 use crate::{components::items::text_input::TextInput, helpers, Api, Store, User, UserField};
+use std::rc::Rc;
 use stylist::Style;
 use yew::prelude::*;
 use yew_router::hooks::use_navigator;

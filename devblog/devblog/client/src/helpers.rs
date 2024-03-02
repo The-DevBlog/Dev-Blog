@@ -48,10 +48,6 @@ pub fn on_click(
     });
 }
 
-pub fn clear_user_data(dispatch: Dispatch<Store>) {
-    dispatch.reduce(|_| Store::default().into());
-}
-
 pub fn set_user_data(dispatch: Dispatch<Store>, store: Store) {
     dispatch.reduce_mut(move |s| {
         s.token = store.token;
@@ -90,8 +86,14 @@ pub fn on_submit(
             if let Some(res) = api.fetch(Some(hdrs), body, Method::POST).await {
                 if res.status() == 200 {
                     let obj: Store = serde_json::from_str(&res.text().await.unwrap()).unwrap();
-                    log!("FIX ME");
-                    set_user_data(dispatch, obj);
+
+                    // clear user data if sign out call
+                    if api.deref().clone() == Api::SignOut {
+                        dispatch.reduce(|_| Store::default().into());
+                    } else {
+                        set_user_data(dispatch, obj);
+                    }
+
                     nav.push(&Route::Home);
                 }
             }

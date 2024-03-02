@@ -82,6 +82,12 @@ pub struct Notification {
     pub username: String,
 }
 
+pub enum Notif {
+    PostNew,
+    CommentNew,
+    CommentReply,
+}
+
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
 pub struct User {
     #[serde(default, rename = "userName")]

@@ -1,4 +1,5 @@
 use crate::{components::items::text_input::TextInput, helpers, Api, Store, User, UserField};
+use gloo::utils::window;
 use std::rc::Rc;
 use stylist::Style;
 use yew::prelude::*;

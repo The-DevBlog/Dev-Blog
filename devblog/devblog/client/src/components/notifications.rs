@@ -53,7 +53,8 @@ pub fn notifications(props: &Props) -> Html {
     };
 
     let authenticated = store.authenticated.clone();
-    use_effect_with((), move |_| {
+    let username_clone = store.username.clone();
+    use_effect_with(username_clone, move |_| {
         if authenticated {
             get_notifications();
         }
