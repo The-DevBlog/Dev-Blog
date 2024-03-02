@@ -5,6 +5,7 @@ use crate::{
     store::Store,
     Api, Notification,
 };
+use gloo::console::log;
 use gloo_net::http::Method;
 use std::{ops::Deref, rc::Rc};
 use stylist::Style;
@@ -121,21 +122,25 @@ pub fn notifications(props: &Props) -> Html {
     };
 
     html! {
-        if store.authenticated {
+        if store.authenticated  && notifications.len() > 0 {
             <div class={style}>
                     <div class="notification-drop-down">
 
-                    if notifications.len() > 0 {
-                        <span class="bell-icon" onclick={move |_| {onclick_bell.emit(())}}>
-                            <BellIcon />
-                        </span>
-                    }
+                    <span class="bell-icon" onclick={move |_| {onclick_bell.emit(())}}>
+                        <BellIcon />
+                    </span>
 
                     <span class="notification-count">{notifications.len()}</span>
                         <div class="notifications">
                         if !*loading && props.is_bell_clicked && !props.is_menu_clicked {
                             {for notifications.iter().enumerate().map(|(_idx, n)| {
                                 let id = n.post_id;
+                                let content = match n.notification_type.as_str() {
+                                    "Post" => "Devmaster posted",
+                                    "Comment" => "commented",
+                                    "Reply" => "replied",
+                                    _ => "",
+                                };
 
                                 html! {
                                     <div class="">
@@ -145,7 +150,7 @@ pub fn notifications(props: &Props) -> Html {
                                         </span>
 
                                         <div class="notification-txt">
-                                            <span onclick={nav_to_post(id)}>{n.username.clone()}{" posted"}</span>
+                                            <span onclick={nav_to_post(id)}>{content}</span>
                                             <span onclick={delete_notification(id, store.clone(), notifications.clone())}>{" dismiss"}</span>
                                         </div>
                                     </div>

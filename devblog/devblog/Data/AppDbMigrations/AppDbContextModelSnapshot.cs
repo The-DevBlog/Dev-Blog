@@ -2,20 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using devblog.Data;
 
 #nullable disable
 
-namespace devblog.Migrations
+namespace devblog.Data.AppDbMigrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230221031508_initial")]
-    partial class initial
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,6 +59,46 @@ namespace devblog.Migrations
                     b.ToTable("DownVote");
                 });
 
+            modelBuilder.Entity("devblog.Models.Img", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Img");
+                });
+
+            modelBuilder.Entity("devblog.Models.Notification", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Seen")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("PostId", "UserName");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("devblog.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -72,12 +109,6 @@ namespace devblog.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ImgURL")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("UpdateNum")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -98,6 +129,31 @@ namespace devblog.Migrations
                     b.ToTable("UpVote");
                 });
 
+            modelBuilder.Entity("devblog.Models.YtVideo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Url")
+                        .IsUnique();
+
+                    b.ToTable("YtVideo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Url = "https://www.youtube.com/embed/DtuqZ11RhIc"
+                        });
+                });
+
             modelBuilder.Entity("devblog.Models.Comment", b =>
                 {
                     b.HasOne("devblog.Models.Post", null)
@@ -111,6 +167,15 @@ namespace devblog.Migrations
                 {
                     b.HasOne("devblog.Models.Post", null)
                         .WithMany("DownVotes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("devblog.Models.Img", b =>
+                {
+                    b.HasOne("devblog.Models.Post", null)
+                        .WithMany("Imgs")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -130,6 +195,8 @@ namespace devblog.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("DownVotes");
+
+                    b.Navigation("Imgs");
 
                     b.Navigation("UpVotes");
                 });

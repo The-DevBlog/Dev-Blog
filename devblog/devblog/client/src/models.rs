@@ -80,12 +80,8 @@ pub struct Notification {
     pub post_id: u32,
     #[serde(rename = "userName")]
     pub username: String,
-}
-
-pub enum Notifications {
-    PostNew,
-    CommentNew,
-    CommentReply,
+    #[serde(rename = "notificationType")]
+    pub notification_type: String,
 }
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]

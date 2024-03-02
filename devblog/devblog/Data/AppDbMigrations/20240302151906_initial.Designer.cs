@@ -8,11 +8,11 @@ using devblog.Data;
 
 #nullable disable
 
-namespace devblog.Migrations
+namespace devblog.Data.AppDbMigrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231111193006_noticication table")]
-    partial class noticicationtable
+    [Migration("20240302151906_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,13 +85,19 @@ namespace devblog.Migrations
             modelBuilder.Entity("devblog.Models.Notification", b =>
                 {
                     b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("Seen")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("PostId");
+                    b.HasKey("PostId", "UserName");
 
                     b.ToTable("Notification");
                 });

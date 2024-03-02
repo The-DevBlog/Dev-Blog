@@ -20,7 +20,7 @@ namespace devblog.Services
         /// <summary>
         /// Creates a notification for a new post to every user
         /// </summary>
-        public async Task Create(int PostId, NotificationType notificationType)
+        public async Task Create(int PostId, string notificationType)
         {
             var allUsers = await _userMgr.Users.ToListAsync();
 

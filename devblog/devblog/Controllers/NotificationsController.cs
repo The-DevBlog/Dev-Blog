@@ -36,7 +36,8 @@ namespace devblog.Controllers
                 {
                     UserName = item.UserName,
                     PostId = item.PostId,
-                    ImgUrl = img.Url
+                    ImgUrl = img.Url,
+                    NotificationType = item.NotificationType
                 });
             }
 
@@ -59,5 +60,6 @@ namespace devblog.Controllers
         public string UserName { get; set; }
         public int PostId { get; set; }
         public string ImgUrl { get; set; }
+        public string NotificationType { get; set; }
     }
 }
