@@ -32,7 +32,7 @@ namespace devblog.Services
                     PostId = postId,
                     Author = "DevMaster",
                     ImgUrl = imgUrl,
-                    NotificationType = "Post",
+                    NotificationType = "post",
                 };
 
                 await _db.Notification.AddAsync(notification);
@@ -63,7 +63,7 @@ namespace devblog.Services
                     PostId = postId,
                     Author = author,
                     ImgUrl = imgs[0].Url,
-                    NotificationType = "Comment"
+                    NotificationType = "comment"
                 };
 
                 await _db.Notification.AddAsync(notification);

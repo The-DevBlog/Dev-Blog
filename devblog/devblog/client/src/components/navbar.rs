@@ -72,8 +72,7 @@ pub fn navbar() -> Html {
                     <Notifications
                         is_bell_clicked={*is_bell_clicked}
                         is_menu_clicked={*is_menu_clicked}
-                        {onclick_bell}
-                    />
+                        {onclick_bell}/>
 
                     <div class="nav-drop-down">
                         <span class="nav-icon" onclick={onclick_menu}>

@@ -1,16 +1,14 @@
 use crate::{
     helpers::{self, CustomCallback},
     icons::icons::BellIcon,
-    router::{PostQuery, Route},
     store::Store,
     Api, Notification,
 };
-use gloo::console::log;
+use gloo::utils::window;
 use gloo_net::http::Method;
 use std::{ops::Deref, rc::Rc};
 use stylist::Style;
 use yew::prelude::*;
-use yew_router::hooks::use_navigator;
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/notifications.css");
@@ -31,7 +29,6 @@ pub fn notifications(props: &Props) -> Html {
     let notifications_cb = CustomCallback::new(&notifications);
     let store = use_store_value::<Store>();
     let onclick_bell = props.onclick_bell.clone();
-    let navigator = use_navigator();
 
     // get all notifications for user
     let token = store.token.clone();
@@ -66,10 +63,8 @@ pub fn notifications(props: &Props) -> Html {
         display_clone.set(if n.len() > 0 { "inline" } else { "none" }.to_string());
     });
 
-    let nav_to_post = |post_id: u32| -> Callback<MouseEvent> {
-        let navigator = navigator.clone();
+    let nav_to = |post_id: u32| -> Callback<MouseEvent> {
         Callback::from(move |_| {
-            let navigator = navigator.clone().unwrap();
             wasm_bindgen_futures::spawn_local(async move {
                 let response = Api::GetPageNumber(post_id)
                     .fetch(None, None, Method::GET)
@@ -80,8 +75,9 @@ pub fn notifications(props: &Props) -> Html {
                         let data = res.text().await.unwrap();
                         let page_num = serde_json::from_str::<u32>(&data).unwrap();
 
-                        let query = &PostQuery { page: page_num };
-                        let _ = navigator.push_with_query(&Route::Posts, &query);
+                        let _ = window()
+                            .location()
+                            .set_href(&format!("/posts?page={}#post{}", page_num, post_id));
                     }
                 }
             });
@@ -136,9 +132,9 @@ pub fn notifications(props: &Props) -> Html {
                             {for notifications.iter().enumerate().map(|(_idx, n)| {
                                 let id = n.post_id;
                                 let content = match n.notification_type.as_str() {
-                                    "Post" =>  format!("{} posted", n.author),
-                                    "Comment" => format!("{} commented", n.author),
-                                    "Reply" => format!("{} replied", n.author),
+                                    "post" =>  format!("{} posted", n.author),
+                                    "comment" => format!("{} commented", n.author),
+                                    "reply" => format!("{} replied", n.author),
                                     _ => "".to_string(),
                                 };
 
@@ -149,7 +145,7 @@ pub fn notifications(props: &Props) -> Html {
                                         </span>
 
                                         <div class="notification-txt">
-                                            <span onclick={nav_to_post(id)}>{content}</span>
+                                            <span onclick={nav_to(id)}>{content}</span>
                                             <span onclick={delete_notification(id, store.clone(), notifications.clone())}>{" dismiss"}</span>
                                         </div>
                                     </div>
