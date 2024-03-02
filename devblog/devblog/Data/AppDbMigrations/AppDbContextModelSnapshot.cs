@@ -81,11 +81,9 @@ namespace devblog.Data.AppDbMigrations
 
             modelBuilder.Entity("devblog.Models.Notification", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -99,7 +97,14 @@ namespace devblog.Data.AppDbMigrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("PostId", "UserName");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Notification");
                 });
