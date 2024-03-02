@@ -74,12 +74,13 @@ pub struct VoteCount {
 
 #[derive(Serialize, Deserialize, Default, PartialEq, Clone)]
 pub struct Notification {
-    #[serde(rename = "imgUrl")]
-    pub img_url: String,
     #[serde(rename = "postId")]
     pub post_id: u32,
     #[serde(rename = "userName")]
     pub username: String,
+    pub author: String,
+    #[serde(rename = "imgUrl")]
+    pub img_url: String,
     #[serde(rename = "notificationType")]
     pub notification_type: String,
 }

@@ -22,9 +22,12 @@ namespace devblog.Data.AppDbMigrations
             //        PostId = table.Column<int>(type: "int", nullable: false),
             //        UserName = table.Column<string>(type: "varchar(255)", nullable: false)
             //            .Annotation("MySql:CharSet", "utf8mb4"),
-            //        NotificationType = table.Column<string>(type: "longtext", nullable: false)
+            //        Author = table.Column<string>(type: "longtext", nullable: false)
             //            .Annotation("MySql:CharSet", "utf8mb4"),
-            //        Seen = table.Column<bool>(type: "tinyint(1)", nullable: false)
+            //        ImgUrl = table.Column<string>(type: "longtext", nullable: false)
+            //            .Annotation("MySql:CharSet", "utf8mb4"),
+            //        NotificationType = table.Column<string>(type: "longtext", nullable: false)
+            //            .Annotation("MySql:CharSet", "utf8mb4")
             //    },
             //    constraints: table =>
             //    {
@@ -172,9 +175,16 @@ namespace devblog.Data.AppDbMigrations
             //    unique: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "NotificationType",
+                name: "Author",
                 table: "Notification",
                 type: "varchar(255)",
+                nullable: false)
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.AddColumn<string>(
+                name: "ImgUrl",
+                table: "Notification",
+                type: "longtext",
                 nullable: false)
                 .Annotation("MySql:CharSet", "utf8mb4");
         }

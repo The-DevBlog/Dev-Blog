@@ -11,7 +11,7 @@ using devblog.Data;
 namespace devblog.Data.AppDbMigrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240302151906_initial")]
+    [Migration("20240302162248_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -90,12 +90,17 @@ namespace devblog.Data.AppDbMigrations
                     b.Property<string>("UserName")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("NotificationType")
+                    b.Property<string>("Author")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("Seen")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("PostId", "UserName");
 

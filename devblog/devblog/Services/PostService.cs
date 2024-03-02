@@ -60,7 +60,7 @@ namespace devblog.Services
                 uploadStatus.DevBlogStatus = await _imgs.Create(post.files, res.Id);
 
                 // create notifications and send emails for new post
-                await _notifications.Create(res.Id, "Post");
+                await _notifications.CreatePostNotification(res.Id, res.Imgs[0].Url);
                 await _email.NewPost();
             }
 

@@ -20,7 +20,7 @@ namespace devblog.Services
         /// <summary>
         /// Creates a notification for a new post to every user
         /// </summary>
-        public async Task Create(int PostId, string notificationType)
+        public async Task CreatePostNotification(int postId, string imgUrl)
         {
             var allUsers = await _userMgr.Users.ToListAsync();
 
@@ -28,16 +28,48 @@ namespace devblog.Services
             {
                 var notification = new Notification
                 {
-                    NotificationType = notificationType,
-                    PostId = PostId,
-                    Seen = false,
                     UserName = user.UserName,
+                    PostId = postId,
+                    Author = "DevMaster",
+                    ImgUrl = imgUrl,
+                    NotificationType = "Post",
                 };
 
                 await _db.Notification.AddAsync(notification);
             });
 
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Creates a notification for users who have commented on a post
+        /// </summary>
+        /// <param name="author">Original author of notification content</param>
+        public async Task CreateNewCommentNotification(int postId, string author)
+        {
+            var imgs = _db.Img.Where(i => i.PostId == postId).ToList();
+            var comments = _db.Comment
+                 .Where(c => c.PostId == postId && c.UserName != author)
+                 .GroupBy(c => c.UserName)
+                 .Select(group => group.First())
+                 .ToList();
+
+
+            foreach (var comment in comments)
+            {
+                var notification = new Notification
+                {
+                    UserName = comment.UserName,
+                    PostId = postId,
+                    Author = author,
+                    ImgUrl = imgs[0].Url,
+                    NotificationType = "Comment"
+                };
+
+                await _db.Notification.AddAsync(notification);
+                await _db.SaveChangesAsync();
+            }
+
         }
 
         /// <summary>

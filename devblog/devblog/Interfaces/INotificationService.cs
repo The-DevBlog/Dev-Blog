@@ -7,7 +7,13 @@ namespace devblog.Interfaces
         /// <summary>
         /// Creates a notification for a new post to every user
         /// </summary>
-        Task Create(int PostId, string notificationType);
+        Task CreatePostNotification(int PostId, string imgUrl);
+
+        /// <summary>
+        /// Creates a notification for users who have commented on a post
+        /// </summary>
+        /// <param name="author">Original author of notification content</param>
+        Task CreateNewCommentNotification(int postId, string author);
 
         /// <summary>
         /// Gets all notifications for a specific user

@@ -136,15 +136,14 @@ pub fn notifications(props: &Props) -> Html {
                             {for notifications.iter().enumerate().map(|(_idx, n)| {
                                 let id = n.post_id;
                                 let content = match n.notification_type.as_str() {
-                                    "Post" => "Devmaster posted",
-                                    "Comment" => "commented",
-                                    "Reply" => "replied",
-                                    _ => "",
+                                    "Post" =>  format!("{} posted", n.author),
+                                    "Comment" => format!("{} commented", n.author),
+                                    "Reply" => format!("{} replied", n.author),
+                                    _ => "".to_string(),
                                 };
 
                                 html! {
                                     <div class="">
-                                        // thumbnail
                                         <span>
                                             <img src={n.img_url.clone()} alt="post thumbnail"/>
                                         </span>
