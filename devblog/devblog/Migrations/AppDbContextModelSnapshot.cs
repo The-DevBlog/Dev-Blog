@@ -87,6 +87,9 @@ namespace devblog.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<int>("NotificationType")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Seen")
                         .HasColumnType("tinyint(1)");
 

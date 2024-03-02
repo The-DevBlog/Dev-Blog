@@ -60,7 +60,7 @@ namespace devblog.Services
                 uploadStatus.DevBlogStatus = await _imgs.Create(post.files, res.Id);
 
                 // create notifications and send emails for new post
-                await _notifications.Create(res.Id);
+                await _notifications.Create(res.Id, Models.NotificationType.PostNew);
                 await _email.NewPost();
             }
 
@@ -117,7 +117,7 @@ namespace devblog.Services
             var posts = await _db.Post.OrderByDescending(x => x.Date).ToListAsync();
             var postIdx = posts.FindIndex(x => x.Id == postId);
 
-            if(postIdx >= 0)
+            if (postIdx >= 0)
             {
                 int pageNum = (postIdx / pageSize) + 1;
                 return pageNum;

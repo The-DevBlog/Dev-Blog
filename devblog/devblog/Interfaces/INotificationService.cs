@@ -5,9 +5,9 @@ namespace devblog.Interfaces
     public interface INotificationService
     {
         /// <summary>
-        /// Creates a noticication for a new post to every user
+        /// Creates a notification for a new post to every user
         /// </summary>
-        Task Create(int PostId);
+        Task Create(int PostId, NotificationType notificationType);
 
         /// <summary>
         /// Gets all notifications for a specific user

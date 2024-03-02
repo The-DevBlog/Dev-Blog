@@ -82,7 +82,7 @@ pub struct Notification {
     pub username: String,
 }
 
-pub enum Notif {
+pub enum Notifications {
     PostNew,
     CommentNew,
     CommentReply,

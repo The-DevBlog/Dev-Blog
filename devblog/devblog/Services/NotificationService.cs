@@ -18,9 +18,9 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Creates a noticication for a new post to every user
+        /// Creates a notification for a new post to every user
         /// </summary>
-        public async Task Create(int PostId)
+        public async Task Create(int PostId, NotificationType notificationType)
         {
             var allUsers = await _userMgr.Users.ToListAsync();
 
@@ -28,9 +28,10 @@ namespace devblog.Services
             {
                 var notification = new Notification
                 {
-                    UserName = user.UserName,
+                    NotificationType = notificationType,
                     PostId = PostId,
-                    Seen = false
+                    Seen = false,
+                    UserName = user.UserName,
                 };
 
                 await _db.Notification.AddAsync(notification);
