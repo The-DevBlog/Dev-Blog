@@ -1,3 +1,8 @@
+div:root {
+    display: flex;
+    flex-direction: column;
+}
+
 .sign-in-container input {
     background-color: #0d1116;
     color: white;

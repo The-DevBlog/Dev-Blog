@@ -6,6 +6,10 @@
     margin-top: 150px;
 }
 
+.errors p {
+    color: red;
+}
+
 .sign-up-container input {
     background-color: #0d1116;
     color: white;
@@ -18,8 +22,4 @@
 .sign-up-container button {
     margin-top: 1em;
     padding: 10px;
-}
-
-.sign-up-container>span {
-    color: red;
 }

@@ -129,7 +129,7 @@ namespace devblog.Controllers
 
             if (user == null || !await _userMgr.CheckPasswordAsync(user, signIn.Password))
             {
-                return BadRequest(new { error = "Invalid userName or password" });
+                return BadRequest(new { description = "Invalid username or password", code = "" });
             }
             else
             {
@@ -149,7 +149,7 @@ namespace devblog.Controllers
                     });
                 }
                 else
-                    return BadRequest(new { error = "Unable to sign in. Please try again" });
+                    return BadRequest(new { description = "Unable to sign in. Please try again", code = "" });
 
             }
         }
@@ -182,29 +182,23 @@ namespace devblog.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(User user)
         {
+            var errors = new List<IdentityError>();
+
             // verify unique username
             var userName = await _username.Exists(user.UserName.Normalize());
-
             if (userName)
             {
                 var error = new IdentityError();
-                error.Description = "Username already exists";
-
-                return BadRequest(new { errors = new List<IdentityError>() { error } });
+                error.Description = $"Username '{user.UserName}' is already taken.";
+                errors.Add(error);
             }
 
             // verify unique email
             var email = _userMgr.Users.Where(x => x.NormalizedEmail == user.Email.Normalize()).FirstOrDefault();
-            if (email != null)
-            {
-                var error = new IdentityError();
-                error.Description = "Email already exists";
 
-                return BadRequest(new { errors = new List<IdentityError>() { error } });
-            }
-
+            user.Subscribed = true;
             var res = await _userMgr.CreateAsync(user, user.PasswordHash);
-            if (res.Succeeded)
+            if (res.Succeeded && errors.Count == 0)
             {
                 await _email.Welcome(user.Email);
                 var currentUser = await _userMgr.FindByNameAsync(user.UserName);
@@ -226,7 +220,18 @@ namespace devblog.Controllers
                 });
             }
             else
-                return BadRequest(new { errors = res.Errors.ToList() });
+            {
+                errors.AddRange(res.Errors);
+
+                // Ensure to not return 'null' as this will cause front end parsing errors
+                errors.ForEach(e =>
+                {
+                    if (e.Code is null)
+                        e.Code = "";
+                });
+
+                return BadRequest(errors);
+            }
         }
 
 

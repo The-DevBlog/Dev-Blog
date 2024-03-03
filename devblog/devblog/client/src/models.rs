@@ -86,6 +86,12 @@ pub struct Notification {
 }
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
+pub struct IdentityError {
+    pub code: String,
+    pub description: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, PartialEq, Debug, Default)]
 pub struct User {
     #[serde(default, rename = "userName")]
     pub username: String,
@@ -95,6 +101,8 @@ pub struct User {
     pub password: String,
     #[serde(default, rename = "passwordHash")]
     pub password_hash: String,
+    #[serde(default, rename = "passwordHash")]
+    pub password_hash_confirm: String,
     #[serde(default)]
     pub subscribed: bool,
 }
@@ -106,6 +114,7 @@ impl User {
             UserField::Email => self.email = value,
             UserField::Password => self.password = value,
             UserField::PasswordHash => self.password_hash = value,
+            UserField::PasswordHashConfirm => self.password_hash_confirm = value,
         }
         self
     }
@@ -115,5 +124,6 @@ pub enum UserField {
     Username,
     Password,
     PasswordHash,
+    PasswordHashConfirm,
     Email,
 }
