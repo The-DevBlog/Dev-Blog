@@ -8,7 +8,7 @@ use serde::Serialize;
 use std::ops::Deref;
 use std::rc::Rc;
 use wasm_bindgen::JsValue;
-use web_sys::{Event, HtmlInputElement, SubmitEvent};
+use web_sys::{Event, HtmlInputElement};
 use yew::{Callback, TargetCast, UseStateHandle};
 use yew_router::navigator::Navigator;
 use yewdux::Dispatch;
@@ -55,50 +55,6 @@ pub fn set_user_data(dispatch: Dispatch<Store>, store: Store) {
         s.authenticated = store.authenticated;
         s.admin = store.admin;
     });
-}
-
-pub fn on_submit(
-    user: &UseStateHandle<User>,
-    nav: Navigator,
-    api: Rc<Api>,
-    dispatch: Dispatch<Store>,
-) -> Callback<SubmitEvent> {
-    let user = user.clone();
-    let api = Rc::clone(&api);
-    Callback::from(move |e: SubmitEvent| {
-        e.prevent_default();
-
-        // clone parameter fields to prevent ownership issues with callbacks
-        let api = Rc::clone(&api);
-        let dispatch = dispatch.clone();
-        let nav = nav.clone();
-        let mut user = user.deref().clone();
-        user.subscribed = true;
-
-        // build headers
-        let hdrs = Headers::new();
-        hdrs.append("content-type", "application/json");
-
-        wasm_bindgen_futures::spawn_local(async move {
-            let body = Some(helpers::to_jsvalue(user));
-
-            // navigate home if the submission is successful
-            if let Some(res) = api.fetch(Some(hdrs), body, Method::POST).await {
-                if res.status() == 200 {
-                    let obj: Store = serde_json::from_str(&res.text().await.unwrap()).unwrap();
-
-                    // clear user data if sign out call
-                    if api.deref().clone() == Api::SignOut {
-                        dispatch.reduce(|_| Store::default().into());
-                    } else {
-                        set_user_data(dispatch, obj);
-                    }
-
-                    nav.push(&Route::Home);
-                }
-            }
-        });
-    })
 }
 
 pub fn to_jsvalue<T>(body: T) -> JsValue
