@@ -8,9 +8,14 @@ section:root {
 
 .signup-prompt {
     font-size: 20px;
+    margin: 100px auto 100px auto;
     padding: 15px;
-    margin: 75px 0px 100px 0px;
     text-align: center;
+    width: fit-content;
+}
+
+.signup-prompt a {
+    text-decoration: none;
 }
 
 .update-video * {
@@ -22,10 +27,16 @@ section:root {
 }
 
 .youtube-video {
+    border-radius: .5em;
     height: 520px;
     margin-top: 25px;
     margin-bottom: 100px;
     width: 100%;
+}
+
+.youtube-video iframe {
+    border: none;
+    border-radius: .5em;
 }
 
 @media (max-width: 400px) {

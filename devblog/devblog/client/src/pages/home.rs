@@ -1,14 +1,16 @@
 use crate::{
     components::{items::text_input::TextInput, post::Post},
     helpers::{self, CustomCallback},
+    router::Route,
     store::Store,
-    Api, PostModel, YoutubeVideo,
+    Api, PostModel, User, YoutubeVideo,
 };
 use gloo_net::http::Method;
 use std::ops::Deref;
 use stylist::Style;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
+use yew_router::components::Link;
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/home.css");
@@ -17,6 +19,7 @@ const STYLE: &str = include_str!("styles/home.css");
 pub fn home() -> Html {
     let style = Style::new(STYLE).unwrap();
     let loading = use_state(|| true);
+    let subscribed = use_state(|| false);
     let latest_post = use_state(|| PostModel::default());
     let total_posts_count = use_state(|| i32::default());
     let latest_post_cb = CustomCallback::new(&latest_post);
@@ -50,11 +53,30 @@ pub fn home() -> Html {
         });
     };
 
+    let token = store.token.clone();
+    let subscribed_clone = subscribed.clone();
+    let get_user_info = || {
+        wasm_bindgen_futures::spawn_local(async move {
+            let hdrs = helpers::create_auth_header(&token);
+            let response = Api::GetCurrentUser
+                .fetch(Some(hdrs), None, Method::GET)
+                .await;
+
+            if let Some(res) = response {
+                if res.status() == 200 {
+                    let data = res.json::<User>().await.unwrap();
+                    subscribed_clone.set(data.subscribed);
+                }
+            }
+        });
+    };
+
     // get latest page and posts count
     let latest_post_cb_clone = latest_post_cb.clone();
     let total_posts_count_cb_clone = total_posts_count_cb.clone();
     let url_clone = url.clone();
     let loading_clone = loading.clone();
+    let authenticated = store.authenticated.clone();
     use_effect_with((), move |_| {
         get_latest_post(
             latest_post_cb_clone,
@@ -62,6 +84,10 @@ pub fn home() -> Html {
             loading_clone,
         );
         get_video_url(url_clone);
+
+        if authenticated {
+            get_user_info();
+        }
     });
 
     let on_post_delete = {
@@ -106,6 +132,22 @@ pub fn home() -> Html {
     html! {
         <section class={style}>
             <div class="home">
+
+                // signup / subscribe prompt
+                if !store.authenticated {
+                    <div class="signup-prompt">
+                        <Link<Route> to={Route::SignUp}>
+                            <span>{"Join the community. Sign up!"}</span>
+                        </Link<Route>>
+                    </div>
+                } else if store.authenticated && !*subscribed {
+                    <div class="signup-prompt">
+                        <Link<Route> to={Route::Account}>
+                           <span>{"Subscribe to the newsletter!"}</span>
+                        </Link<Route>>
+                    </div>
+                }
+
                 // latest post
                 if !*loading {
                     <Post post={(*latest_post).clone()} post_number={*total_posts_count} on_post_delete={&on_post_delete}/>
@@ -115,7 +157,6 @@ pub fn home() -> Html {
 
                 // youtube video
                 <div class="youtube-video">
-
                     if store.admin && store.authenticated {
                         <form onsubmit={update_url} class="update-video">
                             <TextInput label="url" input_type="text" value={url.deref().clone()} onchange={on_url_change}/>

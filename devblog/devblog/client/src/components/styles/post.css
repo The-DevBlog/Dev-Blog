@@ -3,10 +3,11 @@
 }
 
 .post {
-    width: 90%;
-    margin-bottom: 1.5em;
     border-radius: .5em;
+    margin: auto;
+    margin-bottom: 1.5em;
     padding: 1em;
+    width: 90%;
 }
 
 .post>div {
