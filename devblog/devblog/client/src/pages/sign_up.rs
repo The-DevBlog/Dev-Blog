@@ -78,6 +78,14 @@ pub fn sign_up() -> Html {
     html! {
         <div class={style}>
             <div class="sign-up-container">
+                <form onsubmit={sign_up}>
+                    <TextInput label="Username" input_type="text" value={user.username.clone()} onchange={helpers::on_change(&user, UserField::Username)}/>
+                    <TextInput label="Email" input_type="text" value={user.email.clone()} onchange={helpers::on_change(&user, UserField::Email)}/>
+                    <TextInput label="Password" input_type="password" value={user.password_hash.clone()} onchange={helpers::on_change(&user, UserField::PasswordHash)}/>
+                    <TextInput label="Confirm Password" input_type="password" value={user.password_hash_confirm.clone()} onchange={helpers::on_change(&user, UserField::PasswordHashConfirm)}/>
+                    <button>{"Sign Up"}</button>
+                </form>
+
                 if errors.len() > 0 {
                     <div class="errors">
                         {for errors.iter().enumerate().map(|(_idx, e)| html! {
@@ -85,14 +93,6 @@ pub fn sign_up() -> Html {
                         })}
                     </div>
                 }
-
-                <form onsubmit={sign_up}>
-                    <TextInput label="Username" input_type="text" value={user.username.clone()} onchange={helpers::on_change(&user, UserField::Username)}/>
-                    <TextInput label="Email" input_type="text" value={user.email.clone()} onchange={helpers::on_change(&user, UserField::Email)}/>
-                    <TextInput label="Password" input_type="password" value={user.password_hash.clone()} onchange={helpers::on_change(&user, UserField::PasswordHash)}/>
-                    <TextInput label="confirmPassword" input_type="password" value={user.password_hash_confirm.clone()} onchange={helpers::on_change(&user, UserField::PasswordHashConfirm)}/>
-                    <button>{"Sign Up"}</button>
-                </form>
             </div>
         </div>
     }

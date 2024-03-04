@@ -21,7 +21,6 @@ pub fn text_input(props: &Props) -> Html {
             <label for={props.label.clone()}>{props.label.clone()}</label>
             <input
                 type={props.input_type.clone()}
-                placeholder={props.label.clone()}
                 value={props.value.clone()}
                 onchange={props.onchange.clone()}
                 required={true}

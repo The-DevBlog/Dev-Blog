@@ -6,6 +6,11 @@
     margin-top: 150px;
 }
 
+.sign-in-container input {
+    background-color: #0d1116;
+    color: white;
+}
+
 .sign-in-container button {
     margin-top: 1em;
     padding: 10px;

@@ -54,15 +54,15 @@ pub fn sign_in() -> Html {
     html! {
         <div class={style}>
             <div class="sign-in-container">
-                if !error.description.is_empty() {
-                    <p>{error.description.deref()}</p>
-                }
-
                 <form onsubmit={sign_in} class="sign-in">
                     <TextInput label="Username" input_type="text" value={user.username.clone()} onchange={helpers::on_change(&user, UserField::Username)}/>
                     <TextInput label="Password" input_type="password" value={user.password.clone()} onchange={helpers::on_change(&user, UserField::Password)}/>
                     <button>{"Login"}</button>
                 </form>
+
+                if !error.description.is_empty() {
+                    <p>{error.description.deref()}</p>
+                }
             </div>
         </div>
     }

@@ -1,13 +1,13 @@
 div:root {
     display: flex;
     flex-direction: column;
+    padding: 5px;
 }
 
-.sign-in-container input {
+input {
     background-color: #0d1116;
+    border: 1px solid grey;
+    border-radius: 2px;
     color: white;
-}
-
-.sign-in-container label {
-    color: white;
+    height: 30;
 }
