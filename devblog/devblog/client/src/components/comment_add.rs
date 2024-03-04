@@ -59,7 +59,9 @@ pub fn add_comment(props: &Props) -> Html {
 
                 if let Some(res) = response {
                     if res.status() == 200 {
-                        on_comment_add.emit(new_comment);
+                        let txt = &res.text().await.unwrap();
+                        let data = serde_json::from_str::<CommentModel>(&txt).unwrap();
+                        on_comment_add.emit(data);
                         comment.set(CommentModel::default());
                     }
                 }

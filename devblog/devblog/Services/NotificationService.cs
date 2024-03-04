@@ -48,13 +48,21 @@ namespace devblog.Services
         public async Task CreateNewCommentNotification(int postId, string author)
         {
             var imgs = _db.Img.Where(i => i.PostId == postId).ToList();
+
+            // get all unique comments on post by username
             var comments = _db.Comment
                  .Where(c => c.PostId == postId && c.UserName != author)
                  .GroupBy(c => c.UserName)
                  .Select(group => group.First())
                  .ToList();
 
+            // add a notification for devmaster if the author is not devmaster
+            if(!comments.Any(c => c.UserName.ToLower() == "devmaster") && author.ToLower() == "devmaster")
+            {
+                comments.Add(new Comment() { UserName = "DevMaster" });
+            }
 
+            // add notification for each user
             foreach (var comment in comments)
             {
                 var notification = new Notification
