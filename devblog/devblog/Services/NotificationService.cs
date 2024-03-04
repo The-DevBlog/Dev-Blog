@@ -57,7 +57,7 @@ namespace devblog.Services
                  .ToList();
 
             // add a notification for devmaster if the author is not devmaster
-            if(!comments.Any(c => c.UserName.ToLower() == "devmaster") && author.ToLower() == "devmaster")
+            if(!comments.Any(c => c.UserName.ToLower() == "devmaster") && author.ToLower() != "devmaster")
             {
                 comments.Add(new Comment() { UserName = "DevMaster" });
             }

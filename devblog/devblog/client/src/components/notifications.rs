@@ -63,8 +63,48 @@ pub fn notifications(props: &Props) -> Html {
         display_clone.set(if n.len() > 0 { "inline" } else { "none" }.to_string());
     });
 
-    let nav_to = |post_id: u32| -> Callback<MouseEvent> {
+    let delete = |post_id: u32,
+                  store: Rc<Store>,
+                  notifications: UseStateHandle<Vec<Notification>>| {
+        let hdrs = helpers::create_auth_header(&store.token);
+        let username = store.username.clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            let response = Api::DeleteNotification(post_id, username)
+                .fetch(Some(hdrs), None, Method::DELETE)
+                .await;
+
+            if let Some(res) = response {
+                // if delete is success, remove the deleted notifications from the notifications vec
+                if res.status() == 200 {
+                    let mut new_notifications = notifications.deref().clone();
+                    if let Some(idx) = new_notifications.iter().position(|n| n.post_id == post_id) {
+                        new_notifications.remove(idx);
+                        notifications.set(new_notifications);
+                    }
+                }
+            }
+        });
+    };
+
+    let delete_notification = |post_id: u32,
+                               store: Rc<Store>,
+                               notifications: UseStateHandle<Vec<Notification>>|
+     -> Callback<MouseEvent> {
         Callback::from(move |_| {
+            let store = store.clone();
+            let notifications = notifications.clone();
+            delete(post_id, store, notifications);
+        })
+    };
+
+    let nav_to = |post_id: u32| -> Callback<MouseEvent> {
+        let post_id = post_id.clone();
+        let store = store.clone();
+        let notifications = notifications.clone();
+        Callback::from(move |_| {
+            let post_id = post_id.clone();
+            let store = store.clone();
+            let notifications = notifications.clone();
             wasm_bindgen_futures::spawn_local(async move {
                 let response = Api::GetPageNumber(post_id)
                     .fetch(None, None, Method::GET)
@@ -78,39 +118,8 @@ pub fn notifications(props: &Props) -> Html {
                         let _ = window()
                             .location()
                             .set_href(&format!("/posts?page={}#post{}", page_num, post_id));
-                    }
-                }
-            });
-        })
-    };
 
-    let delete_notification = |post_id: u32,
-                               store: Rc<Store>,
-                               notifications: UseStateHandle<Vec<Notification>>|
-     -> Callback<MouseEvent> {
-        let store_clone = store.clone();
-        let notifications = notifications.clone();
-
-        Callback::from(move |_| {
-            let hdrs = helpers::create_auth_header(&store_clone.token);
-            let username = store_clone.username.clone();
-            let notifications = notifications.clone();
-
-            wasm_bindgen_futures::spawn_local(async move {
-                let response = Api::DeleteNotification(post_id, username)
-                    .fetch(Some(hdrs), None, Method::DELETE)
-                    .await;
-
-                if let Some(res) = response {
-                    // if delete is success, remove the deleted notifications from the notifications vec
-                    if res.status() == 200 {
-                        let mut new_notifications = notifications.deref().clone();
-                        if let Some(idx) =
-                            new_notifications.iter().position(|n| n.post_id == post_id)
-                        {
-                            new_notifications.remove(idx);
-                            notifications.set(new_notifications);
-                        }
+                        delete(post_id, store, notifications);
                     }
                 }
             });
