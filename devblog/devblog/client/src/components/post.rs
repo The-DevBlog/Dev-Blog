@@ -88,7 +88,7 @@ pub fn post(props: &Props) -> Html {
                 <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
 
                 // DESCRIPTION
-                <div>{description.deref()}</div>
+                <div class="description">{description.deref()}</div>
 
                 // COMMENTS
                 <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>

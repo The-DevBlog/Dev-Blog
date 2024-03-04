@@ -1,10 +1,12 @@
 .insights {
     font-family: 'Chivo Mono', monospace;
     margin-top: 150px;
+    overflow-x: auto;
 }
 
 .insights>table {
-    border: .15em solid rgb(70, 68, 60);
+    border: .15em solid var(--button-border);
+    opacity: .8;
     border-radius: .5em;
     width: 100%;
 }
@@ -17,12 +19,12 @@
 }
 
 .insights>table>tbody tr:nth-child(odd) {
-    background-color: rgb(26, 32, 41);
+    background-color: var(--background-secondary);
 
 }
 
 .insights svg {
-    height: 10;
+    height: 15;
 }
 
 .insights svg:hover {

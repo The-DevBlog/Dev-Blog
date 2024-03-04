@@ -20,7 +20,7 @@
     flex-direction: column;
     font-size: 15px;
     right: 10px;
-    background-color: rgb(26, 32, 41);
+    background-color: var(--background-secondary);
     position: absolute;
     padding: 10px 4px;
 }
@@ -43,7 +43,7 @@
 }
 
 .notifications>div {
-    border-top: 1px solid gray;
+    border-top: 1px solid var(--button-border);
     display: flex;
     flex-direction: row;
 }
@@ -81,21 +81,3 @@
     transform: translateX(100%);
     opacity: 0;
 }
-
-/* @media(max-width: 450px) {
-    .notifications {
-        right: 1px;
-    }
-
-    .notification-drop-down {
-        font-size: 25px;
-        margin-top: 19px;
-    }
-
-    .notification-count {
-        right: 92px;
-        font-size: 10px;
-        line-height: 6px;
-        padding: 4px;
-    }
-} */

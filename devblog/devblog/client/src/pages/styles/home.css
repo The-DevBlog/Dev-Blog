@@ -22,30 +22,20 @@ section:root {
     padding-right: 5px;
 }
 
-.update-video {
-    display: flex;
-}
-
 .youtube-video {
     border-radius: .5em;
+    display: flex;
     height: 520px;
     margin-top: 25px;
     margin-bottom: 100px;
     width: 100%;
 }
 
+.update-video>button {
+    height: 30;
+}
+
 .youtube-video iframe {
     border: none;
     border-radius: .5em;
-}
-
-@media (max-width: 400px) {
-    .signup-prompt {
-        margin: 25px 0px 75px 0px;
-    }
-
-    .youtube-video {
-        height: 350px;
-        margin-top: 10px;
-    }
 }

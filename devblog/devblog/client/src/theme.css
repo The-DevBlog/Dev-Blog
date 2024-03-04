@@ -1,63 +1,62 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Silkscreen&family=Zilla+Slab&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;700&family=Silkscreen&family=Zilla+Slab&display=swap'); */
-/* @import url("assets/fonts/Silkscreen-Bold.ttf"); */
-/* Font families, font colors & theme colors */
+:root {
+    --background-secondary: #1a2029;
+    --background-base: #0d1116;
+    --button-color: #28303d;
+    --button-hover: #323d4f;
+    --button-border: grey;
+    --text: white;
+}
 
 :root {
-    background-color: #0d1116;
-    color: white;
+    background-color: var(--background-base);
+    color: var(--text);
     overflow-x: hidden;
     font-family: 'Silkscreen', cursive;
-    /* src: url("assets/fonts/Silkscreen-Bold.ttf"); */
-    src: local("assets/fonts/Silkscreen-Bold.ttf");
 }
 
 a {
-    color: white;
+    color: var(--text);
 }
 
 svg {
-    fill: white;
+    fill: var(--text);
 }
 
 .post {
-    background-color: #1a2029;
+    background-color: var(--background-secondary);
 }
 
 .navbar,
 .footer {
-    background-color: #1a2029;
+    background-color: var(--background-secondary);
 }
 
 .comment,
+input,
 textarea,
 button {
-    border: #0d1116;
-    background-color: #0d1116;
-    color: white;
-}
-
-svg {
-    fill: white;
+    border: var(--background-base);
+    background-color: var(--background-base);
+    color: var(--text);
 }
 
 button,
 .signup-prompt {
     text-decoration: none;
-    background-color: #28303d;
+    background-color: var(--button-color);
     border-radius: 0.5em;
 
 }
 
 button:hover,
 .signup-prompt:hover {
-    background-color: #323d4f;
+    background-color: var(--button-hover);
     cursor: pointer;
 }
 
 .comment,
+.post-info,
 .date,
-.post-description,
 .votes span,
 textarea,
 .sign-up-container,
@@ -66,4 +65,8 @@ textarea,
 .description-result,
 button {
     font-family: 'Chivo Mono', monospace;
+}
+
+.youtube-video {
+    border: 2px solid var(--background-secondary);
 }

@@ -8,3 +8,10 @@
 .account>div>h1 {
     border-bottom: 1px solid grey;
 }
+
+.account>button {
+    color: red;
+    border: 1px solid red;
+    margin-top: 12;
+    padding: 10;
+}

@@ -5,9 +5,8 @@ div:root {
 }
 
 input {
-    background-color: #0d1116;
-    border: 1px solid grey;
+    background-color: var(--background-base);
+    border: 1px solid var(--button-border);
     border-radius: 2px;
-    color: white;
     height: 30;
 }

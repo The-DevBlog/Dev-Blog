@@ -156,14 +156,13 @@ pub fn home() -> Html {
                 }
 
                 // youtube video
+                if store.admin && store.authenticated {
+                    <form onsubmit={update_url} class="update-video">
+                        <TextInput label="url" input_type="text" value={url.deref().clone()} onchange={on_url_change}/>
+                        <button>{"Update"}</button>
+                    </form>
+                }
                 <div class="youtube-video">
-                    if store.admin && store.authenticated {
-                        <form onsubmit={update_url} class="update-video">
-                            <TextInput label="url" input_type="text" value={url.deref().clone()} onchange={on_url_change}/>
-                            <button>{"Update"}</button>
-                        </form>
-                    }
-
                     <iframe class="youtube-video"
                         allowfullscreen={true}
                         src={url.deref().clone()}

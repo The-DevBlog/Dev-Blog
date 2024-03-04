@@ -30,16 +30,3 @@
 .comment-info span:first-child {
     margin-right: 5px;
 }
-
-@media (max-width: 800px) {
-
-    .comment-info>span:first-child,
-    .edit-comment-btn,
-    .delete-comment-btn {
-        margin-bottom: auto;
-    }
-
-    .date {
-        flex-direction: column;
-    }
-}
