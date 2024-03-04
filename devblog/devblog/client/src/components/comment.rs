@@ -7,7 +7,7 @@ use crate::{
 };
 use chrono::{Local, TimeZone};
 use stylist::Style;
-use yew::{function_component, html, use_state, Callback, Html, Properties};
+use yew::{classes, function_component, html, use_state, Callback, Html, Properties};
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/comment.css");
@@ -16,6 +16,7 @@ const STYLE: &str = include_str!("styles/comment.css");
 pub struct Props {
     pub comment: CommentModel,
     pub on_comment_delete: Callback<u32>,
+    pub show_comment: bool,
 }
 
 #[function_component(Comment)]
@@ -39,7 +40,7 @@ pub fn comment(props: &Props) -> Html {
     };
 
     html! {
-        <div class={{style}}>
+        <div class={classes!(style, if !props.show_comment { "hide-comment" } else { "" })}>
             <div class="comment">
                 <div class="comment-info">
                     // USERNAME

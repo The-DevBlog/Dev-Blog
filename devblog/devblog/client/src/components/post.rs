@@ -22,6 +22,7 @@ pub struct Props {
 #[function_component(Post)]
 pub fn post(props: &Props) -> Html {
     let style = Style::new(STYLE).unwrap();
+    let show_comments = use_state(|| false);
     let comments = use_state(|| props.post.comments.clone());
     let description = use_state(|| props.post.description.clone());
 
@@ -58,6 +59,13 @@ pub fn post(props: &Props) -> Html {
         })
     };
 
+    let show_comments_btn = {
+        let show_comments = show_comments.clone();
+        Callback::from(move |_| {
+            show_comments.set(!*show_comments);
+        })
+    };
+
     html! {
         <div class={style}>
             <div class="post" id={format!("post{}", props.post.id)}>
@@ -80,15 +88,20 @@ pub fn post(props: &Props) -> Html {
                 <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
 
                 // DESCRIPTION
-                // <div>{&props.post.description}</div>
                 <div>{description.deref()}</div>
 
                 // COMMENTS
                 <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>
                 <div>
-                    {for comments.iter().map(|comment| {
-                        html! {<Comment comment={comment.clone()} on_comment_delete={&on_comment_delete} />}
+                    {for comments.iter().map(|c| {
+                        html! {<Comment comment={c.clone()} on_comment_delete={&on_comment_delete} show_comment={*show_comments} />}
                     })}
+
+                    if comments.len() > 5 {
+                        <button class="show-all-comments-btn" onclick={show_comments_btn}>
+                            {if *show_comments { "Hide Comments" } else { "Show All Comments" }}
+                        </button>
+                    }
                 </div>
             </div>
         </div>

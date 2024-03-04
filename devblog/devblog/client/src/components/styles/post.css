@@ -14,6 +14,10 @@
     width: 95%;
 }
 
+.hide-comment:nth-child(n + 6) {
+    display: none;
+}
+
 .post-info {
     display: flex;
     margin-bottom: 10px;
