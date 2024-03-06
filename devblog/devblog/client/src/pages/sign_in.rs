@@ -1,6 +1,6 @@
 use crate::{
-    components::items::text_input::TextInput, helpers, router::Route, Api, IdentityError, Store,
-    User, UserField,
+    components::text_input::TextInput, helpers, router::Route, Api, IdentityError, Store, User,
+    UserField,
 };
 use gloo_net::http::{Headers, Method};
 use std::ops::Deref;

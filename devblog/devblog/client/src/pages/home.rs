@@ -1,5 +1,5 @@
 use crate::{
-    components::{items::text_input::TextInput, post::Post},
+    components::{post::Post, text_input::TextInput},
     helpers::{self, CustomCallback},
     router::Route,
     store::Store,
