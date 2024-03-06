@@ -1,4 +1,4 @@
-use crate::{helpers, store::Store, Api};
+use crate::{components::markdown::Markdown, helpers, store::Store, Api};
 use gloo_net::http::Method;
 use std::ops::Deref;
 use stylist::{css, Style};
@@ -199,9 +199,7 @@ pub fn add_post() -> Html {
                             <p>{"Preview:"}</p>
                             <div class="post-preview">
                                 <span>{"preview content:"}</span>
-                                <p>
-                                    // {parser}
-                                </p>
+                                <Markdown content={description.deref().clone()}/>
                             </div>
                             <button>{"Create Post"}</button>
                         </div>

@@ -4,6 +4,7 @@ pub mod comment_delete;
 pub mod comment_edit;
 pub mod footer;
 pub mod items;
+pub mod markdown;
 pub mod navbar;
 pub mod notifications;
 pub mod pager;

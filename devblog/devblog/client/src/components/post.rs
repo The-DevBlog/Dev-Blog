@@ -1,11 +1,12 @@
 use crate::{
     components::{
-        comment::Comment, comment_add::AddComment, post_delete::DeletePost, post_edit::EditPost,
-        vote::Vote,
+        comment::Comment, comment_add::AddComment, markdown::Markdown, post_delete::DeletePost,
+        post_edit::EditPost, vote::Vote,
     },
     CommentModel, PostModel,
 };
 use chrono::{Local, TimeZone};
+use gloo::console::log;
 use std::ops::Deref;
 use stylist::Style;
 use yew::{function_component, html, use_effect_with, use_state, Callback, Html, Properties};
@@ -46,6 +47,7 @@ pub fn post(props: &Props) -> Html {
         Callback::from(move |id| {
             let mut new_comments = comments_clone.deref().clone();
             if let Some(idx) = new_comments.iter().position(|c| c.id == id) {
+                log!("IDXXXX: ", idx);
                 new_comments.remove(idx);
                 comments_clone.set(new_comments);
             }
@@ -88,7 +90,10 @@ pub fn post(props: &Props) -> Html {
                 <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
 
                 // DESCRIPTION
-                <div class="description">{description.deref()}</div>
+                // <div class="description">{description.deref()}</div>
+                <div class="description">
+                    <Markdown content={description.deref().clone()}/>
+                </div>
 
                 // COMMENTS
                 <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>
