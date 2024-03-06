@@ -29,7 +29,6 @@ pub fn edit_post(props: &Props) -> Html {
         let description = description.deref().clone();
         let token = store.token.clone();
         let is_editing = is_editing.clone();
-        let on_post_edit = props.on_post_edit.clone();
         let id = props.id.clone();
         Callback::from(move |e: SubmitEvent| {
             e.prevent_default();
@@ -37,7 +36,6 @@ pub fn edit_post(props: &Props) -> Html {
             let body = Some(helpers::to_jsvalue(description.deref()));
             let hdrs = helpers::create_auth_header(&token);
             hdrs.append("content-type", "application/json");
-            let on_post_edit = on_post_edit.clone();
             let is_editing = is_editing.clone();
 
             wasm_bindgen_futures::spawn_local(async move {
@@ -45,7 +43,6 @@ pub fn edit_post(props: &Props) -> Html {
 
                 if let Some(res) = response {
                     if res.status() == 200 {
-                        on_post_edit.emit(description.clone());
                         is_editing.set(false);
                     }
                 }
@@ -54,11 +51,13 @@ pub fn edit_post(props: &Props) -> Html {
     };
 
     let on_description_change = {
+        let on_post_edit = props.on_post_edit.clone();
         let description = description.clone();
         Callback::from(move |e: InputEvent| {
             let input = e.target_dyn_into::<HtmlTextAreaElement>();
             if let Some(value) = input {
                 description.set(value.value());
+                on_post_edit.emit(value.value());
             }
         })
     };

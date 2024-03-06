@@ -20,7 +20,7 @@ pub struct Props {
 #[function_component(EditComment)]
 pub fn edit_comment(props: &Props) -> Html {
     let style = Style::new(STYLE).unwrap();
-    let content = use_state(|| String::default());
+    let content = use_state(|| props.content.clone());
     let store = use_store_value::<Store>();
 
     let onchange = {
@@ -83,7 +83,7 @@ pub fn edit_comment(props: &Props) -> Html {
 
                 if props.is_editing {
                     <div class="edit-comment">
-                        <textarea value={props.content.clone()} {onchange}></textarea>
+                        <textarea value={content.deref().clone()} {onchange}></textarea>
 
                         <div>
                             <button onclick={save}>{"Save"}</button>

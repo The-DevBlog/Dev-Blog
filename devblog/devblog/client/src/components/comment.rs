@@ -58,14 +58,14 @@ pub fn comment(props: &Props) -> Html {
                     // edit comment
                     if !*is_editing && props.comment.username == store.username {
                         <EditComment id={props.comment.id}
-                            content={props.comment.content.clone()}
+                            content={content.deref().clone()}
                             is_editing={*is_editing}
                             on_is_editing={on_is_editing.clone()}
                             on_edit_save={on_edit_save.clone()}/>
                     }
 
                     // delete comment
-                    if props.comment.username == store.username || store.admin{
+                    if props.comment.username == store.username || store.admin {
                         <DeleteComment id={props.comment.id.clone()} on_comment_delete={&props.on_comment_delete}/>
                     }
 

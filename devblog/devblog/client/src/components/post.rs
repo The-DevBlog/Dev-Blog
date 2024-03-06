@@ -46,7 +46,6 @@ pub fn post(props: &Props) -> Html {
         Callback::from(move |id| {
             let mut new_comments = comments_clone.deref().clone();
             if let Some(idx) = new_comments.iter().position(|c| c.id == id) {
-                // log!("IDXXXX: ", idx);
                 new_comments.remove(idx);
                 comments_clone.set(new_comments);
             }
