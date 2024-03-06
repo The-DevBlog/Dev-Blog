@@ -6,7 +6,6 @@ use crate::{
     CommentModel, PostModel,
 };
 use chrono::{Local, TimeZone};
-use gloo::console::log;
 use std::ops::Deref;
 use stylist::Style;
 use yew::{function_component, html, use_effect_with, use_state, Callback, Html, Properties};
@@ -47,7 +46,7 @@ pub fn post(props: &Props) -> Html {
         Callback::from(move |id| {
             let mut new_comments = comments_clone.deref().clone();
             if let Some(idx) = new_comments.iter().position(|c| c.id == id) {
-                log!("IDXXXX: ", idx);
+                // log!("IDXXXX: ", idx);
                 new_comments.remove(idx);
                 comments_clone.set(new_comments);
             }
@@ -71,7 +70,7 @@ pub fn post(props: &Props) -> Html {
     html! {
         <div class={style}>
             <div class="post" id={format!("post{}", props.post.id)}>
-                // POST INFO
+                // post info
                 <div class="post-info">
                     <span>{"Log "}{props.post_number}</span>
                     <DeletePost id={props.post.id} on_post_delete={&props.on_post_delete}/>
@@ -79,23 +78,22 @@ pub fn post(props: &Props) -> Html {
                     <span>{Local.from_utc_datetime(&props.post.date).format("%x").to_string()}</span>
                 </div>
 
-                // IMAGES
+                // images
                 <div>
                     {for props.post.imgs.iter().map(|img| {
                         html! {<img src={img.url.clone()} alt={"dev pic"}/>}
                     })}
                 </div>
 
-                // LIKE / DISLIKE
+                // like / dislike
                 <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
 
-                // DESCRIPTION
-                // <div class="description">{description.deref()}</div>
+                // description
                 <div class="description">
                     <Markdown content={description.deref().clone()}/>
                 </div>
 
-                // COMMENTS
+                // comments
                 <AddComment post_id={props.post.id} on_comment_add={&on_comment_add}/>
                 <div>
                     {for comments.iter().map(|c| {

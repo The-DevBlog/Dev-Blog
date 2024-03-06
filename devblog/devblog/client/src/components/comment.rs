@@ -7,7 +7,9 @@ use crate::{
 };
 use chrono::{Local, TimeZone};
 use stylist::Style;
-use yew::{classes, function_component, html, use_state, Callback, Html, Properties};
+use yew::{
+    classes, function_component, html, use_effect_with, use_state, Callback, Html, Properties,
+};
 use yewdux::use_store_value;
 
 const STYLE: &str = include_str!("styles/comment.css");
@@ -39,14 +41,21 @@ pub fn comment(props: &Props) -> Html {
         content_clone.set(value);
     };
 
+    let on_comment_delete_clone = props.on_comment_delete.clone();
+    let content_clone = content.clone();
+    let comment_clone = props.comment.clone();
+    use_effect_with(on_comment_delete_clone, move |_| {
+        content_clone.set(comment_clone.content); // dont know why, but I need to have this here in order for the comments to render correctly AFTER one is deleted
+    });
+
     html! {
         <div class={classes!(style, if !props.show_comment { "hide-comment" } else { "" })}>
             <div class="comment">
                 <div class="comment-info">
-                    // USERNAME
+                    // username
                     <span>{&props.comment.username}</span>
 
-                    // EDIT COMMENT
+                    // edit comment
                     if !*is_editing && props.comment.username == store.username {
                         <EditComment id={props.comment.id}
                             content={props.comment.content.clone()}
@@ -55,18 +64,18 @@ pub fn comment(props: &Props) -> Html {
                             on_edit_save={on_edit_save.clone()}/>
                     }
 
-                    // DELETE COMMENT
+                    // delete comment
                     if props.comment.username == store.username || store.admin{
                         <DeleteComment id={props.comment.id.clone()} on_comment_delete={&props.on_comment_delete}/>
                     }
 
-                    // DATE / TIME
+                    // date / time
                     <div class={"date"}>
                         <span>{date.to_string()}</span>
                     </div>
                 </div>
 
-                // EDIT COMMENT
+                // edit comment
                 if *is_editing && props.comment.username == store.username {
                     <EditComment id={props.comment.id}
                         content={props.comment.content.clone()}
@@ -75,7 +84,7 @@ pub fn comment(props: &Props) -> Html {
                         on_edit_save={on_edit_save}/>
                 }
 
-                // CONTENT
+                // content
                 if !*is_editing {
                     <p>{content.deref()}</p>
                 }

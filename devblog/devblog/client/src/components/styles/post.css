@@ -17,7 +17,7 @@
 
 .post-info {
     display: flex;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .post-info>span:first-child {

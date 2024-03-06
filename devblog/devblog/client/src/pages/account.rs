@@ -70,7 +70,7 @@ pub fn account() -> Html {
                     <input type="checkbox"
                         checked={user.subscribed}
                         onclick={on_click(Api::ToggleSubscribe, Method::PUT, None, None)}/>
-                    <span>{"Subscribed"}</span>
+                    <span>{"Subscribe to Newsletter"}</span>
                 </div>
                 <button onclick={on_click(Api::DeleteCurrentAccount, Method::DELETE, Some(nav), Some(dispatch))}>{"Delete Account"}</button>
             </div>
