@@ -1,0 +1,2 @@
+[[proxy]]
+backend = "https://localhost:7249/api"
