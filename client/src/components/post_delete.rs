@@ -5,7 +5,7 @@ use stylist::Style;
 use yew::{function_component, html, Callback, Html, Properties};
 use yewdux::use_store_value;
 
-const STYLE: &str = include_str!("styles/PostDelete.css");
+const STYLE: &str = include_str!("styles/postDelete.css");
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
