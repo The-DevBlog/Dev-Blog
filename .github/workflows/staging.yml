@@ -10,28 +10,28 @@ jobs:
         name: Deploy to Staging
         runs-on: ubuntu-latest
         steps:
-            - name: Cache Trunk
-              uses: actions/cache@v3
-              with:
-                path: ~/.cargo
-                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-                restore-keys: |
-                  ${{ runner.os }}-cargo-
+            # - name: Cache Trunk
+            #   uses: actions/cache@v3
+            #   with:
+            #     path: ~/.cargo
+            #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+            #     restore-keys: |
+            #       ${{ runner.os }}-cargo-
 
-            - uses: actions/checkout@v3
-            - name: Set up Rust
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                targets: wasm32-unknown-unknown
-                toolchain: stable
+            # - uses: actions/checkout@v3
+            # - name: Set up Rust
+            #   uses: dtolnay/rust-toolchain@stable
+            #   with:
+            #     targets: wasm32-unknown-unknown
+            #     toolchain: stable
                 
-            - name: Install Trunk
-              run: cargo install trunk
-              if: steps.cache.outputs.cache-hit != 'true'
+            # - name: Install Trunk
+            #   run: cargo install trunk
+            #   if: steps.cache.outputs.cache-hit != 'true'
             
-            - name: Build with Trunk
-              run: trunk build --release  
-              working-directory: client
+            # - name: Build with Trunk
+            #   run: trunk build --release  
+            #   working-directory: client
 
             - name: Create SSH Key
               run: |
@@ -49,20 +49,20 @@ jobs:
                 mkdir -p ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/client; \
                 mkdir -p ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/server;
 
-            - name: Copy Files to Server
-              uses: appleboy/scp-action@master
-              with:
-                host: ${{ secrets.SSH_HOST }}
-                username: ${{ secrets.SSH_USER }}
-                key: ${{ secrets.SSH_PRIVATE_KEY_CONTENT }}
-                source: "client/dist"
-                target: "${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/client"
+            # - name: Copy Files to Server
+            #   uses: appleboy/scp-action@master
+            #   with:
+            #     host: ${{ secrets.SSH_HOST }}
+            #     username: ${{ secrets.SSH_USER }}
+            #     key: ${{ secrets.SSH_PRIVATE_KEY_CONTENT }}
+            #     source: "client/dist"
+            #     target: "${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/client"
 
-            - name: Restart Container
-              run: | 
-                ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-                cd ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/../;
-                docker container rm -f ${{ secrets.DEVBLOG_STAGING_CONTAINER_NAME }}; \
-                docker compose up -d;
+            # - name: Restart Container
+            #   run: | 
+            #     ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            #     cd ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/../;
+            #     docker container rm -f ${{ secrets.DEVBLOG_STAGING_CONTAINER_NAME }}; \
+            #     docker compose up -d;
                 
 
