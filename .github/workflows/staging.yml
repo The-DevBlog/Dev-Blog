@@ -50,6 +50,7 @@ jobs:
               run: | 
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
                 docker container rm -f andrewtest.org_client; \
-                docker compose -f '${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/../' up -d;
+                cd '${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/../'; \
+                docker compose up -d;
                 
 
