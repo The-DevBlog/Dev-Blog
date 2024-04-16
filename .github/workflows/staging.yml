@@ -40,6 +40,9 @@ jobs:
                 sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
               shell: bash
 
+            - name: Add Host Key to known_hosts
+              run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+
             - name: Create Project Folders
               run: |
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
