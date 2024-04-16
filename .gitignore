@@ -5,6 +5,13 @@
 .env
 Dockerfile
 
+# rust
+/target
+/client/target
+/client/dist
+/lib/target
+/lib/Cargo.lock
+
 # User-specific files
 *.rsuser
 *.suo
