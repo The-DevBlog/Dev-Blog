@@ -64,7 +64,7 @@ pub fn navbar() -> Html {
             <nav class="navbar">
                 <Link<Route> to={Route::Home} classes="logo-link">
                     <div class="logo">
-                        <span>{"The DevBlog"}</span>
+                        <span>{"The DevBlog Test"}</span>
                     </div>
                 </Link<Route>>
 
