@@ -49,7 +49,7 @@ jobs:
             - name: Restart Container
               run: | 
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-                cd ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/../;
+                cd ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/../; \
                 docker container rm -f ${{ secrets.DEVBLOG_STAGING_CONTAINER_NAME }}; \
                 docker compose up -d;
                 
