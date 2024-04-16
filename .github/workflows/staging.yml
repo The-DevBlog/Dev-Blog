@@ -10,28 +10,28 @@ jobs:
         name: Deploy to Staging
         runs-on: ubuntu-latest
         steps:
-            - name: Cache Trunk
-              uses: actions/cache@v3
-              with:
-                path: ~/.cargo
-                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-                restore-keys: |
-                  ${{ runner.os }}-cargo-
+            # - name: Cache Trunk
+            #   uses: actions/cache@v3
+            #   with:
+            #     path: ~/.cargo
+            #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+            #     restore-keys: |
+            #       ${{ runner.os }}-cargo-
 
-            - uses: actions/checkout@v3
-            - name: Set up Rust
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                targets: wasm32-unknown-unknown
-                toolchain: stable
+            # - uses: actions/checkout@v3
+            # - name: Set up Rust
+            #   uses: dtolnay/rust-toolchain@stable
+            #   with:
+            #     targets: wasm32-unknown-unknown
+            #     toolchain: stable
                 
-            - name: Install Trunk
-              run: cargo install trunk
-              if: steps.cache.outputs.cache-hit != 'true'
+            # - name: Install Trunk
+            #   run: cargo install trunk
+            #   if: steps.cache.outputs.cache-hit != 'true'
             
-            - name: Build with Trunk
-              run: trunk build --release  
-              working-directory: client
+            # - name: Build with Trunk
+            #   run: trunk build --release  
+            #   working-directory: client
 
             - name: Create SSH Key
               run: |
@@ -44,7 +44,7 @@ jobs:
               run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
 
             - name: Copy Files to Server
-              run: scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/client
+              run: mkdir testfolder && scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r testfolder/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/client
 
             # - name: Restart Container
             #   run: | 
