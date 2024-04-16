@@ -46,8 +46,8 @@ jobs:
             - name: Create Project Folders
               run: |
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-                mkdir -p ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/client; \
-                mkdir -p ${{ secrets.DEVBLOG_STAGING_ROOT_PATH }}/server;
+                mkdir -p $HOME/client; \
+                mkdir -p $HOME/server;
 
             # - name: Copy Files to Server
             #   uses: appleboy/scp-action@master
