@@ -26,13 +26,13 @@ jobs:
                 targets: wasm32-unknown-unknown
                 toolchain: stable
                 
-            - name: Install Trunk
-              run: cargo install trunk
-              if: steps.cache.outputs.cache-hit != 'true'
+            # - name: Install Trunk
+            #   run: cargo install trunk
+            #   if: steps.cache.outputs.cache-hit != 'true'
             
-            - name: Build with Trunk
-              run: trunk build --release  
-              working-directory: client
+            # - name: Build with Trunk
+            #   run: trunk build --release  
+            #   working-directory: client
 
             - name: Create SSH Key
               run: |
@@ -51,6 +51,7 @@ jobs:
               run: | 
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
                 docker container rm -f andrewtest.org_client
+                echo "MY VAR IS ${{ vars.DEVBLOG_ROOT_PATH }}"
                 cd ${{ vars.DEVBLOG_ROOT_PATH }}/../
                 docker compose up -d
                 
