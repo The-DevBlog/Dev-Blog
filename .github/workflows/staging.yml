@@ -70,11 +70,11 @@ jobs:
               name: serverArtifact
               path: .
 
-          - name: Upload Docker Compose File
-            uses: actions/upload-artifact@v4
-            with:
-              name: dockerCompose
-              path: docker-compose.yml
+          # - name: Upload Docker Compose File
+          #   uses: actions/upload-artifact@v4
+          #   with:
+          #     name: dockerCompose
+          #     path: docker-compose.yml
 
     copy-files:
         name: Copy Files
@@ -104,11 +104,11 @@ jobs:
               name: serverArtifact
               path: server
 
-          - name: Download Docker Compose File
-            uses: actions/download-artifact@v4
-            with:
-              name: dockerCompose
-              path: docker-compose.yml
+          # - name: Download Docker Compose File
+          #   uses: actions/download-artifact@v4
+          #   with:
+          #     name: dockerCompose
+          #     path: docker-compose.yml
 
           - name: List folders
             run: ls -l
@@ -121,12 +121,17 @@ jobs:
             run: ls -l
             working-directory: server
 
+          - name: List Server/Server Files
+            run: ls -l
+            working-directory: server/server
+
           - name: Copy Files to Server
             run: |
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
               scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
               scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
-              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
-              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r server/app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
 
 
     restart-containers:
