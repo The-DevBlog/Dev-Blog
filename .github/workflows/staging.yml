@@ -34,9 +34,9 @@ jobs:
               run: cargo install trunk
             #   if: steps.cache.outputs.cache-hit != 'true'
                 
-            # - name: Build with Trunk
-            #   run: trunk build --release  
-            #   working-directory: client
+            - name: Build with Trunk
+              run: trunk build --release  
+              working-directory: client
 
             - name: Create SSH Key
               run: |
