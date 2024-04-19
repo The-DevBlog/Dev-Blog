@@ -92,17 +92,17 @@ jobs:
           - name: Add Host Key to known_hosts
             run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
 
-          - name: Download the Client Artifact
+          - name: Download Client Artifacts
             uses: actions/download-artifact@v4
             with:
               name: clientArtifact
               path: client
 
-          - name: Download the Server Artifact
+          - name: Download Server Artifacts
             uses: actions/download-artifact@v4
             with:
               name: serverArtifact
-              path: app
+              path: server
 
           - name: Download Docker Compose File
             uses: actions/download-artifact@v4
