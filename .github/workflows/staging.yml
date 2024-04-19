@@ -68,7 +68,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: serverArtifact
-              path: server
+              path: .
 
           - name: Upload Docker Compose File
             uses: actions/upload-artifact@v4
@@ -108,7 +108,7 @@ jobs:
             uses: actions/download-artifact@v4
             with:
               name: dockerCompose
-              path: docker-compose-yml
+              path: docker-compose.yml
 
           - name: List folders
             run: ls -l
