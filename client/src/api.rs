@@ -2,7 +2,7 @@ use gloo::console::log;
 use gloo_net::http::{Headers, Method, RequestBuilder, Response};
 use wasm_bindgen::JsValue;
 
-const URL: &str = "https://devblog.net/api/";
+const URL: &str = "https://www.thedevblog.net/api/";
 
 #[derive(Clone, PartialEq)]
 pub enum Api {
