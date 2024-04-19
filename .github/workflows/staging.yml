@@ -42,7 +42,13 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: clientArtifact
-                path: client
+                path: client/dist
+
+            - name: Upload Dockerfile
+              uses: actions/upload-artifact@v4
+              with:
+                name: clientDockerfile
+                path: client/Dockerfile
 
     build-server:
         name: Build Server
@@ -68,7 +74,13 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: serverArtifact
-              path: .
+              path: app/publish
+
+          - name: Upload Dockerfile
+            uses: actions/upload-artifact@v4
+            with:
+              name: serverDockerfile
+              path: server/Dockerfile
 
     copy-files:
         name: Copy Files
@@ -76,50 +88,46 @@ jobs:
         runs-on: ubuntu-latest
         environment: staging
         steps:
-          # - name: Create SSH Key
-          #   run: |
-          #     mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
-          #     echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
-          #     sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
-          #   shell: bash
+          - name: Create SSH Key
+            run: |
+              mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
+              echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+              sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+            shell: bash
 
-          # - name: Add Host Key to known_hosts
-          #   run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+          - name: Add Host Key to known_hosts
+            run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
 
           - name: Download Client Artifacts
             uses: actions/download-artifact@v4
             with:
               name: clientArtifact
-              path: client
+              path: dist
 
           - name: Download Server Artifacts
             uses: actions/download-artifact@v4
             with:
               name: serverArtifact
+              path: publish
+
+          - name: Download Server Dockerfile
+            uses: actions/download-artifact@v4
+            with:
+              name: serverDockerfile
               path: server
 
-          # - name: Copy Files to Server
-          #   run: |
-          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
-          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
-          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
-          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
-          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r server/app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+          - name: Download Client Dockerfile
+            uses: actions/download-artifact@v4
+            with:
+              name: clientDockerfile
+              path: client
 
           - name: Copy Files to Server
-            uses: actions/checkout@v2
-          - name: Setup SSH
-            uses: webfactory/ssh-agent@v0.5.3
-            with:
-              ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_CONTENT }}
-          - name: Copy Artifacts to Server
             run: |
-              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
-              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
               scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
-              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
-              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r server/app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
-
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
 
     restart-containers:
         name: Restart Containers
