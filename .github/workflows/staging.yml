@@ -68,7 +68,13 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: serverArtifact
-              path: .
+              path: app
+
+          - name: Upload Docker Compose File
+            uses: actions/upload-artifact@v4
+            with:
+              name: dockerCompose
+              path: docker-compose.yml
 
     copy-files:
         name: Copy Files
@@ -96,7 +102,13 @@ jobs:
             uses: actions/download-artifact@v4
             with:
               name: serverArtifact
-              path: server
+              path: app
+
+          - name: Download Docker Compose File
+            uses: actions/download-artifact@v4
+            with:
+              name: dockerCompose
+              path: docker-compose-yml
 
           - name: List folders
             run: ls -l
@@ -111,6 +123,7 @@ jobs:
 
           - name: Copy Files to Server
             run: |
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
               scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
               scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
               scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
