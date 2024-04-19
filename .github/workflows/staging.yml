@@ -68,7 +68,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: serverArtifact
-              path: app
+              path: server
 
           - name: Upload Docker Compose File
             uses: actions/upload-artifact@v4
