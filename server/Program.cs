@@ -20,12 +20,6 @@ namespace devblog
 
             var builder = WebApplication.CreateBuilder(args);
 
-            // --------------------- CORS POLICY ------------------------------
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("http://127.0.0.1:8080").AllowAnyHeader().AllowAnyMethod());
-            });
-
             // Add services to the container.
             builder.Services.AddSwaggerGen(c =>
             {
