@@ -47,7 +47,7 @@ jobs:
               run: dotnet restore ./server/devblog.csproj
         
             - name: Build application
-              run: dotnet build ./sever/devblog.csproj -c Release -o ./app/build
+              run: dotnet build ./server/devblog.csproj -c Release -o ./app/build
         
             - name: Publish application
               run: dotnet publish ./server/devblog.csproj -c Release -o ./app/publish /p:UseAppHost=false
