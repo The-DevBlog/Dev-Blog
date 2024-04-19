@@ -65,6 +65,7 @@ jobs:
         
             - name: list files
               run: ls -l
+              working-directory: server
 
             - name: Restore dependencies
               run: dotnet restore ./server/devblog.csproj
