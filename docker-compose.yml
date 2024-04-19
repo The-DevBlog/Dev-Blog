@@ -1,16 +1,16 @@
 services:
   proxy:
-    image: proxy
+    image: ${PROXY_CONTAINER_NAME}
     build: ./proxy
-    container_name: proxy
+    container_name: ${PROXY_CONTAINER_NAME}
     depends_on:
       - devblog_client
     volumes:
-      - /home/devmaster/app/proxy/default.conf:/etc/nginx/conf.d/default.conf
-      - /etc/ssl/certs/${DEVBLOG_CERT_NAME}:/etc/ssl/certs/${DEVBLOG_CERT_NAME}
+      - ${PROXY_CONFIG_VOLUME}
+      - ${CLIENT_SSL_VOLUME}
     restart: on-failure
     ports:
-      - 443:443
+      - ${SSL_PORTS}
 
   devblog_client:
    image: ${DEVBLOG_CONTAINER_NAME}
@@ -18,8 +18,8 @@ services:
    container_name: ${DEVBLOG_CONTAINER_NAME}
    restart: on-failure
    volumes:
-     - ./client/dist:/app
-     - ./client/nginx.conf:/etc/nginx/nginx.conf
-     - /etc/ssl/certs/${DEVBLOG_CERT_NAME}:/etc/ssl/certs/${DEVBLOG_CERT_NAME}
+     - ${CLIENT_WASM_VOLUME}
+     - ${CLIENT_CONFIG_VOLUME}
+     - ${CLIENT_SSL_VOLUME}
    ports:
-     - 8082:443
+     - ${CLIENT_PORTS}
