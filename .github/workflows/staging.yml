@@ -23,7 +23,7 @@ jobs:
                 restore-keys: |
                   ${{ runner.os }}-cargo-
 
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Set up Rust
               uses: dtolnay/rust-toolchain@stable
               with:
@@ -38,7 +38,7 @@ jobs:
               run: trunk build --release  
               working-directory: client
 
-            - name: Upload Build
+            - name: Upload Artifacts
               uses: actions/upload-artifact@v4
               with:
                 name: clientArtifact
@@ -64,11 +64,11 @@ jobs:
           - name: Publish application
             run: dotnet publish ./server/devblog.csproj -c Release -o ./app/publish /p:UseAppHost=false
 
-          - name: Upload Build
+          - name: Upload Artifacts
             uses: actions/upload-artifact@v4
             with:
               name: serverArtifact
-              path: ./app/publish
+              path: .
 
     copy-files:
         name: Copy Files
