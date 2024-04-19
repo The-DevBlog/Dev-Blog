@@ -133,10 +133,10 @@ jobs:
             uses: actions/download-artifact@v4
             with:
               name: dockerCompose
-              path: docker-compose.yml 
+              path: dockerCompose 
 
-          - name: Cat docker compose
-            run: cat docker-compose.yml
+          - name: LS docker compose
+            run: ls dockerCompose
 
           - name: Copy Files to Server
             run: |
