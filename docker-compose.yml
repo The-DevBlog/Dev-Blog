@@ -29,5 +29,8 @@ services:
    image: ${DEVBLOG_SERVER_CONTAINER_NAME}
    build: ./server
    container_name: ${DEVBLOG_SERVER_CONTAINER_NAME}
+   volumes:
+     - ${SERVER_PUBLISH_VOLUME}
+     - ${SERVER_HTTPS_VOLUME}
    ports:
      - ${SERVER_PORTS}
