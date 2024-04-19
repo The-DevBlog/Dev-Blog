@@ -113,6 +113,7 @@ jobs:
           
     restart-containers:
         name: Restart Containers
+        needs: [deploy-server, deploy-client]
         runs-on: ubuntu-latest
         environment: staging
         steps: 
