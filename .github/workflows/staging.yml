@@ -10,8 +10,8 @@ on:
       - staging
 
 jobs:
-    deploy-client:
-        name: Deploy Client
+    build-client:
+        name: Build Client
         runs-on: ubuntu-latest
         environment: staging
         steps: 
@@ -38,60 +38,85 @@ jobs:
               run: trunk build --release  
               working-directory: client
 
-            - name: Create SSH Key
-              run: |
-                mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
-                echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
-                sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
-              shell: bash
+            # - name: Create SSH Key
+            #   run: |
+            #     mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
+            #     echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+            #     sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+            #   shell: bash
             
-            - name: Add Host Key to known_hosts
-              run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+            # - name: Add Host Key to known_hosts
+            #   run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
 
-            - name: Copy Files to Server
-              run: |
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+            # - name: Copy Files to Server
+            #   run: |
+            #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+            #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
 
-    deploy-server:
-        name: Deploy Server
+    build-server:
+        name: Build Server
         runs-on: ubuntu-latest
         environment: staging
         steps:
-            - uses: actions/checkout@v4
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v4
-              with:
-                dotnet-version: 8.0.x
-        
-            - name: Restore dependencies
-              run: dotnet restore ./server/devblog.csproj
-        
-            - name: Build application
-              run: dotnet build ./server/devblog.csproj -c Release -o ./app/build
-        
-            - name: Publish application
-              run: dotnet publish ./server/devblog.csproj -c Release -o ./app/publish /p:UseAppHost=false
+          - uses: actions/checkout@v4
+          - name: Setup .NET
+            uses: actions/setup-dotnet@v4
+            with:
+              dotnet-version: 8.0.x
+      
+          - name: Restore dependencies
+            run: dotnet restore ./server/devblog.csproj
+      
+          - name: Build application
+            run: dotnet build ./server/devblog.csproj -c Release -o ./app/build
+      
+          - name: Publish application
+            run: dotnet publish ./server/devblog.csproj -c Release -o ./app/publish /p:UseAppHost=false
 
-            - name: Create SSH Key
-              run: |
-                mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
-                echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
-                sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
-              shell: bash
+          # - name: Create SSH Key
+          #   run: |
+          #     mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
+          #     echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+          #     sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+          #   shell: bash
 
-            - name: Add Host Key to known_hosts
-              run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+          # - name: Add Host Key to known_hosts
+          #   run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
 
-            - name: Copy Files to Server
-              run: |
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r ./app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server/publish
+          # - name: Copy Files to Server
+          #   run: |
+          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
+          #     scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+          #       scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r ./app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+
+    copy-files:
+        name: Copy Files
+        needs: [build-server, build-client]
+        runs-on: ubuntu-latest
+        environment: staging
+        steps:
+          - name: Create SSH Key
+            run: |
+              mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
+              echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+              sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+            shell: bash
+
+          - name: Add Host Key to known_hosts
+            run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+
+          - name: Copy Files to Server
+            run: |
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+              scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r ./app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+
 
     restart-containers:
         name: Restart Containers
-        needs: [deploy-server, deploy-client]
+        needs: [copy-files]
         runs-on: ubuntu-latest
         environment: staging
         steps: 
