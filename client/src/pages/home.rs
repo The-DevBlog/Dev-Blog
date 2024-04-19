@@ -152,7 +152,7 @@ pub fn home() -> Html {
                 if !*loading {
                     <Post post={(*latest_post).clone()} post_number={*total_posts_count} on_post_delete={&on_post_delete}/>
                 } else {
-                    <h1>{"Loading......................."}</h1>
+                    <h1>{"Loading..."}</h1>
                 }
 
                 // youtube video
