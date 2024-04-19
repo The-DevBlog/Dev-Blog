@@ -58,6 +58,9 @@ jobs:
         runs-on: ubuntu-latest
         environment: staging
         steps:
+            - name: list files
+              run: ls -l ./server
+
             - name: Set up .NET
               uses: actions/setup-dotnet@v1
               with:
