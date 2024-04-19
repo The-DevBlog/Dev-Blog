@@ -38,6 +38,20 @@ jobs:
               run: trunk build --release  
               working-directory: client
 
+            - name: Set up .NET
+              uses: actions/setup-dotnet@v1
+              with:
+                dotnet-version: '8.0.x'
+        
+            - name: Restore dependencies
+              run: dotnet restore ./server/devblog.csproj
+        
+            - name: Build application
+              run: dotnet build ./sever/devblog.csproj -c Release -o ./app/build
+        
+            - name: Publish application
+              run: dotnet publish ./server/devblog.csproj -c Release -o ./app/publish /p:UseAppHost=false
+
             - name: Create SSH Key
               run: |
                 mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
@@ -50,13 +64,17 @@ jobs:
 
             - name: Copy Files to Server
               run: |
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.DEVBLOG_ROOT_PATH }}/client
-                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.DEVBLOG_ROOT_PATH }}
+                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}
+                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} client/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
+                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} server/Dockerfile ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server
+                scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r ./app/publish ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/server/publish
 
             - name: Restart Container
               run: |
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-                cd ${{ vars.DEVBLOG_ROOT_PATH }} && \
-                docker container rm -f ${{ vars.DEVBLOG_CONTAINER }} || true && \
+                cd ${{ secrets.DEVBLOG_ROOT_PATH }} && \
+                docker container rm -f ${{ secrets.DEVBLOG_CLIENT_CONTAINER }} || true && \
+                docker container rm -f ${{ secrets.DEVBLOG_SERVER_CONTAINER }}
                 docker compose up -d"
           

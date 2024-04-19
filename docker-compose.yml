@@ -5,21 +5,29 @@ services:
     container_name: ${PROXY_CONTAINER_NAME}
     depends_on:
       - devblog_client
+      - devblog_server
     volumes:
-      - ${PROXY_CONFIG_VOLUME}
+      - ${PROXY_NGINX_CONFIG_VOLUME}
       - ${CLIENT_SSL_VOLUME}
     restart: on-failure
     ports:
       - ${SSL_PORTS}
 
   devblog_client:
-   image: ${DEVBLOG_CONTAINER_NAME}
+   image: ${DEVBLOG_CLIENT_CONTAINER_NAME}
    build: ./client
-   container_name: ${DEVBLOG_CONTAINER_NAME}
+   container_name: ${DEVBLOG_CLIENT_CONTAINER_NAME}
    restart: on-failure
    volumes:
      - ${CLIENT_WASM_VOLUME}
-     - ${CLIENT_CONFIG_VOLUME}
+     - ${CLIENT_NGINX_CONFIG_VOLUME}
      - ${CLIENT_SSL_VOLUME}
    ports:
      - ${CLIENT_PORTS}
+  
+  devblog_server:
+   image: ${DEVBLOG_SERVER_CONTAINER_NAME}
+   build: ./server
+   container_name: ${DEVBLOG_SERVER_CONTAINER_NAME}
+   ports:
+     - ${SERVER_PORTS}
