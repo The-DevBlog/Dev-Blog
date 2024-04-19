@@ -38,6 +38,16 @@ jobs:
               run: trunk build --release  
               working-directory: client
 
+            - name: Create SSH Key
+              run: |
+                mkdir -p ${{ secrets.SSH_PRIVATE_KEY_PATH }}
+                echo "${{ secrets.SSH_PRIVATE_KEY_CONTENT }}" > ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+                sudo chmod 600 ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }}
+              shell: bash
+            
+            - name: Add Host Key to known_hosts
+              run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+
             - name: Copy Files to Server
               run: |
                 scp -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} -r client/dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEVBLOG_ROOT_PATH }}/client
