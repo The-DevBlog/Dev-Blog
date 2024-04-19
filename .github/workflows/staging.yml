@@ -58,9 +58,6 @@ jobs:
         runs-on: ubuntu-latest
         environment: staging
         steps:
-            - name: list files
-              run: ls -l ./server
-
             - name: Set up .NET
               uses: actions/setup-dotnet@v1
               with:
@@ -84,6 +81,9 @@ jobs:
 
             - name: Add Host Key to known_hosts
               run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ${{ secrets.SSH_PRIVATE_KEY_PATH }}/known_hosts
+
+            - name: list files
+              run: ls -l
 
             - name: Copy Files to Server
               run: |
