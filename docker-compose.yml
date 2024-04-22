@@ -32,5 +32,6 @@ services:
    volumes:
      - ${SERVER_PUBLISH_VOLUME}
      - ${SERVER_HTTPS_VOLUME}
+     - ${SERVER_APPSETTINGS_VOLUME}
    ports:
      - ${SERVER_PORTS}

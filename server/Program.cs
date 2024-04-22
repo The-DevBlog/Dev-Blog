@@ -23,7 +23,7 @@ namespace devblog
             // --------------------- CORS POLICY ------------------------------
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("http://127.0.0.1:8080").AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("http://localhost").AllowAnyHeader().AllowAnyMethod());
             });
 
             // Add services to the container.
@@ -102,7 +102,7 @@ namespace devblog
             builder.Services.AddHttpsRedirection(options =>
             {
                 options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-                options.HttpsPort = 5001;
+                options.HttpsPort = 32778;
             });
 
             var app = builder.Build();
