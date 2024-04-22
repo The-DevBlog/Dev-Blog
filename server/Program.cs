@@ -23,7 +23,7 @@ namespace devblog
             // --------------------- CORS POLICY ------------------------------
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("http://localhost").AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("https://andrewtest.org").AllowAnyHeader().AllowAnyMethod());
             });
 
             // Add services to the container.
