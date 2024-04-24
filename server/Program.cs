@@ -26,14 +26,13 @@ namespace devblog
                 options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("https://andrewtest.org").AllowAnyHeader().AllowAnyMethod());
             });
 
-            // Add services to the container.
-            // builder.Services.AddSwaggerGen();
+            // --------------------- SWAGGER ----------------------------------
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
             });
 
-            // builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews();
 
             // ----------------------- DATABASES -------------------------------
             builder.Services.AddDbContext<AppDbContext>(options =>
