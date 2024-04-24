@@ -27,11 +27,11 @@ namespace devblog
             });
 
             // Add services to the container.
-            builder.Services.AddSwaggerGen();
-            // builder.Services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
-            // });
+            // builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
+            });
 
             // builder.Services.AddControllersWithViews();
 
@@ -113,9 +113,12 @@ namespace devblog
             if (!app.Environment.IsDevelopment())
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            else
+            {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseHsts();
             }
 
             // ------------------- MIDDLEWARE -------------------------------
