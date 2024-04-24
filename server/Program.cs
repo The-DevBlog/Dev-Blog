@@ -32,7 +32,7 @@ namespace devblog
             //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
             // });
 
-            // builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews();
 
             // ----------------------- DATABASES -------------------------------
             builder.Services.AddDbContext<AppDbContext>(options =>
