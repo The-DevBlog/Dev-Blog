@@ -27,12 +27,12 @@ namespace devblog
             });
 
             // Add services to the container.
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
-            });
+            // builder.Services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevBlog", Version = "v1" });
+            // });
 
-            builder.Services.AddControllersWithViews();
+            // builder.Services.AddControllersWithViews();
 
             // ----------------------- DATABASES -------------------------------
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -99,11 +99,11 @@ namespace devblog
                 options.AddPolicy("Visitor", policy => policy.RequireRole(Role.Visitor));
             });
 
-            builder.Services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-                options.HttpsPort = 32778;
-            });
+            // builder.Services.AddHttpsRedirection(options =>
+            // {
+            //     options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+            //     options.HttpsPort = 32778;
+            // });
 
             var app = builder.Build();
 
@@ -112,6 +112,8 @@ namespace devblog
             if (!app.Environment.IsDevelopment())
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseSwagger();
+                app.UseSwaggerUI();
                 app.UseHsts();
             }
 
@@ -120,16 +122,16 @@ namespace devblog
 
             // ----------------------- ROUTING -------------------------------
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            // app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevBlog");
-            });
+            // app.UseSwagger();
+            // app.UseSwaggerUI(c =>
+            // {
+            //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevBlog");
+            // });
             app.UseDeveloperExceptionPage();
 
             app.MapControllerRoute(
