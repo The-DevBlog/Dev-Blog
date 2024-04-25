@@ -32,7 +32,6 @@ services:
    environment: 
      - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_CERT_PASSWORD}
      - ASPNETCORE_Kestrel__Certificates__Default__Path=${ASPNETCORE_CERT_PATH}
-    #  - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
      - ASPNETCORE_HTTPS_PORTS=${ASPNETCORE_HTTPS_PORTS}
      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
      - ASPNETCORE_URLS="https://+;http://+"
@@ -42,3 +41,13 @@ services:
      - ${SERVER_APPSETTINGS_VOLUME}
    ports:
      - ${SERVER_PORTS}
+   networks:
+    mynet:
+      ipv4_address: ${SERVER_IP_ADDRESS}
+
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${SUBNET}
