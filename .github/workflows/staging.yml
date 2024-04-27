@@ -32,7 +32,7 @@ jobs:
                 
             - name: Install Trunk
               run: cargo install trunk
-            #   if: steps.cache.outputs.cache-hit != 'true'
+              if: steps.cache.outputs.cache-hit != 'true'
                 
             - name: Build with Trunk
               run: trunk build --release  
