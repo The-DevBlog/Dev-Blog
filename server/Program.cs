@@ -99,12 +99,6 @@ namespace devblog
                 options.AddPolicy("Visitor", policy => policy.RequireRole(Role.Visitor));
             });
 
-            // builder.Services.AddHttpsRedirection(options =>
-            // {
-            //     options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
-            //     options.HttpsPort = 32778;
-            // });
-
             var app = builder.Build();
 
 
@@ -125,16 +119,9 @@ namespace devblog
 
             // ----------------------- ROUTING -------------------------------
             app.UseHttpsRedirection();
-            // app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // app.UseSwagger();
-            // app.UseSwaggerUI(c =>
-            // {
-            //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevBlog");
-            // });
             app.UseDeveloperExceptionPage();
 
             app.MapControllerRoute(

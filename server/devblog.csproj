@@ -2,23 +2,10 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<!-- <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked> -->
-		<!-- <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion> -->
-		<!-- <IsPackable>false</IsPackable> -->
-		<!-- <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes> -->
-		<!-- <SpaRoot>..\client</SpaRoot> -->
-		<!-- <SpaProxyServerUrl>https://localhost:44482</SpaProxyServerUrl> -->
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>9c535b88-0982-4726-b8dd-98fd6ca72fbe</UserSecretsId>
 	    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	</PropertyGroup>
-
-	<!-- <ItemGroup> -->
-		<!-- Don't publish the SPA source files, but do show them in the project files list -->
-		<!-- <Content Remove="$(SpaRoot)**" /> -->
-		<!-- <None Remove="$(SpaRoot)**" /> -->
-	<!-- </ItemGroup> -->
-
 	<ItemGroup>
 		<PackageReference Include="Discord.Net.Core" Version="3.10.0" />
 		<PackageReference Include="Discord.Net.WebSocket" Version="3.10.0" />
