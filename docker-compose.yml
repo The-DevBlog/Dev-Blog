@@ -24,6 +24,9 @@ services:
      - ${CLIENT_SSL_VOLUME}
    ports:
      - ${CLIENT_PORTS}
+   networks:
+    mynet:
+     ipv4_address: ${CLIENT_IP_ADDRESS}
   
   devblog_server:
    image: ${DEVBLOG_SERVER_CONTAINER_NAME}
@@ -34,7 +37,6 @@ services:
      - ASPNETCORE_Kestrel__Certificates__Default__Path=${ASPNETCORE_CERT_PATH}
      - ASPNETCORE_HTTPS_PORTS=${ASPNETCORE_HTTPS_PORTS}
      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
-     - ASPNETCORE_URLS="https://+;http://+"
    volumes:
      - ${SERVER_PUBLISH_VOLUME}
      - ${SERVER_HTTPS_VOLUME}
