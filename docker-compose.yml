@@ -12,6 +12,9 @@ services:
     restart: on-failure
     ports:
       - ${SSL_PORTS}
+    networks:
+      mynet:
+        ipv4_address: ${PROXY_IP_ADDRESS}
 
   devblog_client:
    image: ${DEVBLOG_CLIENT_CONTAINER_NAME}
