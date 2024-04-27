@@ -265,7 +265,7 @@ namespace devblog.Services
 
             try
             {
-                // because mastodons post chararacter limit is 500, the description needs to broken into incriments 
+                // because mastodons post character limit is 500, the description needs to broken into increments 
                 // of 500 (including the 'part' string variable below)
                 for (int i = 1; i < posts; i++)
                 {
