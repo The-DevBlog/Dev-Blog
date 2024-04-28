@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Discord.WebSocket;
-using System.Net;
 
 namespace devblog
 {
@@ -23,7 +22,8 @@ namespace devblog
             // --------------------- CORS POLICY ------------------------------
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins("https://andrewtest.org").AllowAnyHeader().AllowAnyMethod());
+                string origin = builder.Configuration.GetValue<string>("Origin");
+                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(origin).AllowAnyHeader().AllowAnyMethod());
             });
 
             // --------------------- SWAGGER ----------------------------------
