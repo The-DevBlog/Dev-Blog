@@ -35,7 +35,9 @@ jobs:
               if: steps.cache.outputs.cache-hit != 'true'
                 
             - name: Build with Trunk
-              run: trunk build --release  
+              run: |
+                echo ${{ secrets.API_URL }} > src/api_url.txt
+                trunk build --release  
               working-directory: client
 
             - name: Upload Artifacts
