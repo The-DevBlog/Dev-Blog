@@ -10,6 +10,7 @@
 /proxy
 
 # rust
+trunk.toml
 /target
 /client/target
 /client/dist
