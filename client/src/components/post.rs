@@ -78,7 +78,7 @@ pub fn post(props: &Props) -> Html {
                 </div>
 
                 // images
-                <div>
+                <div class="img-container">
                     {for props.post.imgs.iter().map(|img| {
                         html! {<img src={img.url.clone()} alt={"dev pic"}/>}
                     })}
