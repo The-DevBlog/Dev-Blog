@@ -18,7 +18,9 @@ jobs:
             - name: Cache Trunk
               uses: actions/cache@v3
               with:
-                path: ~/.cargo
+                path: |
+                  ~/.cargo
+                  /usr/local/cargo/bin
                 key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
                 restore-keys: |
                   ${{ runner.os }}-cargo-
