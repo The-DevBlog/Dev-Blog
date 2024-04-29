@@ -1,3 +1,4 @@
+pub mod carousel;
 pub mod comment;
 pub mod comment_add;
 pub mod comment_delete;
