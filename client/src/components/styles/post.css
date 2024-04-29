@@ -11,11 +11,6 @@
     width: 95%;
 }
 
-.img-container {
-    display: flex;
-    justify-content: center;
-}
-
 .hide-comment:nth-child(n + 6) {
     display: none;
 }

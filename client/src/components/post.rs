@@ -1,7 +1,7 @@
 use crate::{
     components::{
-        comment::Comment, comment_add::AddComment, markdown::Markdown, post_delete::DeletePost,
-        post_edit::EditPost, vote::Vote,
+        carousel::Carousel, comment::Comment, comment_add::AddComment, markdown::Markdown,
+        post_delete::DeletePost, post_edit::EditPost, vote::Vote,
     },
     CommentModel, PostModel,
 };
@@ -77,12 +77,8 @@ pub fn post(props: &Props) -> Html {
                     <span>{Local.from_utc_datetime(&props.post.date).format("%x").to_string()}</span>
                 </div>
 
-                // images
-                <div class="img-container">
-                    {for props.post.imgs.iter().map(|img| {
-                        html! {<img src={img.url.clone()} alt={"dev pic"}/>}
-                    })}
-                </div>
+                // imgs
+                <Carousel imgs={props.post.imgs.clone()}/>
 
                 // like / dislike
                 <Vote up_votes={props.post.up_votes.len()} down_votes={props.post.down_votes.len()} post_id={props.post.id}/>
