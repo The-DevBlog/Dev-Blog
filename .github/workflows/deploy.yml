@@ -17,6 +17,8 @@ jobs:
     environment:
       name: ${{ github.ref }}
     steps: 
+      - name: Echo Environment
+        run: echo ${{ github.ref }}
       - name: Cache Trunk
         uses: actions/cache@v3
         with:
