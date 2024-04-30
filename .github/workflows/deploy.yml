@@ -15,10 +15,8 @@ jobs:
     name: Build Client
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref }}
+      name: ${{ github.ref_name }}
     steps: 
-      - name: Echo Environment
-        run: echo ${{ github.ref_name }}
       - name: Cache Trunk
         uses: actions/cache@v3
         with:
@@ -57,7 +55,7 @@ jobs:
     name: Build Server
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref }}
+      name: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -91,7 +89,7 @@ jobs:
     needs: [build-server, build-client]
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref }}
+      name: ${{ github.ref_name }}
     steps:
       - name: Create SSH Key
         run: |
@@ -137,7 +135,7 @@ jobs:
     needs: [copy-files]
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref }}
+      name: ${{ github.ref_name }}
     steps: 
       - name: Create SSH Key
         run: |
@@ -153,4 +151,5 @@ jobs:
           cd ${{ secrets.DEVBLOG_ROOT_PATH }} && \
           docker container rm -f ${{ secrets.DEVBLOG_CLIENT_CONTAINER }} || true && \
           docker container rm -f ${{ secrets.DEVBLOG_SERVER_CONTAINER }} || true && \
+          docker container rm -f ${{ secrets.DEVBLOG_PROXY_CONTAINER }} || true && \
           docker compose up -d"
