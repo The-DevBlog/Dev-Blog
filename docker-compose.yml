@@ -1,21 +1,4 @@
 services:
-  proxy:
-    image: ${PROXY_CONTAINER_NAME}
-    build: ./proxy
-    container_name: ${PROXY_CONTAINER_NAME}
-    depends_on:
-      - devblog_client
-      - devblog_server
-    volumes:
-      - ${PROXY_NGINX_CONFIG_VOLUME}
-      - ${CLIENT_SSL_VOLUME}
-    restart: on-failure
-    ports:
-      - ${SSL_PORTS}
-    networks:
-      mynet:
-        ipv4_address: ${PROXY_IP_ADDRESS}
-
   devblog_client:
    image: ${DEVBLOG_CLIENT_CONTAINER_NAME}
    build: ./client
@@ -28,7 +11,7 @@ services:
    ports:
      - ${CLIENT_PORTS}
    networks:
-    mynet:
+    devblog-network:
      ipv4_address: ${CLIENT_IP_ADDRESS}
   
   devblog_server:
@@ -46,11 +29,12 @@ services:
    ports:
      - ${SERVER_PORTS}
    networks:
-    mynet:
+    devblog-network:
       ipv4_address: ${SERVER_IP_ADDRESS}
 
 networks:
-  mynet:
+  devblog-network:
+    name: devblog-network
     driver: bridge
     ipam:
       config:
