@@ -3,7 +3,19 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 .env
-Dockerfile
+
+#nginx
+*nginx*
+/https
+/proxy
+
+# rust
+trunk.toml
+/target
+/client/target
+/client/dist
+/lib/target
+/lib/Cargo.lock
 
 # User-specific files
 *.rsuser

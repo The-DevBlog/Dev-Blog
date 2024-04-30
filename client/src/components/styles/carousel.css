@@ -1,0 +1,32 @@
+.img-container {
+    display: flex;
+    justify-content: center;
+}
+
+.img-container>button {
+    border-radius: 0;
+    background-color: inherit;
+    font-size: 2em;
+    opacity: .8;
+}
+
+/* .img-container>button:first {
+    margin-left: 30;
+}
+
+.img-container>button:last {
+    margin-right: 30;
+} */
+
+.img-container>.inactive-btn {
+    opacity: .3;
+}
+
+.img-container>.inactive-btn:hover {
+    cursor: default;
+}
+
+.img-container>.active-btn:hover {
+    background-color: var(--button-hover);
+    opacity: .8;
+}
