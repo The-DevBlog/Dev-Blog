@@ -23,7 +23,8 @@ namespace devblog
             builder.Services.AddCors(options =>
             {
                 string origin = builder.Configuration.GetValue<string>("Origin");
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(origin).AllowAnyHeader().AllowAnyMethod());
+                string originWWW = builder.Configuration.GetValue<string>("OriginWWW");
+                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(origin, originWWW).AllowAnyHeader().AllowAnyMethod());
             });
 
             // --------------------- SWAGGER ----------------------------------
