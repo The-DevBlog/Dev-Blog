@@ -32,7 +32,9 @@ pub fn app() -> Html {
             <Global css={STYLE} />
             <BrowserRouter>
                 <Navbar />
-                <Switch<Route> render={switch} />
+                    <main>
+                        <Switch<Route> render={switch} />
+                    </main>
                 <Footer />
             </BrowserRouter>
         </>

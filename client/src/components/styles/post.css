@@ -1,14 +1,16 @@
+:root {
+    width: 100%;
+}
+
 .post {
     border-radius: .5em;
     margin: auto;
     margin-bottom: 1.5em;
-    padding: 1em;
-    width: 70%;
+    padding: 25px;
 }
 
 .post>div {
     margin: auto;
-    width: 95%;
 }
 
 .hide-comment:nth-child(n + 6) {
@@ -32,12 +34,6 @@
     margin-top: 5;
     padding: 12;
     width: 100%;
-}
-
-img {
-    border-radius: .5em;
-    width: 100%;
-    max-width: 900px;
 }
 
 .description {
