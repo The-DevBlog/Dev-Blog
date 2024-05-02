@@ -10,13 +10,10 @@
     opacity: .8;
 }
 
-/* .img-container>button:first {
-    margin-left: 30;
+.img-container img {
+    border-radius: .5em;
+    width: 100%;
 }
-
-.img-container>button:last {
-    margin-right: 30;
-} */
 
 .img-container>.inactive-btn {
     opacity: .3;

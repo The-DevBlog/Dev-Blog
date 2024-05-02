@@ -27,6 +27,14 @@
 
 /* post */
 @media (max-width: 800px) {
+    main {
+        width: 100%;
+    }
+
+    .posts {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
 
     .description,
     .post {

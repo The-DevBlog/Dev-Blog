@@ -6,6 +6,10 @@ section:root {
     margin: 100px 20px 0px 20px;
 }
 
+.home {
+    width: 100%;
+}
+
 .signup-prompt {
     font-size: 20px;
     margin: 100px auto 100px auto;
