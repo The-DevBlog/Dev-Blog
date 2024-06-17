@@ -6,6 +6,10 @@ using devblog.Models;
 using Microsoft.EntityFrameworkCore;
 using devblog.Data;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using static Dropbox.Api.Files.ListRevisionsMode;
+using System.Text;
+using Discord;
 
 namespace devblog.Services
 {
@@ -106,22 +110,83 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Sends an email to all subscribed users whenever a new post is made
+        /// Sends an email to all contacts in specific contact list whenever a new post is made
         /// </summary>
         public async Task NewPost()
         {
-            var allUsers = await _userMgr.Users.ToListAsync();
-
-            allUsers.ForEach(async user =>
+            var contacts = await GetContactsForList();
+            contacts.ForEach(async contact =>
             {
-                if (user.Subscribed)
-                {
-                    var toEmail = new EmailAddress(user.Email);
-
-                    var msg = MailHelper.CreateSingleTemplateEmail(_email, toEmail, _config["SendGridNewPostTemplateId"], null);
-                    var res = await _sendGridClient.SendEmailAsync(msg);
-                }
+                var toEmail = new EmailAddress(contact.email);
+                var msg = MailHelper.CreateSingleTemplateEmail(_email, toEmail, _config["SendGridNewPostTemplateId"], null);
+                var res = await _sendGridClient.SendEmailAsync(msg);
             });
+        }
+
+        /// <summary>
+        /// Retrieves all Contacts from a Specific Contact list
+        /// </summary>
+        /// <returns>List<Contact></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task<List<Contact>> GetContactsForList()
+        {
+            // export list
+            var listId = _config["SendGridDevBlogContactList"];
+            var data = $@"{{
+                ""ids"": ""[{listId}]"", 
+                ""file_type"": ""json""
+            }}";
+
+            var export_request = await _sendGridClient.RequestAsync(
+                method: SendGridClient.Method.POST,
+                urlPath: "marketing/contacts/exports",
+                requestBody: data
+            );
+            string exportId = JsonConvert.DeserializeObject<Export>(export_request.Body.ReadAsStringAsync().Result).id;
+
+
+            Export export = new Export();
+            export.urls = new List<string>();
+            int maxAttemps = 10;
+            int i = 0;
+            while (export.urls.Count == 0 && i++ < maxAttemps)
+            {
+                var export_url_request = await _sendGridClient.RequestAsync(
+                    method: SendGridClient.Method.GET,
+                    urlPath: $"marketing/contacts/exports/{exportId}"
+                );
+                export = JsonConvert.DeserializeObject<Export>(export_url_request.Body.ReadAsStringAsync().Result);
+
+                if (export.urls.Count > 0)
+                    break;
+                else
+                    await Task.Delay(1000);
+            }
+
+            if (export.urls.Count == 0)
+                throw new Exception("Failed to retrieve export URL after multiple attempts.");
+
+            // Download exported data
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(export.urls[0]);
+
+            // Ensure the response indicates success
+            response.EnsureSuccessStatusCode();
+
+            // Read the response content as a stream and decompress if necessary
+            using var stream = await response.Content.ReadAsStreamAsync();
+            using var decompressedStream = new System.IO.Compression.GZipStream(stream, System.IO.Compression.CompressionMode.Decompress);
+            using var reader = new StreamReader(decompressedStream, Encoding.UTF8);
+
+            var contacts = new List<Contact>();
+            string line;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                var contact = JsonConvert.DeserializeObject<Contact>(line);
+                contacts.Add(contact);
+            }
+
+            return contacts;
         }
 
         /// <summary>
@@ -133,6 +198,18 @@ namespace devblog.Services
 
             var msg = MailHelper.CreateSingleTemplateEmail(_email, toEmail, _config["SendGridWelcomeTemplateId"], null);
             var res = await _sendGridClient.SendEmailAsync(msg);
+        }
+
+        private class Export
+        {
+            public string id { get; set; }
+            public List<string> urls { get; set; }
+        }
+
+        private class Contact
+        {
+            public string email { get; set; }
+            public string contact_id { get; set; }
         }
     }
 }

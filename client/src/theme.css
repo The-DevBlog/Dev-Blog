@@ -46,6 +46,7 @@ button {
 }
 
 button,
+.subscribe-prompt,
 .signup-prompt {
     text-decoration: none;
     background-color: var(--button-color);
