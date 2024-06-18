@@ -57,12 +57,13 @@ namespace devblog.Controllers
         {
             var username = User.FindFirstValue("userName");
             var user = await _userMgr.Users.Where(u => u.NormalizedUserName == username).FirstOrDefaultAsync();
+            bool isSubscribed = await _email.IsSubscribed(user.Email);
 
             var userInfo = new UserInfo
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Subscribed = user.Subscribed,
+                Subscribed = isSubscribed,
             };
 
             return userInfo;
@@ -75,16 +76,35 @@ namespace devblog.Controllers
         [HttpGet]
         public async Task<List<UserInfo>> GetUsers()
         {
-            var users = await _userMgr.Users
-                .Select(u => new UserInfo
-                {
-                    UserName = u.UserName,
-                    Email = u.Email,
-                    Subscribed = u.Subscribed,
-                })
-                .ToListAsync();
+            // get list of currently subscribed contacts from sendgrid
+            var contacts = await _email.GetContactsForList();
+            var contactEmails = contacts.Select(c => c.email.ToLower()).ToHashSet();
 
-            return users;
+            // get all devblog users
+            var users = await _userMgr.Users.ToListAsync();
+
+            // set the 'subscribed' field for all users
+            // this is checking against the sendgrid contact list and keeping 
+            // the sendgrid contacts in sync with the subscribed devblog users
+            foreach (var user in users)
+            {
+                var isSubscribed = contactEmails.Contains(user.Email.ToLower());
+                if (user.Subscribed != isSubscribed)
+                {
+                    user.Subscribed = isSubscribed;
+                    await _userMgr.UpdateAsync(user);
+                }
+            }
+
+            // Map to UserInfo
+            var userInfo = users.Select(u => new UserInfo
+            {
+                UserName = u.UserName,
+                Email = u.Email.ToLower(),
+                Subscribed = u.Subscribed,
+            }).ToList();
+
+            return userInfo;
         }
 
         /// <summary>
@@ -208,7 +228,7 @@ namespace devblog.Controllers
             {
                 // subscribe user to email list
                 var emailSubscribeRes = await _email.EmailSubscribe(user.Email);
-                if(emailSubscribeRes.IsSuccessStatusCode)
+                if (emailSubscribeRes.IsSuccessStatusCode)
                     user.Subscribed = true;
 
                 await _email.Welcome(user.Email);

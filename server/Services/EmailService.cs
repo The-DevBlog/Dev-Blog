@@ -7,9 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using devblog.Data;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using static Dropbox.Api.Files.ListRevisionsMode;
 using System.Text;
-using Discord;
 
 namespace devblog.Services
 {
@@ -110,6 +108,27 @@ namespace devblog.Services
         }
 
         /// <summary>
+        /// Checks to see if a user is subscribed to email
+        /// </summary>
+        public async Task<bool> IsSubscribed(string email)
+        {
+            var data = $@"{{
+                ""emails"": [""{email.ToLower()}""]
+            }}";
+
+            var response = await _sendGridClient.RequestAsync(
+                method: SendGridClient.Method.POST,
+                urlPath: "marketing/contacts/search/emails",
+                requestBody: data
+            );
+
+            if (response.IsSuccessStatusCode)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
         /// Sends an email to all contacts in specific contact list whenever a new post is made
         /// </summary>
         public async Task NewPost()
@@ -124,19 +143,19 @@ namespace devblog.Services
         }
 
         /// <summary>
-        /// Retrieves all Contacts from a Specific Contact list
+        /// Retrieves all Contacts from a Specific Contact list. If env is prod, it will get contacts in 'TheDevBlog_prod' list. If env is staging or test, it will get 'TheDevBlog_staging' list
         /// </summary>
         /// <returns>List<Contact></returns>
         /// <exception cref="Exception"></exception>
-        private async Task<List<Contact>> GetContactsForList()
+        public async Task<List<Contact>> GetContactsForList()
         {
-            // export list
             var listId = _config["SendGridDevBlogContactList"];
             var data = $@"{{
                 ""ids"": ""[{listId}]"", 
                 ""file_type"": ""json""
             }}";
 
+            // get export id
             var export_request = await _sendGridClient.RequestAsync(
                 method: SendGridClient.Method.POST,
                 urlPath: "marketing/contacts/exports",
@@ -145,6 +164,8 @@ namespace devblog.Services
             string exportId = JsonConvert.DeserializeObject<Export>(export_request.Body.ReadAsStringAsync().Result).id;
 
 
+            // use export id to get the export url
+            // this api call can take a little while, which is why the loop is important to keep checking for the url
             Export export = new Export();
             export.urls = new List<string>();
             int maxAttemps = 10;
@@ -166,7 +187,7 @@ namespace devblog.Services
             if (export.urls.Count == 0)
                 throw new Exception("Failed to retrieve export URL after multiple attempts.");
 
-            // Download exported data
+            // Download exported data from url
             using var httpClient = new HttpClient();
             var response = await httpClient.GetAsync(export.urls[0]);
 
@@ -206,7 +227,7 @@ namespace devblog.Services
             public List<string> urls { get; set; }
         }
 
-        private class Contact
+        public class Contact
         {
             public string email { get; set; }
             public string contact_id { get; set; }

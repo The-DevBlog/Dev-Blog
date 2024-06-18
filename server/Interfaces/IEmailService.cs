@@ -1,5 +1,6 @@
 ﻿using devblog.Models;
 using SendGrid;
+using static devblog.Services.EmailService;
 
 namespace devblog.Interfaces
 {
@@ -24,5 +25,17 @@ namespace devblog.Interfaces
         /// Toggles a specific users email preference
         /// </summary>
         Task<bool> ToggleSubscribe(User user);
+
+        /// <summary>
+        /// Checks to see if a user is subscribed to email
+        /// </summary>
+        Task<bool> IsSubscribed(string email);
+
+        /// <summary>
+        /// Retrieves all Contacts from a Specific Contact list. If env is prod, it will get contacts in 'TheDevBlog_prod' list. If env is staging or test, it will get 'TheDevBlog_staging' list.
+        /// </summary>
+        /// <returns>List<Contact></returns>
+        /// <exception cref="Exception"></exception>
+        Task<List<Contact>> GetContactsForList();
     }
 }

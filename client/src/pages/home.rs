@@ -5,7 +5,6 @@ use crate::{
     store::Store,
     Api, PostModel, User, YoutubeVideo,
 };
-use gloo::{console::log, utils::window};
 use gloo_net::http::Method;
 use std::ops::Deref;
 use stylist::Style;
