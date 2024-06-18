@@ -34,7 +34,7 @@ namespace devblog.Controllers
 
 
         [Authorize]
-        [HttpPut("subscribe")]
+        [HttpPut("toggleSubscribe")]
         public async Task<bool> ToggleSubscribe()
         {
             var username = User.FindFirstValue("userName");
@@ -44,18 +44,26 @@ namespace devblog.Controllers
             return subscribed;
         }
 
+        [HttpPost("subscribe/{email}")]
+        public async Task<IActionResult> Subscribe(string email)
+        {
+            var res = await _email.EmailSubscribe(email);
+            return res.IsSuccessStatusCode ? Ok(res) : BadRequest(res);
+        }
+
         [Authorize]
         [HttpGet("user")]
         public async Task<UserInfo> GetCurrentUser()
         {
             var username = User.FindFirstValue("userName");
             var user = await _userMgr.Users.Where(u => u.NormalizedUserName == username).FirstOrDefaultAsync();
+            bool isSubscribed = await _email.IsSubscribed(user.Email);
 
             var userInfo = new UserInfo
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Subscribed = user.Subscribed,
+                Subscribed = isSubscribed,
             };
 
             return userInfo;
@@ -68,16 +76,35 @@ namespace devblog.Controllers
         [HttpGet]
         public async Task<List<UserInfo>> GetUsers()
         {
-            var users = await _userMgr.Users
-                .Select(u => new UserInfo
-                {
-                    UserName = u.UserName,
-                    Email = u.Email,
-                    Subscribed = u.Subscribed,
-                })
-                .ToListAsync();
+            // get list of currently subscribed contacts from sendgrid
+            var contacts = await _email.GetContactsForList();
+            var contactEmails = contacts.Select(c => c.email.ToLower()).ToHashSet();
 
-            return users;
+            // get all devblog users
+            var users = await _userMgr.Users.ToListAsync();
+
+            // set the 'subscribed' field for all users
+            // this is checking against the sendgrid contact list and keeping 
+            // the sendgrid contacts in sync with the subscribed devblog users
+            foreach (var user in users)
+            {
+                var isSubscribed = contactEmails.Contains(user.Email.ToLower());
+                if (user.Subscribed != isSubscribed)
+                {
+                    user.Subscribed = isSubscribed;
+                    await _userMgr.UpdateAsync(user);
+                }
+            }
+
+            // Map to UserInfo
+            var userInfo = users.Select(u => new UserInfo
+            {
+                UserName = u.UserName,
+                Email = u.Email.ToLower(),
+                Subscribed = u.Subscribed,
+            }).ToList();
+
+            return userInfo;
         }
 
         /// <summary>
@@ -196,13 +223,18 @@ namespace devblog.Controllers
             // verify unique email
             var email = _userMgr.Users.Where(x => x.NormalizedEmail == user.Email.Normalize()).FirstOrDefault();
 
-            user.Subscribed = true;
             var res = await _userMgr.CreateAsync(user, user.PasswordHash);
             if (res.Succeeded && errors.Count == 0)
             {
-                await _email.Welcome(user.Email);
-                var currentUser = await _userMgr.FindByNameAsync(user.UserName);
+                // subscribe user to email list
+                var emailSubscribeRes = await _email.EmailSubscribe(user.Email);
+                if (emailSubscribeRes.IsSuccessStatusCode)
+                    user.Subscribed = true;
 
+                await _email.Welcome(user.Email);
+
+                // add visitor roles to user
+                var currentUser = await _userMgr.FindByNameAsync(user.UserName);
                 await _userMgr.AddToRoleAsync(currentUser, "Visitor");
                 await _signInMgr.PasswordSignInAsync(user.UserName, user.PasswordHash, true, false);
                 await _username.Create(user.UserName.Normalize());

@@ -19,12 +19,14 @@ const STYLE: &str = include_str!("styles/home.css");
 pub fn home() -> Html {
     let style = Style::new(STYLE).unwrap();
     let loading = use_state(|| true);
-    let subscribed = use_state(|| false);
+    let subscribed_user = use_state(|| false);
+    let subscribed_guest = use_state(|| false);
     let latest_post = use_state(|| PostModel::default());
     let total_posts_count = use_state(|| i32::default());
     let latest_post_cb = CustomCallback::new(&latest_post);
     let total_posts_count_cb = CustomCallback::new(&total_posts_count);
     let url = use_state(|| "".to_string());
+    let email = use_state(|| String::default());
     let store = use_store_value::<Store>();
 
     let get_latest_post = |latest_post_callback: Callback<PostModel>,
@@ -54,7 +56,7 @@ pub fn home() -> Html {
     };
 
     let token = store.token.clone();
-    let subscribed_clone = subscribed.clone();
+    let subscribed_clone = subscribed_user.clone();
     let get_user_info = || {
         wasm_bindgen_futures::spawn_local(async move {
             let hdrs = helpers::create_auth_header(&token);
@@ -77,6 +79,7 @@ pub fn home() -> Html {
     let url_clone = url.clone();
     let loading_clone = loading.clone();
     let authenticated = store.authenticated.clone();
+    let subscribed_guest_clone = subscribed_guest.clone();
     use_effect_with((), move |_| {
         get_latest_post(
             latest_post_cb_clone,
@@ -84,6 +87,20 @@ pub fn home() -> Html {
             loading_clone,
         );
         get_video_url(url_clone);
+
+        // if guest, check local storage to see if he/she is email subscribed
+        let session_storage = web_sys::window()
+            .unwrap()
+            .session_storage()
+            .unwrap()
+            .unwrap();
+        let subscribed = session_storage.get_item("subscribed_guest").unwrap();
+        if let Some(sub) = subscribed {
+            match sub.as_str() {
+                "true" => subscribed_guest_clone.set(true),
+                _ => subscribed_guest_clone.set(false),
+            }
+        }
 
         if authenticated {
             get_user_info();
@@ -101,7 +118,7 @@ pub fn home() -> Html {
         })
     };
 
-    let update_url = {
+    let submit_url = {
         let token = store.token.clone();
         let url = url.deref().clone();
         Callback::from(move |e: SubmitEvent| {
@@ -116,6 +133,45 @@ pub fn home() -> Html {
                     .fetch(Some(hdrs), body, Method::PUT)
                     .await;
             });
+        })
+    };
+
+    // subscribed a user to the email list who is not a devblog user (guest user)
+    let submit_email_subscribe = {
+        let email = email.clone();
+        let subscribed_guest_clone = subscribed_guest.clone();
+        Callback::from(move |e: SubmitEvent| {
+            e.prevent_default();
+            let email = email.clone();
+            let subscribed_guest_clone = subscribed_guest_clone.clone();
+
+            wasm_bindgen_futures::spawn_local(async move {
+                if let Some(res) = Api::Subscribe(email.deref().to_string())
+                    .fetch(None, None, Method::POST)
+                    .await
+                {
+                    if res.status() == 200 {
+                        let session_storage = web_sys::window()
+                            .unwrap()
+                            .session_storage()
+                            .unwrap()
+                            .unwrap();
+                        let _res = session_storage.set_item("subscribed_guest", "true");
+                        subscribed_guest_clone.set(true);
+                    } else {
+                    }
+                }
+            });
+        })
+    };
+
+    let on_email_change = {
+        let email = email.clone();
+        Callback::from(move |e: Event| {
+            let input = e.target_dyn_into::<HtmlInputElement>();
+            if let Some(value) = input {
+                email.set(value.value());
+            }
         })
     };
 
@@ -140,10 +196,21 @@ pub fn home() -> Html {
                             <span>{"Join the community. Sign up!"}</span>
                         </Link<Route>>
                     </div>
-                } else if store.authenticated && !*subscribed {
+                    <div class="subscribe-prompt">
+                        if !*subscribed_guest {
+                            <span>{"Subscribe to Email!"}</span>
+                            <form onsubmit={submit_email_subscribe}>
+                                <TextInput label="" input_type="text" value={email.deref().clone()} onchange={on_email_change}/>
+                                <button>{"Submit"}</button>
+                            </form>
+                        } else {
+                            <span>{"Thanks for subscribing!"}</span>
+                        }
+                    </div>
+                } else if store.authenticated && !*subscribed_user {
                     <div class="signup-prompt">
                         <Link<Route> to={Route::Account}>
-                           <span>{"Subscribe to the newsletter!"}</span>
+                           <span>{"Subscribe to Email!"}</span>
                         </Link<Route>>
                     </div>
                 }
@@ -157,7 +224,7 @@ pub fn home() -> Html {
 
                 // youtube video
                 if store.admin && store.authenticated {
-                    <form onsubmit={update_url} class="update-video">
+                    <form onsubmit={submit_url} class="update-video">
                         <TextInput label="url" input_type="text" value={url.deref().clone()} onchange={on_url_change}/>
                         <button>{"Update"}</button>
                     </form>

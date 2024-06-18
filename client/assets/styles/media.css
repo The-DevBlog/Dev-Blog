@@ -1,7 +1,24 @@
+/* main */
+@media (max-width: 1300px) {
+    main {
+        width: 100% !important;
+    }
+}
+
 /* home */
 @media (max-width: 450px) {
-    .signup-prompt {
-        margin: 10px 0px 40px 0px !important;
+
+    .signup-prompt,
+    .subscribe-prompt {
+        margin: 10px 0px 20px 0px !important;
+    }
+
+    .subscribe-prompt {
+        width: 92.5% !important;
+    }
+
+    .subscribe-prompt form {
+        margin-left: 44px !important;
     }
 
     .youtube-video {
@@ -27,14 +44,6 @@
 
 /* post */
 @media (max-width: 800px) {
-    main {
-        width: 100%;
-    }
-
-    .posts {
-        margin-left: 0px !important;
-        margin-right: 0px !important;
-    }
 
     .description,
     .post {
