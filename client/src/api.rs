@@ -28,6 +28,7 @@ pub enum Api {
     SignOut,
     SignUp,
     ToggleSubscribe,
+    Subscribe(String),
     UpdateVideoUrl,
     Vote(u32, String),
 }
@@ -87,7 +88,8 @@ impl Api {
             Api::SignIn => format!("{}accounts/signin", URL),
             Api::SignOut => format!("{}accounts/signout", URL),
             Api::SignUp => format!("{}accounts/signup", URL),
-            Api::ToggleSubscribe => format!("{}accounts/subscribe", URL),
+            Api::ToggleSubscribe => format!("{}accounts/toggleSubscribe", URL),
+            Api::Subscribe(email) => format!("{}accounts/subscribe/{}", URL, email),
             Api::UpdateVideoUrl => format!("{}YtVideo/1", URL),
             Api::Vote(id, vote) => format!("{}posts/{}/{}", URL, id, vote),
         }
