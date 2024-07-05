@@ -52,7 +52,7 @@ services:
 
 networks:
   devblog-network:
-    name: ${DEVBLOG_NETWORK}
+    name: ${DEVBLOG_NETWORK_NAME}
     driver: bridge
     ipam:
       config:
