@@ -1,5 +1,7 @@
 use crate::{components::markdown::Markdown, helpers, store::Store, Api};
+use gloo::console::log;
 use gloo_net::http::Method;
+use serde_json::Value;
 use std::ops::Deref;
 use stylist::{css, Style};
 use web_sys::{FileList, FormData, HtmlInputElement, HtmlTextAreaElement};
@@ -79,6 +81,14 @@ pub fn add_post() -> Html {
                     .await;
 
                 if let Some(res) = response {
+                    if let Ok(txt) = res.text().await {
+                        if let Ok(json) = serde_json::from_str::<Value>(&txt) {
+                            if let Some(errors) = json.get("errors") {
+                                err.set(errors.to_string());
+                            }
+                        }
+                    }
+
                     let status = format!("{}: {}", res.status(), res.status_text());
 
                     if discord {
