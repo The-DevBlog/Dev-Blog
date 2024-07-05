@@ -9,6 +9,7 @@ edition = "2021"
 chrono = { version = "0.4.33", features = ["serde"] }
 gloo = "0.11.0"
 gloo-net = "0.5.0"
+regex = "1.10.5"
 serde = "1.0.196"
 serde_json = "1.0.113"
 stylist = { version = "0.13.0", features = ["yew", "parser"] }
