@@ -149,6 +149,4 @@ jobs:
         run: |
           ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
           cd ${{ secrets.DEVBLOG_ROOT_PATH }} && \
-          docker container restart ${{ secrets.DEVBLOG_CLIENT_CONTAINER }} || true && \
-          docker container restart ${{ secrets.DEVBLOG_SERVER_CONTAINER }} || true && \
-          docker container restart ${{ secrets.DEVBLOG_PROXY_CONTAINER }}"
+          docker-compose up -d --force-recreate"

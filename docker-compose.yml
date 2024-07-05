@@ -32,9 +32,27 @@ services:
     devblog-network:
       ipv4_address: ${SERVER_IP_ADDRESS}
 
+  devblog_proxy:
+    image: ${DEVBLOG_PROXY_CONTAINER_NAME}
+    build: .
+    container_name: ${DEVBLOG_PROXY_CONTAINER_NAME}
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/ssl/certs/${DEVBLOG_CERT_NAME}:/etc/ssl/certs/${DEVBLOG_CERT_NAME}
+    restart: on-failure
+    ports:
+      - ${PROXY_PORTS_1}
+      - ${PROXY_PORTS_2}
+    networks:
+      devblog-network:
+        ipv4_address: ${PROXY_IP_ADDRESS}
+    depends_on:
+      - devblog_client
+      - devblog_server
+
 networks:
   devblog-network:
-    name: devblog-network
+    name: ${DEVBLOG_NETWORK_NAME}
     driver: bridge
     ipam:
       config:
