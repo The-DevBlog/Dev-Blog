@@ -1,3 +1,4 @@
+use stylist::Style;
 use yew::{function_component, html, Html, Properties};
 
 #[derive(Properties, PartialEq, Clone)]
@@ -5,8 +6,12 @@ pub struct Props {
     pub content: String,
 }
 
+const STYLE: &str = include_str!("styles/markdown.css");
+
 #[function_component(Markdown)]
 pub fn markdown(props: &Props) -> Html {
+    let style = Style::new(STYLE).unwrap();
+
     let html = props.content.lines().map(|line| match line {
         l if l.starts_with("# ") => html! {<h1>{&l[1..]}</h1>},
         l if l.starts_with("## ") => html! {<h2>{&l[2..]}</h2>},
@@ -23,8 +28,10 @@ pub fn markdown(props: &Props) -> Html {
     });
 
     html! {
-        <div>
-            {for html}
+        <div class={style}>
+            <div class="markdown">
+                {for html}
+            </div>
         </div>
     }
 }
