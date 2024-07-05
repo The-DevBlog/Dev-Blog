@@ -149,4 +149,4 @@ jobs:
         run: |
           ssh -i ${{ secrets.SSH_PRIVATE_KEY_PATH }}/${{ secrets.SSH_PRIVATE_KEY_NAME }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
           cd ${{ secrets.DEVBLOG_ROOT_PATH }} && \
-          docker-compose up -d --force-recreate"
+          docker compose up -d --force-recreate"
