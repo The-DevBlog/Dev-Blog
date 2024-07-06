@@ -200,47 +200,20 @@ namespace devblog.Services
             var channel = await _discordClient.GetChannelAsync(_config.GetValue<ulong>("DiscordChannelId")) as IMessageChannel;
             var res = new HttpResponseMessage();
 
-            List<string> descriptions = new List<string>();
-            int posts = (int)Math.Ceiling(description.Length / 1988.0);
-
-            // add imgs to request
-            List<FileAttachment> attachments = new List<FileAttachment>();
-            foreach (var file in files)
-                attachments.Add(new FileAttachment(file.OpenReadStream(), file.FileName));
-
             try
             {
-                // because discords post chararacter limit is 2000, the description needs to broken into incriments 
-                // of 2000 (including the 'part' string variable below)
-                for (int i = 1; i < posts; i++)
-                {
-                    string postDescription = description.Substring(0, 1988);
-                    description = description.Remove(0, 1988);
-                    descriptions.Add(postDescription);
-                }
+                // add imgs to request
+                List<FileAttachment> attachments = new List<FileAttachment>();
+                foreach (var file in files)
+                    attachments.Add(new FileAttachment(file.OpenReadStream(), file.FileName));
 
-                descriptions.Add(description);
-
-                for (int i = 1; i <= descriptions.Count; i++)
-                {
-                    string part = $"(Part {i}/{descriptions.Count}) ";
-
-                    if (i == 1)
-                    {
-                        await channel.SendFilesAsync(attachments, part + descriptions[i - 1]);
-                    }
-                    else
-                    {
-                        await channel.SendMessageAsync(part + descriptions[i - 1]);
-                    }
-                }
-
+                await channel.SendFilesAsync(attachments, description);
                 await _discordClient.StopAsync();
             }
             catch (Exception e)
             {
                 res.StatusCode = HttpStatusCode.BadRequest;
-                res.ReasonPhrase = "Failed to post to  Discord: " + e.Message;
+                res.ReasonPhrase = "Failed to post to Discord: " + e.Message;
                 return res;
             }
 
@@ -258,43 +231,18 @@ namespace devblog.Services
             var client = new MastodonClient("mastodon.social", _config.GetValue<string>("MastodonToken"));
             var res = new HttpResponseMessage();
 
-            // add imgs to request
-            List<string> attachments = new List<string>();
-            List<string> descriptions = new List<string>();
-            int posts = (int)Math.Ceiling(description.Length / 488.0);
 
             try
             {
-                // because mastodons post character limit is 500, the description needs to broken into increments 
-                // of 500 (including the 'part' string variable below)
-                for (int i = 1; i < posts; i++)
+                // add imgs to request
+                List<string> attachments = new List<string>();
+                foreach (var file in files)
                 {
-                    string postDescription = description.Substring(0, 488);
-                    description = description.Remove(0, 488);
-                    descriptions.Add(postDescription);
+                    var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
+                    var mediaId = await client.UploadMedia(media);
+                    attachments.Add(mediaId.Id);
                 }
-
-                descriptions.Add(description);
-
-                for (int i = 1; i <= descriptions.Count; i++)
-                {
-                    string part = $"(Part {i}/{descriptions.Count}) ";
-
-                    if (i == 1)
-                    {
-                        foreach (var file in files)
-                        {
-                            var media = new MediaDefinition(file.OpenReadStream(), file.FileName);
-                            var mediaId = await client.UploadMedia(media);
-                            attachments.Add(mediaId.Id);
-                        }
-                        await client.PublishStatus(part + descriptions[i - 1], mediaIds: attachments);
-                    }
-                    else
-                    {
-                        await client.PublishStatus(part + descriptions[i - 1]);
-                    }
-                }
+                await client.PublishStatus(description, mediaIds: attachments);
             }
             catch (Exception e)
             {
