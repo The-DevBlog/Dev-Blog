@@ -208,7 +208,6 @@ pub fn add_post() -> Html {
 
                             <p>{"Preview:"}</p>
                             <div class="post-preview">
-                                <span>{"preview content:"}</span>
                                 <Markdown content={description.deref().clone()}/>
                             </div>
                             <button>{"Create Post"}</button>
