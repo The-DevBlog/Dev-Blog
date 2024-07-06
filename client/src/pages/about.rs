@@ -12,6 +12,7 @@ pub fn about() -> Html {
             <div class="about">
                 <ul>
                     <li><a target="_blank" rel="noreferrer" href="https://github.com/AndrewCS149">{"GitHub"}</a></li>
+                    <li><a target="_blank" rel="noreferrer" href="https://www.youtube.com/@thedevblog5916">{"YouTube"}</a></li>
                     <li><a target="_blank" rel="noreferrer" href="https://mastodon.social/@TheDevBlog">{"Mastodon"}</a></li>
                     <li><a target="_blank" rel="noreferrer" href="https://andrew149.itch.io/">{"Itch.io"}</a></li>
                     // <li><a target="_blank" rel="noreferrer" href="https://discord.gg/uHDwywr6wt">Discord</a></li>
