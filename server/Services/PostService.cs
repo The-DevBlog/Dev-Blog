@@ -231,7 +231,6 @@ namespace devblog.Services
             var client = new MastodonClient("mastodon.social", _config.GetValue<string>("MastodonToken"));
             var res = new HttpResponseMessage();
 
-
             try
             {
                 // add imgs to request
