@@ -42,10 +42,10 @@ pub fn markdown(props: &Props) -> Html {
             l if l.starts_with("```") => {
                 html! {<p><code lang="rust">{line.replace("```", "")}</code></p>}
             }
-            l if l.starts_with("-") => {}
             l if l.starts_with("---") => html! {<hr/>},
             l if l.starts_with("___") => html! {<hr/>},
             l if l.is_empty() => html! {<br/>},
+            l if l.starts_with("-") => html! {<li>{combined_html}</li>},
             _ => html! {<p>{line}</p>},
         }
     });
