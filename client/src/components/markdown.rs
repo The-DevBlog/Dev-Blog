@@ -11,8 +11,7 @@ pub fn markdown(props: &Props) -> Html {
     let link_regex = Regex::new(r"\[([^\]]+)\]\((https?://[^\)]+)\)").unwrap();
 
     let html = props.content.lines().map(|line| {
-        // replace markdown links with anchor tags
-        // eg: [thedevblog](https://thedevblog.net) -> <a href="https://thedevblog.net">thedevblog</a>
+        // Process links for the entire line
         let mut line_html = vec![];
         let mut last_pos = 0;
         for chars in link_regex.captures_iter(line) {
@@ -45,9 +44,9 @@ pub fn markdown(props: &Props) -> Html {
             }
             l if l.starts_with("---") => html! {<hr/>},
             l if l.starts_with("___") => html! {<hr/>},
-            l if l.starts_with("-") => html! {<li>{&l[1..]}</li>},
             l if l.is_empty() => html! {<br/>},
-            _ => html! {<p>{combined_html}</p>},
+            l if l.starts_with("-") => html! {<li>{combined_html}</li>},
+            _ => html! {<p>{line}</p>},
         }
     });
 
