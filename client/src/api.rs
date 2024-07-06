@@ -1,3 +1,5 @@
+use std::borrow::{Borrow, BorrowMut};
+
 use gloo::console::log;
 use gloo_net::http::{Headers, Method, RequestBuilder, Response};
 use wasm_bindgen::JsValue;
@@ -49,7 +51,18 @@ impl Api {
             Ok(req) => {
                 let req_result = req.send().await;
                 match req_result {
-                    Ok(response) => Some(response),
+                    Ok(mut response) => {
+                        if !response.ok() {
+                            if let Ok(body_text) = response.borrow_mut().text().await {
+                                // if let Ok(body_text) = response.text().await {
+                                log!("Response Body:", body_text);
+                            } else {
+                                log!("Failed to read response body");
+                            }
+                        }
+
+                        Some(response)
+                    }
                     Err(e) => {
                         log!("Error sending request: ", e.to_string());
                         None

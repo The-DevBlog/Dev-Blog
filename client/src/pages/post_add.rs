@@ -1,5 +1,7 @@
 use crate::{components::markdown::Markdown, helpers, store::Store, Api};
+use gloo::console::log;
 use gloo_net::http::Method;
+use serde_json::Value;
 use std::ops::Deref;
 use stylist::{css, Style};
 use web_sys::{FileList, FormData, HtmlInputElement, HtmlTextAreaElement};
@@ -14,6 +16,7 @@ pub fn add_post() -> Html {
     let files: UseStateHandle<Option<FileList>> = use_state(|| None);
     let description = use_state(|| String::default());
     let char_count = use_state(|| 0);
+    let file_size = use_state(|| 0.0);
     let loading = use_state(|| false);
     let devblog = use_state(|| false);
     let devblog_status = use_state(|| String::default());
@@ -32,15 +35,13 @@ pub fn add_post() -> Html {
 
     // create post
     let onsubmit = {
+        let err = err.clone();
         let token = store.token.clone();
         let description = description.clone();
-        let err = err.clone();
         let files = files.clone();
         let loading = loading.clone();
-
-        let discord = *discord.clone();
         let discord_status = discord_status.clone();
-
+        let discord = *discord.clone();
         let mastodon = *mastodon.clone();
         let mastodon_status = mastodon_status.clone();
 
@@ -79,6 +80,14 @@ pub fn add_post() -> Html {
                     .await;
 
                 if let Some(res) = response {
+                    if let Ok(txt) = res.text().await {
+                        if let Ok(json) = serde_json::from_str::<Value>(&txt) {
+                            if let Some(errors) = json.get("errors") {
+                                err.set(errors.to_string());
+                            }
+                        }
+                    }
+
                     let status = format!("{}: {}", res.status(), res.status_text());
 
                     if discord {
@@ -141,12 +150,27 @@ pub fn add_post() -> Html {
     };
 
     // set files for upload
+    let file_size_clone = file_size.clone();
     let update_imgs = {
-        let files = files.clone();
         Callback::from(move |e: Event| {
+            let files = files.clone();
+            file_size_clone.set(0.0);
+            let mut largest_file = 0.0;
             let input = e.target_dyn_into::<HtmlInputElement>();
             if let Some(f) = input {
                 let selected_files = f.files().unwrap();
+
+                // set the file size limit (in MBs)
+                for i in 0..selected_files.length() {
+                    if let Some(file) = selected_files.item(i) {
+                        if file.size() > largest_file {
+                            largest_file = file.size();
+                            let mbs = file.size() / 1_000_000.0;
+                            let mbs_rounded = (mbs * 1_000.0).round() / 1_000.0;
+                            file_size_clone.set(mbs_rounded);
+                        }
+                    }
+                }
                 files.set(Some(selected_files));
             }
         })
@@ -188,9 +212,9 @@ pub fn add_post() -> Html {
                                     onchange={update_imgs}/>
                             </label>
 
-                            <label>{"Description"}
-                                <p>{"Mastodon character limit: "}{*char_count}{"/500"}</p>
-                                <p>{"Discord character limit: "}{*char_count}{"/2000"}</p>
+                            <label>
+                                <p class={match *mastodon.clone() {true => css!("display: block;"), false => css!("display: none;")}}>{"Mastodon character limit: "}{*char_count}{"/500"}{" File limit: "}{*file_size}{"/16 MB"}</p>
+                                <p class={match *discord.clone() {true => css!("display: block;"), false => css!("display: none;")}}>{"Discord character limit: "}{*char_count}{"/2000"}{" File limit: "}{*file_size}{"/25 MB"}</p>
                                 <div class="addpost-description">
                                     <textarea oninput={update_char_count} placeholder="Write description here..."/>
                                 </div>
