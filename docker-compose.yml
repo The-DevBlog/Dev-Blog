@@ -34,7 +34,7 @@ services:
 
   devblog_proxy:
     image: ${DEVBLOG_PROXY_CONTAINER_NAME}
-    build: .
+    build: ./proxy
     container_name: ${DEVBLOG_PROXY_CONTAINER_NAME}
     volumes:
       - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
