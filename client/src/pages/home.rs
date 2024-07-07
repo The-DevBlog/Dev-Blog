@@ -193,7 +193,7 @@ pub fn home() -> Html {
                 if !store.authenticated {
                     <div class="signup-prompt">
                         <Link<Route> to={Route::SignUp}>
-                            <span>{"Join the community. Sign up!"}</span>
+                            <span>{"Join the Party. Sign up!"}</span>
                         </Link<Route>>
                     </div>
                     <div class="subscribe-prompt">
