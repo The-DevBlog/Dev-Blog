@@ -4,7 +4,8 @@ use gloo::console::log;
 use gloo_net::http::{Headers, Method, RequestBuilder, Response};
 use wasm_bindgen::JsValue;
 
-const URL: &str = include_str!("api_url.txt");
+// const URL: &str = include_str!("api_url.txt");
+const URL: &str = "https://andrewtest.org/api/";
 
 #[derive(Clone, PartialEq)]
 pub enum Api {
