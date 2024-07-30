@@ -20,7 +20,6 @@ namespace devblog
             var builder = WebApplication.CreateBuilder(args);
 
             // --------------------- CORS POLICY ------------------------------
-
             builder.Services.AddCors(options =>
             {
                 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
