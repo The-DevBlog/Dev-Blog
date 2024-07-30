@@ -22,10 +22,13 @@ namespace devblog
             // --------------------- CORS POLICY ------------------------------
             builder.Services.AddCors(options =>
             {
-                var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(allowedOrigins)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+                var allowedOrigins = new[] { "https://thedevblog.net", "https://www.thedevblog.net" };
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.WithOrigins(allowedOrigins)
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
             });
 
             // --------------------- SWAGGER ----------------------------------
