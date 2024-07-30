@@ -22,10 +22,9 @@ namespace devblog
             // --------------------- CORS POLICY ------------------------------
             builder.Services.AddCors(options =>
             {
-                var allowedOrigins = new[] { "https://thedevblog.net", "https://www.thedevblog.net" };
                 options.AddPolicy("AllowSpecificOrigin", builder =>
                 {
-                    builder.WithOrigins(allowedOrigins)
+                    builder.WithOrigins("https://thedevblog.net", "https://www.thedevblog.net")
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 });
@@ -106,6 +105,8 @@ namespace devblog
 
             var app = builder.Build();
 
+            // ------------------- MIDDLEWARE -------------------------------
+            app.UseCors("AllowSpecificOrigin");
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -118,9 +119,6 @@ namespace devblog
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            // ------------------- MIDDLEWARE -------------------------------
-            app.UseCors("AllowSpecificOrigin");
 
             // ----------------------- ROUTING -------------------------------
             app.UseHttpsRedirection();

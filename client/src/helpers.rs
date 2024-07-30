@@ -70,6 +70,7 @@ pub fn create_auth_header(token: &String) -> Headers {
     let auth = format!("Bearer {}", token);
     let hdrs = Headers::new();
     hdrs.append("Authorization", &auth);
+    hdrs.append("Content-Type", "multipart/form-data");
     hdrs
 }
 
