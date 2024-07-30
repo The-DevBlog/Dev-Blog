@@ -1,4 +1,4 @@
-use std::borrow::{Borrow, BorrowMut};
+use std::borrow::BorrowMut;
 
 use gloo::console::log;
 use gloo_net::http::{Headers, Method, RequestBuilder, Response};
