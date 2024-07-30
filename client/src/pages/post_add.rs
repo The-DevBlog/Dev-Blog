@@ -59,6 +59,7 @@ pub fn add_post() -> Html {
             let devblog_status = devblog_status.clone();
 
             let hdrs = helpers::create_auth_header(&token);
+            hdrs.append("Content-Type", "multipart/form-data");
             let form_data = FormData::new().unwrap();
             let _ = form_data.append_with_str("description", &description);
             let _ = form_data.append_with_str("postToDiscord", &discord.to_string());

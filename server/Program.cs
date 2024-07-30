@@ -22,12 +22,10 @@ namespace devblog
             // --------------------- CORS POLICY ------------------------------
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", builder =>
-                {
-                    builder.WithOrigins("https://thedevblog.net", "https://www.thedevblog.net")
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
+                var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
             });
 
             // --------------------- SWAGGER ----------------------------------
@@ -107,6 +105,7 @@ namespace devblog
 
             // ------------------- MIDDLEWARE -------------------------------
             app.UseCors("AllowSpecificOrigin");
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
