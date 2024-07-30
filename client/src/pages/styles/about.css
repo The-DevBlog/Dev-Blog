@@ -23,3 +23,11 @@
     border-radius: 2px;
     width: 50%;
 }
+
+.contact-me>p {
+    width: fit-content;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+}

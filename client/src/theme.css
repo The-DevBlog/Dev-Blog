@@ -69,6 +69,7 @@ textarea,
 .sign-in-container,
 .description,
 .description-result,
+.contact-me>p,
 button {
     font-family: 'Chivo Mono', monospace;
 }
