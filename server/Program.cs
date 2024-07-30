@@ -20,11 +20,13 @@ namespace devblog
             var builder = WebApplication.CreateBuilder(args);
 
             // --------------------- CORS POLICY ------------------------------
+
             builder.Services.AddCors(options =>
             {
-                string origin = builder.Configuration.GetValue<string>("Origin");
-                string originWWW = builder.Configuration.GetValue<string>("OriginWWW");
-                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(origin, originWWW).AllowAnyHeader().AllowAnyMethod());
+                var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+                options.AddPolicy("AllowSpecificOrigin", b => b.WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
             });
 
             // --------------------- SWAGGER ----------------------------------
