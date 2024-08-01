@@ -23,7 +23,7 @@ pub fn about() -> Html {
 
             </div>
             <div class="contact-me">
-                <p>{"Reach me test @ DevMaster@TheDevBlog.net"}</p>
+                <p>{"Reach me @ DevMaster@TheDevBlog.net"}</p>
             </div>
         </section>
     }
