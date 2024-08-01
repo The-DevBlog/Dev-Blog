@@ -60,6 +60,7 @@ pub fn sign_in() -> Html {
                     <button>{"Login"}</button>
                 </form>
 
+                // ERRORS
                 if !error.description.is_empty() {
                     <p>{error.description.deref()}</p>
                 }
